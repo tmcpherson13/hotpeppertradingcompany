@@ -129,45 +129,45 @@ export function TradeRouteMap() {
     },
     glyphs: 'https://tiles.stadiamaps.com/fonts/{fontstack}/{range}.pbf',
     layers: [
-      // Parchment ocean background
+      // Parchment background (will show as land)
       {
         id: 'background',
         type: 'background',
         paint: {
-          'background-color': '#e8dcc4',
+          'background-color': '#c9b896', // Aged parchment land color
         },
       },
-      // Subtle ocean texture effect with water layer
+      // Water fills in the ocean areas, leaving land as background
       {
         id: 'water',
         type: 'fill',
         source: 'natural-earth',
         'source-layer': 'water',
         paint: {
-          'fill-color': '#ddd0b8',
-          'fill-opacity': 0.6,
+          'fill-color': '#e0d4be', // Lighter parchment for ocean
+          'fill-opacity': 1,
         },
       },
-      // Inked landmass base
+      // Landcover adds texture variation to visible land
       {
-        id: 'land',
+        id: 'landcover',
         type: 'fill',
         source: 'natural-earth',
         'source-layer': 'landcover',
         paint: {
-          'fill-color': '#c4b59a',
-          'fill-opacity': 0.4,
+          'fill-color': '#b8a882',
+          'fill-opacity': 0.3,
         },
       },
-      // Main landmass with engraved look
+      // Landuse for additional land detail
       {
         id: 'landuse',
         type: 'fill',
         source: 'natural-earth',
         'source-layer': 'landuse',
         paint: {
-          'fill-color': '#bfad8f',
-          'fill-opacity': 0.3,
+          'fill-color': '#a89870',
+          'fill-opacity': 0.2,
         },
       },
       // Coastline - hand-drawn inked effect
