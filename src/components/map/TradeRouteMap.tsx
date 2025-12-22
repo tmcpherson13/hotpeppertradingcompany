@@ -255,9 +255,9 @@ export function TradeRouteMap() {
             },
           });
 
-          // Outer glow for aged ink effect
+          // Outermost diffuse glow - prestige aura
           map.current?.addLayer({
-            id: `route-glow-${index}`,
+            id: `route-aura-${index}`,
             type: 'line',
             source: `route-${index}`,
             layout: {
@@ -265,14 +265,48 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#8b4513',
-              'line-width': 4,
-              'line-opacity': 0.2,
+              'line-color': '#5B005B', // Tyrian Purple
+              'line-width': 18,
+              'line-opacity': 0.08,
+              'line-blur': 8,
+            },
+          });
+
+          // Secondary glow layer - rich purple halo
+          map.current?.addLayer({
+            id: `route-glow-outer-${index}`,
+            type: 'line',
+            source: `route-${index}`,
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round',
+            },
+            paint: {
+              'line-color': '#7B1A7B', // Lighter Tyrian Purple
+              'line-width': 10,
+              'line-opacity': 0.15,
+              'line-blur': 4,
+            },
+          });
+
+          // Inner glow - concentrated prestige
+          map.current?.addLayer({
+            id: `route-glow-inner-${index}`,
+            type: 'line',
+            source: `route-${index}`,
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round',
+            },
+            paint: {
+              'line-color': '#8B2A8B',
+              'line-width': 6,
+              'line-opacity': 0.25,
               'line-blur': 2,
             },
           });
 
-          // Main route line
+          // Main route line - bold and intentional
           map.current?.addLayer({
             id: `route-line-${index}`,
             type: 'line',
@@ -282,10 +316,26 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#6b3a1a',
-              'line-width': 1.5,
-              'line-dasharray': [4, 3],
-              'line-opacity': 0.8,
+              'line-color': '#5B005B', // Tyrian Purple
+              'line-width': 3,
+              'line-opacity': 0.9,
+            },
+          });
+
+          // Highlight stroke - precious metal accent
+          map.current?.addLayer({
+            id: `route-highlight-${index}`,
+            type: 'line',
+            source: `route-${index}`,
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round',
+            },
+            paint: {
+              'line-color': '#d4a84b', // Gold accent
+              'line-width': 1,
+              'line-opacity': 0.4,
+              'line-dasharray': [8, 12],
             },
           });
         });
