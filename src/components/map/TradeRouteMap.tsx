@@ -182,27 +182,30 @@ export function TradeRouteMap() {
   // Calculate visible routes for current year
   const visibleRoutes = useMemo(() => getVisibleRoutes(timelineYear), [timelineYear, getVisibleRoutes]);
 
-  // Create ship marker element
+  // Create ship marker element with nested structure to avoid transform conflicts
   const createShipElement = useCallback(() => {
     const el = document.createElement('div');
     el.className = 'ship-marker';
+    
+    // Nested structure: ship-marker (MapLibre positions) > ship-motion (bobbing) > svg (rotation)
     el.innerHTML = `
-      <svg viewBox="0 0 32 24" width="28" height="20" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-        <!-- Ship hull -->
-        <path d="M2 18 Q 8 22, 16 22 Q 24 22, 30 18 L 28 14 Q 16 16, 4 14 Z" fill="#5a4a3a" stroke="#3a2a1a" stroke-width="0.5"/>
-        <!-- Ship deck -->
-        <path d="M6 14 L 26 14 L 24 10 L 8 10 Z" fill="#8b7355" stroke="#5a4a3a" stroke-width="0.5"/>
-        <!-- Mast -->
-        <line x1="16" y1="10" x2="16" y2="2" stroke="#3a2a1a" stroke-width="1.5"/>
-        <!-- Sail -->
-        <path d="M16 3 Q 24 6, 16 10 Z" fill="#e8dcc4" stroke="#5a4a3a" stroke-width="0.5"/>
-        <!-- Flag -->
-        <path d="M16 2 L 20 3.5 L 16 5 Z" fill="#8b2942"/>
-      </svg>
+      <div class="ship-motion">
+        <svg class="ship-svg" viewBox="0 0 32 24" width="32" height="24">
+          <!-- Wake trail -->
+          <path d="M-6 20 Q 0 18, 8 20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- Ship hull -->
+          <path d="M2 18 Q 8 22, 16 22 Q 24 22, 30 18 L 28 14 Q 16 16, 4 14 Z" fill="#5a4a3a" stroke="#3a2a1a" stroke-width="0.5"/>
+          <!-- Ship deck -->
+          <path d="M6 14 L 26 14 L 24 10 L 8 10 Z" fill="#8b7355" stroke="#5a4a3a" stroke-width="0.5"/>
+          <!-- Mast -->
+          <line x1="16" y1="10" x2="16" y2="2" stroke="#3a2a1a" stroke-width="1.5"/>
+          <!-- Sail -->
+          <path d="M16 3 Q 24 6, 16 10 Z" fill="#f5efe0" stroke="#5a4a3a" stroke-width="0.5"/>
+          <!-- Flag -->
+          <path d="M16 2 L 20 3.5 L 16 5 Z" fill="#8b2942"/>
+        </svg>
+      </div>
     `;
-    el.style.transition = 'opacity 0.5s ease';
-    el.style.opacity = '0';
-    el.style.pointerEvents = 'none';
     return el;
   }, []);
 
@@ -227,12 +230,14 @@ export function TradeRouteMap() {
     }
 
     const shipEl = shipMarker.getElement();
-    shipEl.style.opacity = '1';
-    shipEl.classList.add('ship-sailing');
+    const motionEl = shipEl.querySelector('.ship-motion') as HTMLElement;
+    const svgEl = shipEl.querySelector('.ship-svg') as SVGElement;
+    
+    // Make visible and start sailing animation
+    shipEl.classList.add('ship-visible', 'ship-sailing');
 
-    const duration = 6000; // 6 seconds to travel the route
+    const duration = 8000; // 8 seconds to travel the route
     const startTime = performance.now();
-    const coordinates = [route.from, ...route.via, route.to];
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -244,25 +249,21 @@ export function TradeRouteMap() {
       const position = interpolateRoute(route, easedProgress);
       shipMarker!.setLngLat(position);
 
-      // Calculate and set rotation based on direction
+      // Calculate and set rotation based on direction (rotate the SVG, not the marker)
       const nextProgress = Math.min(easedProgress + 0.05, 1);
       const nextPosition = interpolateRoute(route, nextProgress);
       const bearing = calculateBearing(position, nextPosition);
       
-      const svg = shipEl.querySelector('svg');
-      if (svg) {
-        svg.style.transform = `rotate(${bearing - 90}deg)`;
+      if (svgEl) {
+        svgEl.style.transform = `rotate(${bearing - 90}deg)`;
       }
 
       if (progress < 1) {
         const frameId = requestAnimationFrame(animate);
         shipAnimationsRef.current.set(routeIndex, frameId);
       } else {
-        // Animation complete - fade out ship and keep it at destination
+        // Animation complete - keep at destination with anchored state
         shipEl.classList.remove('ship-sailing');
-        shipEl.style.opacity = '0.6';
-        
-        // Keep ship visible at destination with subtle bobbing
         shipEl.classList.add('ship-anchored');
       }
     };
@@ -334,8 +335,7 @@ export function TradeRouteMap() {
         const shipMarker = shipMarkersRef.current.get(index);
         if (shipMarker) {
           const shipEl = shipMarker.getElement();
-          shipEl.style.opacity = '0';
-          shipEl.classList.remove('ship-sailing', 'ship-anchored');
+          shipEl.classList.remove('ship-visible', 'ship-sailing', 'ship-anchored');
         }
         // Cancel animation
         const animId = shipAnimationsRef.current.get(index);
