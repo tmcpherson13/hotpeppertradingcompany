@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Anchor, Globe, History } from 'lucide-react';
+import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
 
 const facts = [
   {
@@ -21,8 +22,22 @@ const facts = [
 
 export function PepperEducation() {
   return (
-    <section className="py-24 bg-card paper-texture">
-      <div className="container mx-auto px-4">
+    <section className="relative py-24 bg-card paper-texture overflow-hidden">
+      {/* Trade Route Background */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full" 
+        variant="tyrian" 
+        opacity={0.05} 
+      />
+      
+      {/* Decorative Compass */}
+      <CompassRose 
+        className="absolute top-16 right-8 md:right-16 opacity-10 text-tyrian" 
+        size={100}
+        variant="tyrian"
+      />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,9 +48,11 @@ export function PepperEducation() {
           {/* Header */}
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-8">
-              <span className="w-16 h-px bg-border" />
-              <span className="text-tyrian text-xl">✦</span>
-              <span className="w-16 h-px bg-border" />
+              <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/40 to-transparent" />
+              <svg width="20" height="20" viewBox="0 0 20 20" className="text-tyrian">
+                <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
+              </svg>
+              <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/40 to-transparent" />
             </div>
             <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
               The Fire of the Americas
@@ -59,10 +76,14 @@ export function PepperEducation() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center p-6"
+                className="text-center p-6 relative"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-border rounded-full mb-6">
-                  <fact.icon className="w-7 h-7 text-primary" />
+                {/* Subtle route connector */}
+                {index < facts.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-px bg-gradient-to-r from-tyrian/30 to-transparent" />
+                )}
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-tyrian/10 border border-tyrian/20 rounded-full mb-6">
+                  <fact.icon className="w-7 h-7 text-tyrian" />
                 </div>
                 <h3 className="font-display text-xl text-foreground font-semibold mb-3">
                   {fact.title}

@@ -26,22 +26,32 @@ const regions = [
 export function TradeRoutes() {
   return (
     <section id="routes" className="py-24 bg-primary relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="compass-pattern" width="100" height="100" patternUnits="userSpaceOnUse">
-              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-              <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" strokeWidth="0.5" />
-              <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#compass-pattern)" />
+      {/* Enhanced Background with Trade Routes */}
+      <div className="absolute inset-0">
+        {/* Tyrian Purple trade route lines */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="none">
+          <path
+            d="M100,300 Q300,200 500,280 T800,250 Q1000,220 1100,300"
+            fill="none"
+            stroke="hsl(300 100% 18%)"
+            strokeWidth="2"
+            strokeDasharray="12,8"
+            opacity="0.2"
+          />
+          <path
+            d="M150,400 Q350,350 550,380 T850,350 Q1050,320 1150,380"
+            fill="none"
+            stroke="hsl(300 100% 18%)"
+            strokeWidth="1.5"
+            strokeDasharray="8,10"
+            opacity="0.15"
+          />
+          <circle cx="500" cy="280" r="6" fill="hsl(300 100% 18%)" opacity="0.25" />
+          <circle cx="800" cy="250" r="6" fill="hsl(300 100% 18%)" opacity="0.25" />
         </svg>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -50,9 +60,11 @@ export function TradeRoutes() {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-8">
-            <span className="w-16 h-px bg-primary-foreground/30" />
-            <span className="text-gold text-xl">✦</span>
-            <span className="w-16 h-px bg-primary-foreground/30" />
+            <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/50 to-transparent" />
+            <svg width="24" height="24" viewBox="0 0 24 24" className="text-gold">
+              <polygon points="12,2 14,10 22,10 16,14 18,22 12,17 6,22 8,14 2,10 10,10" fill="currentColor" />
+            </svg>
+            <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/50 to-transparent" />
           </div>
           <p className="text-primary-foreground/70 font-body text-sm uppercase tracking-[0.3em] mb-4">
             Geography as Story
@@ -61,12 +73,11 @@ export function TradeRoutes() {
             The Trade Routes
           </h2>
           <p className="font-body text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-            Our spices come from the same lands that supplied the ancient world. 
+            Our hot peppers come from the same lands that transformed global cuisine. 
             Explore the geography that shaped human history.
           </p>
         </motion.div>
 
-        {/* Regions */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {regions.map((route, index) => (
             <motion.div
@@ -75,7 +86,7 @@ export function TradeRoutes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="bg-primary-foreground/5 border border-primary-foreground/20 p-8 text-center hover:bg-primary-foreground/10 transition-colors duration-300"
+              className="relative bg-primary-foreground/5 border border-tyrian/30 p-8 text-center hover:bg-primary-foreground/10 hover:border-tyrian/50 transition-colors duration-300"
             >
               <route.icon className="w-10 h-10 text-gold mx-auto mb-4" />
               <p className="text-primary-foreground/60 font-body text-xs uppercase tracking-[0.3em] mb-2">
@@ -91,7 +102,6 @@ export function TradeRoutes() {
           ))}
         </div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
