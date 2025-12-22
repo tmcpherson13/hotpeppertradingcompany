@@ -54,10 +54,10 @@ export function PepperEducation() {
               </svg>
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/40 to-transparent" />
             </div>
-            <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
+            <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
               The Fire of the Americas
             </p>
-            <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold mb-6">
+            <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
               How Hot Peppers Changed the World
             </h2>
             <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">

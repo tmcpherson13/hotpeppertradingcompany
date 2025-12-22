@@ -14,8 +14,12 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
-        body: ['"Crimson Pro"', 'Georgia', 'serif'],
+        // Cinzel - Roman inscriptions & engraved capitals
+        display: ['"Cinzel"', '"Cormorant Garamond"', 'Georgia', 'serif'],
+        // Cormorant Garamond - Elegant historical serif for subheadings
+        heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        // EB Garamond - Classic readable body text
+        body: ['"EB Garamond"', '"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

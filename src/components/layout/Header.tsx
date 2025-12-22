@@ -32,7 +32,7 @@ export function Header() {
               <a
                 key={link.name}
                 href={link.href}
-                className="font-body text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors duration-300"
+                className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
               >
                 {link.name}
               </a>
@@ -75,7 +75,7 @@ export function Header() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="font-body text-lg uppercase tracking-widest text-foreground hover:text-primary transition-colors py-2 border-b border-border"
+                  className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
                 >
                   {link.name}
                 </a>

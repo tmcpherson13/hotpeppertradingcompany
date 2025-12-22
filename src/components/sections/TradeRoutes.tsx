@@ -66,13 +66,13 @@ export function TradeRoutes() {
             </svg>
             <span className="w-16 h-px bg-gradient-to-r from-transparent via-tyrian/50 to-transparent" />
           </div>
-          <p className="text-primary-foreground/70 font-body text-sm uppercase tracking-[0.3em] mb-4">
+          <p className="text-primary-foreground/70 font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
             Geography as Story
           </p>
-          <h2 className="font-display text-3xl md:text-5xl text-primary-foreground font-semibold mb-6">
+          <h2 className="font-display text-3xl md:text-5xl text-primary-foreground mb-6 text-engraved">
             The Trade Routes
           </h2>
-          <p className="font-body text-lg text-primary-foreground/80 max-w-2xl mx-auto">
+          <p className="font-body text-lg text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed">
             Our hot peppers come from the same lands that transformed global cuisine. 
             Explore the geography that shaped human history.
           </p>

@@ -129,10 +129,48 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    font-size: 18px;
+    line-height: 1.7;
+    font-feature-settings: "liga" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* Engraved Display Typography */
+  h1 {
+    @apply font-display tracking-wide;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
     @apply font-display;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  h3, h4 {
+    @apply font-heading;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  h5, h6 {
+    @apply font-heading;
+    font-weight: 500;
+  }
+
+  /* Traditional body text styling */
+  p {
+    @apply font-body;
+    font-feature-settings: "onum" 1, "pnum" 1;
+  }
+
+  /* Small caps for labels and metadata */
+  .small-caps {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
   }
 }
 
@@ -141,12 +179,35 @@
     text-wrap: balance;
   }
 
+  /* Font family utilities */
   .font-display {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
   }
 
   .font-body {
-    font-family: 'Crimson Pro', Georgia, serif;
+    font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+  }
+
+  /* Engraved text effect */
+  .text-engraved {
+    text-shadow: 
+      0 1px 0 hsla(40 40% 95% / 0.15),
+      0 -1px 1px hsla(25 30% 10% / 0.2);
+    letter-spacing: 0.06em;
+  }
+
+  /* Old-style numerals */
+  .oldstyle-nums {
+    font-feature-settings: "onum" 1;
+  }
+
+  /* Tabular numerals for aligned numbers */
+  .tabular-nums {
+    font-feature-settings: "tnum" 1;
   }
 
   /* Aged Paper Texture Effect */
