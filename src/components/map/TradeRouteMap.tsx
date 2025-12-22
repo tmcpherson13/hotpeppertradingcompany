@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { SpreadTimeline } from './SpreadTimeline';
+import { SpreadTimeline, TimelineEvent, timelineEvents } from './SpreadTimeline';
 import { CompassRose } from './CompassRose';
 import { CartoucheBorder } from './CartoucheBorder';
 import { ShipSilhouette, SeaCreature, WindHead, AgedPaperOverlay, NarrativeAnnotation } from './NarrativeElements';
@@ -109,9 +109,12 @@ export function TradeRouteMap() {
   const map = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const markerElementsRef = useRef<Map<string, HTMLDivElement>>(new Map());
+  const eventMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const eventMarkerElementRef = useRef<HTMLDivElement | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
+  const [currentEvent, setCurrentEvent] = useState<TimelineEvent | null>(null);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
   const [baseMapError, setBaseMapError] = useState<string | null>(null);
   const previousVisibleRoutesRef = useRef<Set<number>>(new Set());
@@ -226,6 +229,70 @@ export function TradeRouteMap() {
 
     previousVisibleRoutesRef.current = new Set(currentVisible);
   }, [visibleRoutes, isMapLoaded]);
+
+  // Event marker animation - highlights the current timeline event location
+  useEffect(() => {
+    if (!map.current || !isMapLoaded || !currentEvent) return;
+
+    const m = map.current;
+
+    // Create or update event marker
+    if (!eventMarkerElementRef.current) {
+      const el = document.createElement('div');
+      el.className = 'event-marker';
+      el.innerHTML = `
+        <div class="event-marker-pulse"></div>
+        <div class="event-marker-ring"></div>
+        <div class="event-marker-core"></div>
+      `;
+      eventMarkerElementRef.current = el;
+    }
+
+    const el = eventMarkerElementRef.current;
+
+    // Style based on event type
+    const isOrigin = currentEvent.isOrigin;
+    const hasRoute = currentEvent.hasRoute;
+    
+    // Remove previous marker
+    if (eventMarkerRef.current) {
+      eventMarkerRef.current.remove();
+    }
+
+    // Create new marker at event location
+    eventMarkerRef.current = new maplibregl.Marker({ 
+      element: el,
+      anchor: 'center'
+    })
+      .setLngLat(currentEvent.coordinates)
+      .addTo(m);
+
+    // Trigger animation by removing and re-adding class
+    el.classList.remove('event-active');
+    void el.offsetWidth; // Force reflow
+    el.classList.add('event-active');
+
+    // Set colors based on event type
+    if (isOrigin) {
+      el.style.setProperty('--event-color', '#8b2942');
+      el.style.setProperty('--event-glow', 'rgba(139, 41, 66, 0.6)');
+    } else if (hasRoute) {
+      el.style.setProperty('--event-color', '#d4a84b');
+      el.style.setProperty('--event-glow', 'rgba(212, 168, 75, 0.6)');
+    } else {
+      // Special events without routes (Columbus, Philippines)
+      el.style.setProperty('--event-color', '#4a7c59');
+      el.style.setProperty('--event-glow', 'rgba(74, 124, 89, 0.6)');
+    }
+
+    // Pan map to focus on event
+    m.easeTo({
+      center: currentEvent.coordinates,
+      duration: 1000,
+      easing: (t) => t * (2 - t), // ease-out-quad
+    });
+
+  }, [currentEvent, isMapLoaded]);
 
   // Flowing dash animation
   useEffect(() => {
@@ -545,6 +612,12 @@ export function TradeRouteMap() {
       if (map.current && handleMapError) {
         map.current.off('error', handleMapError);
       }
+      // Clean up event marker
+      if (eventMarkerRef.current) {
+        eventMarkerRef.current.remove();
+        eventMarkerRef.current = null;
+      }
+      eventMarkerElementRef.current = null;
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
       markerElementsRef.current.clear();
@@ -580,6 +653,85 @@ export function TradeRouteMap() {
         .destination-marker:hover .marker-inner {
           transform: scale(1.15);
           box-shadow: 0 4px 12px rgba(90, 74, 58, 0.6), 0 0 20px rgba(212, 168, 75, 0.3);
+        }
+
+        /* Event marker styles */
+        .event-marker {
+          --event-color: #d4a84b;
+          --event-glow: rgba(212, 168, 75, 0.6);
+          position: relative;
+          width: 80px;
+          height: 80px;
+          pointer-events: none;
+        }
+
+        .event-marker-pulse {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: var(--event-glow);
+          opacity: 0;
+        }
+
+        .event-marker-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 3px solid var(--event-color);
+          opacity: 0;
+        }
+
+        .event-marker-core {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: var(--event-color);
+          border: 2px solid #5a4a3a;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          opacity: 0;
+        }
+
+        @keyframes eventPulse {
+          0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
+          100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        @keyframes eventRing {
+          0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          20% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+        }
+
+        @keyframes eventCore {
+          0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+          30% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+          50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .event-marker.event-active .event-marker-pulse {
+          animation: eventPulse 2s ease-out infinite;
+        }
+
+        .event-marker.event-active .event-marker-ring {
+          animation: eventRing 2s ease-out infinite;
+          animation-delay: 0.3s;
+        }
+
+        .event-marker.event-active .event-marker-core {
+          animation: eventCore 0.6s ease-out forwards;
         }
       `}</style>
 
@@ -755,6 +907,7 @@ export function TradeRouteMap() {
       <div className="border-t-2 border-[#5a4a3a]/30">
         <SpreadTimeline 
           onYearChange={setTimelineYear}
+          onEventChange={setCurrentEvent}
           isPlaying={isTimelinePlaying}
           onPlayingChange={setIsTimelinePlaying}
         />
@@ -766,7 +919,7 @@ export function TradeRouteMap() {
           <div className="absolute inset-0 border border-[#5a4a3a]/30" />
           <div className="absolute inset-[2px] border border-[#5a4a3a]/15" />
           <div className="bg-[#e8dcc4]/95 px-4 py-2.5 text-xs">
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-[#5a4a3a] shadow-sm" />
                 <span className="font-body text-[#4a3a2a] tracking-wide italic">Origin</span>
@@ -774,6 +927,10 @@ export function TradeRouteMap() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#c4a86a] to-[#a08050] border border-[#5a4a3a] shadow-sm" />
                 <span className="font-body text-[#4a3a2a] tracking-wide italic">Trade Port</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#4a7c59] border border-[#5a4a3a] shadow-sm" />
+                <span className="font-body text-[#4a3a2a] tracking-wide italic">Key Event</span>
               </div>
             </div>
           </div>

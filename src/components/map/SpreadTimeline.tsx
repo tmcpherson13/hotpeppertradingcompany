@@ -3,22 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-interface TimelineEvent {
+export interface TimelineEvent {
   year: number;
   yearDisplay: string;
   location: string;
   region: string;
   description: string;
+  coordinates: [number, number];
   isOrigin?: boolean;
+  hasRoute?: boolean; // Whether this event has an associated trade route
 }
 
-const timelineEvents: TimelineEvent[] = [
+export const timelineEvents: TimelineEvent[] = [
   {
     year: -4000,
     yearDisplay: '4000 BCE',
     location: 'Mesoamerica',
     region: 'The Americas',
     description: 'Capsicum domesticated by indigenous peoples. Earliest evidence of cultivation.',
+    coordinates: [-99.1332, 19.4326],
     isOrigin: true,
   },
   {
@@ -27,6 +30,7 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Peru & Bolivia',
     region: 'The Americas',
     description: 'Secondary center of capsicum diversity develops in the Andes.',
+    coordinates: [-68.1193, -16.4897],
     isOrigin: true,
   },
   {
@@ -35,6 +39,7 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Spain',
     region: 'Europe',
     description: 'Columbus returns from second voyage with pepper seeds.',
+    coordinates: [-3.7038, 40.4168], // Madrid, Spain
   },
   {
     year: 1498,
@@ -42,6 +47,8 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Goa, India',
     region: 'South Asia',
     description: 'Portuguese traders introduce peppers via maritime routes.',
+    coordinates: [73.8567, 15.2993],
+    hasRoute: true,
   },
   {
     year: 1500,
@@ -49,6 +56,8 @@ const timelineEvents: TimelineEvent[] = [
     location: 'West Africa',
     region: 'Africa',
     description: 'Portuguese establish pepper cultivation along trade posts.',
+    coordinates: [-1.0232, 7.9465],
+    hasRoute: true,
   },
   {
     year: 1542,
@@ -56,6 +65,7 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Philippines',
     region: 'Southeast Asia',
     description: 'Spanish galleon trade brings peppers from Mexico.',
+    coordinates: [121.774, 12.8797], // Philippines
   },
   {
     year: 1550,
@@ -63,6 +73,8 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Thailand',
     region: 'Southeast Asia',
     description: 'Chilies become essential to Thai cuisine within decades.',
+    coordinates: [100.5018, 13.7563],
+    hasRoute: true,
   },
   {
     year: 1569,
@@ -70,6 +82,8 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Hungary',
     region: 'Central Europe',
     description: 'Paprika cultivation begins, later defining Hungarian cuisine.',
+    coordinates: [19.0402, 47.4979],
+    hasRoute: true,
   },
   {
     year: 1570,
@@ -77,6 +91,8 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Sichuan, China',
     region: 'East Asia',
     description: 'Chilies transform regional cuisine, creating málà flavor profile.',
+    coordinates: [104.0665, 30.5728],
+    hasRoute: true,
   },
   {
     year: 1600,
@@ -84,16 +100,19 @@ const timelineEvents: TimelineEvent[] = [
     location: 'Aleppo & Turkey',
     region: 'The Levant',
     description: 'Distinct regional varieties emerge: Aleppo, Urfa, Marash peppers.',
+    coordinates: [37.1343, 36.2021],
+    hasRoute: true,
   },
 ];
 
 interface SpreadTimelineProps {
   onYearChange?: (year: number) => void;
+  onEventChange?: (event: TimelineEvent) => void;
   isPlaying?: boolean;
   onPlayingChange?: (playing: boolean) => void;
 }
 
-export function SpreadTimeline({ onYearChange, isPlaying: externalPlaying, onPlayingChange }: SpreadTimelineProps) {
+export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externalPlaying, onPlayingChange }: SpreadTimelineProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -118,10 +137,12 @@ export function SpreadTimeline({ onYearChange, isPlaying: externalPlaying, onPla
   }, [playing, setPlaying]);
 
   useEffect(() => {
-    if (onYearChange && timelineEvents[currentIndex]) {
-      onYearChange(timelineEvents[currentIndex].year);
+    const event = timelineEvents[currentIndex];
+    if (event) {
+      if (onYearChange) onYearChange(event.year);
+      if (onEventChange) onEventChange(event);
     }
-  }, [currentIndex, onYearChange]);
+  }, [currentIndex, onYearChange, onEventChange]);
 
   const handlePlay = () => {
     if (!hasStarted) {
