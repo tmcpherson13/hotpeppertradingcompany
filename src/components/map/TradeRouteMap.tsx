@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { MapPin } from 'lucide-react';
 import { SpreadTimeline } from './SpreadTimeline';
 import { CompassRose } from './CompassRose';
 import { CartoucheBorder } from './CartoucheBorder';
@@ -270,18 +269,16 @@ export function TradeRouteMap() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: antiqueMapStyle,
-        zoom: 2.8,
-        center: [-5, 25], // Mediterranean, Iberia, West Africa focus
-        pitch: 15,
-        bearing: -5,
-        maxBounds: [[-80, -20], [120, 65]], // Constrain to Atlantic-Mediterranean view
+        zoom: 2.5,
+        center: [-25, 22], // Shifted west to show more Americas
+        pitch: 10,
+        bearing: 0,
+        maxBounds: [[-120, -30], [100, 65]], // Expanded west to include Americas
         attributionControl: false,
       });
 
-      map.current.addControl(
-        new maplibregl.NavigationControl({ visualizePitch: true }),
-        'top-right'
-      );
+      // Remove modern navigation controls for historical immersion
+      // Users can still pan/drag the map
 
       map.current.scrollZoom.disable();
 
@@ -490,34 +487,34 @@ export function TradeRouteMap() {
         }}
       />
       
-      {/* Vignette overlay - de-emphasizes Asia/edges, focuses on Mediterranean */}
+      {/* Vignette overlay - balanced focus on Atlantic trade corridor */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
             radial-gradient(
-              ellipse 70% 80% at 35% 50%,
+              ellipse 85% 90% at 45% 50%,
               transparent 0%,
-              transparent 40%,
-              rgba(232, 220, 196, 0.3) 60%,
-              rgba(232, 220, 196, 0.6) 80%,
-              rgba(232, 220, 196, 0.85) 100%
+              transparent 50%,
+              rgba(232, 220, 196, 0.25) 65%,
+              rgba(232, 220, 196, 0.5) 80%,
+              rgba(232, 220, 196, 0.75) 100%
             )
           `,
         }}
       />
       
-      {/* Right edge fade - stronger de-emphasis for Asia */}
+      {/* Right edge fade - de-emphasis for distant East */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
             linear-gradient(
               to left,
-              rgba(232, 220, 196, 0.9) 0%,
-              rgba(232, 220, 196, 0.6) 15%,
-              rgba(232, 220, 196, 0.2) 30%,
-              transparent 50%
+              rgba(232, 220, 196, 0.85) 0%,
+              rgba(232, 220, 196, 0.5) 12%,
+              rgba(232, 220, 196, 0.15) 25%,
+              transparent 45%
             )
           `,
         }}
@@ -555,19 +552,24 @@ export function TradeRouteMap() {
       
       {/* Narrative annotations - subtle period text */}
       <NarrativeAnnotation 
-        text="Here be treasures of the New World" 
+        text="Terra Incognita" 
         className="absolute hidden lg:block"
-        style={{ bottom: '22%', left: '5%', transform: 'rotate(-8deg)' }}
+        style={{ bottom: '25%', left: '8%', transform: 'rotate(-5deg)' }}
       />
       <NarrativeAnnotation 
         text="Mare Atlanticum" 
         className="absolute hidden md:block text-[11px]"
-        style={{ top: '45%', left: '22%', transform: 'rotate(-3deg)', letterSpacing: '0.15em' }}
+        style={{ top: '42%', left: '32%', transform: 'rotate(-2deg)', letterSpacing: '0.2em' }}
       />
       <NarrativeAnnotation 
         text="Via delle Spezie" 
         className="absolute hidden lg:block"
-        style={{ top: '35%', right: '28%', transform: 'rotate(5deg)' }}
+        style={{ top: '32%', right: '22%', transform: 'rotate(3deg)' }}
+      />
+      <NarrativeAnnotation 
+        text="Novus Mundus" 
+        className="absolute hidden md:block text-[11px]"
+        style={{ top: '35%', left: '12%', transform: 'rotate(-8deg)', letterSpacing: '0.15em' }}
       />
       
       {/* Compass Rose - bottom left */}
@@ -595,7 +597,7 @@ export function TradeRouteMap() {
               ×
             </button>
             <div className="flex items-center gap-2 mb-2">
-              <MapPin className="w-4 h-4 text-primary" />
+              <span className="w-3 h-3 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-[#5a4a3a]" />
               <h4 className="font-display text-sm uppercase tracking-wide text-[#3a2a1a]">
                 {selectedLocation.name}
               </h4>
