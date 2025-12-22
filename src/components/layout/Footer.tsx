@@ -34,7 +34,7 @@ export function Footer() {
                 <img 
                   src={logoWhite} 
                   alt="Hot Pepper Trading Company" 
-                  className="h-24 w-auto mix-blend-screen"
+                  className="h-32 w-auto mix-blend-screen"
                 />
               </Link>
             </div>
