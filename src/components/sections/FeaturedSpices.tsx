@@ -10,6 +10,9 @@ const spices = [
   {
     name: 'Aleppo Hot Pepper',
     origin: 'Syria',
+    region: 'The Levant',
+    tradeLot: 'LOT № 1847',
+    weight: '4 oz / 113g',
     description: 'Sun-dried, hand-crushed. Notes of raisin and cumin with moderate heat.',
     price: '$24',
     image: spiceChili,
@@ -17,6 +20,9 @@ const spices = [
   {
     name: 'Smoked Paprika',
     origin: 'La Vera, Spain',
+    region: 'Iberian Peninsula',
+    tradeLot: 'LOT № 2391',
+    weight: '3 oz / 85g',
     description: 'Oak-smoked for weeks. Deep, earthy sweetness with lasting warmth.',
     price: '$18',
     image: spicePaprika,
@@ -24,13 +30,19 @@ const spices = [
   {
     name: 'Bird\'s Eye Chili',
     origin: 'Thailand',
+    region: 'Southeast Asia',
+    tradeLot: 'LOT № 0762',
+    weight: '2 oz / 57g',
     description: 'Intense, fiery heat with bright citrus notes. A Southeast Asian staple.',
     price: '$22',
     image: spicePepper,
   },
   {
     name: 'Carolina Reaper',
-    origin: 'South Carolina, USA',
+    origin: 'South Carolina',
+    region: 'The Americas',
+    tradeLot: 'LOT № 3104',
+    weight: '1 oz / 28g',
     description: 'The world\'s hottest pepper. Fruity sweetness followed by extreme heat.',
     price: '$48',
     image: spiceSaffron,
@@ -69,8 +81,8 @@ export function FeaturedSpices() {
           </p>
         </motion.div>
 
-        {/* Spice Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Trade Goods Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {spices.map((spice, index) => (
             <motion.article
               key={spice.name}
@@ -78,49 +90,99 @@ export function FeaturedSpices() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group"
+              className="group merchant-label"
             >
-              <div className="relative overflow-hidden bg-card border-2 border-border shadow-card mb-3">
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={spice.image}
-                    alt={`${spice.name} from ${spice.origin}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+              {/* Trade Label Card */}
+              <div className="relative bg-parchment border-2 border-ink/30 shadow-deep">
+                {/* Top decorative border */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ink/20 to-transparent" />
+                
+                {/* Image with sepia overlay */}
+                <div className="relative">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={spice.image}
+                      alt={`${spice.name} from ${spice.origin}`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15]"
+                    />
+                  </div>
+                  
+                  {/* Archival Origin Stamp */}
+                  <div className="absolute top-3 right-3 w-16 h-16 flex items-center justify-center">
+                    <div className="absolute inset-0 border-2 border-tyrian/60 rounded-full" />
+                    <div className="absolute inset-1 border border-tyrian/40 rounded-full" />
+                    <div className="text-center">
+                      <span className="block text-[8px] uppercase tracking-wider text-tyrian font-display">Origin</span>
+                      <span className="block text-[10px] uppercase tracking-wide text-tyrian font-heading font-semibold leading-tight">
+                        {spice.origin.split(',')[0]}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Trade Region Banner */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-ink/85 py-2 px-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-parchment/80 font-heading">
+                        {spice.region}
+                      </span>
+                      <span className="text-[9px] uppercase tracking-wider text-parchment/60 font-body">
+                        {spice.tradeLot}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                {/* Origin Badge */}
-                <div className="absolute top-3 left-3 bg-ink/90 px-3 py-1 border border-ink/50">
-                  <span className="text-xs uppercase tracking-[0.15em] text-parchment font-heading">
-                    {spice.origin}
-                  </span>
-                </div>
-              </div>
 
-              <div className="space-y-1">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-heading text-xl text-foreground">
+                {/* Merchant Label Content */}
+                <div className="p-4 bg-parchment-dark/50">
+                  {/* Decorative line */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="flex-1 h-px bg-ink/20" />
+                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-tyrian">
+                      <polygon points="6,1 7,5 11,5 8,7 9,11 6,8.5 3,11 4,7 1,5 5,5" fill="currentColor" />
+                    </svg>
+                    <div className="flex-1 h-px bg-ink/20" />
+                  </div>
+                  
+                  {/* Product Name - Engraved Style */}
+                  <h3 className="font-display text-lg text-ink text-center uppercase tracking-wide mb-2">
                     {spice.name}
                   </h3>
-                  <span className="font-display text-lg text-tyrian">
-                    {spice.price}
-                  </span>
+                  
+                  {/* Trade Details */}
+                  <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider text-muted-foreground font-heading mb-3">
+                    <span>{spice.weight}</span>
+                    <span className="text-tyrian">•</span>
+                    <span className="text-tyrian font-semibold">{spice.price}</span>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="font-body text-xs text-muted-foreground leading-relaxed text-center mb-4 italic">
+                    "{spice.description}"
+                  </p>
+                  
+                  {/* Bottom Decorative Border */}
+                  <div className="border-t border-dashed border-ink/20 pt-3">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full text-xs uppercase tracking-[0.15em] border-ink/30 text-ink hover:bg-ink hover:text-parchment"
+                    >
+                      Add to Manifest
+                    </Button>
+                  </div>
                 </div>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                  {spice.description}
-                </p>
-                <Button 
-                  variant="parchment" 
-                  size="sm" 
-                  className="w-full mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                >
-                  Add to Cart
-                </Button>
+                
+                {/* Corner Decorations */}
+                <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-ink/30" />
+                <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-ink/30" />
+                <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-ink/30" />
+                <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-ink/30" />
               </div>
             </motion.article>
           ))}
         </div>
 
-        {/* View All */}
+        {/* View All - Trade Record Style */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -128,9 +190,18 @@ export function FeaturedSpices() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <Button variant="pepper" size="lg">
-            Browse Full Inventory
-          </Button>
+          <div className="inline-flex flex-col items-center">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent to-ink/30" />
+              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
+                Complete Trade Inventory
+              </span>
+              <div className="w-16 h-px bg-gradient-to-l from-transparent to-ink/30" />
+            </div>
+            <Button variant="pepper" size="lg">
+              Browse Full Manifest
+            </Button>
+          </div>
         </motion.div>
       </div>
     </section>
