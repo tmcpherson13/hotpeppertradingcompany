@@ -223,9 +223,11 @@ export function TradeRouteMap() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: antiqueMapStyle,
-        zoom: 1.8,
-        center: [20, 20],
-        pitch: 25,
+        zoom: 2.8,
+        center: [-5, 25], // Mediterranean, Iberia, West Africa focus
+        pitch: 15,
+        bearing: -5,
+        maxBounds: [[-80, -20], [120, 65]], // Constrain to Atlantic-Mediterranean view
         attributionControl: false,
       });
 
@@ -349,26 +351,7 @@ export function TradeRouteMap() {
         markersRef.current.push(marker);
       });
 
-      // Slow rotation animation
-      const secondsPerRevolution = 180;
-      let userInteracting = false;
-
-      function spinMap() {
-        if (!map.current) return;
-        const zoom = map.current.getZoom();
-        if (!userInteracting && zoom < 4) {
-          const center = map.current.getCenter();
-          center.lng -= 360 / secondsPerRevolution;
-          map.current.easeTo({ center, duration: 1000, easing: (n) => n });
-        }
-      }
-
-      map.current.on('mousedown', () => { userInteracting = true; });
-      map.current.on('mouseup', () => { userInteracting = false; spinMap(); });
-      map.current.on('dragend', () => { userInteracting = false; spinMap(); });
-      map.current.on('moveend', spinMap);
-
-      spinMap();
+      // Removed auto-rotation to maintain narrative focus on Mediterranean region
 
     } catch (error) {
       console.error('Error initializing map:', error);
@@ -384,6 +367,39 @@ export function TradeRouteMap() {
   return (
     <div className="relative">
       <div ref={mapContainer} className="aspect-[21/9] md:aspect-[2.5/1]" />
+      
+      {/* Vignette overlay - de-emphasizes Asia/edges, focuses on Mediterranean */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(
+              ellipse 70% 80% at 35% 50%,
+              transparent 0%,
+              transparent 40%,
+              rgba(232, 220, 196, 0.3) 60%,
+              rgba(232, 220, 196, 0.6) 80%,
+              rgba(232, 220, 196, 0.85) 100%
+            )
+          `,
+        }}
+      />
+      
+      {/* Right edge fade - stronger de-emphasis for Asia */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            linear-gradient(
+              to left,
+              rgba(232, 220, 196, 0.9) 0%,
+              rgba(232, 220, 196, 0.6) 15%,
+              rgba(232, 220, 196, 0.2) 30%,
+              transparent 50%
+            )
+          `,
+        }}
+      />
       
       {/* Selected Location Info Panel */}
       {selectedLocation && !isTimelinePlaying && (
