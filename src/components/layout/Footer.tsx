@@ -50,7 +50,7 @@ export function Footer() {
 
           {/* Links */}
           <div>
-            <h4 className="font-display text-sm uppercase tracking-widest text-primary-foreground mb-4">
+            <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
               Shop
             </h4>
             <ul className="space-y-3">
@@ -68,7 +68,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display text-sm uppercase tracking-widest text-primary-foreground mb-4">
+            <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
               Learn
             </h4>
             <ul className="space-y-3">
@@ -86,7 +86,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display text-sm uppercase tracking-widest text-primary-foreground mb-4">
+            <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
               Support
             </h4>
             <ul className="space-y-3">

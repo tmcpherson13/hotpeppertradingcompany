@@ -57,13 +57,13 @@ export function FeaturedSpices() {
           className="text-center mb-16"
         >
           <TradeRouteDivider className="mb-8" />
-          <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
+          <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
             The Hot Pepper Consortium
           </p>
-          <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold mb-6">
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
             Regional Selections
           </h2>
-          <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Curated through historical trade networks and partnerships with 
             artisan growers across three continents.
           </p>

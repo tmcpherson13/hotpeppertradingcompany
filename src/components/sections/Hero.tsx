@@ -116,7 +116,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-parchment/80 font-body text-sm md:text-base uppercase tracking-[0.4em] mb-6"
+            className="text-parchment/80 font-heading text-sm md:text-base uppercase tracking-[0.3em] mb-6 small-caps"
           >
             Purveyors of the World's Finest Hot Peppers
           </motion.p>
@@ -125,10 +125,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-parchment font-semibold leading-tight mb-6 hero-engraved-text"
+            className="font-display text-4xl md:text-6xl lg:text-7xl text-parchment leading-tight mb-6 hero-engraved-text text-engraved"
           >
             Hot Pepper <br />
-            <span className="italic text-gold">Trading Company</span>
+            <span className="font-heading italic text-gold normal-case">Trading Company</span>
           </motion.h1>
 
           <motion.p

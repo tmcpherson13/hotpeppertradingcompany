@@ -48,14 +48,14 @@ export function Heritage() {
               <svg width="20" height="20" viewBox="0 0 20 20" className="text-tyrian">
                 <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
               </svg>
-              <span className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em]">
+              <span className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] small-caps">
                 Our Heritage
               </span>
             </div>
 
-            <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold leading-tight">
+            <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight text-engraved">
               Guardians of the <br />
-              <span className="italic text-tyrian">Ancient Routes</span>
+              <span className="font-heading italic text-tyrian normal-case">Ancient Routes</span>
             </h2>
 
             <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">

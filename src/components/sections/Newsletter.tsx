@@ -28,10 +28,10 @@ export function Newsletter() {
         >
           <TradeRouteDivider className="mb-8" />
 
-          <h2 className="font-display text-3xl md:text-4xl text-foreground font-semibold mb-4">
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4 text-engraved">
             The Merchant's Dispatch
           </h2>
-          <p className="font-body text-lg text-muted-foreground mb-8">
+          <p className="font-body text-lg text-muted-foreground mb-8 leading-relaxed">
             Receive tales from the trade routes, seasonal offerings, 
             and the wisdom of hot pepper lore delivered to your correspondence.
           </p>
