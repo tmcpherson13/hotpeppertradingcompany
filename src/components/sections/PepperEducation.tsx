@@ -4,18 +4,18 @@ import { Anchor, Globe, History } from 'lucide-react';
 const facts = [
   {
     icon: History,
-    title: 'Ancient Currency',
-    description: 'In medieval Europe, pepper was so valuable it was used as currency. Rents, dowries, and taxes were often paid in peppercorns.',
+    title: 'Ancient Origins',
+    description: 'Hot peppers originated in the Americas over 6,000 years ago. The Aztecs and Mayans cultivated chilies long before European contact.',
   },
   {
     icon: Anchor,
-    title: 'Maritime Empires',
-    description: 'The pepper trade built empires. Portuguese, Dutch, and British companies waged wars for control of the Malabar Coast.',
+    title: 'The Columbian Exchange',
+    description: 'After 1492, hot peppers spread rapidly across the globe. Within 50 years, they had transformed cuisines from India to Hungary to Korea.',
   },
   {
     icon: Globe,
-    title: 'Global Journey',
-    description: 'From India to Rome, pepper traveled over 4,000 miles by sea and caravan before reaching European tables.',
+    title: 'Global Transformation',
+    description: 'Today, hot peppers are grown on every continent except Antarctica. They are essential to cuisines that never knew them existed.',
   },
 ];
 
@@ -38,15 +38,15 @@ export function PepperEducation() {
               <span className="w-16 h-px bg-border" />
             </div>
             <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
-              The King of Spices
+              The Fire of the Americas
             </p>
             <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold mb-6">
-              How Pepper Changed the World
+              How Hot Peppers Changed the World
             </h2>
             <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Long before petroleum, before gold, there was pepper. This humble 
-              berry from India's Malabar Coast sparked voyages of discovery, 
-              built trading empires, and connected the ancient world.
+              Born in the Americas, hot peppers traveled with explorers and traders 
+              to every corner of the globe. No other food has so completely 
+              transformed world cuisine in such a short time.
             </p>
           </div>
 
@@ -83,11 +83,11 @@ export function PepperEducation() {
             className="relative border-l-4 border-tyrian pl-8 py-4"
           >
             <p className="font-display text-xl md:text-2xl text-foreground italic leading-relaxed mb-4">
-              "There is no nation under the sky that does not use pepper; 
-              it is sought after even by the farthest peoples."
+              "The chile pepper is the king of everything, and it makes 
+              other foods appetizing."
             </p>
             <footer className="font-body text-muted-foreground">
-              — Pliny the Elder, <cite>Natural History</cite>, 77 AD
+              — Bernardino de Sahagún, <cite>General History of the Things of New Spain</cite>, 1569
             </footer>
           </motion.blockquote>
         </motion.div>

@@ -37,7 +37,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-parchment/80 font-body text-sm md:text-base uppercase tracking-[0.4em] mb-6"
           >
-            Purveyors of the World's Finest Peppers
+            Purveyors of the World's Finest Hot Peppers
           </motion.p>
 
           <motion.h1
@@ -56,7 +56,7 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-parchment/90 font-body text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Since the age of sail, pepper has been the king of spices—traded across 
+            Since the age of sail, hot peppers have shaped global cuisine—traded across 
             oceans, sought by empires, and prized in every kitchen. We continue this legacy.
           </motion.p>
 
@@ -67,7 +67,7 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button variant="pepper" size="xl" className="min-w-[220px]">
-              Enter the Pepper Market
+              Enter the Hot Pepper Market
             </Button>
             <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-tyrian">
               Explore the Trade Routes
