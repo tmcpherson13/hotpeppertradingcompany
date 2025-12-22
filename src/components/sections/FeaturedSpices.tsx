@@ -39,7 +39,7 @@ const spices = [
 
 export function FeaturedSpices() {
   return (
-    <section id="collection" className="relative py-24 bg-background paper-texture overflow-hidden">
+    <section id="collection" className="relative py-20 bg-background paper-texture overflow-hidden">
       {/* Trade Route Background Pattern */}
       <TradeRoutePattern 
         className="inset-0 w-full h-full" 
@@ -80,7 +80,7 @@ export function FeaturedSpices() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group"
             >
-              <div className="relative overflow-hidden bg-card border border-border rounded-sm shadow-card mb-4">
+              <div className="relative overflow-hidden bg-card border-2 border-border shadow-card mb-3">
                 <div className="aspect-square overflow-hidden">
                   <img
                     src={spice.image}
@@ -89,19 +89,19 @@ export function FeaturedSpices() {
                   />
                 </div>
                 {/* Origin Badge */}
-                <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-1 border border-border">
-                  <span className="text-xs uppercase tracking-widest text-muted-foreground font-body">
+                <div className="absolute top-3 left-3 bg-ink/90 px-3 py-1 border border-ink/50">
+                  <span className="text-xs uppercase tracking-[0.15em] text-parchment font-heading">
                     {spice.origin}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-xl text-foreground font-semibold">
+                  <h3 className="font-heading text-xl text-foreground">
                     {spice.name}
                   </h3>
-                  <span className="font-display text-lg text-accent font-semibold">
+                  <span className="font-display text-lg text-tyrian">
                     {spice.price}
                   </span>
                 </div>
@@ -111,7 +111,7 @@ export function FeaturedSpices() {
                 <Button 
                   variant="parchment" 
                   size="sm" 
-                  className="w-full mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="w-full mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
                   Add to Cart
                 </Button>

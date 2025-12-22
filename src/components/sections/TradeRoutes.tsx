@@ -25,7 +25,7 @@ const regions = [
 
 export function TradeRoutes() {
   return (
-    <section id="routes" className="py-24 bg-primary relative overflow-hidden">
+    <section id="routes" className="py-20 bg-primary relative overflow-hidden">
       {/* Enhanced Background with Trade Routes */}
       <div className="absolute inset-0">
         {/* Tyrian Purple trade route lines */}

@@ -14,7 +14,7 @@ export function Newsletter() {
   };
 
   return (
-    <section className="relative py-24 bg-background paper-texture overflow-hidden">
+    <section className="relative py-16 bg-background paper-texture overflow-hidden">
       {/* Subtle route accent */}
       <div className="absolute inset-0 trade-route-bg" />
       
@@ -36,21 +36,21 @@ export function Newsletter() {
             and the wisdom of hot pepper lore delivered to your correspondence.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
               required
-              className="flex-1 px-4 py-3 bg-card border-2 border-border font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-tyrian transition-colors"
+              className="flex-1 px-5 py-3 bg-parchment-dark border-2 border-border font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-tyrian transition-colors shadow-card"
             />
-            <Button type="submit" variant="heritage" size="lg">
+            <Button type="submit" variant="pepper" size="lg">
               Subscribe
             </Button>
           </form>
 
-          <p className="text-xs text-muted-foreground mt-6 font-body">
+          <p className="text-xs text-muted-foreground mt-4 font-body">
             We respect your privacy. Unsubscribe at any time.
           </p>
         </motion.div>
