@@ -86,28 +86,28 @@ export function TradeRouteDivider({
           strokeDasharray="4,4"
         />
         
-        {/* Tyrian accent overlay */}
+        {/* Primary red accent overlay */}
         <path
           d="M120,16 Q150,10 180,16 T240,16 T280,16"
           fill="none"
-          stroke="hsl(var(--tyrian))"
+          stroke="hsl(var(--primary))"
           strokeWidth="1.5"
           strokeDasharray="6,4"
-          opacity="0.6"
+          opacity="0.5"
         />
         
         {showWaypoints && (
           <>
             {/* Waypoint markers */}
             <circle cx="100" cy="16" r="2" fill="hsl(var(--border))" />
-            <circle cx="200" cy="16" r="3" fill="hsl(var(--tyrian))" opacity="0.8" />
+            <circle cx="200" cy="16" r="3" fill="hsl(var(--primary))" opacity="0.7" />
             <circle cx="300" cy="16" r="2" fill="hsl(var(--border))" />
             
-            {/* Center compass star */}
+            {/* Center compass star - Tyrian Purple as prestige accent */}
             <polygon 
               points="200,10 202,14 206,14 203,17 204,21 200,18 196,21 197,17 194,14 198,14" 
               fill="hsl(var(--tyrian))" 
-              opacity="0.7"
+              opacity="0.6"
             />
           </>
         )}

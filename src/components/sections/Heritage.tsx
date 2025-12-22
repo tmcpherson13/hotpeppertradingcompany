@@ -32,8 +32,8 @@ export function Heritage() {
               <div className="absolute inset-0 bg-gradient-to-t from-card/30 to-transparent" />
             </div>
             {/* Decorative corner elements - Tyrian Purple accent */}
-            <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-tyrian" />
-            <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-tyrian" />
+            <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-primary" />
+            <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-primary" />
           </motion.div>
 
           {/* Content */}
@@ -45,7 +45,7 @@ export function Heritage() {
             className="space-y-6"
           >
             <div className="flex items-center gap-4">
-              <svg width="20" height="20" viewBox="0 0 20 20" className="text-tyrian">
+              <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary">
                 <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
               </svg>
               <span className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] small-caps">
@@ -55,7 +55,7 @@ export function Heritage() {
 
             <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight text-engraved">
               Guardians of the <br />
-              <span className="font-heading italic text-tyrian normal-case">Ancient Routes</span>
+              <span className="font-heading italic text-primary normal-case">Ancient Routes</span>
             </h2>
 
             <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">
@@ -79,7 +79,7 @@ export function Heritage() {
             {/* Stats with route connectors */}
             <div className="relative grid grid-cols-3 gap-6 pt-8 border-t border-border mt-8">
               {/* Route line connecting stats */}
-              <div className="absolute top-0 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-tyrian/30 to-transparent" />
+              <div className="absolute top-0 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
               
               {[
                 { value: '27', label: 'Countries' },
@@ -88,7 +88,7 @@ export function Heritage() {
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center relative">
                   {/* Waypoint marker */}
-                  <div className="absolute -top-[17px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-tyrian/50" />
+                  <div className="absolute -top-[17px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary/50" />
                   <div className="font-display text-2xl md:text-3xl text-foreground font-semibold">
                     {stat.value}
                   </div>
