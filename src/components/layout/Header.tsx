@@ -23,7 +23,7 @@ export function Header() {
             <img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
-              className="h-14 w-auto"
+              className="h-14 w-auto mix-blend-multiply"
             />
           </Link>
 
