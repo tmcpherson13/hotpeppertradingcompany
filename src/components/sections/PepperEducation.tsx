@@ -22,7 +22,7 @@ const facts = [
 
 export function PepperEducation() {
   return (
-    <section className="relative py-20 bg-card paper-texture overflow-hidden">
+    <section className="relative py-20 bg-background paper-texture overflow-hidden">
       {/* Trade Route Background */}
       <TradeRoutePattern 
         className="inset-0 w-full h-full" 

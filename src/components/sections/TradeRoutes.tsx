@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { MapPin, Ship, Compass, Anchor, Navigation } from 'lucide-react';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 const regions = [
@@ -29,7 +30,14 @@ const regions = [
 
 export function TradeRoutes() {
   return (
-    <section id="routes" className="py-16 bg-background relative overflow-hidden">
+    <section id="routes" className="py-16 bg-card relative overflow-hidden">
+      {/* Trade Route Background Pattern */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full" 
+        variant="accent" 
+        opacity={0.04} 
+      />
+      
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <motion.div
