@@ -72,6 +72,7 @@ interface RouteData {
   via: [number, number][];
   establishedYear: number;
   destinationName: string;
+  isOverland?: boolean;
 }
 
 // Convert timeline year (negative for BCE) to comparable year
@@ -144,14 +145,29 @@ const tradeRoutes = {
       varieties: ['Scotch Bonnet', 'Piri Piri'],
       year: '1500',
     },
+    {
+      name: 'Samarkand (Silk Road)',
+      coordinates: [66.9597, 39.6542] as [number, number],
+      description: 'Chilies reached Central Asia via overland Silk Road routes from Persia.',
+      varieties: ['Central Asian varieties'],
+      year: '1550',
+    },
   ],
   routes: [
-    { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-30, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
-    { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-30, 10], [20, 0], [50, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
-    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-30, 5], [40, 5], [75, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
-    { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-30, 40]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
-    { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-30, -10]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
-    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[90, 22]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
+    // Atlantic crossing to Spain, then to Aleppo via Mediterranean
+    { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-40, 32], [-10, 36], [10, 37], [25, 36]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
+    // Portuguese route to Goa - around Cape of Good Hope
+    { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-40, 10], [-20, -5], [0, -30], [18, -35], [30, -30], [45, -15], [55, 5]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
+    // Route to Thailand - via Cape, Indian Ocean
+    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-40, 10], [-20, -5], [0, -30], [18, -35], [45, -20], [70, 0], [85, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
+    // Atlantic to Spain, overland to Hungary
+    { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-40, 32], [-10, 38], [5, 42]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
+    // Peru to West Africa - across Atlantic
+    { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-35, -15], [-20, -5]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
+    // From Goa to Sichuan - coastal route
+    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[85, 15], [95, 18]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
+    // Silk Road route: From Persia/Ottoman to Samarkand (overland)
+    { from: [37.1343, 36.2021] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[45, 37], [52, 36], [58, 38]] as [number, number][], establishedYear: 1550, destinationName: 'Samarkand (Silk Road)', isOverland: true },
   ] as RouteData[],
 };
 
@@ -205,10 +221,10 @@ export function TradeRouteMap() {
     '1498': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India'],
     '1500': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
     '1542': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
-    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand'],
-    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary'],
-    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary', 'Sichuan, China'],
-    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
   };
 
   const getVisibleLocations = useCallback((year: number): string[] => {
@@ -291,15 +307,19 @@ export function TradeRouteMap() {
         }
       });
 
-      // Sync marker animations
+      // Sync marker animations - target inner div to avoid conflicting with MapLibre's positioning transform
       const destMarkerEl = markerElementsRef.current.get(route.destinationName);
       if (destMarkerEl) {
+        const innerEl = destMarkerEl.querySelector('.marker-inner') as HTMLElement;
         if (isNewlyVisible) {
           destMarkerEl.classList.add('marker-pulse');
           setTimeout(() => destMarkerEl.classList.remove('marker-pulse'), 1500);
         }
         destMarkerEl.style.opacity = isVisible ? '1' : '0.3';
-        destMarkerEl.style.transform = isVisible ? 'scale(1)' : 'scale(0.7)';
+        // Apply scale to inner element only, not the outer marker wrapper
+        if (innerEl) {
+          innerEl.style.transform = isVisible ? 'scale(1)' : 'scale(0.7)';
+        }
       }
     });
 
@@ -1050,6 +1070,10 @@ export function TradeRouteMap() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#4a7c59] border border-[#5a4a3a] shadow-sm" />
                 <span className="font-body text-[#4a3a2a] tracking-wide italic">Key Event</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-0.5 bg-[#8b5a2b] border-dashed border-t border-[#5a4a3a]" style={{ borderStyle: 'dashed' }} />
+                <span className="font-body text-[#4a3a2a] tracking-wide italic">Silk Road</span>
               </div>
             </div>
           </div>

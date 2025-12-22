@@ -77,6 +77,15 @@ export const timelineEvents: TimelineEvent[] = [
     hasRoute: true,
   },
   {
+    year: 1550,
+    yearDisplay: 'c. 1550',
+    location: 'Samarkand (Silk Road)',
+    region: 'Central Asia',
+    description: 'Peppers travel overland via ancient Silk Road routes from Persia.',
+    coordinates: [66.9597, 39.6542],
+    hasRoute: true,
+  },
+  {
     year: 1569,
     yearDisplay: '1569',
     location: 'Hungary',
