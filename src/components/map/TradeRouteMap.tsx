@@ -3,6 +3,8 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { MapPin } from 'lucide-react';
 import { SpreadTimeline } from './SpreadTimeline';
+import { CompassRose } from './CompassRose';
+import { CartoucheBorder } from './CartoucheBorder';
 
 const tradeRoutes = {
   origins: [
@@ -460,7 +462,32 @@ export function TradeRouteMap() {
 
   return (
     <div className="relative">
+      {/* Engraved border frame */}
+      <div className="absolute inset-0 pointer-events-none z-20">
+        <div className="absolute inset-0 border-4 border-[#5a4a3a]/20" />
+        <div className="absolute inset-[4px] border border-[#5a4a3a]/15" />
+        <div className="absolute inset-[8px] border border-[#5a4a3a]/10" />
+        
+        {/* Corner ornaments */}
+        <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#5a4a3a]/40" />
+        <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#5a4a3a]/40" />
+        <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#5a4a3a]/40" />
+        <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#5a4a3a]/40" />
+      </div>
+      
       <div ref={mapContainer} className="aspect-[21/9] md:aspect-[2.5/1]" />
+      
+      {/* Subtle engraved grid overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #5a4a3a 1px, transparent 1px),
+            linear-gradient(to bottom, #5a4a3a 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
       
       {/* Vignette overlay - de-emphasizes Asia/edges, focuses on Mediterranean */}
       <div 
@@ -495,40 +522,56 @@ export function TradeRouteMap() {
         }}
       />
       
-      {/* Selected Location Info Panel */}
+      {/* Compass Rose - bottom left */}
+      <div className="absolute bottom-16 left-4 z-10">
+        <CompassRose className="w-20 h-20 md:w-24 md:h-24 opacity-70" />
+      </div>
+      
+      {/* Cartouche Title Element */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 hidden md:block">
+        <CartoucheBorder variant="title">
+          <h3 className="font-display text-xs uppercase tracking-[0.3em] text-[#3a2a1a] whitespace-nowrap">
+            The Spice Trade Routes
+          </h3>
+        </CartoucheBorder>
+      </div>
+      
+      {/* Selected Location Info Panel with Cartouche styling */}
       {selectedLocation && !isTimelinePlaying && (
-        <div className="absolute top-4 left-4 bg-card/95 border-2 border-border p-4 max-w-xs shadow-deep z-10">
-          <button 
-            onClick={() => setSelectedLocation(null)}
-            className="absolute top-2 right-2 text-muted-foreground hover:text-foreground text-lg leading-none"
-          >
-            ×
-          </button>
-          <div className="flex items-center gap-2 mb-2">
-            <MapPin className="w-4 h-4 text-primary" />
-            <h4 className="font-display text-sm uppercase tracking-wide text-foreground">
-              {selectedLocation.name}
-            </h4>
-          </div>
-          <p className="font-body text-xs text-muted-foreground mb-2 italic">
-            Established: {selectedLocation.year}
-          </p>
-          <p className="font-body text-sm text-muted-foreground leading-relaxed mb-3">
-            {selectedLocation.description}
-          </p>
-          <div className="border-t border-border pt-2">
-            <p className="font-heading text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-              Notable Varieties
+        <div className="absolute top-16 left-4 z-10 max-w-xs">
+          <CartoucheBorder variant="panel">
+            <button 
+              onClick={() => setSelectedLocation(null)}
+              className="absolute top-2 right-2 text-[#5a4a3a] hover:text-[#3a2a1a] text-lg leading-none z-10"
+            >
+              ×
+            </button>
+            <div className="flex items-center gap-2 mb-2">
+              <MapPin className="w-4 h-4 text-primary" />
+              <h4 className="font-display text-sm uppercase tracking-wide text-[#3a2a1a]">
+                {selectedLocation.name}
+              </h4>
+            </div>
+            <p className="font-body text-xs text-[#5a4a3a] mb-2 italic">
+              Established: {selectedLocation.year}
             </p>
-            <p className="font-body text-xs text-foreground">
-              {selectedLocation.varieties.join(' • ')}
+            <p className="font-body text-sm text-[#5a4a3a] leading-relaxed mb-3">
+              {selectedLocation.description}
             </p>
-          </div>
+            <div className="border-t border-[#5a4a3a]/30 pt-2">
+              <p className="font-heading text-[10px] uppercase tracking-wider text-[#6a5a4a] mb-1">
+                Notable Varieties
+              </p>
+              <p className="font-body text-xs text-[#3a2a1a]">
+                {selectedLocation.varieties.join(' • ')}
+              </p>
+            </div>
+          </CartoucheBorder>
         </div>
       )}
 
       {/* Timeline Panel */}
-      <div className="border-t-2 border-border">
+      <div className="border-t-2 border-[#5a4a3a]/30">
         <SpreadTimeline 
           onYearChange={setTimelineYear}
           isPlaying={isTimelinePlaying}
@@ -537,15 +580,21 @@ export function TradeRouteMap() {
       </div>
 
       {/* Legend - styled as antique cartouche */}
-      <div className="absolute top-4 right-14 bg-[#e8dcc4]/95 border border-[#5a4a3a] px-4 py-2.5 text-xs z-10 shadow-md">
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-[#5a4a3a] shadow-sm" />
-            <span className="font-body text-[#5a4a3a] tracking-wide">Origin</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#c4a86a] to-[#a08050] border border-[#5a4a3a] shadow-sm" />
-            <span className="font-body text-[#5a4a3a] tracking-wide">Trade Port</span>
+      <div className="absolute top-4 right-14 z-10">
+        <div className="relative">
+          <div className="absolute inset-0 border border-[#5a4a3a]/30" />
+          <div className="absolute inset-[2px] border border-[#5a4a3a]/15" />
+          <div className="bg-[#e8dcc4]/95 px-4 py-2.5 text-xs">
+            <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-[#5a4a3a] shadow-sm" />
+                <span className="font-body text-[#4a3a2a] tracking-wide italic">Origin</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#c4a86a] to-[#a08050] border border-[#5a4a3a] shadow-sm" />
+                <span className="font-body text-[#4a3a2a] tracking-wide italic">Trade Port</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
