@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { Button } from '@/components/ui/button';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { MapPin } from 'lucide-react';
 import { SpreadTimeline } from './SpreadTimeline';
-
-// Mapbox public token - safe to embed in frontend code
-const MAPBOX_ACCESS_TOKEN = 'YOUR_MAPBOX_PUBLIC_TOKEN';
 
 const tradeRoutes = {
   origins: [
@@ -88,13 +84,12 @@ const tradeRoutes = {
 
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const map = useRef<maplibregl.Map | null>(null);
+  const markersRef = useRef<maplibregl.Marker[]>([]);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
-  const [tokenError, setTokenError] = useState(false);
 
   // Year to locations mapping for timeline sync
   const yearToLocations: Record<number, string[]> = {
@@ -121,38 +116,25 @@ export function TradeRouteMap() {
   }, []);
 
   useEffect(() => {
-    if (!mapContainer.current || MAPBOX_ACCESS_TOKEN === 'YOUR_MAPBOX_PUBLIC_TOKEN') {
-      setTokenError(true);
-      return;
-    }
-
-    mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+    if (!mapContainer.current) return;
 
     try {
-      map.current = new mapboxgl.Map({
+      map.current = new maplibregl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/satellite-streets-v12',
-        projection: 'globe',
+        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
         zoom: 1.8,
         center: [20, 20],
         pitch: 25,
       });
 
       map.current.addControl(
-        new mapboxgl.NavigationControl({ visualizePitch: true }),
+        new maplibregl.NavigationControl({ visualizePitch: true }),
         'top-right'
       );
 
       map.current.scrollZoom.disable();
 
-      map.current.on('style.load', () => {
-        map.current?.setFog({
-          color: 'rgb(186, 168, 148)',
-          'high-color': 'rgb(120, 100, 80)',
-          'horizon-blend': 0.15,
-          'star-intensity': 0.1,
-        });
-
+      map.current.on('load', () => {
         // Add trade route lines
         tradeRoutes.routes.forEach((route, index) => {
           const coordinates = [route.from, ...route.via, route.to];
@@ -206,9 +188,10 @@ export function TradeRouteMap() {
         `;
         el.addEventListener('click', () => setSelectedLocation(origin));
 
-        new mapboxgl.Marker(el)
+        const marker = new maplibregl.Marker({ element: el })
           .setLngLat(origin.coordinates)
           .addTo(map.current!);
+        markersRef.current.push(marker);
       });
 
       // Add markers for destinations
@@ -228,16 +211,17 @@ export function TradeRouteMap() {
         `;
         el.addEventListener('click', () => setSelectedLocation(dest));
 
-        new mapboxgl.Marker(el)
+        const marker = new maplibregl.Marker({ element: el })
           .setLngLat(dest.coordinates)
           .addTo(map.current!);
+        markersRef.current.push(marker);
       });
 
-      // Globe rotation
+      // Slow rotation animation
       const secondsPerRevolution = 180;
       let userInteracting = false;
 
-      function spinGlobe() {
+      function spinMap() {
         if (!map.current) return;
         const zoom = map.current.getZoom();
         if (!userInteracting && zoom < 4) {
@@ -248,36 +232,22 @@ export function TradeRouteMap() {
       }
 
       map.current.on('mousedown', () => { userInteracting = true; });
-      map.current.on('mouseup', () => { userInteracting = false; spinGlobe(); });
-      map.current.on('dragend', () => { userInteracting = false; spinGlobe(); });
-      map.current.on('moveend', spinGlobe);
+      map.current.on('mouseup', () => { userInteracting = false; spinMap(); });
+      map.current.on('dragend', () => { userInteracting = false; spinMap(); });
+      map.current.on('moveend', spinMap);
 
-      spinGlobe();
+      spinMap();
 
     } catch (error) {
       console.error('Error initializing map:', error);
     }
 
     return () => {
+      markersRef.current.forEach(marker => marker.remove());
+      markersRef.current = [];
       map.current?.remove();
     };
   }, []);
-
-  if (tokenError) {
-    return (
-      <div className="relative aspect-[21/9] md:aspect-[3/1] bg-card border-2 border-border flex items-center justify-center">
-        <div className="text-center p-8 max-w-md">
-          <MapPin className="w-12 h-12 text-gold mx-auto mb-4" />
-          <h3 className="font-display text-xl text-foreground mb-3">
-            Map Configuration Required
-          </h3>
-          <p className="font-body text-sm text-muted-foreground leading-relaxed">
-            To display the interactive trade route map, update the <code className="bg-muted px-1 py-0.5 text-xs">MAPBOX_ACCESS_TOKEN</code> constant in <code className="bg-muted px-1 py-0.5 text-xs">TradeRouteMap.tsx</code> with your Mapbox public token from <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a>
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative">
