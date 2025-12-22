@@ -43,7 +43,7 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
               required
-              className="flex-1 px-5 py-3 bg-parchment-dark border-2 border-border font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-tyrian transition-colors shadow-card"
+              className="flex-1 px-5 py-3 bg-parchment-dark border-2 border-border font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors shadow-card"
             />
             <Button type="submit" variant="pepper" size="lg">
               Subscribe

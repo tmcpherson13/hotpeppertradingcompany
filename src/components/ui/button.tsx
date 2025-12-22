@@ -18,9 +18,10 @@ const buttonVariants = cva(
         // Heritage variants - solid, grounded, archival
         heritage: "bg-primary text-primary-foreground border-2 border-ink/20 shadow-deep hover:shadow-elegant hover:bg-primary/95 uppercase tracking-[0.15em] font-display",
         parchment: "bg-parchment-dark text-foreground border-2 border-border hover:border-primary hover:bg-muted shadow-card",
-        tyrian: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-deep uppercase tracking-[0.15em] font-display border-2 border-accent/30",
+        tyrian: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-deep uppercase tracking-[0.15em] font-display border-2 border-accent/30", // Use sparingly - prestige only
         gold: "bg-gold text-ink hover:bg-gold/90 shadow-deep border-2 border-gold/30",
         pepper: "bg-pepper-red text-parchment hover:bg-pepper-red/95 shadow-deep uppercase tracking-[0.15em] font-display border-2 border-ink/20",
+        ink: "bg-ink text-parchment hover:bg-ink/90 shadow-deep uppercase tracking-[0.15em] font-display border-2 border-ink/20",
       },
       size: {
         default: "h-11 px-6 py-2",

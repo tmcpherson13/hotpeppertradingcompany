@@ -12,113 +12,127 @@
 
 @layer base {
   :root {
-    /* Parchment & Paper Tones */
-    --background: 38 35% 92%;
-    --foreground: 25 30% 15%;
+    /* === CORE PALETTE === */
+    /* Parchment - warm aged paper tones */
+    --background: 40 38% 93%;
+    --foreground: 28 35% 12%;
 
     /* Aged Parchment Card */
-    --card: 40 40% 95%;
-    --card-foreground: 25 30% 15%;
+    --card: 42 42% 96%;
+    --card-foreground: 28 35% 12%;
 
-    --popover: 40 40% 95%;
-    --popover-foreground: 25 30% 15%;
+    --popover: 42 42% 96%;
+    --popover-foreground: 28 35% 12%;
 
-    /* Deep Burgundy/Wine - Primary */
-    --primary: 0 50% 25%;
-    --primary-foreground: 38 35% 92%;
+    /* Deep Ink Red - Primary (burgundy/wine) */
+    --primary: 355 55% 28%;
+    --primary-foreground: 42 42% 96%;
 
     /* Burnt Sienna - Secondary */
-    --secondary: 20 45% 35%;
-    --secondary-foreground: 38 35% 92%;
+    --secondary: 18 50% 32%;
+    --secondary-foreground: 42 42% 96%;
 
-    /* Ink Brown - Muted */
-    --muted: 30 20% 80%;
-    --muted-foreground: 25 25% 40%;
+    /* Muted Parchment */
+    --muted: 35 25% 82%;
+    --muted-foreground: 28 25% 38%;
 
-    /* Tyrian Purple - Accent/Prestige */
+    /* Tyrian Purple - PRESTIGE ACCENT ONLY (use sparingly) */
     --accent: 300 100% 18%;
-    --accent-foreground: 38 35% 92%;
+    --accent-foreground: 42 42% 96%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 42 42% 96%;
 
-    /* Aged Border */
-    --border: 30 25% 75%;
-    --input: 30 25% 75%;
-    --ring: 0 50% 25%;
+    /* Ink Borders */
+    --border: 32 22% 72%;
+    --input: 32 22% 72%;
+    --ring: 355 55% 28%;
 
     --radius: 0;
 
-    /* Custom Brand Colors */
-    --burgundy: 0 50% 25%;
-    --burgundy-light: 0 40% 35%;
-    --sienna: 20 45% 35%;
-    --sienna-light: 20 40% 50%;
-    --ink-brown: 25 30% 20%;
-    --parchment: 38 35% 92%;
-    --parchment-dark: 35 30% 85%;
+    /* === BRAND COLORS === */
+    /* Ink Tones */
+    --ink-brown: 28 35% 12%;
+    --ink-light: 28 25% 38%;
+    
+    /* Parchment Tones */
+    --parchment: 40 38% 93%;
+    --parchment-dark: 38 32% 86%;
+    --parchment-cream: 42 42% 96%;
+    
+    /* Red Family (primary palette) */
+    --burgundy: 355 55% 28%;
+    --burgundy-light: 355 45% 38%;
+    --pepper-red: 6 75% 45%;
+    --sienna: 18 50% 32%;
+    --sienna-light: 18 42% 48%;
+    
+    /* Tyrian Purple - prestige accent only */
     --tyrian: 300 100% 18%;
-    --gold-accent: 42 70% 45%;
-    --pepper-red: 8 72% 42%;
+    --tyrian-light: 300 60% 35%;
+    
+    /* Gold Accent */
+    --gold-accent: 42 72% 48%;
+    --gold-dark: 38 65% 38%;
     
     /* Gradients */
-    --gradient-parchment: linear-gradient(180deg, hsl(40 40% 95%) 0%, hsl(38 35% 88%) 100%);
-    --gradient-aged: linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(35 30% 85%) 50%, hsl(38 35% 90%) 100%);
-    --gradient-burgundy: linear-gradient(135deg, hsl(0 50% 25%) 0%, hsl(0 45% 20%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsla(25 30% 15% / 0.7) 0%, hsla(25 30% 15% / 0.4) 50%, hsla(25 30% 15% / 0.8) 100%);
+    --gradient-parchment: linear-gradient(180deg, hsl(42 42% 96%) 0%, hsl(38 32% 88%) 100%);
+    --gradient-aged: linear-gradient(180deg, hsl(40 38% 93%) 0%, hsl(38 32% 86%) 50%, hsl(40 38% 91%) 100%);
+    --gradient-burgundy: linear-gradient(135deg, hsl(355 55% 28%) 0%, hsl(355 50% 22%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsla(28 35% 12% / 0.7) 0%, hsla(28 35% 12% / 0.4) 50%, hsla(28 35% 12% / 0.8) 100%);
     
-    /* Shadows - deeper, more substantial */
-    --shadow-elegant: 0 4px 16px hsla(25 30% 10% / 0.2), 0 2px 4px hsla(25 30% 10% / 0.1);
-    --shadow-card: 0 2px 8px hsla(25 30% 10% / 0.15), inset 0 1px 0 hsla(40 40% 95% / 0.3);
-    --shadow-deep: 0 8px 24px hsla(25 30% 10% / 0.25), 0 4px 8px hsla(25 30% 10% / 0.15);
+    /* Shadows - ink-toned */
+    --shadow-elegant: 0 4px 16px hsla(28 35% 10% / 0.18), 0 2px 4px hsla(28 35% 10% / 0.08);
+    --shadow-card: 0 2px 8px hsla(28 35% 10% / 0.12), inset 0 1px 0 hsla(42 42% 98% / 0.4);
+    --shadow-deep: 0 8px 24px hsla(28 35% 10% / 0.22), 0 4px 8px hsla(28 35% 10% / 0.12);
 
-    --sidebar-background: 38 35% 92%;
-    --sidebar-foreground: 25 30% 15%;
-    --sidebar-primary: 0 50% 25%;
-    --sidebar-primary-foreground: 38 35% 92%;
+    --sidebar-background: 40 38% 93%;
+    --sidebar-foreground: 28 35% 12%;
+    --sidebar-primary: 355 55% 28%;
+    --sidebar-primary-foreground: 42 42% 96%;
     --sidebar-accent: 300 100% 18%;
-    --sidebar-accent-foreground: 38 35% 92%;
-    --sidebar-border: 30 25% 75%;
-    --sidebar-ring: 0 50% 25%;
+    --sidebar-accent-foreground: 42 42% 96%;
+    --sidebar-border: 32 22% 72%;
+    --sidebar-ring: 355 55% 28%;
   }
 
   .dark {
-    --background: 25 30% 10%;
-    --foreground: 38 30% 88%;
+    --background: 28 32% 8%;
+    --foreground: 40 32% 88%;
 
-    --card: 25 28% 14%;
-    --card-foreground: 38 30% 88%;
+    --card: 28 28% 12%;
+    --card-foreground: 40 32% 88%;
 
-    --popover: 25 28% 14%;
-    --popover-foreground: 38 30% 88%;
+    --popover: 28 28% 12%;
+    --popover-foreground: 40 32% 88%;
 
-    --primary: 38 40% 75%;
-    --primary-foreground: 25 30% 10%;
+    --primary: 40 38% 78%;
+    --primary-foreground: 28 32% 8%;
 
-    --secondary: 20 35% 45%;
-    --secondary-foreground: 38 30% 88%;
+    --secondary: 18 38% 48%;
+    --secondary-foreground: 40 32% 88%;
 
-    --muted: 25 20% 25%;
-    --muted-foreground: 38 20% 60%;
+    --muted: 28 22% 22%;
+    --muted-foreground: 40 22% 58%;
 
-    --accent: 300 70% 40%;
-    --accent-foreground: 38 30% 88%;
+    --accent: 300 65% 42%;
+    --accent-foreground: 40 32% 88%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 38 30% 88%;
+    --destructive: 0 58% 32%;
+    --destructive-foreground: 40 32% 88%;
 
-    --border: 25 20% 25%;
-    --input: 25 20% 25%;
-    --ring: 38 40% 75%;
+    --border: 28 22% 22%;
+    --input: 28 22% 22%;
+    --ring: 40 38% 78%;
 
-    --sidebar-background: 25 30% 10%;
-    --sidebar-foreground: 38 30% 88%;
-    --sidebar-primary: 38 40% 75%;
-    --sidebar-primary-foreground: 25 30% 10%;
-    --sidebar-accent: 300 70% 40%;
-    --sidebar-accent-foreground: 38 30% 88%;
-    --sidebar-border: 25 20% 25%;
-    --sidebar-ring: 38 40% 75%;
+    --sidebar-background: 28 32% 8%;
+    --sidebar-foreground: 40 32% 88%;
+    --sidebar-primary: 40 38% 78%;
+    --sidebar-primary-foreground: 28 32% 8%;
+    --sidebar-accent: 300 65% 42%;
+    --sidebar-accent-foreground: 40 32% 88%;
+    --sidebar-border: 28 22% 22%;
+    --sidebar-ring: 40 38% 78%;
   }
 }
 
