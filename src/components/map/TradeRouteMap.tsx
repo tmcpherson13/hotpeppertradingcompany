@@ -129,34 +129,35 @@ export function TradeRouteMap() {
     },
     glyphs: 'https://tiles.stadiamaps.com/fonts/{fontstack}/{range}.pbf',
     layers: [
-      // Parchment background (will show as land)
+      // Parchment background (land mass)
       {
         id: 'background',
         type: 'background',
         paint: {
-          'background-color': '#c9b896', // Aged parchment land color
+          'background-color': '#c2ad82', // Darker parchment so land reads clearly
         },
       },
-      // Water fills in the ocean areas, leaving land as background
+      // Ocean water polygons (lighter parchment so sea reads distinct from land)
       {
         id: 'water',
         type: 'fill',
         source: 'natural-earth',
         'source-layer': 'water',
         paint: {
-          'fill-color': '#e0d4be', // Lighter parchment for ocean
+          'fill-color': '#eee4cf',
           'fill-opacity': 1,
+          'fill-outline-color': '#5a4a3a',
         },
       },
-      // Landcover adds texture variation to visible land
+      // Landcover adds subtle texture variation on land
       {
         id: 'landcover',
         type: 'fill',
         source: 'natural-earth',
         'source-layer': 'landcover',
         paint: {
-          'fill-color': '#b8a882',
-          'fill-opacity': 0.3,
+          'fill-color': '#a7936a',
+          'fill-opacity': 0.22,
         },
       },
       // Landuse for additional land detail
