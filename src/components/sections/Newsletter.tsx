@@ -14,7 +14,7 @@ export function Newsletter() {
   };
 
   return (
-    <section className="relative py-16 bg-background paper-texture overflow-hidden">
+    <section id="contact" className="relative py-16 bg-card paper-texture overflow-hidden">
       {/* Subtle route accent */}
       <div className="absolute inset-0 trade-route-bg" />
       

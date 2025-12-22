@@ -13,10 +13,10 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <PepperEducation />
-        <TradeRoutes />
         <FeaturedSpices />
         <Heritage />
+        <TradeRoutes />
+        <PepperEducation />
         <Newsletter />
       </main>
       <Footer />

@@ -51,12 +51,12 @@ const spices = [
 
 export function FeaturedSpices() {
   return (
-    <section id="collection" className="relative py-20 bg-background paper-texture overflow-hidden">
+    <section id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
       {/* Trade Route Background Pattern */}
       <TradeRoutePattern 
         className="inset-0 w-full h-full" 
-        variant="tyrian" 
-        opacity={0.06} 
+        variant="subtle" 
+        opacity={0.05} 
       />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -109,11 +109,11 @@ export function FeaturedSpices() {
                   
                   {/* Archival Origin Stamp */}
                   <div className="absolute top-3 right-3 w-16 h-16 flex items-center justify-center">
-                    <div className="absolute inset-0 border-2 border-tyrian/60 rounded-full" />
-                    <div className="absolute inset-1 border border-tyrian/40 rounded-full" />
+                    <div className="absolute inset-0 border-2 border-primary/60 rounded-full" />
+                    <div className="absolute inset-1 border border-primary/40 rounded-full" />
                     <div className="text-center">
-                      <span className="block text-[8px] uppercase tracking-wider text-tyrian font-display">Origin</span>
-                      <span className="block text-[10px] uppercase tracking-wide text-tyrian font-heading font-semibold leading-tight">
+                      <span className="block text-[8px] uppercase tracking-wider text-primary font-display">Origin</span>
+                      <span className="block text-[10px] uppercase tracking-wide text-primary font-heading font-semibold leading-tight">
                         {spice.origin.split(',')[0]}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export function FeaturedSpices() {
                   {/* Decorative line */}
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex-1 h-px bg-ink/20" />
-                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-tyrian">
+                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-primary">
                       <polygon points="6,1 7,5 11,5 8,7 9,11 6,8.5 3,11 4,7 1,5 5,5" fill="currentColor" />
                     </svg>
                     <div className="flex-1 h-px bg-ink/20" />
@@ -151,8 +151,8 @@ export function FeaturedSpices() {
                   {/* Trade Details */}
                   <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider text-muted-foreground font-heading mb-3">
                     <span>{spice.weight}</span>
-                    <span className="text-tyrian">•</span>
-                    <span className="text-tyrian font-semibold">{spice.price}</span>
+                    <span className="text-primary">•</span>
+                    <span className="text-primary font-semibold">{spice.price}</span>
                   </div>
                   
                   {/* Description */}
