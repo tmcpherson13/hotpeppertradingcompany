@@ -5,6 +5,66 @@ import { SpreadTimeline, TimelineEvent, timelineEvents } from './SpreadTimeline'
 import { CompassRose } from './CompassRose';
 import { CartoucheBorder } from './CartoucheBorder';
 import { ShipSilhouette, SeaCreature, WindHead, AgedPaperOverlay, NarrativeAnnotation } from './NarrativeElements';
+import { Globe, Anchor, Ship, MapPin, Compass } from 'lucide-react';
+
+// Region focus presets for quick navigation
+interface RegionPreset {
+  id: string;
+  name: string;
+  shortName: string;
+  center: [number, number];
+  zoom: number;
+  icon: React.ReactNode;
+  description: string;
+}
+
+const regionPresets: RegionPreset[] = [
+  {
+    id: 'americas',
+    name: 'The Americas (Origin)',
+    shortName: 'Americas',
+    center: [-85, 5],
+    zoom: 3.2,
+    icon: <MapPin className="w-3.5 h-3.5" />,
+    description: 'Birthplace of all capsicum species',
+  },
+  {
+    id: 'mediterranean',
+    name: 'Mediterranean & Levant',
+    shortName: 'Levant',
+    center: [28, 38],
+    zoom: 4,
+    icon: <Anchor className="w-3.5 h-3.5" />,
+    description: 'Aleppo, Gaziantep, Hungary',
+  },
+  {
+    id: 'india',
+    name: 'India & Trade Hub',
+    shortName: 'India',
+    center: [75, 18],
+    zoom: 4,
+    icon: <Ship className="w-3.5 h-3.5" />,
+    description: 'Portuguese gateway to Asia',
+  },
+  {
+    id: 'eastasia',
+    name: 'East Asia',
+    shortName: 'Asia',
+    center: [105, 25],
+    zoom: 3.5,
+    icon: <Compass className="w-3.5 h-3.5" />,
+    description: 'Sichuan, Thailand, Philippines',
+  },
+  {
+    id: 'global',
+    name: 'Global Overview',
+    shortName: 'World',
+    center: [0, 20],
+    zoom: 2.2,
+    icon: <Globe className="w-3.5 h-3.5" />,
+    description: 'Full world view',
+  },
+];
 
 interface RouteData {
   from: [number, number];
@@ -117,9 +177,25 @@ export function TradeRouteMap() {
   const [currentEvent, setCurrentEvent] = useState<TimelineEvent | null>(null);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
   const [baseMapError, setBaseMapError] = useState<string | null>(null);
+  const [focusedRegion, setFocusedRegion] = useState<string | null>(null);
   const previousVisibleRoutesRef = useRef<Set<number>>(new Set());
   const dashOffsetRef = useRef<number>(0);
   const animationFrameRef = useRef<number | null>(null);
+
+  // Handle region focus button click
+  const handleRegionFocus = useCallback((region: RegionPreset) => {
+    if (!map.current) return;
+    
+    map.current.flyTo({
+      center: region.center,
+      zoom: region.zoom,
+      duration: 1500,
+      essential: true,
+      easing: (t) => t * (2 - t), // ease-out-quad
+    });
+    
+    setFocusedRegion(region.id);
+  }, []);
 
   // Year to locations mapping for timeline sync
   const yearToLocations: Record<number, string[]> = {
@@ -858,6 +934,49 @@ export function TradeRouteMap() {
       {/* Compass Rose - bottom left */}
       <div className="absolute bottom-16 left-4 z-10">
         <CompassRose className="w-20 h-20 md:w-24 md:h-24 opacity-70" />
+      </div>
+      
+      {/* Region Quick-Focus Buttons - bottom right */}
+      <div className="absolute bottom-16 right-4 z-10 hidden md:block">
+        <div className="relative">
+          {/* Decorative border */}
+          <div className="absolute inset-0 border border-[#5a4a3a]/40 -m-0.5" />
+          <div className="absolute inset-0 border border-[#5a4a3a]/20 -m-1" />
+          
+          <div className="bg-[#e8dcc4]/95 p-2 space-y-1.5">
+            <p className="font-display text-[9px] uppercase tracking-[0.2em] text-[#5a4a3a]/70 text-center mb-2 border-b border-[#5a4a3a]/20 pb-1">
+              Navigate
+            </p>
+            {regionPresets.map((region) => (
+              <button
+                key={region.id}
+                onClick={() => handleRegionFocus(region)}
+                className={`
+                  w-full flex items-center gap-2 px-2.5 py-1.5 
+                  border transition-all duration-200
+                  font-body text-[10px] tracking-wide
+                  group relative
+                  ${focusedRegion === region.id 
+                    ? 'bg-[#d4a84b]/20 border-[#d4a84b] text-[#3a2a1a]' 
+                    : 'bg-transparent border-[#5a4a3a]/30 text-[#5a4a3a] hover:bg-[#d4a84b]/10 hover:border-[#d4a84b]/50'
+                  }
+                `}
+                title={region.description}
+              >
+                <span className={`
+                  transition-colors duration-200
+                  ${focusedRegion === region.id ? 'text-[#d4a84b]' : 'text-[#5a4a3a]/60 group-hover:text-[#d4a84b]/80'}
+                `}>
+                  {region.icon}
+                </span>
+                <span className="flex-1 text-left">{region.shortName}</span>
+                {focusedRegion === region.id && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#d4a84b]" />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       
       {/* Cartouche Title Element */}
