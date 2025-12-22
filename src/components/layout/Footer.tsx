@@ -1,24 +1,24 @@
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import logoWhite from '@/assets/logo-white.png';
 
 const footerLinks = {
-  shop: [
-    { name: 'All Hot Peppers', href: '#' },
-    { name: 'Chili Collection', href: '#' },
-    { name: 'Blends & Rubs', href: '#' },
-    { name: 'Gift Sets', href: '#' },
+  inventory: [
+    { name: 'All Varieties', href: '#collection' },
+    { name: 'By Region', href: '#routes' },
+    { name: 'Seasonal Offerings', href: '#' },
+    { name: 'Wholesale Inquiries', href: '#' },
   ],
-  learn: [
-    { name: 'Our Story', href: '#' },
-    { name: 'Trade Routes', href: '#' },
-    { name: 'Hot Pepper Guide', href: '#' },
-    { name: 'Journal', href: '#' },
+  knowledge: [
+    { name: 'Company Heritage', href: '#heritage' },
+    { name: 'Sourcing Regions', href: '#routes' },
+    { name: 'Capsicum Reference', href: '#' },
+    { name: 'Cultivation Notes', href: '#' },
   ],
-  support: [
-    { name: 'Shipping', href: '#' },
-    { name: 'Returns', href: '#' },
-    { name: 'Contact', href: '#' },
-    { name: 'FAQ', href: '#' },
+  trade: [
+    { name: 'Shipping Terms', href: '#' },
+    { name: 'Return Policy', href: '#' },
+    { name: 'Trade Inquiries', href: '#' },
+    { name: 'Correspondence', href: '#' },
   ],
 };
 
@@ -30,11 +30,13 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <img 
-                src={logoWhite} 
-                alt="Hot Pepper Trading Company" 
-                className="h-24 w-auto"
-              />
+              <Link to="/">
+                <img 
+                  src={logoWhite} 
+                  alt="Hot Pepper Trading Company" 
+                  className="h-24 w-auto"
+                />
+              </Link>
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
               Importers of fine hot peppers since 1847. We source directly from 
@@ -49,13 +51,13 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links */}
+          {/* Inventory Links */}
           <div>
             <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
-              Shop
+              Inventory
             </h4>
             <ul className="space-y-3">
-              {footerLinks.shop.map((link) => (
+              {footerLinks.inventory.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -68,12 +70,13 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Knowledge Links */}
           <div>
             <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
-              Learn
+              Knowledge
             </h4>
             <ul className="space-y-3">
-              {footerLinks.learn.map((link) => (
+              {footerLinks.knowledge.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -86,12 +89,13 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Trade Links */}
           <div>
             <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
-              Support
+              Trade
             </h4>
             <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
+              {footerLinks.trade.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -108,14 +112,14 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-body text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} Hot Pepper Trading Company. All rights reserved.
+            © {new Date().getFullYear()} Hot Pepper Trading Company. Est. 1847. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-              Privacy Policy
+              Terms of Trade
             </a>
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-              Terms of Service
+              Privacy Notice
             </a>
           </div>
         </div>
