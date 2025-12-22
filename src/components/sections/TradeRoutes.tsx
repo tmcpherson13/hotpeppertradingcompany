@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { MapPin, Ship, Compass, Anchor, Navigation } from 'lucide-react';
+import { MapPin, Ship, Compass, Navigation } from 'lucide-react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
-import antiqueMap from '@/assets/antique-map.jpg';
+import { TradeRouteMap } from '@/components/map/TradeRouteMap';
 
 const regions = [
   {
@@ -64,7 +64,7 @@ export function TradeRoutes() {
           </p>
         </motion.div>
 
-        {/* Featured Map Placeholder - Central Visual Element */}
+        {/* Interactive Trade Route Map */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -75,134 +75,14 @@ export function TradeRoutes() {
           {/* Outer Frame */}
           <div className="relative border-4 border-border bg-card shadow-deep">
             {/* Corner Ornaments */}
-            <div className="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-gold" />
-            <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-gold" />
-            <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-gold" />
-            <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-gold" />
+            <div className="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-gold z-10" />
+            <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-gold z-10" />
+            <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-gold z-10" />
+            <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-gold z-10" />
             
             {/* Inner Frame */}
-            <div className="border-2 border-border/50 m-2">
-              {/* Map Container */}
-              <div className="relative aspect-[21/9] md:aspect-[3/1] overflow-hidden">
-                {/* Background Map Image */}
-                <img 
-                  src={antiqueMap} 
-                  alt="Antique trade route map" 
-                  className="absolute inset-0 w-full h-full object-cover sepia-subtle opacity-60"
-                />
-                
-                {/* Overlay Gradients */}
-                <div className="absolute inset-0 bg-gradient-to-b from-card/30 via-transparent to-card/50" />
-                <div className="absolute inset-0 bg-gradient-to-r from-card/40 via-transparent to-card/40" />
-                
-                {/* Trade Route Lines SVG */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none">
-                  {/* Main Trade Route */}
-                  <motion.path
-                    d="M80,200 Q200,150 350,180 T550,160 Q700,140 850,170 T1120,200"
-                    fill="none"
-                    stroke="hsl(var(--gold))"
-                    strokeWidth="3"
-                    strokeDasharray="15,10"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, delay: 0.5 }}
-                  />
-                  {/* Secondary Route */}
-                  <motion.path
-                    d="M100,280 Q250,240 400,260 T650,230 Q800,210 950,240 T1100,280"
-                    fill="none"
-                    stroke="hsl(var(--gold))"
-                    strokeWidth="2"
-                    strokeDasharray="8,12"
-                    opacity="0.6"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, delay: 0.8 }}
-                  />
-                  
-                  {/* Origin Points */}
-                  <motion.g
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 1.5 }}
-                  >
-                    <circle cx="120" cy="200" r="8" fill="hsl(var(--primary))" stroke="hsl(var(--gold))" strokeWidth="2" />
-                    <circle cx="550" cy="160" r="8" fill="hsl(var(--primary))" stroke="hsl(var(--gold))" strokeWidth="2" />
-                    <circle cx="950" cy="180" r="8" fill="hsl(var(--primary))" stroke="hsl(var(--gold))" strokeWidth="2" />
-                  </motion.g>
-                </svg>
-                
-                {/* Compass Rose */}
-                <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                  <svg width="60" height="60" viewBox="0 0 80 80" className="text-gold opacity-70">
-                    <circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" strokeWidth="1" />
-                    <circle cx="40" cy="40" r="28" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                    {/* Cardinal Points */}
-                    <path d="M40,8 L43,35 L40,40 L37,35 Z" fill="currentColor" />
-                    <path d="M40,72 L43,45 L40,40 L37,45 Z" fill="currentColor" opacity="0.5" />
-                    <path d="M8,40 L35,37 L40,40 L35,43 Z" fill="currentColor" opacity="0.5" />
-                    <path d="M72,40 L45,37 L40,40 L45,43 Z" fill="currentColor" opacity="0.5" />
-                    {/* Ordinal Points */}
-                    <path d="M17,17 L36,36 L40,40 L34,34 Z" fill="currentColor" opacity="0.3" />
-                    <path d="M63,17 L44,36 L40,40 L46,34 Z" fill="currentColor" opacity="0.3" />
-                    <path d="M17,63 L36,44 L40,40 L34,46 Z" fill="currentColor" opacity="0.3" />
-                    <path d="M63,63 L44,44 L40,40 L46,46 Z" fill="currentColor" opacity="0.3" />
-                    <circle cx="40" cy="40" r="4" fill="currentColor" />
-                  </svg>
-                </div>
-                
-                {/* Map Title Cartouche */}
-                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
-                  <div className="bg-card/90 border-2 border-border px-4 py-2 shadow-card">
-                    <p className="font-display text-xs md:text-sm text-foreground tracking-wide">
-                      CARTA UNIVERSALIS
-                    </p>
-                    <p className="font-body text-[10px] md:text-xs text-muted-foreground italic">
-                      The Global Pepper Trade, Anno Domini MDXXI–Present
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Interactive Map Coming Soon Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div 
-                    className="text-center bg-card/95 border-2 border-gold/50 px-8 py-6 shadow-deep"
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 1 }}
-                  >
-                    <Anchor className="w-8 h-8 text-gold mx-auto mb-3" />
-                    <h3 className="font-display text-lg md:text-xl text-foreground mb-2">
-                      Interactive Map in Development
-                    </h3>
-                    <p className="font-body text-sm text-muted-foreground max-w-md leading-relaxed">
-                      A detailed cartographic tool documenting the historical spread of 
-                      capsicum cultivation from the Americas to global trade networks.
-                    </p>
-                  </motion.div>
-                </div>
-              </div>
-              
-              {/* Map Legend Bar */}
-              <div className="bg-muted/50 border-t-2 border-border px-4 py-3 flex flex-wrap items-center justify-center gap-6 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-0.5 bg-gold" style={{ borderStyle: 'dashed' }} />
-                  <span className="font-body text-muted-foreground">Primary Trade Routes</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-primary border border-gold" />
-                  <span className="font-body text-muted-foreground">Origin Ports</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Ship className="w-4 h-4 text-gold" />
-                  <span className="font-body text-muted-foreground">Maritime Passages</span>
-                </div>
-              </div>
+            <div className="border-2 border-border/50 m-2 overflow-hidden">
+              <TradeRouteMap />
             </div>
           </div>
         </motion.div>
