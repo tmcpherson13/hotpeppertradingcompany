@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Button } from '@/components/ui/button';
-import { MapPin, Info } from 'lucide-react';
+import { MapPin } from 'lucide-react';
+import { SpreadTimeline } from './SpreadTimeline';
 
 interface TradeRouteMapProps {
   accessToken?: string;
@@ -89,9 +90,36 @@ const tradeRoutes = {
 export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
   const [token, setToken] = useState(accessToken || '');
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
+  const [timelineYear, setTimelineYear] = useState<number>(-4000);
+  const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
+
+  // Year to locations mapping for timeline sync
+  const yearToLocations: Record<number, string[]> = {
+    '-4000': ['Mesoamerica'],
+    '-3000': ['Mesoamerica', 'Peru & Bolivia'],
+    '1493': ['Mesoamerica', 'Peru & Bolivia'],
+    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India'],
+    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
+    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary', 'Sichuan, China'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+  };
+
+  const getVisibleLocations = useCallback((year: number): string[] => {
+    const years = Object.keys(yearToLocations).map(Number).sort((a, b) => a - b);
+    let visibleYear = years[0];
+    for (const y of years) {
+      if (y <= year) visibleYear = y;
+      else break;
+    }
+    return yearToLocations[String(visibleYear)] || [];
+  }, []);
 
   useEffect(() => {
     if (!mapContainer.current || !token) return;
@@ -268,14 +296,14 @@ export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
 
   return (
     <div className="relative">
-      <div ref={mapContainer} className="aspect-[21/9] md:aspect-[3/1]" />
+      <div ref={mapContainer} className="aspect-[21/9] md:aspect-[2.5/1]" />
       
       {/* Selected Location Info Panel */}
-      {selectedLocation && (
-        <div className="absolute top-4 left-4 bg-card/95 border-2 border-border p-4 max-w-xs shadow-deep">
+      {selectedLocation && !isTimelinePlaying && (
+        <div className="absolute top-4 left-4 bg-card/95 border-2 border-border p-4 max-w-xs shadow-deep z-10">
           <button 
             onClick={() => setSelectedLocation(null)}
-            className="absolute top-2 right-2 text-muted-foreground hover:text-foreground"
+            className="absolute top-2 right-2 text-muted-foreground hover:text-foreground text-lg leading-none"
           >
             ×
           </button>
@@ -302,8 +330,17 @@ export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
         </div>
       )}
 
+      {/* Timeline Panel */}
+      <div className="border-t-2 border-border">
+        <SpreadTimeline 
+          onYearChange={setTimelineYear}
+          isPlaying={isTimelinePlaying}
+          onPlayingChange={setIsTimelinePlaying}
+        />
+      </div>
+
       {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-card/90 border border-border px-3 py-2 text-xs">
+      <div className="absolute top-4 right-4 bg-card/90 border border-border px-3 py-2 text-xs z-10">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-primary border-2 border-gold" />
