@@ -115,16 +115,118 @@ export function TradeRouteMap() {
     return yearToLocations[String(visibleYear)] || [];
   }, []);
 
+  // Custom antique nautical chart style
+  const antiqueMapStyle: maplibregl.StyleSpecification = {
+    version: 8,
+    name: 'Antique Nautical Chart',
+    sources: {
+      'natural-earth': {
+        type: 'vector',
+        url: 'https://tiles.stadiamaps.com/data/openmaptiles.json',
+      },
+    },
+    glyphs: 'https://tiles.stadiamaps.com/fonts/{fontstack}/{range}.pbf',
+    layers: [
+      // Parchment ocean background
+      {
+        id: 'background',
+        type: 'background',
+        paint: {
+          'background-color': '#e8dcc4',
+        },
+      },
+      // Subtle ocean texture effect with water layer
+      {
+        id: 'water',
+        type: 'fill',
+        source: 'natural-earth',
+        'source-layer': 'water',
+        paint: {
+          'fill-color': '#ddd0b8',
+          'fill-opacity': 0.6,
+        },
+      },
+      // Inked landmass base
+      {
+        id: 'land',
+        type: 'fill',
+        source: 'natural-earth',
+        'source-layer': 'landcover',
+        paint: {
+          'fill-color': '#c4b59a',
+          'fill-opacity': 0.4,
+        },
+      },
+      // Main landmass with engraved look
+      {
+        id: 'landuse',
+        type: 'fill',
+        source: 'natural-earth',
+        'source-layer': 'landuse',
+        paint: {
+          'fill-color': '#bfad8f',
+          'fill-opacity': 0.3,
+        },
+      },
+      // Coastline - hand-drawn inked effect
+      {
+        id: 'coastline',
+        type: 'line',
+        source: 'natural-earth',
+        'source-layer': 'water',
+        paint: {
+          'line-color': '#5a4a3a',
+          'line-width': 1.5,
+          'line-opacity': 0.7,
+        },
+      },
+      // Rivers with old map styling
+      {
+        id: 'waterway',
+        type: 'line',
+        source: 'natural-earth',
+        'source-layer': 'waterway',
+        paint: {
+          'line-color': '#8a7a6a',
+          'line-width': 0.8,
+          'line-opacity': 0.5,
+        },
+      },
+      // Place labels in antique style
+      {
+        id: 'place-labels',
+        type: 'symbol',
+        source: 'natural-earth',
+        'source-layer': 'place',
+        filter: ['==', ['get', 'class'], 'country'],
+        layout: {
+          'text-field': ['get', 'name:en'],
+          'text-font': ['Stadia Regular'],
+          'text-size': 10,
+          'text-transform': 'uppercase',
+          'text-letter-spacing': 0.15,
+        },
+        paint: {
+          'text-color': '#6a5a4a',
+          'text-opacity': 0.6,
+          'text-halo-color': '#e8dcc4',
+          'text-halo-width': 1,
+        },
+      },
+    ],
+  };
+
   useEffect(() => {
     if (!mapContainer.current) return;
 
     try {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
-        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+        style: antiqueMapStyle,
         zoom: 1.8,
         center: [20, 20],
         pitch: 25,
+        attributionControl: false,
       });
 
       map.current.addControl(
@@ -135,7 +237,7 @@ export function TradeRouteMap() {
       map.current.scrollZoom.disable();
 
       map.current.on('load', () => {
-        // Add trade route lines
+        // Add trade route lines with antique styling
         tradeRoutes.routes.forEach((route, index) => {
           const coordinates = [route.from, ...route.via, route.to];
           
@@ -151,6 +253,24 @@ export function TradeRouteMap() {
             },
           });
 
+          // Outer glow for aged ink effect
+          map.current?.addLayer({
+            id: `route-glow-${index}`,
+            type: 'line',
+            source: `route-${index}`,
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round',
+            },
+            paint: {
+              'line-color': '#8b4513',
+              'line-width': 4,
+              'line-opacity': 0.2,
+              'line-blur': 2,
+            },
+          });
+
+          // Main route line
           map.current?.addLayer({
             id: `route-line-${index}`,
             type: 'line',
@@ -160,10 +280,10 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#d4a84b',
-              'line-width': 2,
-              'line-dasharray': [2, 2],
-              'line-opacity': 0.7,
+              'line-color': '#6b3a1a',
+              'line-width': 1.5,
+              'line-dasharray': [4, 3],
+              'line-opacity': 0.8,
             },
           });
         });
@@ -171,20 +291,32 @@ export function TradeRouteMap() {
         setIsMapLoaded(true);
       });
 
-      // Add markers for origins
+      // Add markers for origins - styled as compass roses
       tradeRoutes.origins.forEach((origin) => {
         const el = document.createElement('div');
         el.className = 'origin-marker';
         el.innerHTML = `
           <div style="
-            width: 20px; 
-            height: 20px; 
-            background: #8b2942; 
-            border: 3px solid #d4a84b; 
+            width: 22px; 
+            height: 22px; 
+            background: radial-gradient(circle, #8b2942 40%, #6b1a32 100%);
+            border: 2px solid #5a4a3a; 
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-          "></div>
+            box-shadow: 0 2px 6px rgba(90,74,58,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
+            position: relative;
+          ">
+            <div style="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 6px;
+              height: 6px;
+              background: #d4a84b;
+              border-radius: 50%;
+            "></div>
+          </div>
         `;
         el.addEventListener('click', () => setSelectedLocation(origin));
 
@@ -194,7 +326,7 @@ export function TradeRouteMap() {
         markersRef.current.push(marker);
       });
 
-      // Add markers for destinations
+      // Add markers for destinations - styled as antique port markers
       tradeRoutes.destinations.forEach((dest) => {
         const el = document.createElement('div');
         el.className = 'destination-marker';
@@ -202,11 +334,11 @@ export function TradeRouteMap() {
           <div style="
             width: 14px; 
             height: 14px; 
-            background: #d4a84b; 
-            border: 2px solid #8b2942; 
+            background: radial-gradient(circle, #c4a86a 30%, #a08050 100%);
+            border: 1.5px solid #5a4a3a; 
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 4px rgba(90,74,58,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
           "></div>
         `;
         el.addEventListener('click', () => setSelectedLocation(dest));
@@ -294,16 +426,16 @@ export function TradeRouteMap() {
         />
       </div>
 
-      {/* Legend */}
-      <div className="absolute top-4 right-4 bg-card/90 border border-border px-3 py-2 text-xs z-10">
-        <div className="flex items-center gap-4">
+      {/* Legend - styled as antique cartouche */}
+      <div className="absolute top-4 right-14 bg-[#e8dcc4]/95 border border-[#5a4a3a] px-4 py-2.5 text-xs z-10 shadow-md">
+        <div className="flex items-center gap-5">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-primary border-2 border-gold" />
-            <span className="font-body text-muted-foreground">Origin</span>
+            <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-[#5a4a3a] shadow-sm" />
+            <span className="font-body text-[#5a4a3a] tracking-wide">Origin</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-gold border-2 border-primary" />
-            <span className="font-body text-muted-foreground">Trade Destination</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#c4a86a] to-[#a08050] border border-[#5a4a3a] shadow-sm" />
+            <span className="font-body text-[#5a4a3a] tracking-wide">Trade Port</span>
           </div>
         </div>
       </div>
