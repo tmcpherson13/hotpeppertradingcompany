@@ -14,6 +14,9 @@ interface RouteData {
   destinationName: string;
 }
 
+// Convert timeline year (negative for BCE) to comparable year
+const parseTimelineYear = (year: number): number => year;
+
 const tradeRoutes = {
   origins: [
     {
@@ -85,10 +88,10 @@ const tradeRoutes = {
   routes: [
     { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-30, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
     { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-30, 10], [20, 0], [50, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
-    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-120, 20], [140, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
+    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-30, 5], [40, 5], [75, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
     { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-30, 40]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
     { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-30, -10]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
-    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[90, 25]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
+    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[90, 22]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
   ] as RouteData[],
 };
 
@@ -101,40 +104,11 @@ const getRouteLayerIds = (index: number) => [
   `route-highlight-${index}`,
 ];
 
-// Helper function to interpolate position along a route
-const interpolateRoute = (route: RouteData, progress: number): [number, number] => {
-  const coordinates = [route.from, ...route.via, route.to];
-  const totalSegments = coordinates.length - 1;
-  const segmentIndex = Math.min(Math.floor(progress * totalSegments), totalSegments - 1);
-  const segmentProgress = (progress * totalSegments) - segmentIndex;
-  
-  const start = coordinates[segmentIndex];
-  const end = coordinates[segmentIndex + 1];
-  
-  return [
-    start[0] + (end[0] - start[0]) * segmentProgress,
-    start[1] + (end[1] - start[1]) * segmentProgress,
-  ];
-};
-
-// Calculate bearing between two points for ship rotation
-const calculateBearing = (start: [number, number], end: [number, number]): number => {
-  const dLon = (end[0] - start[0]) * Math.PI / 180;
-  const lat1 = start[1] * Math.PI / 180;
-  const lat2 = end[1] * Math.PI / 180;
-  const y = Math.sin(dLon) * Math.cos(lat2);
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-  const bearing = Math.atan2(y, x) * 180 / Math.PI;
-  return (bearing + 360) % 360;
-};
-
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const markerElementsRef = useRef<Map<string, HTMLDivElement>>(new Map());
-  const shipMarkersRef = useRef<Map<number, maplibregl.Marker>>(new Map());
-  const shipAnimationsRef = useRef<Map<number, number>>(new Map());
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
@@ -182,95 +156,6 @@ export function TradeRouteMap() {
   // Calculate visible routes for current year
   const visibleRoutes = useMemo(() => getVisibleRoutes(timelineYear), [timelineYear, getVisibleRoutes]);
 
-  // Create ship marker element with nested structure to avoid transform conflicts
-  const createShipElement = useCallback(() => {
-    const el = document.createElement('div');
-    el.className = 'ship-marker';
-    
-    // Nested structure: ship-marker (MapLibre positions) > ship-motion (bobbing) > svg (rotation)
-    el.innerHTML = `
-      <div class="ship-motion">
-        <svg class="ship-svg" viewBox="0 0 32 24" width="32" height="24">
-          <!-- Wake trail -->
-          <path d="M-6 20 Q 0 18, 8 20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="2,2"/>
-          <!-- Ship hull -->
-          <path d="M2 18 Q 8 22, 16 22 Q 24 22, 30 18 L 28 14 Q 16 16, 4 14 Z" fill="#5a4a3a" stroke="#3a2a1a" stroke-width="0.5"/>
-          <!-- Ship deck -->
-          <path d="M6 14 L 26 14 L 24 10 L 8 10 Z" fill="#8b7355" stroke="#5a4a3a" stroke-width="0.5"/>
-          <!-- Mast -->
-          <line x1="16" y1="10" x2="16" y2="2" stroke="#3a2a1a" stroke-width="1.5"/>
-          <!-- Sail -->
-          <path d="M16 3 Q 24 6, 16 10 Z" fill="#f5efe0" stroke="#5a4a3a" stroke-width="0.5"/>
-          <!-- Flag -->
-          <path d="M16 2 L 20 3.5 L 16 5 Z" fill="#8b2942"/>
-        </svg>
-      </div>
-    `;
-    return el;
-  }, []);
-
-  // Animate ship along route
-  const animateShipAlongRoute = useCallback((routeIndex: number, route: RouteData) => {
-    if (!map.current) return;
-
-    // Cancel any existing animation for this route
-    const existingAnimation = shipAnimationsRef.current.get(routeIndex);
-    if (existingAnimation) {
-      cancelAnimationFrame(existingAnimation);
-    }
-
-    // Create or reuse ship marker
-    let shipMarker = shipMarkersRef.current.get(routeIndex);
-    if (!shipMarker) {
-      const shipEl = createShipElement();
-      shipMarker = new maplibregl.Marker({ element: shipEl, anchor: 'center' })
-        .setLngLat(route.from)
-        .addTo(map.current);
-      shipMarkersRef.current.set(routeIndex, shipMarker);
-    }
-
-    const shipEl = shipMarker.getElement();
-    const motionEl = shipEl.querySelector('.ship-motion') as HTMLElement;
-    const svgEl = shipEl.querySelector('.ship-svg') as SVGElement;
-    
-    // Make visible and start sailing animation
-    shipEl.classList.add('ship-visible', 'ship-sailing');
-
-    const duration = 8000; // 8 seconds to travel the route
-    const startTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function for smooth movement
-      const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-      
-      const position = interpolateRoute(route, easedProgress);
-      shipMarker!.setLngLat(position);
-
-      // Calculate and set rotation based on direction (rotate the SVG, not the marker)
-      const nextProgress = Math.min(easedProgress + 0.05, 1);
-      const nextPosition = interpolateRoute(route, nextProgress);
-      const bearing = calculateBearing(position, nextPosition);
-      
-      if (svgEl) {
-        svgEl.style.transform = `rotate(${bearing - 90}deg)`;
-      }
-
-      if (progress < 1) {
-        const frameId = requestAnimationFrame(animate);
-        shipAnimationsRef.current.set(routeIndex, frameId);
-      } else {
-        // Animation complete - keep at destination with anchored state
-        shipEl.classList.remove('ship-sailing');
-        shipEl.classList.add('ship-anchored');
-      }
-    };
-
-    const frameId = requestAnimationFrame(animate);
-    shipAnimationsRef.current.set(routeIndex, frameId);
-  }, [createShipElement]);
 
   // Update route visibility and trigger shimmer effects
   useEffect(() => {
@@ -319,9 +204,6 @@ export function TradeRouteMap() {
                 m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
               }
             }, 800);
-
-            // Launch ship animation for newly visible route
-            animateShipAlongRoute(index, route);
           } else {
             m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
           }
@@ -329,21 +211,6 @@ export function TradeRouteMap() {
           // Layer may not exist yet
         }
       });
-
-      // Hide ship if route becomes invisible
-      if (!isVisible && wasVisible) {
-        const shipMarker = shipMarkersRef.current.get(index);
-        if (shipMarker) {
-          const shipEl = shipMarker.getElement();
-          shipEl.classList.remove('ship-visible', 'ship-sailing', 'ship-anchored');
-        }
-        // Cancel animation
-        const animId = shipAnimationsRef.current.get(index);
-        if (animId) {
-          cancelAnimationFrame(animId);
-          shipAnimationsRef.current.delete(index);
-        }
-      }
 
       // Sync marker animations
       const destMarkerEl = markerElementsRef.current.get(route.destinationName);
@@ -358,7 +225,7 @@ export function TradeRouteMap() {
     });
 
     previousVisibleRoutesRef.current = new Set(currentVisible);
-  }, [visibleRoutes, isMapLoaded, animateShipAlongRoute]);
+  }, [visibleRoutes, isMapLoaded]);
 
   // Flowing dash animation
   useEffect(() => {
@@ -468,11 +335,11 @@ export function TradeRouteMap() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: antiqueMapStyle,
-        zoom: 2.5,
-        center: [-25, 22], // Shifted west to show more Americas
+        zoom: 2.2,
+        center: [0, 20], // Centered to show all trade routes
         pitch: 10,
         bearing: 0,
-        maxBounds: [[-120, -30], [100, 65]], // Expanded west to include Americas
+        maxBounds: [[-130, -40], [130, 70]], // Expanded to include all routes
         attributionControl: false,
       });
 
@@ -675,12 +542,6 @@ export function TradeRouteMap() {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
-      // Cancel all ship animations
-      shipAnimationsRef.current.forEach((animId) => cancelAnimationFrame(animId));
-      shipAnimationsRef.current.clear();
-      // Remove ship markers
-      shipMarkersRef.current.forEach((marker) => marker.remove());
-      shipMarkersRef.current.clear();
       if (map.current && handleMapError) {
         map.current.off('error', handleMapError);
       }
@@ -694,7 +555,7 @@ export function TradeRouteMap() {
 
   return (
     <div className="relative">
-      {/* CSS for marker and ship animations */}
+      {/* CSS for marker animations */}
       <style>{`
         @keyframes markerPulse {
           0% {
@@ -719,35 +580,6 @@ export function TradeRouteMap() {
         .destination-marker:hover .marker-inner {
           transform: scale(1.15);
           box-shadow: 0 4px 12px rgba(90, 74, 58, 0.6), 0 0 20px rgba(212, 168, 75, 0.3);
-        }
-
-        @keyframes shipSailing {
-          0%, 100% { transform: translateY(0); }
-          25% { transform: translateY(-2px); }
-          75% { transform: translateY(2px); }
-        }
-
-        @keyframes shipBobbing {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          25% { transform: translateY(-1px) rotate(-2deg); }
-          50% { transform: translateY(0) rotate(0deg); }
-          75% { transform: translateY(1px) rotate(2deg); }
-        }
-
-        .ship-marker {
-          z-index: 5;
-        }
-
-        .ship-sailing {
-          animation: shipSailing 0.8s ease-in-out infinite;
-        }
-
-        .ship-anchored {
-          animation: shipBobbing 3s ease-in-out infinite;
-        }
-
-        .ship-marker svg {
-          transition: transform 0.3s ease-out;
         }
       `}</style>
 
