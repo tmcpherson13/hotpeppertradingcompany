@@ -59,6 +59,7 @@
     --parchment-dark: 35 30% 85%;
     --tyrian: 300 100% 18%;
     --gold-accent: 42 70% 45%;
+    --pepper-red: 8 72% 42%;
     
     /* Gradients */
     --gradient-parchment: linear-gradient(180deg, hsl(40 40% 95%) 0%, hsl(38 35% 88%) 100%);

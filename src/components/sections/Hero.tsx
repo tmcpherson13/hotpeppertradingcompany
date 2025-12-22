@@ -37,7 +37,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-parchment/80 font-body text-sm md:text-base uppercase tracking-[0.4em] mb-6"
           >
-            Established in the Ancient Tradition
+            Purveyors of the World's Finest Peppers
           </motion.p>
 
           <motion.h1
@@ -46,9 +46,8 @@ export function Hero() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="font-display text-4xl md:text-6xl lg:text-7xl text-parchment font-semibold leading-tight mb-6"
           >
-            Where the World's <br />
-            <span className="italic text-gold">Finest Spices</span> <br />
-            Meet Their Legacy
+            Hot Pepper <br />
+            <span className="italic text-gold">Trading Company</span>
           </motion.h1>
 
           <motion.p
@@ -57,8 +56,8 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-parchment/90 font-body text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            From the ancient ports of the Mediterranean to your table—we trace 
-            the routes of history to bring you spices of uncompromising provenance.
+            Since the age of sail, pepper has been the king of spices—traded across 
+            oceans, sought by empires, and prized in every kitchen. We continue this legacy.
           </motion.p>
 
           <motion.div
@@ -67,11 +66,11 @@ export function Hero() {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button variant="heritage" size="xl" className="min-w-[200px] bg-parchment text-ink hover:bg-parchment/90">
-              Explore Collection
+            <Button variant="pepper" size="xl" className="min-w-[220px]">
+              Enter the Pepper Market
             </Button>
-            <Button variant="outline" size="xl" className="min-w-[200px] border-parchment/50 text-parchment hover:bg-parchment/10">
-              Our Heritage
+            <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-tyrian">
+              Explore the Trade Routes
             </Button>
           </motion.div>
         </motion.div>

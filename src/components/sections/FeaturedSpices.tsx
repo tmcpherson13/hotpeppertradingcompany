@@ -49,17 +49,17 @@ export function FeaturedSpices() {
           className="text-center mb-16"
         >
           <div className="vintage-divider mb-8">
-            <span className="text-accent text-xl px-4">✦</span>
+            <span className="text-tyrian text-xl px-4">✦</span>
           </div>
           <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
-            From Distant Shores
+            The Pepper Consortium
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold mb-6">
-            The Collection
+            Regional Selections
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            Each spice in our collection is sourced directly from its place of origin, 
-            honoring centuries of cultivation tradition.
+            Curated through historical trade networks and partnerships with 
+            artisan growers across three continents.
           </p>
         </motion.div>
 
@@ -122,8 +122,8 @@ export function FeaturedSpices() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <Button variant="heritage" size="lg">
-            View Complete Collection
+          <Button variant="pepper" size="lg">
+            Browse Full Inventory
           </Button>
         </motion.div>
       </div>
