@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button';
 import { MapPin } from 'lucide-react';
 import { SpreadTimeline } from './SpreadTimeline';
 
-interface TradeRouteMapProps {
-  accessToken?: string;
-}
+// Mapbox public token - safe to embed in frontend code
+const MAPBOX_ACCESS_TOKEN = 'YOUR_MAPBOX_PUBLIC_TOKEN';
 
 const tradeRoutes = {
   origins: [
@@ -87,15 +86,15 @@ const tradeRoutes = {
   ],
 };
 
-export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
+export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
-  const [token, setToken] = useState(accessToken || '');
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
+  const [tokenError, setTokenError] = useState(false);
 
   // Year to locations mapping for timeline sync
   const yearToLocations: Record<number, string[]> = {
@@ -122,9 +121,12 @@ export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
   }, []);
 
   useEffect(() => {
-    if (!mapContainer.current || !token) return;
+    if (!mapContainer.current || MAPBOX_ACCESS_TOKEN === 'YOUR_MAPBOX_PUBLIC_TOKEN') {
+      setTokenError(true);
+      return;
+    }
 
-    mapboxgl.accessToken = token;
+    mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
     try {
       map.current = new mapboxgl.Map({
@@ -259,36 +261,19 @@ export function TradeRouteMap({ accessToken }: TradeRouteMapProps) {
     return () => {
       map.current?.remove();
     };
-  }, [token]);
+  }, []);
 
-  if (!token) {
+  if (tokenError) {
     return (
       <div className="relative aspect-[21/9] md:aspect-[3/1] bg-card border-2 border-border flex items-center justify-center">
         <div className="text-center p-8 max-w-md">
           <MapPin className="w-12 h-12 text-gold mx-auto mb-4" />
           <h3 className="font-display text-xl text-foreground mb-3">
-            Interactive Map Configuration
+            Map Configuration Required
           </h3>
-          <p className="font-body text-sm text-muted-foreground mb-6 leading-relaxed">
-            To view the interactive trade route map, enter your Mapbox public token. 
-            Obtain one at <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed">
+            To display the interactive trade route map, update the <code className="bg-muted px-1 py-0.5 text-xs">MAPBOX_ACCESS_TOKEN</code> constant in <code className="bg-muted px-1 py-0.5 text-xs">TradeRouteMap.tsx</code> with your Mapbox public token from <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a>
           </p>
-          <div className="flex flex-col gap-3">
-            <input
-              type="text"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              placeholder="pk.eyJ1Ijo..."
-              className="px-4 py-3 bg-parchment-dark border-2 border-border font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary text-sm"
-            />
-            <Button 
-              variant="pepper" 
-              onClick={() => setToken(token)}
-              disabled={!token}
-            >
-              Load Map
-            </Button>
-          </div>
         </div>
       </div>
     );
