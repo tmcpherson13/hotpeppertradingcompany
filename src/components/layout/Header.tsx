@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import logoDark from '@/assets/logo-dark.jpg';
 
 const navLinks = [
-  { name: 'Collection', href: '#collection' },
-  { name: 'Our Story', href: '#heritage' },
-  { name: 'Trade Routes', href: '#routes' },
-  { name: 'Journal', href: '#journal' },
+  { name: 'Inventory', href: '#collection' },
+  { name: 'Heritage', href: '#heritage' },
+  { name: 'Origins', href: '#routes' },
+  { name: 'Inquiry', href: '#contact' },
 ];
 
 export function Header() {
@@ -18,13 +19,13 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
               className="h-14 w-auto"
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
