@@ -5,6 +5,7 @@ import { MapPin } from 'lucide-react';
 import { SpreadTimeline } from './SpreadTimeline';
 import { CompassRose } from './CompassRose';
 import { CartoucheBorder } from './CartoucheBorder';
+import { ShipSilhouette, SeaCreature, WindHead, AgedPaperOverlay, NarrativeAnnotation } from './NarrativeElements';
 
 const tradeRoutes = {
   origins: [
@@ -520,6 +521,53 @@ export function TradeRouteMap() {
             )
           `,
         }}
+      />
+      
+      {/* Aged paper overlay - stains, creases, foxing */}
+      <AgedPaperOverlay />
+      
+      {/* Decorative ship silhouettes suggesting trade movement */}
+      <div className="absolute pointer-events-none hidden md:block" style={{ top: '35%', left: '28%' }}>
+        <ShipSilhouette className="w-12 h-8 opacity-60" style={{ transform: 'rotate(25deg)' }} />
+      </div>
+      <div className="absolute pointer-events-none hidden md:block" style={{ top: '55%', left: '18%' }}>
+        <ShipSilhouette className="w-10 h-6 opacity-40" style={{ transform: 'rotate(-15deg)' }} />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '40%', left: '45%' }}>
+        <ShipSilhouette className="w-8 h-5 opacity-30" style={{ transform: 'rotate(10deg)' }} />
+      </div>
+      
+      {/* Sea creatures - period cartographic decoration */}
+      <div className="absolute pointer-events-none hidden md:block" style={{ bottom: '30%', left: '8%' }}>
+        <SeaCreature className="w-16 h-6" variant="serpent" />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '60%', right: '35%' }}>
+        <SeaCreature className="w-12 h-6" variant="whale" />
+      </div>
+      
+      {/* Wind heads - classical cartographic element */}
+      <div className="absolute pointer-events-none hidden md:block" style={{ top: '20%', right: '8%' }}>
+        <WindHead className="w-10 h-8" direction="west" />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ bottom: '35%', left: '3%' }}>
+        <WindHead className="w-8 h-6" direction="east" />
+      </div>
+      
+      {/* Narrative annotations - subtle period text */}
+      <NarrativeAnnotation 
+        text="Here be treasures of the New World" 
+        className="absolute hidden lg:block"
+        style={{ bottom: '22%', left: '5%', transform: 'rotate(-8deg)' }}
+      />
+      <NarrativeAnnotation 
+        text="Mare Atlanticum" 
+        className="absolute hidden md:block text-[11px]"
+        style={{ top: '45%', left: '22%', transform: 'rotate(-3deg)', letterSpacing: '0.15em' }}
+      />
+      <NarrativeAnnotation 
+        text="Via delle Spezie" 
+        className="absolute hidden lg:block"
+        style={{ top: '35%', right: '28%', transform: 'rotate(5deg)' }}
       />
       
       {/* Compass Rose - bottom left */}
