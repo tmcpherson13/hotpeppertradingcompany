@@ -37,13 +37,14 @@ export function Footer() {
               />
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
-              Purveyors of exceptional hot peppers sourced from the world's most storied 
-              regions. Continuing traditions that changed global cuisine.
+              Importers of fine hot peppers since 1847. We source directly from 
+              growers in the principal capsicum-producing regions and maintain 
+              rigorous quality standards.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
               <span className="text-gold">✦</span>
               <span className="font-body text-sm italic">
-                "Where the world's finest hot peppers meet their legacy"
+                Provenance verified. Quality guaranteed.
               </span>
             </div>
           </div>

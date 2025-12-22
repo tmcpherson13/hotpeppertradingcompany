@@ -29,11 +29,11 @@ export function Newsletter() {
           <TradeRouteDivider className="mb-8" />
 
           <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4 text-engraved">
-            The Merchant's Dispatch
+            Trade Correspondence
           </h2>
           <p className="font-body text-lg text-muted-foreground mb-8 leading-relaxed">
-            Receive tales from the trade routes, seasonal offerings, 
-            and the wisdom of hot pepper lore delivered to your correspondence.
+            Receive periodic updates on new arrivals, seasonal availability, 
+            and notes on capsicum varieties and cultivation.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">

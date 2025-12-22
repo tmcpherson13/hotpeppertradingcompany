@@ -5,18 +5,18 @@ import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePatter
 const facts = [
   {
     icon: History,
-    title: 'Ancient Origins',
-    description: 'Hot peppers originated in the Americas over 6,000 years ago. The Aztecs and Mayans cultivated chilies long before European contact.',
+    title: 'Pre-Columbian Origins',
+    description: 'Archaeological evidence confirms capsicum cultivation in the Americas by 4000 BCE. The Aztecs and Maya developed sophisticated growing and preservation techniques.',
   },
   {
     icon: Anchor,
     title: 'The Columbian Exchange',
-    description: 'After 1492, hot peppers spread rapidly across the globe. Within 50 years, they had transformed cuisines from India to Hungary to Korea.',
+    description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
   },
   {
     icon: Globe,
-    title: 'Global Transformation',
-    description: 'Today, hot peppers are grown on every continent except Antarctica. They are essential to cuisines that never knew them existed.',
+    title: 'Global Integration',
+    description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
   },
 ];
 
@@ -55,15 +55,15 @@ export function PepperEducation() {
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
             <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
-              The Fire of the Americas
+              Historical Context
             </p>
             <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
-              How Hot Peppers Changed the World
+              The Global Spread of Capsicum
             </h2>
             <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Born in the Americas, hot peppers traveled with explorers and traders 
-              to every corner of the globe. No other food has so completely 
-              transformed world cuisine in such a short time.
+              No other cultivated plant has achieved such rapid global adoption. 
+              Within a century of first contact, capsicum peppers had become 
+              indispensable to cuisines across four continents.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export function PepperEducation() {
               other foods appetizing."
             </p>
             <footer className="font-body text-muted-foreground">
-              — Bernardino de Sahagún, <cite>General History of the Things of New Spain</cite>, 1569
+              — Bernardino de Sahagún, <cite>Florentine Codex</cite>, 1569
             </footer>
           </motion.blockquote>
         </motion.div>
