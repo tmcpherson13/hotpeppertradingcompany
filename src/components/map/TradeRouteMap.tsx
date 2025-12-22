@@ -92,6 +92,7 @@ export function TradeRouteMap() {
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
+  const [baseMapError, setBaseMapError] = useState<string | null>(null);
 
   // Year to locations mapping for timeline sync
   const yearToLocations: Record<number, string[]> = {
@@ -117,151 +118,64 @@ export function TradeRouteMap() {
     return yearToLocations[String(visibleYear)] || [];
   }, []);
 
-  // Custom antique nautical chart style using free Protomaps tiles
+  const STYLE_VERSION = 'ne110m-local-v1';
+
+  // Custom antique nautical chart style using bundled Natural Earth GeoJSON (no external tile auth)
   const antiqueMapStyle: maplibregl.StyleSpecification = {
     version: 8,
-    name: 'Antique Nautical Chart',
+    name: 'Antique Nautical Chart (Local)',
     sources: {
-      'protomaps': {
-        type: 'vector',
-        url: 'https://api.protomaps.com/tiles/v3.json?key=1003762824b9687f',
-        attribution: '© Protomaps © OpenStreetMap',
+      land: {
+        type: 'geojson',
+        data: '/data/ne_110m_land.geojson',
+      },
+      lakes: {
+        type: 'geojson',
+        data: '/data/ne_110m_lakes.geojson',
+      },
+      coastline: {
+        type: 'geojson',
+        data: '/data/ne_110m_coastline.geojson',
       },
     },
-    glyphs: 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
     layers: [
-      // Parchment background (ocean)
+      // Parchment ocean background
       {
         id: 'background',
         type: 'background',
         paint: {
-          'background-color': '#e8dcc4', // Light parchment for ocean
+          'background-color': '#e8dcc4',
         },
       },
-      // Land mass fill - darker parchment
+      // Land mass fill
       {
-        id: 'earth',
+        id: 'land',
         type: 'fill',
-        source: 'protomaps',
-        'source-layer': 'earth',
+        source: 'land',
         paint: {
-          'fill-color': '#c2ad82', // Darker parchment for land
+          'fill-color': '#c2ad82',
+          'fill-opacity': 1,
         },
       },
-      // Water bodies (lakes, etc.)
+      // Inland water (lakes)
       {
-        id: 'water',
+        id: 'lakes',
         type: 'fill',
-        source: 'protomaps',
-        'source-layer': 'water',
+        source: 'lakes',
         paint: {
           'fill-color': '#ddd0b8',
           'fill-opacity': 0.9,
         },
       },
-      // Landuse for additional land detail
-      {
-        id: 'landuse',
-        type: 'fill',
-        source: 'protomaps',
-        'source-layer': 'landuse',
-        paint: {
-          'fill-color': '#a89870',
-          'fill-opacity': 0.15,
-        },
-      },
-      // Natural areas (forests, parks)
-      {
-        id: 'natural',
-        type: 'fill',
-        source: 'protomaps',
-        'source-layer': 'natural',
-        paint: {
-          'fill-color': '#a7936a',
-          'fill-opacity': 0.2,
-        },
-      },
-      // Coastline - hand-drawn inked effect
+      // Coastline - inked stroke
       {
         id: 'coastline',
         type: 'line',
-        source: 'protomaps',
-        'source-layer': 'earth',
+        source: 'coastline',
         paint: {
           'line-color': '#5a4a3a',
-          'line-width': 1.5,
-          'line-opacity': 0.6,
-        },
-      },
-      // Rivers with old map styling
-      {
-        id: 'waterway',
-        type: 'line',
-        source: 'protomaps',
-        'source-layer': 'water',
-        filter: ['==', ['geometry-type'], 'LineString'],
-        paint: {
-          'line-color': '#8a7a6a',
-          'line-width': 0.8,
-          'line-opacity': 0.5,
-        },
-      },
-      // Country boundaries - subtle engraved lines
-      {
-        id: 'boundaries',
-        type: 'line',
-        source: 'protomaps',
-        'source-layer': 'boundaries',
-        paint: {
-          'line-color': '#8a7a6a',
-          'line-width': 0.5,
-          'line-opacity': 0.3,
-          'line-dasharray': [4, 2],
-        },
-      },
-      // Country labels - engraved old-world style
-      {
-        id: 'country-labels',
-        type: 'symbol',
-        source: 'protomaps',
-        'source-layer': 'places',
-        filter: ['==', ['get', 'pmap:kind'], 'country'],
-        layout: {
-          'text-field': ['get', 'name'],
-          'text-font': ['Noto Sans Italic'],
-          'text-size': 11,
-          'text-transform': 'uppercase',
-          'text-letter-spacing': 0.25,
-          'text-max-width': 8,
-        },
-        paint: {
-          'text-color': '#4a3a2a',
-          'text-opacity': 0.5,
-          'text-halo-color': '#e8dcc4',
-          'text-halo-width': 1.5,
-          'text-halo-blur': 0.5,
-        },
-      },
-      // Sea and ocean labels
-      {
-        id: 'water-labels',
-        type: 'symbol',
-        source: 'protomaps',
-        'source-layer': 'water',
-        filter: ['has', 'name'],
-        layout: {
-          'text-field': ['get', 'name'],
-          'text-font': ['Noto Sans Italic'],
-          'text-size': 12,
-          'text-letter-spacing': 0.4,
-          'text-max-width': 10,
-          'symbol-placement': 'point',
-        },
-        paint: {
-          'text-color': '#5a4a3a',
-          'text-opacity': 0.35,
-          'text-halo-color': '#ddd0b8',
-          'text-halo-width': 1,
+          'line-width': 1.4,
+          'line-opacity': 0.65,
         },
       },
     ],
@@ -269,6 +183,10 @@ export function TradeRouteMap() {
 
   useEffect(() => {
     if (!mapContainer.current) return;
+
+    setBaseMapError(null);
+
+    let handleMapError: ((e: unknown) => void) | null = null;
 
     try {
       map.current = new maplibregl.Map({
@@ -282,17 +200,31 @@ export function TradeRouteMap() {
         attributionControl: false,
       });
 
+      const m = map.current;
+
+      // If the basemap sources fail to load, surface it in-UI (avoid silent failures)
+      handleMapError = (e: any) => {
+        const sourceId = e?.sourceId;
+        const isBasemapSource = sourceId === 'land' || sourceId === 'lakes' || sourceId === 'coastline' || !sourceId;
+        if (e?.error && isBasemapSource) {
+          setBaseMapError('Base chart unavailable (failed to load map data).');
+        }
+      };
+      m?.on('error', handleMapError);
+
       // Remove modern navigation controls for historical immersion
       // Users can still pan/drag the map
 
-      map.current.scrollZoom.disable();
+      m?.scrollZoom.disable();
 
-      map.current.on('load', () => {
+      m?.on('load', () => {
+        setBaseMapError(null);
+
         // Add trade route lines with antique styling
         tradeRoutes.routes.forEach((route, index) => {
           const coordinates = [route.from, ...route.via, route.to];
-          
-          map.current?.addSource(`route-${index}`, {
+
+          m?.addSource(`route-${index}`, {
             type: 'geojson',
             data: {
               type: 'Feature',
@@ -305,7 +237,7 @@ export function TradeRouteMap() {
           });
 
           // Outermost diffuse glow - prestige aura
-          map.current?.addLayer({
+          m?.addLayer({
             id: `route-aura-${index}`,
             type: 'line',
             source: `route-${index}`,
@@ -322,7 +254,7 @@ export function TradeRouteMap() {
           });
 
           // Secondary glow layer - rich purple halo
-          map.current?.addLayer({
+          m?.addLayer({
             id: `route-glow-outer-${index}`,
             type: 'line',
             source: `route-${index}`,
@@ -339,7 +271,7 @@ export function TradeRouteMap() {
           });
 
           // Inner glow - concentrated prestige
-          map.current?.addLayer({
+          m?.addLayer({
             id: `route-glow-inner-${index}`,
             type: 'line',
             source: `route-${index}`,
@@ -356,7 +288,7 @@ export function TradeRouteMap() {
           });
 
           // Main route line - bold and intentional
-          map.current?.addLayer({
+          m?.addLayer({
             id: `route-line-${index}`,
             type: 'line',
             source: `route-${index}`,
@@ -372,7 +304,7 @@ export function TradeRouteMap() {
           });
 
           // Highlight stroke - precious metal accent
-          map.current?.addLayer({
+          m?.addLayer({
             id: `route-highlight-${index}`,
             type: 'line',
             source: `route-${index}`,
@@ -421,9 +353,7 @@ export function TradeRouteMap() {
         `;
         el.addEventListener('click', () => setSelectedLocation(origin));
 
-        const marker = new maplibregl.Marker({ element: el })
-          .setLngLat(origin.coordinates)
-          .addTo(map.current!);
+        const marker = new maplibregl.Marker({ element: el }).setLngLat(origin.coordinates).addTo(m!);
         markersRef.current.push(marker);
       });
 
@@ -444,9 +374,7 @@ export function TradeRouteMap() {
         `;
         el.addEventListener('click', () => setSelectedLocation(dest));
 
-        const marker = new maplibregl.Marker({ element: el })
-          .setLngLat(dest.coordinates)
-          .addTo(map.current!);
+        const marker = new maplibregl.Marker({ element: el }).setLngLat(dest.coordinates).addTo(m!);
         markersRef.current.push(marker);
       });
 
@@ -454,14 +382,19 @@ export function TradeRouteMap() {
 
     } catch (error) {
       console.error('Error initializing map:', error);
+      setBaseMapError('Base chart unavailable (map failed to initialize).');
     }
 
     return () => {
-      markersRef.current.forEach(marker => marker.remove());
+      if (map.current && handleMapError) {
+        map.current.off('error', handleMapError);
+      }
+      markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
       map.current?.remove();
+      map.current = null;
     };
-  }, []);
+  }, [STYLE_VERSION]);
 
   return (
     <div className="relative">
@@ -477,8 +410,16 @@ export function TradeRouteMap() {
         <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#5a4a3a]/40" />
         <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#5a4a3a]/40" />
       </div>
+
+      {baseMapError && (
+        <div className="absolute top-4 left-4 z-30 max-w-xs">
+          <CartoucheBorder variant="panel">
+            <p className="font-body text-xs text-muted-foreground">{baseMapError}</p>
+          </CartoucheBorder>
+        </div>
+      )}
       
-      <div ref={mapContainer} className="aspect-[21/9] md:aspect-[2.5/1]" />
+      <div key={STYLE_VERSION} ref={mapContainer} className="aspect-[21/9] md:aspect-[2.5/1]" />
       
       {/* Subtle engraved grid overlay */}
       <div 
