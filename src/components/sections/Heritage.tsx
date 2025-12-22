@@ -4,7 +4,7 @@ import antiqueMap from '@/assets/antique-map.jpg';
 
 export function Heritage() {
   return (
-    <section id="heritage" className="relative py-24 bg-card overflow-hidden">
+    <section id="heritage" className="relative py-20 bg-card overflow-hidden">
       {/* Trade Route Background */}
       <TradeRoutePattern 
         className="inset-0 w-full h-full" 
