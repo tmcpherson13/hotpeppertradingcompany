@@ -1,10 +1,18 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { SpreadTimeline } from './SpreadTimeline';
 import { CompassRose } from './CompassRose';
 import { CartoucheBorder } from './CartoucheBorder';
 import { ShipSilhouette, SeaCreature, WindHead, AgedPaperOverlay, NarrativeAnnotation } from './NarrativeElements';
+
+interface RouteData {
+  from: [number, number];
+  to: [number, number];
+  via: [number, number][];
+  establishedYear: number;
+  destinationName: string;
+}
 
 const tradeRoutes = {
   origins: [
@@ -75,24 +83,37 @@ const tradeRoutes = {
     },
   ],
   routes: [
-    { from: [-99.1332, 19.4326], to: [37.1343, 36.2021], via: [[-30, 35]] },
-    { from: [-99.1332, 19.4326], to: [73.8567, 15.2993], via: [[-30, 10], [20, 0], [50, 10]] },
-    { from: [-99.1332, 19.4326], to: [100.5018, 13.7563], via: [[-120, 20], [140, 10]] },
-    { from: [-99.1332, 19.4326], to: [19.0402, 47.4979], via: [[-30, 40]] },
-    { from: [-68.1193, -16.4897], to: [-1.0232, 7.9465], via: [[-30, -10]] },
-    { from: [73.8567, 15.2993], to: [104.0665, 30.5728], via: [[90, 25]] },
-  ],
+    { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-30, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
+    { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-30, 10], [20, 0], [50, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
+    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-120, 20], [140, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
+    { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-30, 40]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
+    { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-30, -10]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
+    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[90, 25]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
+  ] as RouteData[],
 };
+
+// Route layer IDs for each route index
+const getRouteLayerIds = (index: number) => [
+  `route-aura-${index}`,
+  `route-glow-outer-${index}`,
+  `route-glow-inner-${index}`,
+  `route-line-${index}`,
+  `route-highlight-${index}`,
+];
 
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
+  const markerElementsRef = useRef<Map<string, HTMLDivElement>>(new Map());
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<typeof tradeRoutes.origins[0] | null>(null);
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
   const [baseMapError, setBaseMapError] = useState<string | null>(null);
+  const previousVisibleRoutesRef = useRef<Set<number>>(new Set());
+  const dashOffsetRef = useRef<number>(0);
+  const animationFrameRef = useRef<number | null>(null);
 
   // Year to locations mapping for timeline sync
   const yearToLocations: Record<number, string[]> = {
@@ -118,7 +139,125 @@ export function TradeRouteMap() {
     return yearToLocations[String(visibleYear)] || [];
   }, []);
 
-  const STYLE_VERSION = 'ne110m-local-v1';
+  // Get visible routes based on timeline year
+  const getVisibleRoutes = useCallback((year: number): Set<number> => {
+    const visibleRoutes = new Set<number>();
+    tradeRoutes.routes.forEach((route, index) => {
+      if (year >= route.establishedYear) {
+        visibleRoutes.add(index);
+      }
+    });
+    return visibleRoutes;
+  }, []);
+
+  // Calculate visible routes for current year
+  const visibleRoutes = useMemo(() => getVisibleRoutes(timelineYear), [timelineYear, getVisibleRoutes]);
+
+  // Update route visibility and trigger shimmer effects
+  useEffect(() => {
+    if (!map.current || !isMapLoaded) return;
+
+    const m = map.current;
+    const prevVisible = previousVisibleRoutesRef.current;
+    const currentVisible = visibleRoutes;
+
+    tradeRoutes.routes.forEach((route, index) => {
+      const isVisible = currentVisible.has(index);
+      const wasVisible = prevVisible.has(index);
+      const isNewlyVisible = isVisible && !wasVisible;
+
+      const layerIds = getRouteLayerIds(index);
+
+      // Base opacities for each layer type
+      const baseOpacities: Record<string, number> = {
+        'aura': 0.08,
+        'glow-outer': 0.15,
+        'glow-inner': 0.25,
+        'line': 0.9,
+        'highlight': 0.4,
+      };
+
+      // Ghost opacity (barely visible hint for future routes)
+      const ghostOpacity = 0.03;
+
+      layerIds.forEach((layerId) => {
+        try {
+          const layerType = layerId.includes('aura') ? 'aura' :
+                           layerId.includes('glow-outer') ? 'glow-outer' :
+                           layerId.includes('glow-inner') ? 'glow-inner' :
+                           layerId.includes('highlight') ? 'highlight' : 'line';
+
+          const targetOpacity = isVisible ? baseOpacities[layerType] : ghostOpacity;
+
+          if (isNewlyVisible) {
+            // Shimmer effect: flash brighter then settle
+            const shimmerOpacity = Math.min(1, baseOpacities[layerType] * 3);
+            m.setPaintProperty(layerId, 'line-opacity', shimmerOpacity);
+
+            // Settle to normal opacity after shimmer
+            setTimeout(() => {
+              if (m.getLayer(layerId)) {
+                m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
+              }
+            }, 800);
+          } else {
+            m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
+          }
+        } catch (e) {
+          // Layer may not exist yet
+        }
+      });
+
+      // Sync marker animations
+      const destMarkerEl = markerElementsRef.current.get(route.destinationName);
+      if (destMarkerEl) {
+        if (isNewlyVisible) {
+          destMarkerEl.classList.add('marker-pulse');
+          setTimeout(() => destMarkerEl.classList.remove('marker-pulse'), 1500);
+        }
+        destMarkerEl.style.opacity = isVisible ? '1' : '0.3';
+        destMarkerEl.style.transform = isVisible ? 'scale(1)' : 'scale(0.7)';
+      }
+    });
+
+    previousVisibleRoutesRef.current = new Set(currentVisible);
+  }, [visibleRoutes, isMapLoaded]);
+
+  // Flowing dash animation
+  useEffect(() => {
+    if (!map.current || !isMapLoaded) return;
+
+    const m = map.current;
+
+    const animateDashes = () => {
+      dashOffsetRef.current += 0.3;
+
+      tradeRoutes.routes.forEach((route, index) => {
+        if (visibleRoutes.has(index)) {
+          const highlightLayerId = `route-highlight-${index}`;
+          try {
+            // Animate dash pattern offset by changing dasharray
+            const offset = dashOffsetRef.current % 20;
+            m.setPaintProperty(highlightLayerId, 'line-dasharray', [8 + offset * 0.1, 12 - offset * 0.05]);
+          } catch (e) {
+            // Layer may not exist
+          }
+        }
+      });
+
+      animationFrameRef.current = requestAnimationFrame(animateDashes);
+    };
+
+    animateDashes();
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [isMapLoaded, visibleRoutes]);
+
+  const STYLE_VERSION = 'ne110m-local-v2';
 
   // Custom antique nautical chart style using bundled Natural Earth GeoJSON (no external tile auth)
   const antiqueMapStyle: maplibregl.StyleSpecification = {
@@ -236,6 +375,9 @@ export function TradeRouteMap() {
             },
           });
 
+          // Ghost opacity for routes not yet established
+          const ghostOpacity = 0.03;
+
           // Outermost diffuse glow - prestige aura
           m?.addLayer({
             id: `route-aura-${index}`,
@@ -248,7 +390,7 @@ export function TradeRouteMap() {
             paint: {
               'line-color': '#5B005B', // Tyrian Purple
               'line-width': 18,
-              'line-opacity': 0.08,
+              'line-opacity': ghostOpacity,
               'line-blur': 8,
             },
           });
@@ -265,7 +407,7 @@ export function TradeRouteMap() {
             paint: {
               'line-color': '#7B1A7B', // Lighter Tyrian Purple
               'line-width': 10,
-              'line-opacity': 0.15,
+              'line-opacity': ghostOpacity,
               'line-blur': 4,
             },
           });
@@ -282,7 +424,7 @@ export function TradeRouteMap() {
             paint: {
               'line-color': '#8B2A8B',
               'line-width': 6,
-              'line-opacity': 0.25,
+              'line-opacity': ghostOpacity,
               'line-blur': 2,
             },
           });
@@ -299,7 +441,7 @@ export function TradeRouteMap() {
             paint: {
               'line-color': '#5B005B', // Tyrian Purple
               'line-width': 3,
-              'line-opacity': 0.9,
+              'line-opacity': ghostOpacity,
             },
           });
 
@@ -315,7 +457,7 @@ export function TradeRouteMap() {
             paint: {
               'line-color': '#d4a84b', // Gold accent
               'line-width': 1,
-              'line-opacity': 0.4,
+              'line-opacity': ghostOpacity,
               'line-dasharray': [8, 12],
             },
           });
@@ -329,7 +471,7 @@ export function TradeRouteMap() {
         const el = document.createElement('div');
         el.className = 'origin-marker';
         el.innerHTML = `
-          <div style="
+          <div class="marker-inner" style="
             width: 22px; 
             height: 22px; 
             background: radial-gradient(circle, #8b2942 40%, #6b1a32 100%);
@@ -338,6 +480,7 @@ export function TradeRouteMap() {
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(90,74,58,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
             position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
           ">
             <div style="
               position: absolute;
@@ -352,6 +495,7 @@ export function TradeRouteMap() {
           </div>
         `;
         el.addEventListener('click', () => setSelectedLocation(origin));
+        markerElementsRef.current.set(origin.name, el);
 
         const marker = new maplibregl.Marker({ element: el }).setLngLat(origin.coordinates).addTo(m!);
         markersRef.current.push(marker);
@@ -361,8 +505,11 @@ export function TradeRouteMap() {
       tradeRoutes.destinations.forEach((dest) => {
         const el = document.createElement('div');
         el.className = 'destination-marker';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.style.opacity = '0.3';
+        el.style.transform = 'scale(0.7)';
         el.innerHTML = `
-          <div style="
+          <div class="marker-inner" style="
             width: 14px; 
             height: 14px; 
             background: radial-gradient(circle, #c4a86a 30%, #a08050 100%);
@@ -370,9 +517,11 @@ export function TradeRouteMap() {
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 1px 4px rgba(90,74,58,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
           "></div>
         `;
         el.addEventListener('click', () => setSelectedLocation(dest));
+        markerElementsRef.current.set(dest.name, el);
 
         const marker = new maplibregl.Marker({ element: el }).setLngLat(dest.coordinates).addTo(m!);
         markersRef.current.push(marker);
@@ -386,11 +535,15 @@ export function TradeRouteMap() {
     }
 
     return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
       if (map.current && handleMapError) {
         map.current.off('error', handleMapError);
       }
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
+      markerElementsRef.current.clear();
       map.current?.remove();
       map.current = null;
     };
@@ -398,6 +551,34 @@ export function TradeRouteMap() {
 
   return (
     <div className="relative">
+      {/* CSS for marker animations */}
+      <style>{`
+        @keyframes markerPulse {
+          0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(212, 168, 75, 0.7);
+          }
+          50% {
+            transform: scale(1.3);
+            box-shadow: 0 0 20px 10px rgba(212, 168, 75, 0.4);
+          }
+          100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(212, 168, 75, 0);
+          }
+        }
+        
+        .marker-pulse .marker-inner {
+          animation: markerPulse 1.5s ease-out;
+        }
+        
+        .origin-marker:hover .marker-inner,
+        .destination-marker:hover .marker-inner {
+          transform: scale(1.15);
+          box-shadow: 0 4px 12px rgba(90, 74, 58, 0.6), 0 0 20px rgba(212, 168, 75, 0.3);
+        }
+      `}</style>
+
       {/* Engraved border frame */}
       <div className="absolute inset-0 pointer-events-none z-20">
         <div className="absolute inset-0 border-4 border-[#5a4a3a]/20" />
