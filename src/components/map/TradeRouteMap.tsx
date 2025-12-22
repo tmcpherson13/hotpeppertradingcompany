@@ -117,57 +117,67 @@ export function TradeRouteMap() {
     return yearToLocations[String(visibleYear)] || [];
   }, []);
 
-  // Custom antique nautical chart style
+  // Custom antique nautical chart style using free Protomaps tiles
   const antiqueMapStyle: maplibregl.StyleSpecification = {
     version: 8,
     name: 'Antique Nautical Chart',
     sources: {
-      'natural-earth': {
+      'protomaps': {
         type: 'vector',
-        url: 'https://tiles.stadiamaps.com/data/openmaptiles.json',
+        url: 'https://api.protomaps.com/tiles/v3.json?key=1003762824b9687f',
+        attribution: '© Protomaps © OpenStreetMap',
       },
     },
-    glyphs: 'https://tiles.stadiamaps.com/fonts/{fontstack}/{range}.pbf',
+    glyphs: 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
     layers: [
-      // Parchment background (land mass)
+      // Parchment background (ocean)
       {
         id: 'background',
         type: 'background',
         paint: {
-          'background-color': '#c2ad82', // Darker parchment so land reads clearly
+          'background-color': '#e8dcc4', // Light parchment for ocean
         },
       },
-      // Ocean water polygons (lighter parchment so sea reads distinct from land)
+      // Land mass fill - darker parchment
+      {
+        id: 'earth',
+        type: 'fill',
+        source: 'protomaps',
+        'source-layer': 'earth',
+        paint: {
+          'fill-color': '#c2ad82', // Darker parchment for land
+        },
+      },
+      // Water bodies (lakes, etc.)
       {
         id: 'water',
         type: 'fill',
-        source: 'natural-earth',
+        source: 'protomaps',
         'source-layer': 'water',
         paint: {
-          'fill-color': '#eee4cf',
-          'fill-opacity': 1,
-          'fill-outline-color': '#5a4a3a',
-        },
-      },
-      // Landcover adds subtle texture variation on land
-      {
-        id: 'landcover',
-        type: 'fill',
-        source: 'natural-earth',
-        'source-layer': 'landcover',
-        paint: {
-          'fill-color': '#a7936a',
-          'fill-opacity': 0.22,
+          'fill-color': '#ddd0b8',
+          'fill-opacity': 0.9,
         },
       },
       // Landuse for additional land detail
       {
         id: 'landuse',
         type: 'fill',
-        source: 'natural-earth',
+        source: 'protomaps',
         'source-layer': 'landuse',
         paint: {
           'fill-color': '#a89870',
+          'fill-opacity': 0.15,
+        },
+      },
+      // Natural areas (forests, parks)
+      {
+        id: 'natural',
+        type: 'fill',
+        source: 'protomaps',
+        'source-layer': 'natural',
+        paint: {
+          'fill-color': '#a7936a',
           'fill-opacity': 0.2,
         },
       },
@@ -175,36 +185,50 @@ export function TradeRouteMap() {
       {
         id: 'coastline',
         type: 'line',
-        source: 'natural-earth',
-        'source-layer': 'water',
+        source: 'protomaps',
+        'source-layer': 'earth',
         paint: {
           'line-color': '#5a4a3a',
           'line-width': 1.5,
-          'line-opacity': 0.7,
+          'line-opacity': 0.6,
         },
       },
       // Rivers with old map styling
       {
         id: 'waterway',
         type: 'line',
-        source: 'natural-earth',
-        'source-layer': 'waterway',
+        source: 'protomaps',
+        'source-layer': 'water',
+        filter: ['==', ['geometry-type'], 'LineString'],
         paint: {
           'line-color': '#8a7a6a',
           'line-width': 0.8,
           'line-opacity': 0.5,
         },
       },
+      // Country boundaries - subtle engraved lines
+      {
+        id: 'boundaries',
+        type: 'line',
+        source: 'protomaps',
+        'source-layer': 'boundaries',
+        paint: {
+          'line-color': '#8a7a6a',
+          'line-width': 0.5,
+          'line-opacity': 0.3,
+          'line-dasharray': [4, 2],
+        },
+      },
       // Country labels - engraved old-world style
       {
         id: 'country-labels',
         type: 'symbol',
-        source: 'natural-earth',
-        'source-layer': 'place',
-        filter: ['==', ['get', 'class'], 'country'],
+        source: 'protomaps',
+        'source-layer': 'places',
+        filter: ['==', ['get', 'pmap:kind'], 'country'],
         layout: {
-          'text-field': ['get', 'name:en'],
-          'text-font': ['Stadia Italic'], // Serif italic for old-world feel
+          'text-field': ['get', 'name'],
+          'text-font': ['Noto Sans Italic'],
           'text-size': 11,
           'text-transform': 'uppercase',
           'text-letter-spacing': 0.25,
@@ -218,16 +242,17 @@ export function TradeRouteMap() {
           'text-halo-blur': 0.5,
         },
       },
-      // Sea and ocean labels - flowing script style
+      // Sea and ocean labels
       {
         id: 'water-labels',
         type: 'symbol',
-        source: 'natural-earth',
-        'source-layer': 'water_name',
+        source: 'protomaps',
+        'source-layer': 'water',
+        filter: ['has', 'name'],
         layout: {
-          'text-field': ['get', 'name:en'],
-          'text-font': ['Stadia Italic'],
-          'text-size': 13,
+          'text-field': ['get', 'name'],
+          'text-font': ['Noto Sans Italic'],
+          'text-size': 12,
           'text-letter-spacing': 0.4,
           'text-max-width': 10,
           'symbol-placement': 'point',
@@ -236,27 +261,6 @@ export function TradeRouteMap() {
           'text-color': '#5a4a3a',
           'text-opacity': 0.35,
           'text-halo-color': '#ddd0b8',
-          'text-halo-width': 1,
-        },
-      },
-      // City/place labels - smaller engraved style
-      {
-        id: 'city-labels',
-        type: 'symbol',
-        source: 'natural-earth',
-        'source-layer': 'place',
-        filter: ['==', ['get', 'class'], 'city'],
-        minzoom: 4,
-        layout: {
-          'text-field': ['get', 'name:en'],
-          'text-font': ['Stadia Italic'],
-          'text-size': 9,
-          'text-letter-spacing': 0.1,
-        },
-        paint: {
-          'text-color': '#5a4a3a',
-          'text-opacity': 0.45,
-          'text-halo-color': '#e8dcc4',
           'text-halo-width': 1,
         },
       },
