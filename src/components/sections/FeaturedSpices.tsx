@@ -7,7 +7,7 @@ import spiceSaffron from '@/assets/spice-saffron.jpg';
 
 const spices = [
   {
-    name: 'Aleppo Pepper',
+    name: 'Aleppo Hot Pepper',
     origin: 'Syria',
     description: 'Sun-dried, hand-crushed. Notes of raisin and cumin with moderate heat.',
     price: '$24',
@@ -21,16 +21,16 @@ const spices = [
     image: spicePaprika,
   },
   {
-    name: 'Tellicherry Pepper',
-    origin: 'Malabar Coast, India',
-    description: 'Vine-ripened to perfection. Complex, bold, and aromatic.',
+    name: 'Bird\'s Eye Chili',
+    origin: 'Thailand',
+    description: 'Intense, fiery heat with bright citrus notes. A Southeast Asian staple.',
     price: '$22',
     image: spicePepper,
   },
   {
-    name: 'Persian Saffron',
-    origin: 'Khorasan, Iran',
-    description: 'Hand-harvested at dawn. The world\'s most precious spice.',
+    name: 'Carolina Reaper',
+    origin: 'South Carolina, USA',
+    description: 'The world\'s hottest pepper. Fruity sweetness followed by extreme heat.',
     price: '$48',
     image: spiceSaffron,
   },
@@ -52,7 +52,7 @@ export function FeaturedSpices() {
             <span className="text-tyrian text-xl px-4">✦</span>
           </div>
           <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
-            The Pepper Consortium
+            The Hot Pepper Consortium
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold mb-6">
             Regional Selections

@@ -3,15 +3,15 @@ import logoWhite from '@/assets/logo-white.png';
 
 const footerLinks = {
   shop: [
-    { name: 'All Spices', href: '#' },
-    { name: 'Pepper Collection', href: '#' },
+    { name: 'All Hot Peppers', href: '#' },
+    { name: 'Chili Collection', href: '#' },
     { name: 'Blends & Rubs', href: '#' },
     { name: 'Gift Sets', href: '#' },
   ],
   learn: [
     { name: 'Our Story', href: '#' },
     { name: 'Trade Routes', href: '#' },
-    { name: 'Spice Guide', href: '#' },
+    { name: 'Hot Pepper Guide', href: '#' },
     { name: 'Journal', href: '#' },
   ],
   support: [
@@ -37,13 +37,13 @@ export function Footer() {
               />
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
-              Purveyors of exceptional spices sourced from the world's most storied 
-              regions. Continuing traditions older than written history.
+              Purveyors of exceptional hot peppers sourced from the world's most storied 
+              regions. Continuing traditions that changed global cuisine.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
               <span className="text-gold">✦</span>
               <span className="font-body text-sm italic">
-                "Where the world's finest spices meet their legacy"
+                "Where the world's finest hot peppers meet their legacy"
               </span>
             </div>
           </div>

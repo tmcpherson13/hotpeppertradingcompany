@@ -4,21 +4,21 @@ import { MapPin, Ship, Compass } from 'lucide-react';
 
 const regions = [
   {
-    name: 'The Malabar Coast',
-    region: 'India',
-    description: 'The pepper kingdom. For two thousand years, ships from Rome, Greece, and Arabia anchored here seeking "black gold."',
+    name: 'The Americas',
+    region: 'Mexico & South America',
+    description: 'The birthplace of all hot peppers. From the ancient Aztecs to the Columbian Exchange, these lands gifted the world its fire.',
     icon: MapPin,
   },
   {
     name: 'The Levant',
     region: 'Syria & Turkey',
-    description: 'Crossroads of empires. Aleppo pepper, Urfa biber, and sumac have seasoned the cuisines of Byzantium, the Caliphate, and the Ottoman Empire.',
+    description: 'Crossroads of empires. Aleppo hot peppers, Urfa biber, and Maraş have seasoned the cuisines of Byzantium, the Caliphate, and the Ottoman Empire.',
     icon: Compass,
   },
   {
-    name: 'The Spice Islands',
-    region: 'Indonesia',
-    description: 'The source of nutmeg and clove. So valuable were these islands that European powers waged wars for their control.',
+    name: 'Southeast Asia',
+    region: 'Thailand & Indonesia',
+    description: 'Where hot peppers found their second home. Bird\'s eye chilies and fiery sambals became essential to regional cuisines.',
     icon: Ship,
   },
 ];
@@ -100,7 +100,7 @@ export function TradeRoutes() {
           className="text-center"
         >
           <p className="text-primary-foreground/70 font-body text-sm mb-6">
-            Coming soon: An interactive map of the ancient spice routes
+            Coming soon: An interactive map of the global hot pepper routes
           </p>
           <Button variant="parchment" size="lg">
             Join the Expedition

@@ -50,19 +50,19 @@ export function Heritage() {
 
             <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">
               <p>
-                For millennia, the spice trade shaped civilizations. Phoenician merchants 
-                braved the Mediterranean, their ships laden with precious cargo—cinnamon 
-                from Ceylon, pepper from Malabar, saffron from Persia.
+                Hot peppers originated in the Americas and transformed global cuisine 
+                through the Columbian Exchange. From Mexico to India, from Africa to 
+                Asia, these fiery fruits reshaped how the world eats.
               </p>
               <p>
                 At Hot Pepper Trading Company, we honor this legacy. We work directly 
-                with growers in the world's most storied spice regions, following 
-                trade routes that have remained unchanged for centuries.
+                with growers in the world's most storied hot pepper regions, following 
+                trade routes that spread capsicum across continents.
               </p>
               <p>
                 Every jar we offer tells a story of geography, culture, and 
                 generations of craft. This is not merely commerce—it is the 
-                continuation of a tradition older than written history.
+                continuation of a tradition that changed human history.
               </p>
             </div>
 
