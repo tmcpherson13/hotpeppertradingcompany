@@ -192,23 +192,67 @@ export function TradeRouteMap() {
           'line-opacity': 0.5,
         },
       },
-      // Place labels in antique style
+      // Country labels - engraved old-world style
       {
-        id: 'place-labels',
+        id: 'country-labels',
         type: 'symbol',
         source: 'natural-earth',
         'source-layer': 'place',
         filter: ['==', ['get', 'class'], 'country'],
         layout: {
           'text-field': ['get', 'name:en'],
-          'text-font': ['Stadia Regular'],
-          'text-size': 10,
+          'text-font': ['Stadia Italic'], // Serif italic for old-world feel
+          'text-size': 11,
           'text-transform': 'uppercase',
-          'text-letter-spacing': 0.15,
+          'text-letter-spacing': 0.25,
+          'text-max-width': 8,
         },
         paint: {
-          'text-color': '#6a5a4a',
-          'text-opacity': 0.6,
+          'text-color': '#4a3a2a',
+          'text-opacity': 0.5,
+          'text-halo-color': '#e8dcc4',
+          'text-halo-width': 1.5,
+          'text-halo-blur': 0.5,
+        },
+      },
+      // Sea and ocean labels - flowing script style
+      {
+        id: 'water-labels',
+        type: 'symbol',
+        source: 'natural-earth',
+        'source-layer': 'water_name',
+        layout: {
+          'text-field': ['get', 'name:en'],
+          'text-font': ['Stadia Italic'],
+          'text-size': 13,
+          'text-letter-spacing': 0.4,
+          'text-max-width': 10,
+          'symbol-placement': 'point',
+        },
+        paint: {
+          'text-color': '#5a4a3a',
+          'text-opacity': 0.35,
+          'text-halo-color': '#ddd0b8',
+          'text-halo-width': 1,
+        },
+      },
+      // City/place labels - smaller engraved style
+      {
+        id: 'city-labels',
+        type: 'symbol',
+        source: 'natural-earth',
+        'source-layer': 'place',
+        filter: ['==', ['get', 'class'], 'city'],
+        minzoom: 4,
+        layout: {
+          'text-field': ['get', 'name:en'],
+          'text-font': ['Stadia Italic'],
+          'text-size': 9,
+          'text-letter-spacing': 0.1,
+        },
+        paint: {
+          'text-color': '#5a4a3a',
+          'text-opacity': 0.45,
           'text-halo-color': '#e8dcc4',
           'text-halo-width': 1,
         },
