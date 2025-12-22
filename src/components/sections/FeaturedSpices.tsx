@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { TradeRoutePattern, TradeRouteDivider } from '@/components/ui/TradeRoutePattern';
 import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
 import spicePepper from '@/assets/spice-pepper.jpg';
@@ -38,8 +39,15 @@ const spices = [
 
 export function FeaturedSpices() {
   return (
-    <section id="collection" className="py-24 bg-background paper-texture">
-      <div className="container mx-auto px-4">
+    <section id="collection" className="relative py-24 bg-background paper-texture overflow-hidden">
+      {/* Trade Route Background Pattern */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full" 
+        variant="tyrian" 
+        opacity={0.06} 
+      />
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -48,9 +56,7 @@ export function FeaturedSpices() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="vintage-divider mb-8">
-            <span className="text-tyrian text-xl px-4">✦</span>
-          </div>
+          <TradeRouteDivider className="mb-8" />
           <p className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em] mb-4">
             The Hot Pepper Consortium
           </p>

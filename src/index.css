@@ -211,7 +211,15 @@
   .vintage-divider::before,
   .vintage-divider::after {
     content: '';
-    @apply flex-1 h-px bg-border;
+    @apply flex-1 h-px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--border)) 20%,
+      hsl(var(--tyrian) / 0.3) 50%,
+      hsl(var(--border)) 80%,
+      transparent
+    );
   }
 
   .vintage-divider::before {
@@ -220,6 +228,36 @@
 
   .vintage-divider::after {
     @apply ml-4;
+  }
+
+  /* Trade Route Background Pattern */
+  .trade-route-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath d='M0,200 Q200,150 400,200 T800,180' fill='none' stroke='%235B005B' stroke-width='1' stroke-dasharray='8,6' opacity='0.08'/%3E%3Cpath d='M0,250 Q150,220 350,250 T700,220 L800,240' fill='none' stroke='%235B005B' stroke-width='0.8' stroke-dasharray='6,8' opacity='0.06'/%3E%3Ccircle cx='400' cy='200' r='4' fill='%235B005B' opacity='0.1'/%3E%3Ccircle cx='200' cy='180' r='3' fill='%235B005B' opacity='0.08'/%3E%3Ccircle cx='600' cy='190' r='3' fill='%235B005B' opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Tyrian Route Accent */
+  .tyrian-route-accent {
+    position: relative;
+  }
+  
+  .tyrian-route-accent::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--tyrian) / 0.4) 30%,
+      hsl(var(--tyrian) / 0.6) 50%,
+      hsl(var(--tyrian) / 0.4) 70%,
+      transparent
+    );
   }
 
   /* Scroll reveal animation */

@@ -1,10 +1,18 @@
 import { motion } from 'framer-motion';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 export function Heritage() {
   return (
-    <section id="heritage" className="py-24 bg-card">
-      <div className="container mx-auto px-4">
+    <section id="heritage" className="relative py-24 bg-card overflow-hidden">
+      {/* Trade Route Background */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full" 
+        variant="subtle" 
+        opacity={0.08} 
+      />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}
           <motion.div
@@ -23,9 +31,9 @@ export function Heritage() {
               {/* Decorative overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-card/30 to-transparent" />
             </div>
-            {/* Decorative corner elements */}
-            <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-accent" />
-            <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-accent" />
+            {/* Decorative corner elements - Tyrian Purple accent */}
+            <div className="absolute -top-3 -left-3 w-12 h-12 border-t-2 border-l-2 border-tyrian" />
+            <div className="absolute -bottom-3 -right-3 w-12 h-12 border-b-2 border-r-2 border-tyrian" />
           </motion.div>
 
           {/* Content */}
@@ -37,7 +45,9 @@ export function Heritage() {
             className="space-y-6"
           >
             <div className="flex items-center gap-4">
-              <span className="text-accent text-xl">✦</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" className="text-tyrian">
+                <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
+              </svg>
               <span className="text-muted-foreground font-body text-sm uppercase tracking-[0.3em]">
                 Our Heritage
               </span>
@@ -45,7 +55,7 @@ export function Heritage() {
 
             <h2 className="font-display text-3xl md:text-5xl text-foreground font-semibold leading-tight">
               Guardians of the <br />
-              <span className="italic text-accent">Ancient Routes</span>
+              <span className="italic text-tyrian">Ancient Routes</span>
             </h2>
 
             <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">
@@ -66,14 +76,19 @@ export function Heritage() {
               </p>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border mt-8">
+            {/* Stats with route connectors */}
+            <div className="relative grid grid-cols-3 gap-6 pt-8 border-t border-border mt-8">
+              {/* Route line connecting stats */}
+              <div className="absolute top-0 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-tyrian/30 to-transparent" />
+              
               {[
                 { value: '27', label: 'Countries' },
                 { value: '150+', label: 'Artisan Growers' },
-                { value: '3000', label: 'Years of Tradition' },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
+                { value: '500', label: 'Years of Trade' },
+              ].map((stat, index) => (
+                <div key={stat.label} className="text-center relative">
+                  {/* Waypoint marker */}
+                  <div className="absolute -top-[17px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-tyrian/50" />
                   <div className="font-display text-2xl md:text-3xl text-foreground font-semibold">
                     {stat.value}
                   </div>
