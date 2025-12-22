@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import logoDark from '@/assets/logo-dark.jpg';
 
 const navLinks = [
   { name: 'Collection', href: '#collection' },
@@ -18,13 +18,12 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex flex-col items-center">
-            <span className="font-display text-xl md:text-2xl font-semibold text-foreground tracking-wide">
-              Hot Pepper
-            </span>
-            <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground -mt-1">
-              Trading Company
-            </span>
+          <a href="/" className="flex items-center">
+            <img 
+              src={logoDark} 
+              alt="Hot Pepper Trading Company" 
+              className="h-14 w-auto"
+            />
           </a>
 
           {/* Desktop Navigation */}
