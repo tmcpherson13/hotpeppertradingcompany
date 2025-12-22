@@ -20,6 +20,7 @@ const buttonVariants = cva(
         parchment: "bg-card text-card-foreground border-2 border-border hover:border-primary hover:bg-muted rounded-sm",
         tyrian: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-elegant uppercase tracking-widest rounded-sm",
         gold: "bg-gold text-foreground hover:bg-gold/90 shadow-elegant rounded-sm",
+        pepper: "bg-pepper-red text-parchment hover:bg-pepper-red/90 shadow-elegant uppercase tracking-widest rounded-sm border border-pepper-red/30",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -77,6 +77,7 @@ export default {
         },
         tyrian: "hsl(var(--tyrian))",
         gold: "hsl(var(--gold-accent))",
+        "pepper-red": "hsl(var(--pepper-red))",
       },
       borderRadius: {
         lg: "var(--radius)",
