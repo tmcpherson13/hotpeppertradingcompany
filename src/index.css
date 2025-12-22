@@ -157,6 +157,38 @@
       radial-gradient(ellipse at 50% 50%, hsla(35 30% 85% / 0.05) 0%, transparent 70%);
   }
 
+  /* Hero Parchment Overlay - Aged Map Effect */
+  .hero-parchment-overlay {
+    background-image: 
+      /* Aged stain spots */
+      radial-gradient(ellipse at 15% 25%, hsla(30 40% 35% / 0.15) 0%, transparent 40%),
+      radial-gradient(ellipse at 85% 15%, hsla(25 35% 30% / 0.12) 0%, transparent 35%),
+      radial-gradient(ellipse at 70% 75%, hsla(28 38% 32% / 0.1) 0%, transparent 45%),
+      radial-gradient(ellipse at 25% 80%, hsla(32 30% 28% / 0.08) 0%, transparent 50%),
+      /* Subtle paper grain */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+  }
+
+  /* Hero Vignette - Cinematic darkening at edges */
+  .hero-vignette {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 50%,
+      transparent 30%,
+      hsla(25 30% 8% / 0.3) 70%,
+      hsla(25 30% 5% / 0.6) 100%
+    );
+  }
+
+  /* Engraved Text Effect */
+  .hero-engraved-text {
+    text-shadow: 
+      0 1px 0 hsla(40 40% 95% / 0.1),
+      0 -1px 2px hsla(25 30% 10% / 0.3),
+      0 2px 4px hsla(25 30% 10% / 0.2);
+  }
+
   /* Engraved Line Effect */
   .engraved-border {
     border: 1px solid hsl(var(--border));
