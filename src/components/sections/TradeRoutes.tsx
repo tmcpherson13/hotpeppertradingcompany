@@ -6,22 +6,22 @@ import antiqueMap from '@/assets/antique-map.jpg';
 const regions = [
   {
     name: 'The Americas',
-    region: 'Mexico & South America',
-    description: 'The birthplace of all hot peppers. From the ancient Aztecs to the Columbian Exchange, these lands gifted the world its fire.',
+    region: 'Mexico & Central America',
+    description: 'Origin point of all capsicum species. Domesticated circa 4000 BCE. Source of Poblano, Serrano, Habanero, and most commercial varieties.',
     icon: MapPin,
     coordinates: '19°N 99°W',
   },
   {
     name: 'The Levant',
     region: 'Syria & Turkey',
-    description: 'Crossroads of empires. Aleppo hot peppers, Urfa biber, and Maraş have seasoned the cuisines of Byzantium, the Caliphate, and the Ottoman Empire.',
+    description: 'Primary source for Aleppo pepper, Urfa biber, and Marash. Cultivation established by 1600. Distinct terroir produces unique flavor profiles.',
     icon: Compass,
     coordinates: '36°N 37°E',
   },
   {
     name: 'Southeast Asia',
     region: 'Thailand & Indonesia',
-    description: 'Where hot peppers found their second home. Bird\'s eye chilies and fiery sambals became essential to regional cuisines.',
+    description: 'Adopted capsicum within fifty years of introduction. Now produces Bird\'s Eye, Thai Dragon, and regional sambal varieties. High pungency cultivars.',
     icon: Ship,
     coordinates: '13°N 100°E',
   },
@@ -45,14 +45,14 @@ export function TradeRoutes() {
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           </div>
           <p className="text-muted-foreground font-heading text-xs uppercase tracking-[0.3em] mb-3 small-caps">
-            Geography as Story
+            Sourcing Regions
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4 text-engraved">
-            The Trade Routes
+            Principal Trade Routes
           </h2>
           <p className="font-body text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Our hot peppers come from the same lands that transformed global cuisine. 
-            Explore the geography that shaped human history.
+            We maintain direct supplier relationships in three major capsicum-producing regions. 
+            Each offers distinct varieties shaped by local climate, soil, and tradition.
           </p>
         </motion.div>
 
@@ -170,11 +170,11 @@ export function TradeRoutes() {
                   >
                     <Anchor className="w-8 h-8 text-gold mx-auto mb-3" />
                     <h3 className="font-display text-lg md:text-xl text-foreground mb-2">
-                      Interactive Map Forthcoming
+                      Interactive Map in Development
                     </h3>
                     <p className="font-body text-sm text-muted-foreground max-w-md leading-relaxed">
-                      Chart the journey of hot peppers from the Americas across empires and oceans. 
-                      An immersive cartographic experience is in development.
+                      A detailed cartographic tool documenting the historical spread of 
+                      capsicum cultivation from the Americas to global trade networks.
                     </p>
                   </motion.div>
                 </div>
@@ -240,7 +240,7 @@ export function TradeRoutes() {
           className="text-center"
         >
           <Button variant="parchment" size="lg">
-            Join the Expedition
+            Request Trade Information
           </Button>
         </motion.div>
       </div>

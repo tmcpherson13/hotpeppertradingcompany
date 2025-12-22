@@ -60,19 +60,19 @@ export function Heritage() {
 
             <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">
               <p>
-                Hot peppers originated in the Americas and transformed global cuisine 
-                through the Columbian Exchange. From Mexico to India, from Africa to 
-                Asia, these fiery fruits reshaped how the world eats.
+                Capsicum peppers originated in the Americas more than six thousand years ago. 
+                The Columbian Exchange carried them across every ocean, and within decades 
+                they had become essential to cuisines that had never known them.
               </p>
               <p>
-                At Hot Pepper Trading Company, we honor this legacy. We work directly 
-                with growers in the world's most storied hot pepper regions, following 
-                trade routes that spread capsicum across continents.
+                We maintain direct relationships with growers in the principal hot pepper 
+                regions: the Levant, Southeast Asia, the Indian subcontinent, and the 
+                Americas. Each source is selected for quality, consistency, and adherence 
+                to traditional cultivation methods.
               </p>
               <p>
-                Every jar we offer tells a story of geography, culture, and 
-                generations of craft. This is not merely commerce—it is the 
-                continuation of a tradition that changed human history.
+                Our role is straightforward: to identify exceptional product, verify its 
+                provenance, and make it available to those who understand its value.
               </p>
             </div>
 

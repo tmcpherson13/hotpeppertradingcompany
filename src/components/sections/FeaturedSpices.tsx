@@ -8,42 +8,42 @@ import spiceSaffron from '@/assets/spice-saffron.jpg';
 
 const spices = [
   {
-    name: 'Aleppo Hot Pepper',
+    name: 'Aleppo Pepper',
     origin: 'Syria',
     region: 'The Levant',
     tradeLot: 'LOT № 1847',
     weight: '4 oz / 113g',
-    description: 'Sun-dried, hand-crushed. Notes of raisin and cumin with moderate heat.',
+    description: 'Sun-dried and hand-crushed. Moderate heat with fruity undertones of raisin and mild cumin. A foundation of Levantine cooking.',
     price: '$24',
     image: spiceChili,
   },
   {
-    name: 'Smoked Paprika',
-    origin: 'La Vera, Spain',
+    name: 'Pimentón de la Vera',
+    origin: 'Extremadura, Spain',
     region: 'Iberian Peninsula',
     tradeLot: 'LOT № 2391',
     weight: '3 oz / 85g',
-    description: 'Oak-smoked for weeks. Deep, earthy sweetness with lasting warmth.',
+    description: 'Oak-smoked for two weeks using traditional methods. Deep, earthy character with sustained warmth. Essential to Spanish cuisine.',
     price: '$18',
     image: spicePaprika,
   },
   {
-    name: 'Bird\'s Eye Chili',
+    name: 'Prik Kee Noo',
     origin: 'Thailand',
     region: 'Southeast Asia',
     tradeLot: 'LOT № 0762',
     weight: '2 oz / 57g',
-    description: 'Intense, fiery heat with bright citrus notes. A Southeast Asian staple.',
+    description: 'Intensely pungent with bright citrus notes. The defining heat of Thai cooking. Handle with appropriate care.',
     price: '$22',
     image: spicePepper,
   },
   {
     name: 'Carolina Reaper',
-    origin: 'South Carolina',
+    origin: 'South Carolina, USA',
     region: 'The Americas',
     tradeLot: 'LOT № 3104',
     weight: '1 oz / 28g',
-    description: 'The world\'s hottest pepper. Fruity sweetness followed by extreme heat.',
+    description: 'Verified at 2.2 million Scoville units. Initial fruity sweetness followed by extreme, persistent heat. For experienced users.',
     price: '$48',
     image: spiceSaffron,
   },
@@ -70,14 +70,14 @@ export function FeaturedSpices() {
         >
           <TradeRouteDivider className="mb-8" />
           <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
-            The Hot Pepper Consortium
+            Current Offerings
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
             Regional Selections
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Curated through historical trade networks and partnerships with 
-            artisan growers across three continents.
+            Each variety is sourced directly from growers in its region of origin. 
+            Provenance verified. Heat levels documented.
           </p>
         </motion.div>
 
@@ -167,7 +167,7 @@ export function FeaturedSpices() {
                       size="sm" 
                       className="w-full text-xs uppercase tracking-[0.15em] border-ink/30 text-ink hover:bg-ink hover:text-parchment"
                     >
-                      Add to Manifest
+                      Add to Order
                     </Button>
                   </div>
                 </div>
@@ -194,12 +194,12 @@ export function FeaturedSpices() {
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-px bg-gradient-to-r from-transparent to-ink/30" />
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                Complete Trade Inventory
+                Complete Inventory
               </span>
               <div className="w-16 h-px bg-gradient-to-l from-transparent to-ink/30" />
             </div>
             <Button variant="pepper" size="lg">
-              Browse Full Manifest
+              View All Varieties
             </Button>
           </div>
         </motion.div>
