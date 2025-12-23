@@ -33,12 +33,16 @@ const Compendium = () => {
               <span className="h-px w-12 bg-[#5a4a3a]/40" />
             </div>
             
+            <p className="font-heading text-xs uppercase tracking-[0.2em] text-[#5a4a3a]/70 mb-3">
+              Est. 1493 · Documented for the Discerning Merchant
+            </p>
+            
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl uppercase tracking-[0.2em] text-[#3a2a1a] mb-4">
               The Pepper Compendium
             </h1>
             
             <p className="font-body text-lg md:text-xl text-[#5a4a3a] max-w-2xl mx-auto italic">
-              A scholarly collection of capsicum varieties, their histories, and culinary applications
+              An Authoritative Reference of Capsicum Varieties Maintained by the Trading House
             </p>
             
             {/* Decorative divider */}
@@ -51,29 +55,71 @@ const Compendium = () => {
         </div>
       </section>
       
-      {/* Introduction Section */}
-      <section className="py-16 bg-background">
+      {/* Introduction Section - Archival Merchant Tone */}
+      <section className="py-16 bg-background border-b border-border">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl mx-auto"
           >
-            <p className="font-body text-lg leading-relaxed text-muted-foreground">
-              Within these pages lies centuries of accumulated knowledge—a treasury of pungent fruits 
-              that have shaped empires, ignited cuisines, and fueled the great maritime expeditions. 
-              Each variety herein has been catalogued with the precision befitting scholarly pursuit, 
-              noting provenance, character, and culinary virtue.
-            </p>
+            {/* Section heading */}
+            <div className="flex items-center gap-4 mb-6">
+              <span className="h-px flex-1 bg-border" />
+              <h2 className="font-heading text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Foreword from the Counting House
+              </h2>
+              <span className="h-px flex-1 bg-border" />
+            </div>
+            
+            <div className="space-y-4 text-center">
+              <p className="font-body text-lg leading-relaxed text-foreground">
+                This compendium serves as the official registry of the Hot Pepper Trading Company, 
+                documenting each variety of capsicum that has passed through our warehouses and 
+                counting houses since our establishment.
+              </p>
+              
+              <p className="font-body leading-relaxed text-muted-foreground">
+                Herein, the merchant or scholar shall find precise records of each pepper{"'"}s native 
+                origins, its measure of pungency according to the Scoville method, its characteristic 
+                flavors and aromas, and the historical trade routes by which it journeyed from the 
+                New World to kitchens across the globe. We have spared no effort in verifying 
+                provenance and documenting the circumstances of each variety{"'"}s introduction to 
+                the markets of Europe, Asia, and Africa.
+              </p>
+              
+              <p className="font-body text-sm leading-relaxed text-muted-foreground italic">
+                Let this volume serve those who seek not merely to purchase, but to understand—for 
+                in knowledge of origin lies appreciation of value, and in appreciation, fair commerce.
+              </p>
+            </div>
+            
+            {/* Decorative seal */}
+            <div className="mt-8 flex justify-center">
+              <div className="w-16 h-16 rounded-full border-2 border-[#5a4a3a]/30 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full border border-[#d4a84b]/50 flex items-center justify-center">
+                  <span className="font-display text-xs text-[#5a4a3a]/70">HPTC</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
       
-      {/* Compendium Categories */}
+      {/* Compendium Categories - Registry Sections */}
       <section className="py-16 bg-card">
         <div className="container mx-auto px-4">
+          {/* Section heading */}
+          <div className="flex items-center gap-4 mb-10 max-w-3xl mx-auto">
+            <span className="h-px flex-1 bg-border" />
+            <h2 className="font-heading text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              Registry Indices
+            </h2>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Category Card: By Heat */}
             <motion.div
@@ -90,14 +136,15 @@ const Compendium = () => {
               
               <Flame className="w-10 h-10 text-primary mb-4" />
               <h3 className="font-display text-xl uppercase tracking-wider text-foreground mb-3">
-                By Pungency
+                Index by Pungency
               </h3>
               <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">
-                From the gentle warmth of the Poblano to the fearsome intensity of the Carolina Reaper—
-                varieties arranged by their Scoville measure.
+                Varieties arranged according to their capsaicin concentration, measured in Scoville 
+                Heat Units. From mild cultivars suitable for delicate palates to specimens requiring 
+                considerable fortitude.
               </p>
               <span className="font-heading text-xs uppercase tracking-[0.15em] text-primary/70">
-                Coming Soon
+                Transcription in Progress
               </span>
             </motion.div>
             
@@ -116,18 +163,19 @@ const Compendium = () => {
               
               <MapPin className="w-10 h-10 text-primary mb-4" />
               <h3 className="font-display text-xl uppercase tracking-wider text-foreground mb-3">
-                By Provenance
+                Index by Provenance
               </h3>
               <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">
-                Peppers catalogued by their lands of origin—from the highlands of Oaxaca to the 
-                fertile valleys of Calabria.
+                Geographical cataloguing of varieties by their lands of cultivation—noting both 
+                original New World habitats and the regions to which they were subsequently 
+                transplanted by trade.
               </p>
               <span className="font-heading text-xs uppercase tracking-[0.15em] text-primary/70">
-                Coming Soon
+                Transcription in Progress
               </span>
             </motion.div>
             
-            {/* Category Card: By Era */}
+            {/* Category Card: By Trade Route */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -142,21 +190,22 @@ const Compendium = () => {
               
               <Calendar className="w-10 h-10 text-primary mb-4" />
               <h3 className="font-display text-xl uppercase tracking-wider text-foreground mb-3">
-                By Historical Era
+                Index by Trade Route
               </h3>
               <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">
-                A chronological journey through capsicum cultivation—from pre-Columbian domestication 
-                to modern hybrid cultivars.
+                Documentation of the maritime and overland passages by which each variety reached 
+                its current markets—the Portuguese Cape Route, Spanish Manila Galleons, and the 
+                ancient Silk Road.
               </p>
               <span className="font-heading text-xs uppercase tracking-[0.15em] text-primary/70">
-                Coming Soon
+                Transcription in Progress
               </span>
             </motion.div>
           </div>
         </div>
       </section>
       
-      {/* Call to Action */}
+      {/* Closing Note - Archival Footer */}
       <section className="py-20 bg-[#e8dcc4]">
         <div className="container mx-auto px-4 text-center">
           <motion.div
@@ -164,19 +213,25 @@ const Compendium = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto"
           >
             <h2 className="font-display text-2xl md:text-3xl uppercase tracking-[0.15em] text-[#3a2a1a] mb-6">
-              The Archives Await
+              A Living Document
             </h2>
-            <p className="font-body text-[#5a4a3a] max-w-xl mx-auto mb-8">
-              Our scholars are diligently expanding this compendium. Return often to discover 
-              newly catalogued varieties and freshly transcribed historical accounts.
+            <p className="font-body text-[#5a4a3a] mb-4">
+              This registry is under continuous expansion as our agents acquire new specimens and 
+              our archivists complete their transcriptions of historical trading records. The 
+              discerning reader is invited to return as new entries are added to these pages.
+            </p>
+            <p className="font-body text-sm text-[#5a4a3a]/70 italic mb-8">
+              For inquiries regarding specific varieties or trading terms, consult our inventory 
+              or direct correspondence to the counting house.
             </p>
             <a 
-              href="/#collection" 
-              className="inline-block px-8 py-3 bg-primary text-primary-foreground font-heading text-sm uppercase tracking-[0.15em] hover:bg-primary/90 transition-colors border border-primary"
+              href="/" 
+              className="inline-block px-8 py-3 bg-transparent text-[#3a2a1a] font-heading text-sm uppercase tracking-[0.15em] hover:bg-[#5a4a3a]/10 transition-colors border border-[#5a4a3a]/50"
             >
-              Browse Current Inventory
+              Return to Trading House
             </a>
           </motion.div>
         </div>
