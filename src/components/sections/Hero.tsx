@@ -6,6 +6,13 @@ import heroImage from '@/assets/hero-spice-trade.jpg';
 import logoWhite from '@/assets/logo-white.svg';
 
 export function Hero() {
+  const scrollToHeritage = () => {
+    const heritageSection = document.getElementById('heritage');
+    if (heritageSection) {
+      heritageSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -150,8 +157,13 @@ export function Hero() {
             <Button variant="pepper" size="xl" className="min-w-[220px]" asChild>
               <Link to="/compendium">View Current Inventory</Link>
             </Button>
-            <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary" asChild>
-              <Link to="/#heritage">Learn About Our Heritage</Link>
+            <Button 
+              variant="outline" 
+              size="xl" 
+              className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary"
+              onClick={scrollToHeritage}
+            >
+              Learn About Our Heritage
             </Button>
           </motion.div>
         </motion.div>
