@@ -155,7 +155,7 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(6,75%,45%,0.5)]" asChild>
-              <Link to="/compendium" onClick={() => window.scrollTo(0, 0)}>View Current Consignment</Link>
+              <a href="#collection">View Current Consignment</a>
             </Button>
             <Button 
               variant="tyrian" 
