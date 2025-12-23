@@ -104,7 +104,7 @@ const Compendium = () => {
               The Pepper Compendium
             </h1>
 
-            <div className="font-body text-base md:text-lg text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto space-y-4">
+            <div className="font-body text-lg md:text-xl text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto space-y-4">
               <p>
                 The Pepper Compendium is the trading house's record of peppers — their origins, 
                 character, heat, and the routes by which they traveled the world.
