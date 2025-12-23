@@ -4,6 +4,7 @@ export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'V
 export interface Pepper {
   id: string;
   name: string;
+  alternateNames?: string[];
   scientificName: string;
   species: Species;
   origin: string;
@@ -29,6 +30,7 @@ export const peppers: Pepper[] = [
   {
     id: 'aleppo',
     name: 'Aleppo Pepper',
+    alternateNames: ['Halaby Pepper', 'Pul Biber', 'Fleur de Sel of Peppers'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Syria',
@@ -52,6 +54,7 @@ export const peppers: Pepper[] = [
   {
     id: 'kashmiri',
     name: 'Kashmiri Chili',
+    alternateNames: ['Kashmiri Mirch', 'Deghi Mirch'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'India',
@@ -75,6 +78,7 @@ export const peppers: Pepper[] = [
   {
     id: 'birds-eye',
     name: "Bird's Eye Chili",
+    alternateNames: ['Thai Chili', 'Prik Ki Nu', 'Siling Labuyo'],
     scientificName: 'Capsicum frutescens',
     species: 'frutescens',
     origin: 'Thailand',
@@ -96,6 +100,7 @@ export const peppers: Pepper[] = [
   {
     id: 'hungarian-paprika',
     name: 'Hungarian Paprika',
+    alternateNames: ['Magyar Paprika', 'Sweet Paprika', 'Édesnemes'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Hungary',
@@ -119,6 +124,7 @@ export const peppers: Pepper[] = [
   {
     id: 'scotch-bonnet',
     name: 'Scotch Bonnet',
+    alternateNames: ['Bonney Pepper', 'Caribbean Red', 'Bahama Mama'],
     scientificName: 'Capsicum chinense',
     species: 'chinense',
     origin: 'Caribbean',
@@ -140,6 +146,7 @@ export const peppers: Pepper[] = [
   {
     id: 'piri-piri',
     name: 'Piri Piri',
+    alternateNames: ['Peri Peri', 'African Bird\'s Eye', 'Malagueta'],
     scientificName: 'Capsicum frutescens',
     species: 'frutescens',
     origin: 'Africa',
@@ -163,6 +170,7 @@ export const peppers: Pepper[] = [
   {
     id: 'sichuan-facing-heaven',
     name: 'Facing Heaven Pepper',
+    alternateNames: ['Chao Tian Jiao', 'Pointing Sky Pepper', 'Sichuan Chili'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'China',
@@ -184,6 +192,7 @@ export const peppers: Pepper[] = [
   {
     id: 'urfa-biber',
     name: 'Urfa Biber',
+    alternateNames: ['Isot Pepper', 'Urfa Flakes'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Turkey',
@@ -207,6 +216,7 @@ export const peppers: Pepper[] = [
   {
     id: 'habanero',
     name: 'Habanero',
+    alternateNames: ['Havana Pepper', 'Chile Habanero'],
     scientificName: 'Capsicum chinense',
     species: 'chinense',
     origin: 'Mexico',
@@ -230,6 +240,7 @@ export const peppers: Pepper[] = [
   {
     id: 'poblano',
     name: 'Poblano',
+    alternateNames: ['Ancho (dried)', 'Chile Poblano', 'Pasilla (in some regions)'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Mexico',
@@ -251,6 +262,7 @@ export const peppers: Pepper[] = [
   {
     id: 'calabrian',
     name: 'Calabrian Chili',
+    alternateNames: ['Peperoncino Calabrese', 'Diavolicchio'],
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Italy',
@@ -274,6 +286,7 @@ export const peppers: Pepper[] = [
   {
     id: 'aji-amarillo',
     name: 'Ají Amarillo',
+    alternateNames: ['Yellow Pepper', 'Ají Escabeche', 'Cusqueño'],
     scientificName: 'Capsicum baccatum',
     species: 'baccatum',
     origin: 'Peru',
@@ -297,6 +310,7 @@ export const peppers: Pepper[] = [
   {
     id: 'carolina-reaper',
     name: 'Carolina Reaper',
+    alternateNames: ['HP22B', 'Reaper'],
     scientificName: 'Capsicum chinense',
     species: 'chinense',
     origin: 'United States',
@@ -318,6 +332,7 @@ export const peppers: Pepper[] = [
   {
     id: 'rocoto',
     name: 'Rocoto',
+    alternateNames: ['Locoto', 'Manzano Pepper', 'Perón'],
     scientificName: 'Capsicum pubescens',
     species: 'pubescens',
     origin: 'Peru',

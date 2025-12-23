@@ -138,7 +138,12 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
             <DialogTitle className="font-display text-2xl uppercase tracking-[0.1em] text-[#3a2a1a]">
               {pepper.name}
             </DialogTitle>
-            <p className="font-body text-sm italic text-[#5a4a3a]">
+            {pepper.alternateNames && pepper.alternateNames.length > 0 && (
+              <p className="font-body text-xs text-[#5a4a3a]/50 mt-0.5">
+                Also known as: {pepper.alternateNames.join(', ')}
+              </p>
+            )}
+            <p className="font-body text-sm italic text-[#5a4a3a] mt-1">
               {speciesDisplayNames[pepper.species] || pepper.scientificName}
             </p>
           </DialogHeader>

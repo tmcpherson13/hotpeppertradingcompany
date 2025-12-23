@@ -24,11 +24,14 @@ const Compendium = () => {
         return false;
       }
 
-      // Search filter
+      // Search filter - includes alternate names
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        const matchesSearch = pepper.name.toLowerCase().includes(query);
-        if (!matchesSearch) return false;
+        const matchesName = pepper.name.toLowerCase().includes(query);
+        const matchesAlternate = pepper.alternateNames?.some(
+          altName => altName.toLowerCase().includes(query)
+        ) || false;
+        if (!matchesName && !matchesAlternate) return false;
       }
 
       // Region filter
