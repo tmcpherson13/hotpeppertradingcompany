@@ -1,6 +1,19 @@
-import { Pepper, speciesDisplayNames } from '@/data/peppers';
+import { Pepper, speciesDisplayNames, PepperImage } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
+
+// Helper to get primary image from gallery or legacy sources
+const getPrimaryImage = (pepper: Pepper): string | undefined => {
+  // First check gallery
+  if (pepper.gallery && pepper.gallery.length > 0) {
+    const primary = pepper.gallery.find(img => img.isPrimary) || pepper.gallery[0];
+    return primary.url;
+  }
+  // Fallback to legacy imageUrl
+  if (pepper.imageUrl) return pepper.imageUrl;
+  // Finally try pepperImages map
+  return getPepperImage(pepper.id);
+};
 
 interface PepperLedgerProps {
   peppers: Pepper[];
@@ -50,7 +63,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
       {/* Archival Catalog Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {peppers.map((pepper) => {
-          const pepperImage = getPepperImage(pepper.id);
+          const pepperImage = getPrimaryImage(pepper);
           const showThumbnail = !!pepperImage;
           
           return (
