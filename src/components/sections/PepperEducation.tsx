@@ -71,50 +71,130 @@ export function PepperEducation() {
             </p>
           </div>
 
-          {/* Educational Content */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {/* Educational Content - Nautical Themed Cards */}
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-16">
             {facts.map((fact, index) => (
               <motion.div
                 key={fact.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center p-6 relative group"
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className="relative"
               >
-                {/* Subtle route connector */}
+                {/* Route connector between cards */}
                 {index < facts.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-px bg-gradient-to-r from-primary/30 to-transparent" />
-                )}
-                {fact.link ? (
-                  <Link to={fact.link} className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-primary/20 mb-6 transition-all duration-300 hover:bg-primary/20 hover:border-primary/40 hover:scale-105 cursor-pointer">
-                    <fact.icon className="w-7 h-7 text-primary" />
-                  </Link>
-                ) : (
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-primary/20 mb-6 opacity-70">
-                    <fact.icon className="w-7 h-7 text-primary" />
+                  <div className="hidden md:flex absolute top-1/2 -right-3 lg:-right-4 w-6 lg:w-8 items-center justify-center z-10">
+                    <div className="w-full h-px border-t-2 border-dashed border-tyrian/40" />
+                    <svg className="absolute w-3 h-3" viewBox="0 0 12 12">
+                      <polygon 
+                        points="6,0 7.5,4.5 12,6 7.5,7.5 6,12 4.5,7.5 0,6 4.5,4.5" 
+                        fill="hsl(var(--tyrian))" 
+                        fillOpacity="0.5"
+                      />
+                    </svg>
                   </div>
                 )}
-                <h3 className="font-display text-xl text-foreground font-semibold mb-3">
-                  {fact.link ? (
-                    <Link to={fact.link} className="hover:text-primary transition-colors">
+
+                <Link 
+                  to={fact.link} 
+                  className="block group h-full"
+                >
+                  <div className="relative h-full bg-parchment border-2 border-tyrian/30 p-6 lg:p-8
+                                  transition-all duration-300 hover:border-tyrian/60 
+                                  hover:shadow-[0_8px_30px_-10px_hsl(var(--tyrian)/0.3)]
+                                  group-hover:scale-[1.02]">
+                    
+                    {/* Corner decorations */}
+                    <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-tyrian/50" />
+                    <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-tyrian/50" />
+                    <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-tyrian/50" />
+                    <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-tyrian/50" />
+                    
+                    {/* Inner border for cartouche effect */}
+                    <div className="absolute inset-[8px] border border-tyrian/15 pointer-events-none" />
+                    
+                    {/* Small corner dots */}
+                    <div className="absolute top-2 left-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
+                    <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
+                    <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
+                    <div className="absolute bottom-2 right-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
+                    
+                    {/* Icon badge with compass star shape */}
+                    <div className="relative w-20 h-20 mx-auto mb-6">
+                      <svg viewBox="0 0 80 80" className="w-full h-full">
+                        {/* 8-pointed star shape */}
+                        <polygon 
+                          points="40,4 46,30 72,30 52,48 58,74 40,58 22,74 28,48 8,30 34,30" 
+                          fill="hsl(var(--parchment))"
+                          stroke="hsl(var(--tyrian))" 
+                          strokeWidth="1.5"
+                          className="transition-all duration-300 group-hover:fill-tyrian/10"
+                        />
+                        {/* Inner circle */}
+                        <circle 
+                          cx="40" 
+                          cy="40" 
+                          r="18" 
+                          fill="none" 
+                          stroke="hsl(var(--tyrian))" 
+                          strokeWidth="0.75"
+                          strokeOpacity="0.4"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <fact.icon className="w-8 h-8 text-tyrian transition-transform duration-300 group-hover:scale-110" />
+                      </div>
+                    </div>
+                    
+                    {/* Category label */}
+                    <p className="font-heading text-[10px] uppercase tracking-[0.25em] text-tyrian/70 mb-2 text-center small-caps">
+                      Historical Era
+                    </p>
+                    
+                    {/* Title */}
+                    <h3 className="font-display text-xl text-tyrian text-center mb-3 text-engraved">
                       {fact.title}
-                    </Link>
-                  ) : (
-                    fact.title
-                  )}
-                </h3>
-                <p className="font-body text-muted-foreground leading-relaxed">
-                  {fact.description}
-                </p>
-                {fact.link && (
-                  <Link 
-                    to={fact.link} 
-                    className="inline-block mt-4 text-sm text-primary hover:text-primary/80 font-heading underline underline-offset-4 transition-colors"
-                  >
-                    Read the full history →
-                  </Link>
-                )}
+                    </h3>
+                    
+                    {/* Decorative divider */}
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <span className="w-8 h-px bg-gradient-to-r from-transparent to-tyrian/40" />
+                      <svg className="w-2 h-2" viewBox="0 0 8 8">
+                        <polygon points="4,0 5,3 8,4 5,5 4,8 3,5 0,4 3,3" fill="hsl(var(--tyrian))" fillOpacity="0.5" />
+                      </svg>
+                      <span className="w-8 h-px bg-gradient-to-l from-transparent to-tyrian/40" />
+                    </div>
+                    
+                    {/* Description */}
+                    <p className="font-body text-muted-foreground text-center leading-relaxed mb-6 text-sm">
+                      {fact.description}
+                    </p>
+                    
+                    {/* CTA Button */}
+                    <div className="text-center">
+                      <span className="inline-flex items-center gap-2 px-5 py-2.5 
+                                      bg-tyrian/10 border border-tyrian/30 
+                                      text-tyrian font-heading text-xs uppercase tracking-[0.15em]
+                                      transition-all duration-300 
+                                      group-hover:bg-tyrian group-hover:text-parchment
+                                      group-hover:border-tyrian">
+                        Explore History
+                        <svg 
+                          className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
