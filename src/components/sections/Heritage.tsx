@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import antiqueMap from '@/assets/antique-map.jpg';
+import logoDark from '@/assets/logo-dark.jpg';
 
 export function Heritage() {
   const scrollToEducation = () => {
@@ -52,9 +53,7 @@ export function Heritage() {
             className="space-y-6"
           >
             <div className="flex items-center gap-4">
-              <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary">
-                <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
-              </svg>
+              <img src={logoDark} alt="" className="h-5 w-auto" aria-hidden="true" />
               <span className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] small-caps">
                 Our Heritage
               </span>
