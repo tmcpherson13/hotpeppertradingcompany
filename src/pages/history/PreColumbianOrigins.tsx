@@ -133,7 +133,7 @@ export default function PreColumbianOrigins() {
           <img 
             src={logoDark} 
             alt="Hot Pepper Trading Company" 
-            className="absolute top-12 right-8 md:right-20 w-[140px] h-[140px] object-contain mix-blend-multiply opacity-80"
+            className="absolute top-12 right-8 md:right-20 w-[186px] h-[186px] object-contain mix-blend-multiply opacity-80"
           />
           
           <div className="container mx-auto px-4 relative z-10">
