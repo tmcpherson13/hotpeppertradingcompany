@@ -154,13 +154,13 @@ export function Hero() {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl" asChild>
+            <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(6,75%,45%,0.5)]" asChild>
               <Link to="/compendium">View Current Consignment</Link>
             </Button>
             <Button 
               variant="tyrian" 
               size="xl" 
-              className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl"
+              className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(300,100%,18%,0.5)]"
               onClick={scrollToHeritage}
             >
               Learn About Our Heritage
