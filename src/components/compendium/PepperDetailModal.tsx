@@ -1,6 +1,29 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Pepper, peppers, speciesDisplayNames } from '@/data/peppers';
+import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/peppers';
 import { Flame, MapPin, Package } from 'lucide-react';
+import { PepperGallery } from './PepperGallery';
+import { getPepperImage } from '@/data/pepperImages';
+
+// Helper to get gallery from pepper (with legacy fallback)
+const getGalleryFromPepper = (pepper: Pepper): PepperImage[] => {
+  if (pepper.gallery && pepper.gallery.length > 0) {
+    return pepper.gallery;
+  }
+  // Fallback to legacy imageUrl or pepperImages
+  const legacyUrl = pepper.imageUrl || getPepperImage(pepper.id);
+  if (legacyUrl) {
+    return [{
+      id: `${pepper.id}-primary`,
+      url: legacyUrl,
+      type: 'illustration',
+      isPrimary: true,
+      source: pepper.imageLicense ? 'wikimedia' : 'ai-generated',
+      license: pepper.imageLicense,
+      author: pepper.attributionText?.replace('Photo by ', '').split(',')[0],
+    }];
+  }
+  return [];
+};
 
 interface PepperDetailModalProps {
   pepper: Pepper | null;
@@ -151,18 +174,13 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
 
         {/* Content */}
         <div className="px-6 py-5 space-y-6">
-          {/* Pepper Image */}
-          {pepper.imageUrl && (
-            <div className="flex justify-center">
-              <div className="w-48 h-48 border-2 border-[#5a4a3a]/20 p-2 bg-[#e8dcc4]/30">
-                <img 
-                  src={pepper.imageUrl} 
-                  alt={pepper.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          )}
+          {/* Pepper Gallery */}
+          {(() => {
+            const gallery = getGalleryFromPepper(pepper);
+            return gallery.length > 0 ? (
+              <PepperGallery gallery={gallery} pepperName={pepper.name} />
+            ) : null;
+          })()}
 
           {/* Quick facts grid - Labeled Fields */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -348,19 +366,12 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           )}
         </div>
 
-        {/* Footer with Image Attribution */}
+        {/* Footer */}
         <div className="bg-[#e8dcc4]/50 px-6 py-3 border-t border-[#5a4a3a]/15">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <span className="font-body text-[10px] text-[#5a4a3a]/50 italic block">
                 Catalogued by the Hot Pepper Trading Company
-              </span>
-              {/* Image Attribution */}
-              <span className="font-body text-[9px] text-[#5a4a3a]/40 block mt-0.5">
-                {pepper.imageLicense && pepper.attributionText
-                  ? `Image: ${pepper.attributionText} (${pepper.imageLicense})`
-                  : 'Image license/attribution pending'
-                }
               </span>
             </div>
             <button
