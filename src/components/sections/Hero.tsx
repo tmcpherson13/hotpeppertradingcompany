@@ -158,9 +158,9 @@ export function Hero() {
               <Link to="/compendium">View Current Consignment</Link>
             </Button>
             <Button 
-              variant="outline" 
+              variant="tyrian" 
               size="xl" 
-              className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary"
+              className="min-w-[220px]"
               onClick={scrollToHeritage}
             >
               Learn About Our Heritage
