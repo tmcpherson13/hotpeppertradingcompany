@@ -22,9 +22,31 @@ export interface Pepper {
   culinaryUses: string[];
   pairings?: string[];
   inStock: boolean;
+  imageUrl?: string;
   imageLicense?: string;
   attributionText?: string;
 }
+
+// Import pepper images for in-stock items
+import aleppoImg from '@/assets/peppers/aleppo.jpg';
+import afterglowImg from '@/assets/peppers/afterglow.jpg';
+import ajiAmarilloImg from '@/assets/peppers/aji-amarillo.jpg';
+import ajiLimonImg from '@/assets/peppers/aji-limon.jpg';
+import anchoImg from '@/assets/peppers/ancho.jpg';
+import calabrianImg from '@/assets/peppers/calabrian.jpg';
+import datilImg from '@/assets/peppers/datil.jpg';
+import deArbolImg from '@/assets/peppers/de-arbol.jpg';
+import devilsBreathImg from '@/assets/peppers/devils-breath.jpg';
+import ghostImg from '@/assets/peppers/ghost.jpg';
+import gochugaruImg from '@/assets/peppers/gochugaru.jpg';
+import hatchGreenChiliImg from '@/assets/peppers/hatch-green-chili.jpg';
+import periPeriImg from '@/assets/peppers/peri-peri.jpg';
+import redJalapenoImg from '@/assets/peppers/red-jalapeno.jpg';
+import redSavinaHabaneroImg from '@/assets/peppers/red-savina-habanero.jpg';
+import scotchBonnetImg from '@/assets/peppers/scotch-bonnet.jpg';
+import thaiImg from '@/assets/peppers/thai.jpg';
+import trinidadScorpionImg from '@/assets/peppers/trinidad-scorpion.jpg';
+import wiriWiriImg from '@/assets/peppers/wiri-wiri.jpg';
 
 // Helper function to generate slug from name
 function generateId(name: string): string {
@@ -78,6 +100,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Kebabs', 'Mezze', 'Finishing spice'],
     inStock: true,
+    imageUrl: aleppoImg,
   },
   {
     id: 'afterglow',
@@ -96,6 +119,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Stir-fries', 'Seasoning'],
     inStock: true,
+    imageUrl: afterglowImg,
   },
   {
     id: 'aji-amarillo',
@@ -115,6 +139,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -3000,
     culinaryUses: ['Ceviche', 'Ají de gallina', 'Sauces'],
     inStock: true,
+    imageUrl: ajiAmarilloImg,
   },
   {
     id: 'aji-limon',
@@ -134,6 +159,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -2000,
     culinaryUses: ['Salsas', 'Sauces', 'Ceviche'],
     inStock: true,
+    imageUrl: ajiLimonImg,
   },
   {
     id: 'ancho',
@@ -153,6 +179,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -4000,
     culinaryUses: ['Mole', 'Sauces', 'Adobos'],
     inStock: true,
+    imageUrl: anchoImg,
   },
   {
     id: 'calabrian',
@@ -171,6 +198,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1535,
     culinaryUses: ['Pasta', 'Pizza', 'Oils'],
     inStock: true,
+    imageUrl: calabrianImg,
   },
   {
     id: 'datil',
@@ -190,6 +218,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1777,
     culinaryUses: ['Hot sauces', 'Marinades', 'Jellies'],
     inStock: true,
+    imageUrl: datilImg,
   },
   {
     id: 'de-arbol',
@@ -208,6 +237,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -4000,
     culinaryUses: ['Salsas', 'Oils', 'Flakes'],
     inStock: true,
+    imageUrl: deArbolImg,
   },
   {
     id: 'devils-breath',
@@ -227,6 +257,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1990,
     culinaryUses: ['Hot sauces', 'Marinades'],
     inStock: true,
+    imageUrl: devilsBreathImg,
   },
   {
     id: 'ghost',
@@ -245,6 +276,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1800,
     culinaryUses: ['Hot sauces', 'Powders', 'Extreme cuisine'],
     inStock: true,
+    imageUrl: ghostImg,
   },
   {
     id: 'gochugaru',
@@ -264,6 +296,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Kimchi', 'Gochujang', 'Banchan'],
     inStock: true,
+    imageUrl: gochugaruImg,
   },
   {
     id: 'hatch-green-chili',
@@ -283,6 +316,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1894,
     culinaryUses: ['Roasting', 'Stews', 'Chile verde'],
     inStock: true,
+    imageUrl: hatchGreenChiliImg,
   },
   {
     id: 'peri-peri',
@@ -301,6 +335,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1500,
     culinaryUses: ['Grilled chicken', 'Marinades', 'Hot sauces'],
     inStock: true,
+    imageUrl: periPeriImg,
   },
   {
     id: 'red-jalapeno',
@@ -319,6 +354,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -4000,
     culinaryUses: ['Salsas', 'Pickling', 'Smoking'],
     inStock: true,
+    imageUrl: redJalapenoImg,
   },
   {
     id: 'red-savina-habanero',
@@ -337,6 +373,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1989,
     culinaryUses: ['Hot sauces', 'Extreme cuisine'],
     inStock: true,
+    imageUrl: redSavinaHabaneroImg,
   },
   {
     id: 'scotch-bonnet',
@@ -355,6 +392,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -4000,
     culinaryUses: ['Jerk seasoning', 'Hot sauces', 'Curries'],
     inStock: true,
+    imageUrl: scotchBonnetImg,
   },
   {
     id: 'thai',
@@ -373,6 +411,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Curries', 'Stir-fries', 'Sauces'],
     inStock: true,
+    imageUrl: thaiImg,
   },
   {
     id: 'trinidad-scorpion',
@@ -391,6 +430,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2000,
     culinaryUses: ['Extreme hot sauces', 'Challenges'],
     inStock: true,
+    imageUrl: trinidadScorpionImg,
   },
   {
     id: 'wiri-wiri',
@@ -409,6 +449,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -2000,
     culinaryUses: ['Pepper sauces', 'Stews', 'Marinades'],
     inStock: true,
+    imageUrl: wiriWiriImg,
   },
   // ===== NOT IN STOCK PEPPERS (from CSV rows 21-124) =====
   {
