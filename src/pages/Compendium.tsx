@@ -190,6 +190,7 @@ const Compendium = () => {
         pepper={selectedPepper}
         open={modalOpen}
         onOpenChange={setModalOpen}
+        onSelectPepper={handleSelectPepper}
       />
 
       <Footer />
