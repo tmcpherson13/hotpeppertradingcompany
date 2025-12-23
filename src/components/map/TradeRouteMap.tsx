@@ -520,7 +520,59 @@ export function TradeRouteMap() {
     };
   }, [isMapLoaded, visibleRoutes]);
 
-  const STYLE_VERSION = 'ne110m-local-v2';
+  const STYLE_VERSION = 'ne110m-local-v3';
+
+  // Generate graticule (lat/long grid lines) GeoJSON for nautical navigation feel
+  const generateGraticule = (): GeoJSON.FeatureCollection => {
+    const features: GeoJSON.Feature[] = [];
+    
+    // Longitude lines (meridians) every 30 degrees
+    for (let lon = -180; lon <= 180; lon += 30) {
+      const coords: [number, number][] = [];
+      for (let lat = -90; lat <= 90; lat += 5) {
+        coords.push([lon, lat]);
+      }
+      features.push({
+        type: 'Feature',
+        properties: { type: 'meridian', value: lon },
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    }
+    
+    // Latitude lines (parallels) every 30 degrees
+    for (let lat = -60; lat <= 60; lat += 30) {
+      const coords: [number, number][] = [];
+      for (let lon = -180; lon <= 180; lon += 5) {
+        coords.push([lon, lat]);
+      }
+      features.push({
+        type: 'Feature',
+        properties: { type: 'parallel', value: lat },
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    }
+    
+    // Special lines: Equator, Tropics, Arctic/Antarctic circles
+    const specialLatitudes = [
+      { lat: 0, name: 'Equator' },
+      { lat: 23.5, name: 'Tropic of Cancer' },
+      { lat: -23.5, name: 'Tropic of Capricorn' },
+    ];
+    
+    specialLatitudes.forEach(({ lat, name }) => {
+      const coords: [number, number][] = [];
+      for (let lon = -180; lon <= 180; lon += 2) {
+        coords.push([lon, lat]);
+      }
+      features.push({
+        type: 'Feature',
+        properties: { type: 'special', name, value: lat },
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    });
+    
+    return { type: 'FeatureCollection', features };
+  };
 
   // Custom antique nautical chart style using bundled Natural Earth GeoJSON (no external tile auth)
   const antiqueMapStyle: maplibregl.StyleSpecification = {
@@ -539,23 +591,53 @@ export function TradeRouteMap() {
         type: 'geojson',
         data: '/data/ne_110m_coastline.geojson',
       },
+      graticule: {
+        type: 'geojson',
+        data: generateGraticule(),
+      },
     },
     layers: [
-      // Parchment ocean background
+      // Parchment ocean background - aged paper with subtle texture effect
       {
         id: 'background',
         type: 'background',
         paint: {
-          'background-color': '#e8dcc4',
+          'background-color': '#e4d5b7', // Warmer, more aged parchment
         },
       },
-      // Land mass fill
+      // Graticule lines - navigational grid (drawn first, under everything)
+      {
+        id: 'graticule-lines',
+        type: 'line',
+        source: 'graticule',
+        filter: ['!=', ['get', 'type'], 'special'],
+        paint: {
+          'line-color': '#8b7355',
+          'line-width': 0.5,
+          'line-opacity': 0.25,
+          'line-dasharray': [4, 4],
+        },
+      },
+      // Special latitude lines (Equator, Tropics) - slightly more prominent
+      {
+        id: 'graticule-special',
+        type: 'line',
+        source: 'graticule',
+        filter: ['==', ['get', 'type'], 'special'],
+        paint: {
+          'line-color': '#6b5344',
+          'line-width': 0.8,
+          'line-opacity': 0.35,
+          'line-dasharray': [8, 4],
+        },
+      },
+      // Land mass fill - aged vellum appearance
       {
         id: 'land',
         type: 'fill',
         source: 'land',
         paint: {
-          'fill-color': '#c2ad82',
+          'fill-color': '#c9b896', // Softer, more authentic parchment land
           'fill-opacity': 1,
         },
       },
@@ -565,19 +647,19 @@ export function TradeRouteMap() {
         type: 'fill',
         source: 'lakes',
         paint: {
-          'fill-color': '#ddd0b8',
+          'fill-color': '#d8ccb4',
           'fill-opacity': 0.9,
         },
       },
-      // Coastline - inked stroke
+      // Coastline - hand-inked stroke appearance
       {
         id: 'coastline',
         type: 'line',
         source: 'coastline',
         paint: {
-          'line-color': '#5a4a3a',
-          'line-width': 1.4,
-          'line-opacity': 0.65,
+          'line-color': '#4a3a2a',
+          'line-width': 1.6,
+          'line-opacity': 0.7,
         },
       },
     ],
