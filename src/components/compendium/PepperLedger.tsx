@@ -1,6 +1,7 @@
 import { Pepper, speciesDisplayNames, PepperImage } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
+import logoDark from '@/assets/logo-dark.jpg';
 
 // Helper to get primary image from gallery or legacy sources
 const getPrimaryImage = (pepper: Pepper): string | undefined => {
@@ -75,13 +76,17 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
           >
             {/* Decorative corner stamps */}
             <div className="absolute top-0 left-0 w-8 h-8 border-b border-r border-[#5a4a3a]/10" />
-            <div className="absolute top-0 right-0 w-8 h-8 border-b border-l border-[#5a4a3a]/10" />
             <div className="absolute bottom-0 left-0 w-8 h-8 border-t border-r border-[#5a4a3a]/10" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-t border-l border-[#5a4a3a]/10" />
 
+            {/* Logo watermark in top right */}
+            <div className="absolute top-2 right-2 z-0 opacity-15">
+              <img src={logoDark} alt="" className="w-10 h-10 object-contain" />
+            </div>
+
             {/* In Stock Badge */}
             {pepper.inStock && (
-              <div className="absolute top-3 right-3 z-10">
+              <div className="absolute top-12 right-2 z-10">
                 <div className="flex items-center gap-1 px-2 py-1 bg-[#2d5a3d] text-[#f5efe6] 
                   text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80
                   shadow-sm">

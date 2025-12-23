@@ -704,7 +704,7 @@ export const peppers: Pepper[] = [
   },
   {
     id: 'aleppo-pepper',
-    name: 'Aleppo Pepper',
+    name: 'Aleppo',
     scientificName: 'Capsicum annuum',
     species: 'annuum',
     origin: 'Syria/Turkey',
