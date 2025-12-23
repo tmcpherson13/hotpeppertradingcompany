@@ -1,21 +1,12 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ExternalLink, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import { CitationLink, Citation } from '@/components/history/CitationLink';
 import logoDark from '@/assets/logo-dark.jpg';
-
-interface Citation {
-  id: number;
-  authors: string;
-  year: string;
-  title: string;
-  publication: string;
-  doi?: string;
-  url?: string;
-}
 
 const citations: Citation[] = [
   {
@@ -74,43 +65,6 @@ const citations: Citation[] = [
     doi: "10.3732/ajb.0800155"
   }
 ];
-
-function CitationLink({ citation }: { citation: Citation }) {
-  return (
-    <li className="font-body text-muted-foreground text-sm leading-relaxed flex">
-      <span className="font-semibold text-foreground flex-shrink-0 w-8">[{citation.id}]</span>
-      <span>
-        {citation.authors} ({citation.year}). "{citation.title}." <em>{citation.publication}</em>.
-        {citation.doi && (
-          <span className="block mt-1">
-            <a
-              href={`https://doi.org/${citation.doi}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
-            >
-              DOI: {citation.doi}
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </span>
-        )}
-        {citation.url && (
-          <span className="block mt-1">
-            <a
-              href={citation.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
-            >
-              View Source
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </span>
-        )}
-      </span>
-    </li>
-  );
-}
 
 export default function PreColumbianOrigins() {
   useEffect(() => {

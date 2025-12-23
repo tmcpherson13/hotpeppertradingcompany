@@ -3,6 +3,13 @@ import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 export function Heritage() {
+  const scrollToEducation = () => {
+    const educationSection = document.getElementById('pepper-education');
+    if (educationSection) {
+      educationSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="heritage" className="relative py-20 bg-background overflow-hidden">
       {/* Trade Route Background */}
@@ -100,6 +107,63 @@ export function Heritage() {
             </div>
           </motion.div>
         </div>
+
+        {/* Compass Arrow - Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex justify-center mt-16"
+        >
+          <button
+            onClick={scrollToEducation}
+            className="group flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg p-2"
+            aria-label="Scroll to Historical Content"
+          >
+            <span className="text-xs uppercase tracking-[0.25em] font-heading">Explore the History</span>
+            
+            {/* Compass-style arrow */}
+            <motion.svg 
+              width="40" 
+              height="56" 
+              viewBox="0 0 40 56" 
+              className="text-primary"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* Outer diamond shape */}
+              <polygon 
+                points="20,0 26,16 20,12 14,16" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.5"
+                className="opacity-40"
+              />
+              
+              {/* Main arrow body */}
+              <polygon 
+                points="20,8 30,32 20,26 10,32" 
+                fill="currentColor"
+                className="group-hover:fill-primary transition-colors"
+              />
+              
+              {/* Arrow point */}
+              <polygon 
+                points="20,26 32,44 20,56 8,44" 
+                fill="currentColor"
+                className="group-hover:fill-primary transition-colors"
+              />
+              
+              {/* Decorative cross lines */}
+              <line x1="6" y1="28" x2="14" y2="28" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
+              <line x1="26" y1="28" x2="34" y2="28" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
+              
+              {/* Center circle */}
+              <circle cx="20" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="1" className="opacity-40" />
+            </motion.svg>
+          </button>
+        </motion.div>
       </div>
     </section>
   );
