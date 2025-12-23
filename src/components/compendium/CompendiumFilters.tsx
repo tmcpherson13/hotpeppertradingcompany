@@ -98,9 +98,10 @@ export function CompendiumFilters({
               appearance-none cursor-pointer"
             style={selectStyle}
           >
+            <option value="All">All Heat Levels</option>
             {heatLevels.map((heat) => (
               <option key={heat} value={heat}>
-                {heat === 'All' ? 'All Heat Levels' : heat}
+                {heat}
               </option>
             ))}
           </select>
@@ -120,6 +121,7 @@ export function CompendiumFilters({
               appearance-none cursor-pointer"
             style={selectStyle}
           >
+            <option value="All">All Species</option>
             {speciesList.map((species) => (
               <option key={species} value={species}>
                 {speciesDisplayNames[species]}
@@ -142,9 +144,10 @@ export function CompendiumFilters({
               appearance-none cursor-pointer"
             style={selectStyle}
           >
+            <option value="All">All Regions</option>
             {regions.map((region) => (
               <option key={region} value={region}>
-                {region === 'All' ? 'All Regions' : region}
+                {region}
               </option>
             ))}
           </select>
