@@ -36,10 +36,11 @@ export const timelineEvents: TimelineEvent[] = [
   {
     year: 1493,
     yearDisplay: '1493',
-    location: 'Spain',
+    location: 'Sanlúcar de Barrameda, Spain',
     region: 'Europe',
-    description: 'Columbus returns from second voyage with pepper seeds.',
-    coordinates: [-3.7038, 40.4168], // Madrid, Spain
+    description: 'Columbus returns from second voyage, landing with pepper seeds from the New World.',
+    coordinates: [-6.3508, 36.7783],
+    hasRoute: true,
   },
   {
     year: 1498,
@@ -73,8 +74,9 @@ export const timelineEvents: TimelineEvent[] = [
     yearDisplay: '1542',
     location: 'Philippines',
     region: 'Southeast Asia',
-    description: 'Spanish galleon trade brings peppers from Mexico.',
-    coordinates: [121.774, 12.8797], // Philippines
+    description: 'Manila-Acapulco galleon trade brings peppers across the Pacific from Mexico.',
+    coordinates: [121.774, 12.8797],
+    hasRoute: true,
   },
   {
     year: 1550,

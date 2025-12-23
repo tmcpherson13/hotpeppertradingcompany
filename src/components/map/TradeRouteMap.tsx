@@ -159,6 +159,20 @@ const tradeRoutes = {
       varieties: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
       year: '1510',
     },
+    {
+      name: 'Philippines',
+      coordinates: [121.774, 12.8797] as [number, number],
+      description: 'Manila-Acapulco galleon trade brought peppers across the Pacific from Mexico.',
+      varieties: ['Siling Labuyo', 'Siling Haba'],
+      year: '1542',
+    },
+    {
+      name: 'Sanlúcar de Barrameda, Spain',
+      coordinates: [-6.3508, 36.7783] as [number, number],
+      description: 'Columbus returned here in 1493 with pepper seeds from the New World.',
+      varieties: ['First European peppers'],
+      year: '1493',
+    },
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
@@ -178,7 +192,11 @@ const tradeRoutes = {
     // Return route: West Africa to Caribbean - African varieties cross back
     { from: [-1.0232, 7.9465] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Return route: Spain/Portugal to Caribbean - European cultivation returns
-    { from: [-10, 38] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-25, 30], [-45, 22]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
+    { from: [-6.3508, 36.7783] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
+    // Manila-Acapulco Galleon Route - Pacific crossing from Mexico
+    { from: [-99.9, 16.85] as [number, number], to: [121.774, 12.8797] as [number, number], via: [[-120, 18], [-150, 15], [-180, 12], [150, 10], [135, 12]] as [number, number][], establishedYear: 1542, destinationName: 'Philippines' },
+    // Columbus return voyage: La Isabela, Hispaniola to Sanlúcar de Barrameda, Spain (1493)
+    { from: [-71.08, 19.82] as [number, number], to: [-6.3508, 36.7783] as [number, number], via: [[-55, 25], [-35, 32], [-20, 35]] as [number, number][], establishedYear: 1493, destinationName: 'Sanlúcar de Barrameda, Spain' },
   ] as RouteData[],
 };
 
@@ -228,15 +246,15 @@ export function TradeRouteMap() {
   const yearToLocations: Record<number, string[]> = {
     '-4000': ['Mesoamerica'],
     '-3000': ['Mesoamerica', 'Peru & Bolivia'],
-    '1493': ['Mesoamerica', 'Peru & Bolivia'],
-    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India'],
-    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
-    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands'],
-    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands'],
-    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)'],
-    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
-    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
-    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+    '1493': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain'],
+    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India'],
+    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa'],
+    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands'],
+    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
   };
 
   const getVisibleLocations = useCallback((year: number): string[] => {
