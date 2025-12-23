@@ -151,6 +151,19 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
 
         {/* Content */}
         <div className="px-6 py-5 space-y-6">
+          {/* Pepper Image */}
+          {pepper.imageUrl && (
+            <div className="flex justify-center">
+              <div className="w-48 h-48 border-2 border-[#5a4a3a]/20 p-2 bg-[#e8dcc4]/30">
+                <img 
+                  src={pepper.imageUrl} 
+                  alt={pepper.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          )}
+
           {/* Quick facts grid - Labeled Fields */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
