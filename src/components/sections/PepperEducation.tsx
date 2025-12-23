@@ -1,23 +1,60 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Anchor, Globe, History } from 'lucide-react';
 import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
+
+// Custom SVG icons for each historical era
+const ScrollIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M5 3c0-1 1-2 2-2h10c1 0 2 1 2 2v18c0 1-1 2-2 2H7c-1 0-2-1-2-2V3z" />
+    <path d="M5 5c-1.5 0-3 1-3 2.5S3.5 10 5 10" />
+    <path d="M19 5c1.5 0 3 1 3 2.5S20.5 10 19 10" />
+    <path d="M5 19c-1.5 0-3-1-3-2.5S3.5 14 5 14" />
+    <path d="M19 19c1.5 0 3-1 3-2.5S20.5 14 19 14" />
+    <line x1="9" y1="7" x2="15" y2="7" />
+    <line x1="9" y1="11" x2="15" y2="11" />
+    <line x1="9" y1="15" x2="12" y2="15" />
+  </svg>
+);
+
+const SailingShipIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M2 20h20" />
+    <path d="M4 17h16c0 0-1-4-3-6l-5-8-5 8c-2 2-3 6-3 6z" />
+    <path d="M12 3v14" />
+    <path d="M8 9l4-6" />
+    <path d="M16 9l-4-6" />
+    <path d="M6 14h12" />
+  </svg>
+);
+
+const OldGlobeIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <ellipse cx="12" cy="12" rx="3" ry="9" />
+    <path d="M3 12h18" />
+    <path d="M5 7h14" />
+    <path d="M5 17h14" />
+    <path d="M4 4l2 2" />
+    <path d="M18 4l2 2" />
+    <line x1="12" y1="2" x2="12" y2="4" />
+  </svg>
+);
 
 const facts = [
   {
-    icon: History,
+    icon: ScrollIcon,
     title: 'Pre-Columbian Origins',
     description: 'Archaeological evidence confirms capsicum cultivation in the Americas by 4000 BCE. The Aztecs and Maya developed sophisticated growing and preservation techniques.',
     link: '/history/pre-columbian-origins',
   },
   {
-    icon: Anchor,
+    icon: SailingShipIcon,
     title: 'The Columbian Exchange',
     description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
     link: '/history/columbian-exchange',
   },
   {
-    icon: Globe,
+    icon: OldGlobeIcon,
     title: 'Global Integration',
     description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
     link: '/history/global-integration',
@@ -120,31 +157,11 @@ export function PepperEducation() {
                     <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
                     <div className="absolute bottom-2 right-2 w-1.5 h-1.5 bg-tyrian/40 rounded-full" />
                     
-                    {/* Icon badge with compass star shape */}
-                    <div className="relative w-20 h-20 mx-auto mb-6">
-                      <svg viewBox="0 0 80 80" className="w-full h-full">
-                        {/* 8-pointed star shape */}
-                        <polygon 
-                          points="40,4 46,30 72,30 52,48 58,74 40,58 22,74 28,48 8,30 34,30" 
-                          fill="hsl(var(--parchment))"
-                          stroke="hsl(var(--tyrian))" 
-                          strokeWidth="1.5"
-                          className="transition-all duration-300 group-hover:fill-tyrian/10"
-                        />
-                        {/* Inner circle */}
-                        <circle 
-                          cx="40" 
-                          cy="40" 
-                          r="18" 
-                          fill="none" 
-                          stroke="hsl(var(--tyrian))" 
-                          strokeWidth="0.75"
-                          strokeOpacity="0.4"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <fact.icon className="w-8 h-8 text-tyrian transition-transform duration-300 group-hover:scale-110" />
-                      </div>
+                    {/* Icon container - simple circle */}
+                    <div className="relative w-16 h-16 mx-auto mb-6 flex items-center justify-center
+                                    border-2 border-tyrian/40 rounded-full bg-parchment
+                                    transition-all duration-300 group-hover:border-tyrian/70 group-hover:bg-tyrian/5">
+                      <fact.icon className="w-8 h-8 text-tyrian transition-transform duration-300 group-hover:scale-110" />
                     </div>
                     
                     {/* Category label */}
