@@ -140,6 +140,8 @@ export const peppers: Pepper[] = [
     culinaryUses: ['Ceviche', 'Ají de gallina', 'Sauces'],
     inStock: true,
     imageUrl: ajiAmarilloImg,
+    imageLicense: 'CC BY-SA 4.0',
+    attributionText: 'Photo by Frozenmadness, via Wikimedia Commons',
   },
   {
     id: 'aji-limon',
