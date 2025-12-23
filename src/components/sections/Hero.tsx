@@ -107,7 +107,7 @@ export function Hero() {
           {/* Decorative Element - Logo */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-parchment/60 to-transparent" />
-            <img src={logoWhite} alt="Hot Pepper Trading Company" className="h-8 w-auto" />
+            <img src={logoWhite} alt="Hot Pepper Trading Company" className="h-24 w-auto" />
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-parchment/60 to-transparent" />
           </div>
 
