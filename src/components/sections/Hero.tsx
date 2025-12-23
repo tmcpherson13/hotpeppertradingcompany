@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import heroImage from '@/assets/hero-spice-trade.jpg';
+import logoWhite from '@/assets/logo-white.svg';
 
 export function Hero() {
   return (
@@ -103,12 +104,10 @@ export function Hero() {
           transition={{ duration: 1, ease: 'easeOut' }}
           className="max-w-4xl mx-auto"
         >
-          {/* Decorative Element - Engraved Style */}
+          {/* Decorative Element - Logo */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-parchment/60 to-transparent" />
-            <svg width="24" height="24" viewBox="0 0 24 24" className="text-gold">
-              <polygon points="12,2 14,10 22,10 16,14 18,22 12,17 6,22 8,14 2,10 10,10" fill="currentColor" />
-            </svg>
+            <img src={logoWhite} alt="Hot Pepper Trading Company" className="h-8 w-auto" />
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-parchment/60 to-transparent" />
           </div>
 
