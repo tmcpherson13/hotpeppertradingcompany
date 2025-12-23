@@ -84,9 +84,9 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
               <img src={logoDark} alt="" className="w-20 h-20 object-contain" />
             </div>
 
-            {/* In Stock Badge */}
+            {/* In Stock Badge - positioned below logo (logo is top-2 + h-20 = ~88px) */}
             {pepper.inStock && (
-              <div className="absolute top-24 right-2 z-10">
+              <div className="absolute top-[92px] right-2 z-10">
                 <div className="flex items-center gap-1 px-2 py-1 bg-[#2d5a3d] text-[#f5efe6] 
                   text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80
                   shadow-sm">
