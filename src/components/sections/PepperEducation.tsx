@@ -2,41 +2,109 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
 
-// Custom SVG icons for each historical era
+// Custom SVG icons for each historical era - Old nautical hand-drawn style
 const ScrollIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M5 3c0-1 1-2 2-2h10c1 0 2 1 2 2v18c0 1-1 2-2 2H7c-1 0-2-1-2-2V3z" />
-    <path d="M5 5c-1.5 0-3 1-3 2.5S3.5 10 5 10" />
-    <path d="M19 5c1.5 0 3 1 3 2.5S20.5 10 19 10" />
-    <path d="M5 19c-1.5 0-3-1-3-2.5S3.5 14 5 14" />
-    <path d="M19 19c1.5 0 3-1 3-2.5S20.5 14 19 14" />
-    <line x1="9" y1="7" x2="15" y2="7" />
-    <line x1="9" y1="11" x2="15" y2="11" />
-    <line x1="9" y1="15" x2="12" y2="15" />
+  <svg viewBox="0 0 32 32" fill="none" className={className}>
+    {/* Ancient scroll with curled ends */}
+    <path 
+      d="M6 6c0-2 2-3 4-3h12c2 0 4 1 4 3" 
+      stroke="currentColor" 
+      strokeWidth="1.2"
+      fill="none"
+    />
+    <path 
+      d="M6 6v20c0 2 2 3 4 3h12c2 0 4-1 4-3V6" 
+      stroke="currentColor" 
+      strokeWidth="1.2"
+      fill="hsl(var(--parchment))"
+    />
+    {/* Top curl */}
+    <ellipse cx="6" cy="6" rx="2.5" ry="3" stroke="currentColor" strokeWidth="1.2" fill="hsl(var(--parchment))" />
+    <ellipse cx="26" cy="6" rx="2.5" ry="3" stroke="currentColor" strokeWidth="1.2" fill="hsl(var(--parchment))" />
+    {/* Bottom curl */}
+    <ellipse cx="6" cy="26" rx="2.5" ry="3" stroke="currentColor" strokeWidth="1.2" fill="hsl(var(--parchment))" />
+    <ellipse cx="26" cy="26" rx="2.5" ry="3" stroke="currentColor" strokeWidth="1.2" fill="hsl(var(--parchment))" />
+    {/* Text lines - wavy for hand-drawn feel */}
+    <path d="M10 11c2 0.3 4 -0.3 6 0.2s4 -0.2 6 0" stroke="currentColor" strokeWidth="0.8" opacity="0.7" />
+    <path d="M10 15c2 -0.2 4 0.4 6 0s4 0.3 6 0" stroke="currentColor" strokeWidth="0.8" opacity="0.7" />
+    <path d="M10 19c2 0.2 4 -0.2 6 0.3s3 -0.3 4 0" stroke="currentColor" strokeWidth="0.8" opacity="0.7" />
+    {/* Decorative seal */}
+    <circle cx="16" cy="24" r="2" stroke="currentColor" strokeWidth="0.8" fill="hsl(var(--tyrian))" fillOpacity="0.3" />
   </svg>
 );
 
 const SailingShipIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M2 20h20" />
-    <path d="M4 17h16c0 0-1-4-3-6l-5-8-5 8c-2 2-3 6-3 6z" />
-    <path d="M12 3v14" />
-    <path d="M8 9l4-6" />
-    <path d="M16 9l-4-6" />
-    <path d="M6 14h12" />
+  <svg viewBox="0 0 32 32" fill="none" className={className}>
+    {/* Hull - curved wooden ship */}
+    <path 
+      d="M4 24c0 0 2 4 12 4s12-4 12-4l-2-6H6l-2 6z" 
+      stroke="currentColor" 
+      strokeWidth="1.2"
+      fill="hsl(var(--parchment))"
+    />
+    {/* Hull details */}
+    <path d="M8 21h16" stroke="currentColor" strokeWidth="0.6" opacity="0.5" />
+    <path d="M6 24h20" stroke="currentColor" strokeWidth="0.6" opacity="0.5" />
+    {/* Main mast */}
+    <line x1="16" y1="4" x2="16" y2="18" stroke="currentColor" strokeWidth="1.5" />
+    {/* Crow's nest */}
+    <ellipse cx="16" cy="5" rx="2" ry="1" stroke="currentColor" strokeWidth="0.8" fill="none" />
+    {/* Main sail - billowing */}
+    <path 
+      d="M16 6c-5 1-8 5-8 10h8z" 
+      stroke="currentColor" 
+      strokeWidth="1"
+      fill="hsl(var(--parchment))"
+    />
+    {/* Fore sail */}
+    <path 
+      d="M16 8c3 0.5 5 3 6 7l-6 1z" 
+      stroke="currentColor" 
+      strokeWidth="1"
+      fill="hsl(var(--parchment))"
+    />
+    {/* Flag */}
+    <path d="M16 4l4 1.5-4 1.5" stroke="currentColor" strokeWidth="0.8" fill="hsl(var(--tyrian))" fillOpacity="0.4" />
+    {/* Bowsprit */}
+    <line x1="6" y1="18" x2="3" y2="16" stroke="currentColor" strokeWidth="1" />
+    {/* Rigging - ropes */}
+    <path d="M8 18l8-12" stroke="currentColor" strokeWidth="0.4" opacity="0.6" strokeDasharray="1 1" />
+    <path d="M22 17l-6-9" stroke="currentColor" strokeWidth="0.4" opacity="0.6" strokeDasharray="1 1" />
   </svg>
 );
 
 const OldGlobeIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="12" cy="12" r="9" />
-    <ellipse cx="12" cy="12" rx="3" ry="9" />
-    <path d="M3 12h18" />
-    <path d="M5 7h14" />
-    <path d="M5 17h14" />
-    <path d="M4 4l2 2" />
-    <path d="M18 4l2 2" />
-    <line x1="12" y1="2" x2="12" y2="4" />
+  <svg viewBox="0 0 32 32" fill="none" className={className}>
+    {/* Stand base */}
+    <path d="M10 30h12" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M12 30v-2c0-1 1.5-2 4-2s4 1 4 2v2" stroke="currentColor" strokeWidth="1" fill="none" />
+    {/* Stand arc */}
+    <path 
+      d="M8 16c0 -8 3-12 8-14" 
+      stroke="currentColor" 
+      strokeWidth="1.2"
+      fill="none"
+    />
+    <path 
+      d="M24 16c0 -8 -3-12 -8-14" 
+      stroke="currentColor" 
+      strokeWidth="1.2"
+      fill="none"
+    />
+    {/* Globe */}
+    <circle cx="16" cy="14" r="10" stroke="currentColor" strokeWidth="1.2" fill="hsl(var(--parchment))" />
+    {/* Equator */}
+    <ellipse cx="16" cy="14" rx="10" ry="3" stroke="currentColor" strokeWidth="0.8" fill="none" />
+    {/* Meridian */}
+    <ellipse cx="16" cy="14" rx="3" ry="10" stroke="currentColor" strokeWidth="0.8" fill="none" />
+    {/* Latitude lines */}
+    <ellipse cx="16" cy="8" rx="8" ry="2" stroke="currentColor" strokeWidth="0.5" opacity="0.5" fill="none" />
+    <ellipse cx="16" cy="20" rx="8" ry="2" stroke="currentColor" strokeWidth="0.5" opacity="0.5" fill="none" />
+    {/* Decorative continents - rough shapes */}
+    <path d="M12 10c1-1 3 0 4 1s1 2 0 3-2 0-3-1-2-2-1-3z" fill="hsl(var(--tyrian))" fillOpacity="0.2" stroke="none" />
+    <path d="M19 12c1 0 2 1 2 2s-1 3-2 3-1-1-1-2 0-3 1-3z" fill="hsl(var(--tyrian))" fillOpacity="0.2" stroke="none" />
+    {/* Axis point */}
+    <circle cx="16" cy="4" r="1" fill="currentColor" />
   </svg>
 );
 
@@ -137,7 +205,7 @@ export function PepperEducation() {
                   to={fact.link} 
                   className="block group h-full"
                 >
-                  <div className="relative h-full bg-parchment border-2 border-tyrian/30 p-6 lg:p-8
+                  <div className="relative h-full flex flex-col bg-parchment border-2 border-tyrian/30 p-6 lg:p-8
                                   transition-all duration-300 hover:border-tyrian/60 
                                   hover:shadow-[0_8px_30px_-10px_hsl(var(--tyrian)/0.3)]
                                   group-hover:scale-[1.02]">
@@ -161,7 +229,7 @@ export function PepperEducation() {
                     <div className="relative w-16 h-16 mx-auto mb-6 flex items-center justify-center
                                     border-2 border-tyrian/40 rounded-full bg-parchment
                                     transition-all duration-300 group-hover:border-tyrian/70 group-hover:bg-tyrian/5">
-                      <fact.icon className="w-8 h-8 text-tyrian transition-transform duration-300 group-hover:scale-110" />
+                      <fact.icon className="w-10 h-10 text-tyrian transition-transform duration-300 group-hover:scale-110" />
                     </div>
                     
                     {/* Category label */}
@@ -183,13 +251,13 @@ export function PepperEducation() {
                       <span className="w-8 h-px bg-gradient-to-l from-transparent to-tyrian/40" />
                     </div>
                     
-                    {/* Description */}
-                    <p className="font-body text-muted-foreground text-center leading-relaxed mb-6 text-sm">
+                    {/* Description - flex-grow to push button down */}
+                    <p className="font-body text-muted-foreground text-center leading-relaxed mb-6 text-sm flex-grow">
                       {fact.description}
                     </p>
                     
-                    {/* CTA Button */}
-                    <div className="text-center">
+                    {/* CTA Button - always at bottom */}
+                    <div className="text-center mt-auto">
                       <span className="inline-flex items-center gap-2 px-5 py-2.5 
                                       bg-tyrian/10 border border-tyrian/30 
                                       text-tyrian font-heading text-xs uppercase tracking-[0.15em]
@@ -198,15 +266,29 @@ export function PepperEducation() {
                                       group-hover:border-tyrian">
                         Explore History
                         <svg 
-                          className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                          className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
                           viewBox="0 0 24 24" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                          fill="none"
                         >
-                          <path d="M5 12h14M12 5l7 7-7 7"/>
+                          {/* Old nautical arrow - quill/compass style */}
+                          <path 
+                            d="M5 12h12" 
+                            stroke="currentColor" 
+                            strokeWidth="1.5"
+                          />
+                          <path 
+                            d="M14 12l5 0-3-3M14 12l5 0-3 3" 
+                            stroke="currentColor" 
+                            strokeWidth="1.5"
+                            strokeLinejoin="round"
+                          />
+                          {/* Decorative tail feather */}
+                          <path 
+                            d="M5 12l2-2M5 12l2 2" 
+                            stroke="currentColor" 
+                            strokeWidth="1"
+                            opacity="0.6"
+                          />
                         </svg>
                       </span>
                     </div>

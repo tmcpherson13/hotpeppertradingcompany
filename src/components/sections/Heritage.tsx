@@ -108,7 +108,7 @@ export function Heritage() {
           </motion.div>
         </div>
 
-        {/* Compass Arrow - Scroll Indicator */}
+        {/* Old-School Compass Rose - Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,49 +118,87 @@ export function Heritage() {
         >
           <button
             onClick={scrollToEducation}
-            className="group flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg p-2"
+            className="group flex flex-col items-center gap-4 text-muted-foreground hover:text-primary transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg p-2"
             aria-label="Scroll to Historical Content"
           >
             <span className="text-xs uppercase tracking-[0.25em] font-heading">Explore the History</span>
             
-            {/* Compass-style arrow */}
+            {/* Old-School Compass Rose */}
             <motion.svg 
-              width="40" 
-              height="56" 
-              viewBox="0 0 40 56" 
+              width="80" 
+              height="80" 
+              viewBox="0 0 80 80" 
               className="text-primary"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              {/* Outer diamond shape */}
-              <polygon 
-                points="20,0 26,16 20,12 14,16" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="1.5"
-                className="opacity-40"
-              />
+              {/* Outer decorative ring */}
+              <circle cx="40" cy="40" r="38" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              <circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.2" />
               
-              {/* Main arrow body */}
-              <polygon 
-                points="20,8 30,32 20,26 10,32" 
-                fill="currentColor"
-                className="group-hover:fill-primary transition-colors"
-              />
+              {/* Degree tick marks */}
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+                <line
+                  key={angle}
+                  x1={40 + 32 * Math.cos((angle - 90) * Math.PI / 180)}
+                  y1={40 + 32 * Math.sin((angle - 90) * Math.PI / 180)}
+                  x2={40 + 36 * Math.cos((angle - 90) * Math.PI / 180)}
+                  y2={40 + 36 * Math.sin((angle - 90) * Math.PI / 180)}
+                  stroke="currentColor"
+                  strokeWidth={angle % 90 === 0 ? "1.5" : "0.8"}
+                  opacity={angle % 90 === 0 ? "0.6" : "0.3"}
+                />
+              ))}
               
-              {/* Arrow point */}
-              <polygon 
-                points="20,26 32,44 20,56 8,44" 
-                fill="currentColor"
-                className="group-hover:fill-primary transition-colors"
-              />
+              {/* Intercardinal points (NE, SE, SW, NW) - smaller */}
+              {[45, 135, 225, 315].map((angle) => (
+                <polygon
+                  key={angle}
+                  points="40,22 43,40 40,44 37,40"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.8"
+                  opacity="0.4"
+                  transform={`rotate(${angle} 40 40)`}
+                />
+              ))}
               
-              {/* Decorative cross lines */}
-              <line x1="6" y1="28" x2="14" y2="28" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
-              <line x1="26" y1="28" x2="34" y2="28" stroke="currentColor" strokeWidth="1.5" className="opacity-60" />
+              {/* Cardinal points - N, E, W */}
+              <polygon points="40,12 44,40 40,46 36,40" fill="currentColor" opacity="0.3" transform="rotate(0 40 40)" />
+              <polygon points="40,12 44,40 40,46 36,40" fill="currentColor" opacity="0.3" transform="rotate(90 40 40)" />
+              <polygon points="40,12 44,40 40,46 36,40" fill="currentColor" opacity="0.3" transform="rotate(270 40 40)" />
               
-              {/* Center circle */}
-              <circle cx="20" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="1" className="opacity-40" />
+              {/* SOUTH - Prominent main arrow pointing down */}
+              <motion.g
+                animate={{ y: [0, 3, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <polygon 
+                  points="40,8 46,40 40,48 34,40" 
+                  fill="hsl(var(--tyrian))"
+                  transform="rotate(180 40 40)"
+                />
+                {/* Arrow decorative details */}
+                <path 
+                  d="M40 48 L40 68" 
+                  stroke="hsl(var(--tyrian))" 
+                  strokeWidth="2"
+                />
+                <polygon 
+                  points="40,68 46,60 40,64 34,60" 
+                  fill="hsl(var(--tyrian))"
+                />
+              </motion.g>
+              
+              {/* Center decorative ring */}
+              <circle cx="40" cy="40" r="8" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.5" />
+              <circle cx="40" cy="40" r="4" fill="hsl(var(--parchment))" stroke="currentColor" strokeWidth="1" />
+              <circle cx="40" cy="40" r="2" fill="hsl(var(--tyrian))" opacity="0.6" />
+              
+              {/* Cardinal direction labels - old style */}
+              <text x="40" y="10" textAnchor="middle" fontSize="6" fill="currentColor" opacity="0.5" fontFamily="serif">N</text>
+              <text x="70" y="42" textAnchor="middle" fontSize="6" fill="currentColor" opacity="0.5" fontFamily="serif">E</text>
+              <text x="10" y="42" textAnchor="middle" fontSize="6" fill="currentColor" opacity="0.5" fontFamily="serif">W</text>
             </motion.svg>
           </button>
         </motion.div>
