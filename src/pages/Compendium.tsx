@@ -100,18 +100,29 @@ const Compendium = () => {
               <span className="h-px w-10 bg-[#5a4a3a]/30" />
             </div>
 
-            <p className="font-heading text-[10px] uppercase tracking-[0.25em] text-[#5a4a3a]/60 mb-2">
-              The Official Registry of the Hot Pepper Trading Company
-            </p>
-
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.15em] text-[#3a2a1a] mb-4">
-              Pepper Compendium
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.15em] text-[#3a2a1a] mb-6">
+              The Pepper Compendium
             </h1>
 
-            <p className="font-body text-sm md:text-base text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto">
-              This compendium documents the capsicum varieties that have passed through our 
-              counting houses—recording their lands of origin, measures of pungency, distinctive 
-              flavors, and the maritime passages by which they reached the markets of the world.
+            <div className="font-body text-sm md:text-base text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto space-y-4">
+              <p>
+                The Pepper Compendium is the trading house's record of peppers — their origins, 
+                character, heat, and the routes by which they traveled the world.
+              </p>
+              <p>
+                Before modern supply chains, peppers moved by sail and caravan, shaped by geography, 
+                climate, and culture. This archive records where each pepper came from, how it tastes, 
+                how fiercely it burns, and how it entered global cuisine.
+              </p>
+              <p>
+                Some peppers listed here are currently held in our stores. Others appear for reference 
+                alone. All are included for understanding.
+              </p>
+            </div>
+
+            {/* Sub-line */}
+            <p className="mt-6 font-heading text-xs italic text-[#5a4a3a]/70 tracking-wide">
+              "An archive for those who value flavor, heat, and history in equal measure."
             </p>
 
             {/* Decorative divider */}
