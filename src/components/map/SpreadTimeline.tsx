@@ -151,7 +151,7 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
         }
         return prev + 1;
       });
-    }, 2500);
+    }, 7500);
 
     return () => clearInterval(interval);
   }, [playing, setPlaying]);
