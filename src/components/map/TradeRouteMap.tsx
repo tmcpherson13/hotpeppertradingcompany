@@ -223,6 +223,7 @@ export function TradeRouteMap() {
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
   const [baseMapError, setBaseMapError] = useState<string | null>(null);
   const [focusedRegion, setFocusedRegion] = useState<string | null>(null);
+  const [selectedTimelineIndex, setSelectedTimelineIndex] = useState<number | undefined>(undefined);
   const previousVisibleRoutesRef = useRef<Set<number>>(new Set());
   const dashOffsetRef = useRef<number>(0);
   const animationFrameRef = useRef<number | null>(null);
@@ -276,6 +277,31 @@ export function TradeRouteMap() {
       }
     });
     return visibleRoutes;
+  }, []);
+
+  // Find timeline event index by location name
+  const findTimelineEventByLocation = useCallback((locationName: string): number => {
+    return timelineEvents.findIndex(event => 
+      event.location === locationName || 
+      event.location.includes(locationName) || 
+      locationName.includes(event.location.split(',')[0])
+    );
+  }, []);
+
+  // Handle location click -> sync with timeline
+  const handleLocationClick = useCallback((location: typeof tradeRoutes.origins[0]) => {
+    setSelectedLocation(location);
+    
+    // Find matching timeline event
+    const eventIndex = findTimelineEventByLocation(location.name);
+    if (eventIndex !== -1) {
+      setSelectedTimelineIndex(eventIndex);
+    }
+  }, [findTimelineEventByLocation]);
+
+  // Handle timeline event selection (from clicking timeline markers)
+  const handleTimelineEventSelect = useCallback((index: number) => {
+    setSelectedTimelineIndex(index);
   }, []);
 
   // Calculate visible routes for current year
@@ -691,7 +717,7 @@ export function TradeRouteMap() {
             "></div>
           </div>
         `;
-        el.addEventListener('click', () => setSelectedLocation(origin));
+        el.addEventListener('click', () => handleLocationClick(origin));
         markerElementsRef.current.set(origin.name, el);
 
         const marker = new maplibregl.Marker({ element: el }).setLngLat(origin.coordinates).addTo(m!);
@@ -718,7 +744,7 @@ export function TradeRouteMap() {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
           "></div>
         `;
-        el.addEventListener('click', () => setSelectedLocation(dest));
+        el.addEventListener('click', () => handleLocationClick(dest));
         markerElementsRef.current.set(dest.name, el);
 
         const marker = new maplibregl.Marker({ element: el }).setLngLat(dest.coordinates).addTo(m!);
@@ -1061,7 +1087,7 @@ export function TradeRouteMap() {
             <p className="font-body text-sm text-[#5a4a3a] leading-relaxed mb-3">
               {selectedLocation.description}
             </p>
-            <div className="border-t border-[#5a4a3a]/30 pt-2">
+            <div className="border-t border-[#5a4a3a]/30 pt-2 mb-2">
               <p className="font-heading text-[10px] uppercase tracking-wider text-[#6a5a4a] mb-1">
                 Notable Varieties
               </p>
@@ -1069,6 +1095,23 @@ export function TradeRouteMap() {
                 {selectedLocation.varieties.join(' • ')}
               </p>
             </div>
+            {/* View in Timeline button */}
+            {findTimelineEventByLocation(selectedLocation.name) !== -1 && (
+              <button
+                onClick={() => {
+                  const eventIndex = findTimelineEventByLocation(selectedLocation.name);
+                  if (eventIndex !== -1) {
+                    setSelectedTimelineIndex(eventIndex);
+                    setSelectedLocation(null);
+                  }
+                }}
+                className="w-full mt-2 px-3 py-1.5 text-[10px] font-body uppercase tracking-wider
+                  bg-[#d4a84b]/20 border border-[#d4a84b]/50 text-[#5a4a3a]
+                  hover:bg-[#d4a84b]/30 hover:border-[#d4a84b] transition-colors"
+              >
+                ↓ View in Timeline
+              </button>
+            )}
           </CartoucheBorder>
         </div>
       )}
@@ -1080,6 +1123,8 @@ export function TradeRouteMap() {
           onEventChange={setCurrentEvent}
           isPlaying={isTimelinePlaying}
           onPlayingChange={setIsTimelinePlaying}
+          selectedEventIndex={selectedTimelineIndex}
+          onEventSelect={handleTimelineEventSelect}
         />
       </div>
 

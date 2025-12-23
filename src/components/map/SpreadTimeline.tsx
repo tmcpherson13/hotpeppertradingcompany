@@ -126,13 +126,21 @@ export const timelineEvents: TimelineEvent[] = [
   },
 ];
 
-// Helper to calculate date-proportional position on timeline
-const MIN_YEAR = -4000; // 4000 BCE
-const MAX_YEAR = 1600;  // 1600 CE
-const TOTAL_SPAN = MAX_YEAR - MIN_YEAR; // 5600 years
-
-const getProportionalPosition = (year: number): number => {
-  return ((year - MIN_YEAR) / TOTAL_SPAN) * 100;
+// Helper to calculate compressed timeline position
+// Uses non-linear scale: ancient history compressed, Age of Exploration expanded
+// Timeline uses 5% to 95% of width for visual clarity
+const getDisplayPosition = (year: number): number => {
+  if (year < 0) {
+    // Ancient events (4000 BCE to 0) → occupy left 5% to 15%
+    // -4000 = 5%, 0 = 15%
+    return 5 + ((year + 4000) / 4000) * 10;
+  } else if (year < 1400) {
+    // Medieval gap (0 to 1400) → 15% to 20%
+    return 15 + (year / 1400) * 5;
+  } else {
+    // Age of Exploration (1400-1600) → spread across 20% to 95%
+    return 20 + ((year - 1400) / 200) * 75;
+  }
 };
 
 interface SpreadTimelineProps {
@@ -140,9 +148,18 @@ interface SpreadTimelineProps {
   onEventChange?: (event: TimelineEvent) => void;
   isPlaying?: boolean;
   onPlayingChange?: (playing: boolean) => void;
+  selectedEventIndex?: number; // External control for bidirectional sync
+  onEventSelect?: (index: number) => void; // Callback when user clicks timeline event
 }
 
-export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externalPlaying, onPlayingChange }: SpreadTimelineProps) {
+export function SpreadTimeline({ 
+  onYearChange, 
+  onEventChange, 
+  isPlaying: externalPlaying, 
+  onPlayingChange,
+  selectedEventIndex,
+  onEventSelect 
+}: SpreadTimelineProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -150,6 +167,14 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
 
   const playing = externalPlaying !== undefined ? externalPlaying : isPlaying;
   const setPlaying = onPlayingChange || setIsPlaying;
+
+  // Sync with external selection (from map location clicks)
+  useEffect(() => {
+    if (selectedEventIndex !== undefined && selectedEventIndex !== currentIndex) {
+      setCurrentIndex(selectedEventIndex);
+      setHasStarted(true);
+    }
+  }, [selectedEventIndex]);
 
   useEffect(() => {
     if (!playing) return;
@@ -196,6 +221,7 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
   const handleEventClick = (index: number) => {
     setCurrentIndex(index);
     setHasStarted(true);
+    onEventSelect?.(index); // Notify parent for bidirectional sync
   };
 
   const currentEvent = timelineEvents[currentIndex];
@@ -238,65 +264,86 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
 
       {/* Timeline Bar */}
       <div className="px-4 py-3">
-        {/* Date-Proportional Timeline */}
-        <div className="relative h-2 bg-muted mb-8">
-          {/* Progress bar based on proportional position */}
+        {/* Compressed Non-Linear Timeline */}
+        <div className="relative h-3 bg-muted/50 mb-10 rounded-sm">
+          {/* Era sections background */}
+          <div className="absolute inset-0 flex rounded-sm overflow-hidden">
+            <div className="bg-primary/10" style={{ width: '15%' }} title="Ancient History" />
+            <div className="bg-muted" style={{ width: '5%' }} title="Medieval" />
+            <div className="bg-gold/10" style={{ width: '80%' }} title="Age of Exploration" />
+          </div>
+          
+          {/* Progress bar based on compressed position */}
           <motion.div 
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-gold"
-            initial={{ width: 0 }}
-            animate={{ width: `${getProportionalPosition(currentEvent.year)}%` }}
-            transition={{ duration: 0.3 }}
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary via-primary to-gold rounded-sm"
+            initial={{ width: '5%' }}
+            animate={{ width: `${getDisplayPosition(currentEvent.year)}%` }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
           
           {/* Event Markers with Year Labels */}
           <div className="absolute inset-0">
             {timelineEvents.map((event, index) => {
-              const position = getProportionalPosition(event.year);
+              const position = getDisplayPosition(event.year);
               const isActive = index <= currentIndex;
               const isCurrent = index === currentIndex;
               
-              // Stagger labels above/below to reduce overlap
+              // Stagger labels above/below to reduce overlap in clustered areas
               const labelBelow = index % 2 === 0;
               
               return (
                 <div
                   key={index}
-                  className="absolute transform -translate-x-1/2"
-                  style={{ left: `${position}%`, top: '50%' }}
+                  className="absolute"
+                  style={{ left: `${position}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
                 >
                   {/* Marker dot */}
                   <button
                     onClick={() => handleEventClick(index)}
-                    className="transform -translate-y-1/2"
+                    className="relative z-10 cursor-pointer hover:scale-125 transition-transform"
+                    title={`${event.yearDisplay}: ${event.location}`}
                   >
                     <motion.div
-                      className={`rounded-full transition-colors ${
+                      className={`rounded-full shadow-md ${
                         event.isOrigin 
                           ? 'bg-primary border-2 border-gold' 
                           : isActive 
                             ? 'bg-gold border-2 border-primary' 
-                            : 'bg-muted-foreground/30 border border-border'
+                            : 'bg-muted-foreground/40 border border-border'
                       }`}
                       animate={{
-                        width: isCurrent ? 14 : 8,
-                        height: isCurrent ? 14 : 8,
+                        width: isCurrent ? 16 : 10,
+                        height: isCurrent ? 16 : 10,
                       }}
                       transition={{ duration: 0.2 }}
                     />
+                    {isCurrent && (
+                      <motion.div
+                        className="absolute inset-0 rounded-full bg-gold/30"
+                        animate={{ scale: [1, 1.8, 1], opacity: [0.6, 0, 0.6] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                    )}
                   </button>
                   
-                  {/* Year label */}
+                  {/* Year label - staggered above/below */}
                   <div 
-                    className={`absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap
-                      ${labelBelow ? 'top-3' : '-top-5'}
-                      ${isCurrent ? 'font-semibold text-gold' : 'text-muted-foreground'}
+                    className={`absolute left-1/2 whitespace-nowrap pointer-events-none
+                      ${labelBelow ? 'top-4' : '-top-6'}
                     `}
+                    style={{ 
+                      transform: event.year >= 1400 ? 'translateX(-50%) rotate(-35deg)' : 'translateX(-50%)',
+                      transformOrigin: 'center'
+                    }}
                   >
                     <span 
-                      className={`text-[8px] font-body ${
-                        event.year < 0 ? '' : 'rotate-[-45deg] inline-block origin-top-left'
+                      className={`text-[9px] font-body transition-colors ${
+                        isCurrent 
+                          ? 'font-semibold text-gold' 
+                          : isActive 
+                            ? 'text-foreground/70' 
+                            : 'text-muted-foreground/60'
                       }`}
-                      style={event.year >= 0 ? { transform: 'rotate(-45deg)', transformOrigin: 'center' } : {}}
                     >
                       {event.yearDisplay}
                     </span>
@@ -305,13 +352,13 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
               );
             })}
           </div>
-        </div>
-
-        {/* Timeline Range Labels */}
-        <div className="flex justify-between text-[10px] font-body text-muted-foreground mb-3">
-          <span>4000 BCE</span>
-          <span className="text-center flex-1">← Thousands of Years →</span>
-          <span>1600 CE</span>
+          
+          {/* Era labels */}
+          <div className="absolute -bottom-6 left-0 right-0 flex text-[8px] font-body text-muted-foreground/60">
+            <div className="text-center" style={{ width: '15%' }}>Ancient</div>
+            <div className="text-center" style={{ width: '5%' }}></div>
+            <div className="text-center" style={{ width: '80%' }}>Age of Exploration</div>
+          </div>
         </div>
 
         {/* Controls */}
