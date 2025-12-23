@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logoWhite from '@/assets/logo-white-transparent.png';
+import logoWhite from '@/assets/logo-white.svg';
 
 const footerLinks = {
   inventory: [
