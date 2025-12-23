@@ -29,10 +29,6 @@ const formatScoville = (min: number, max: number) => {
   return `${formatNum(min)}–${formatNum(max)}`;
 };
 
-const formatYear = (year: number) => {
-  if (year < 0) return `${Math.abs(year)} BCE`;
-  return `${year} CE`;
-};
 
 export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
   if (peppers.length === 0) {
@@ -114,22 +110,12 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
               </div>
 
               {/* Scoville Row */}
-              <div className="flex items-baseline justify-between border-b border-dotted border-[#5a4a3a]/20 pb-1">
+              <div className="flex items-baseline justify-between">
                 <span className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/50">
                   Scoville
                 </span>
                 <span className="font-body text-sm text-[#3a2a1a]">
                   {formatScoville(pepper.scovilleMin, pepper.scovilleMax)} <span className="text-[#5a4a3a]/50 text-xs">SHU</span>
-                </span>
-              </div>
-
-              {/* Introduced Row */}
-              <div className="flex items-baseline justify-between">
-                <span className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/50">
-                  Introduced
-                </span>
-                <span className="font-body text-sm text-[#3a2a1a]">
-                  {formatYear(pepper.yearIntroduced)}
                 </span>
               </div>
             </div>
