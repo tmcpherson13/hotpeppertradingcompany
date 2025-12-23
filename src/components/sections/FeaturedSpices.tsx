@@ -213,7 +213,7 @@ export function FeaturedSpices() {
               <div className="w-16 h-px bg-gradient-to-l from-transparent to-ink/30" />
             </div>
             <Button variant="pepper" size="lg" asChild>
-              <Link to="/compendium">View All Cultivars</Link>
+              <Link to="/compendium" onClick={() => window.scrollTo(0, 0)}>View All Cultivars</Link>
             </Button>
           </div>
         </motion.div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logoDark from '@/assets/logo-dark.svg';
 
 const navLinks = [
@@ -14,6 +14,16 @@ const navLinks = [
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === '/';
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!isHomePage) {
+      e.preventDefault();
+      navigate('/' + href);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -42,7 +52,8 @@ export function Header() {
               ) : (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={isHomePage ? link.href : '/' + link.href}
+                  onClick={(e) => handleAnchorClick(e, link.href)}
                   className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
                 >
                   {link.name}
@@ -95,8 +106,11 @@ export function Header() {
                 ) : (
                   <a
                     key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    href={isHomePage ? link.href : '/' + link.href}
+                    onClick={(e) => {
+                      handleAnchorClick(e, link.href);
+                      setIsOpen(false);
+                    }}
                     className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
                   >
                     {link.name}
