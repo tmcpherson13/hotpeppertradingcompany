@@ -127,20 +127,34 @@ export const timelineEvents: TimelineEvent[] = [
 ];
 
 // Helper to calculate compressed timeline position
-// Uses non-linear scale: ancient history compressed, Age of Exploration expanded
-// Timeline uses 5% to 95% of width for visual clarity
+// Custom non-linear scale per user specification:
+// - 4000 BCE at extreme left (2%)
+// - 3000 BCE ~1.5cm from 4000 BCE (6%)
+// - 1493 ~3cm from 3000 BCE (12%)
+// - 1498-1600 spread from 18% to 82% (leaving room for Navigate button)
 const getDisplayPosition = (year: number): number => {
-  if (year < 0) {
-    // Ancient events (4000 BCE to 0) → occupy left 5% to 15%
-    // -4000 = 5%, 0 = 15%
-    return 5 + ((year + 4000) / 4000) * 10;
-  } else if (year < 1400) {
-    // Medieval gap (0 to 1400) → 15% to 20%
-    return 15 + (year / 1400) * 5;
-  } else {
-    // Age of Exploration (1400-1600) → spread across 20% to 95%
-    return 20 + ((year - 1400) / 200) * 75;
+  // Explicit positions for specific years
+  if (year === -4000) return 2;       // 4000 BCE - extreme left
+  if (year === -3000) return 6;       // 3000 BCE - ~1.5cm gap
+  if (year === 1493) return 12;       // 1493 - ~3cm from 3000 BCE
+  
+  // Spread remaining events (1498-1600) across 18% to 82%
+  // This ensures last event stays LEFT of Navigate button
+  if (year >= 1498) {
+    const minYear = 1498;
+    const maxYear = 1600;
+    const minPos = 18;
+    const maxPos = 82; // Stop before Navigate button
+    return minPos + ((year - minYear) / (maxYear - minYear)) * (maxPos - minPos);
   }
+  
+  // Fallback for any other years (interpolate between known points)
+  if (year < 0) {
+    // Between -4000 and -3000: interpolate 2% to 6%
+    return 2 + ((year + 4000) / 1000) * 4;
+  }
+  // Between 0 and 1493: interpolate 6% to 12%
+  return 6 + (year / 1493) * 6;
 };
 
 interface SpreadTimelineProps {
