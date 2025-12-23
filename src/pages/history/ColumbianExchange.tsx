@@ -74,37 +74,37 @@ const citations: Citation[] = [
 
 function CitationLink({ citation }: { citation: Citation }) {
   return (
-    <li className="font-body text-muted-foreground text-sm leading-relaxed pl-8 -indent-8">
-      <span className="font-semibold text-foreground">[{citation.id}]</span>{' '}
-      {citation.authors} ({citation.year}). "{citation.title}." <em>{citation.publication}</em>.
-      {citation.doi && (
-        <>
-          {' '}
-          <a
-            href={`https://doi.org/${citation.doi}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
-          >
-            DOI: {citation.doi}
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </>
-      )}
-      {citation.url && (
-        <>
-          {' '}
-          <a
-            href={citation.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
-          >
-            View Source
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </>
-      )}
+    <li className="font-body text-muted-foreground text-sm leading-relaxed flex">
+      <span className="font-semibold text-foreground flex-shrink-0 w-8">[{citation.id}]</span>
+      <span>
+        {citation.authors} ({citation.year}). "{citation.title}." <em>{citation.publication}</em>.
+        {citation.doi && (
+          <span className="block mt-1">
+            <a
+              href={`https://doi.org/${citation.doi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
+            >
+              DOI: {citation.doi}
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </span>
+        )}
+        {citation.url && (
+          <span className="block mt-1">
+            <a
+              href={citation.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline underline-offset-2 inline-flex items-center gap-1"
+            >
+              View Source
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </span>
+        )}
+      </span>
     </li>
   );
 }
@@ -619,7 +619,7 @@ export default function ColumbianExchange() {
                   References & Citations
                 </h2>
                 
-                <ol className="space-y-4">
+                <ol className="space-y-4 list-none">
                   {citations.map((citation) => (
                     <CitationLink key={citation.id} citation={citation} />
                   ))}
