@@ -49,9 +49,9 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
     <div className="space-y-4">
       {/* Archival Catalog Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {peppers.map((pepper, index) => {
+        {peppers.map((pepper) => {
           const pepperImage = getPepperImage(pepper.id);
-          const showThumbnail = index === 0 && pepperImage; // Only first card for review
+          const showThumbnail = !!pepperImage;
           
           return (
           <button
