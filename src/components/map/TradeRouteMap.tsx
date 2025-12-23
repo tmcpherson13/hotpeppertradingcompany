@@ -84,14 +84,14 @@ const tradeRoutes = {
       name: 'Mesoamerica',
       coordinates: [-99.1332, 19.4326] as [number, number],
       description: 'Origin of all capsicum species. Domesticated by 4000 BCE.',
-      varieties: ['Poblano', 'Serrano', 'Habanero', 'Jalapeño'],
+      cultivars: ['Poblano', 'Serrano', 'Habanero', 'Jalapeño'],
       year: '4000 BCE',
     },
     {
       name: 'Peru & Bolivia',
       coordinates: [-68.1193, -16.4897] as [number, number],
       description: 'Secondary center of capsicum diversity.',
-      varieties: ['Ají Amarillo', 'Rocoto'],
+      cultivars: ['Ají Amarillo', 'Rocoto'],
       year: '3000 BCE',
     },
   ],
@@ -100,77 +100,77 @@ const tradeRoutes = {
       name: 'Aleppo, Syria',
       coordinates: [37.1343, 36.2021] as [number, number],
       description: 'Primary source for Aleppo pepper since 1600.',
-      varieties: ['Aleppo Pepper'],
+      cultivars: ['Aleppo Pepper'],
       year: '1600',
     },
     {
       name: 'Gaziantep, Turkey',
       coordinates: [37.3781, 37.0662] as [number, number],
       description: 'Renowned for Urfa biber and Marash peppers.',
-      varieties: ['Urfa Biber', 'Marash'],
+      cultivars: ['Urfa Biber', 'Marash'],
       year: '1600',
     },
     {
       name: 'Goa, India',
       coordinates: [73.8567, 15.2993] as [number, number],
       description: 'Portuguese introduced peppers via trade routes.',
-      varieties: ['Kashmiri', 'Bhut Jolokia'],
+      cultivars: ['Kashmiri', 'Bhut Jolokia'],
       year: '1498',
     },
     {
       name: 'Sichuan, China',
       coordinates: [104.0665, 30.5728] as [number, number],
       description: 'Chilies transformed regional cuisine.',
-      varieties: ['Facing Heaven', 'Erjingtiao'],
+      cultivars: ['Facing Heaven', 'Erjingtiao'],
       year: '1570',
     },
     {
       name: 'Thailand',
       coordinates: [100.5018, 13.7563] as [number, number],
       description: 'Adopted capsicum within fifty years of introduction.',
-      varieties: ["Bird's Eye", 'Thai Dragon'],
+      cultivars: ["Bird's Eye", 'Thai Dragon'],
       year: '1550',
     },
     {
       name: 'Hungary',
       coordinates: [19.0402, 47.4979] as [number, number],
       description: 'Paprika became defining spice of Hungarian cuisine.',
-      varieties: ['Hungarian Paprika'],
+      cultivars: ['Hungarian Paprika'],
       year: '1569',
     },
     {
       name: 'West Africa',
       coordinates: [-1.0232, 7.9465] as [number, number],
       description: 'Chilies spread via Portuguese traders.',
-      varieties: ['Scotch Bonnet', 'Piri Piri'],
+      cultivars: ['Scotch Bonnet', 'Piri Piri'],
       year: '1500',
     },
     {
       name: 'Samarkand (Silk Road)',
       coordinates: [66.9597, 39.6542] as [number, number],
       description: 'Chilies reached Central Asia via overland Silk Road routes from Persia.',
-      varieties: ['Central Asian varieties'],
+      cultivars: ['Central Asian cultivars'],
       year: '1550',
     },
     {
       name: 'Caribbean Islands',
       coordinates: [-66.1057, 18.4655] as [number, number],
-      description: 'African pepper varieties returned via slave trade, blending with native species.',
-      varieties: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
+      description: 'African pepper cultivars returned via slave trade, blending with native species.',
+      cultivars: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
       year: '1510',
     },
     {
       name: 'Philippines',
       coordinates: [121.774, 12.8797] as [number, number],
       description: 'Manila-Acapulco galleon trade brought peppers across the Pacific from Mexico.',
-      varieties: ['Siling Labuyo', 'Siling Haba'],
+      cultivars: ['Siling Labuyo', 'Siling Haba'],
       year: '1542',
     },
     {
       name: 'Sanlúcar de Barrameda, Spain',
       coordinates: [-6.3508, 36.7783] as [number, number],
       description: 'Columbus returned here in 1493 with pepper seeds from the New World.',
-      varieties: ['First European peppers'],
+      cultivars: ['First European peppers'],
       year: '1493',
     },
   ],
@@ -189,7 +189,7 @@ const tradeRoutes = {
     { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[85, 15], [95, 18]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
     // Silk Road route: From Persia/Ottoman to Samarkand (overland)
     { from: [37.1343, 36.2021] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[45, 37], [52, 36], [58, 38]] as [number, number][], establishedYear: 1550, destinationName: 'Samarkand (Silk Road)', isOverland: true },
-    // Return route: West Africa to Caribbean - African varieties cross back
+    // Return route: West Africa to Caribbean - African cultivars cross back
     { from: [-1.0232, 7.9465] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Return route: Spain/Portugal to Caribbean - European cultivation returns
     { from: [-6.3508, 36.7783] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
@@ -1271,10 +1271,10 @@ export function TradeRouteMap() {
             </p>
             <div className="border-t border-[#5a4a3a]/30 pt-2 mb-2">
               <p className="font-heading text-[10px] uppercase tracking-wider text-[#6a5a4a] mb-1">
-                Notable Varieties
+                Notable Cultivars
               </p>
               <p className="font-body text-xs text-[#3a2a1a]">
-                {selectedLocation.varieties.join(' • ')}
+                {selectedLocation.cultivars.join(' • ')}
               </p>
             </div>
             {/* View in Timeline button */}

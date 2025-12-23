@@ -8,7 +8,7 @@ const regions = [
   {
     name: 'The Americas',
     region: 'Mexico & Central America',
-    description: 'Origin point of all capsicum species. Domesticated circa 4000 BCE. Source of Poblano, Serrano, Habanero, and most commercial varieties.',
+    description: 'Origin point of all capsicum species. Domesticated circa 4000 BCE. Source of Poblano, Serrano, Habanero, and most commercial cultivars.',
     icon: MapPin,
     coordinates: '19°N 99°W',
   },
@@ -22,7 +22,7 @@ const regions = [
   {
     name: 'Southeast Asia',
     region: 'Thailand & Indonesia',
-    description: 'Adopted capsicum within fifty years of introduction. Now produces Bird\'s Eye, Thai Dragon, and regional sambal varieties. High pungency cultivars.',
+    description: 'Adopted capsicum within fifty years of introduction. Now produces Bird\'s Eye, Thai Dragon, and regional sambal cultivars. High pungency cultivars.',
     icon: Ship,
     coordinates: '13°N 100°E',
   },
@@ -60,7 +60,7 @@ export function TradeRoutes() {
           </h2>
           <p className="font-body text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             We maintain direct supplier relationships in three major capsicum-producing regions. 
-            Each offers distinct varieties shaped by local climate, soil, and tradition.
+            Each offers distinct cultivars shaped by local climate, soil, and tradition.
           </p>
         </motion.div>
 

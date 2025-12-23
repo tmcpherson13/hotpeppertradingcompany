@@ -3,7 +3,7 @@ import logoWhite from '@/assets/logo-white.svg';
 
 const footerLinks = {
   inventory: [
-    { name: 'All Varieties', href: '#collection' },
+    { name: 'All Cultivars', href: '#collection' },
     { name: 'By Region', href: '#routes' },
     { name: 'Seasonal Offerings', href: '#' },
     { name: 'Wholesale Inquiries', href: '#' },

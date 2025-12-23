@@ -331,7 +331,7 @@ export default function ColumbianExchange() {
                   <p className="font-body text-foreground leading-relaxed mb-4">
                     The transatlantic slave trade, tragically, accelerated this dispersal. 
                     Peppers were included on British slave ships as provisions, spreading 
-                    varieties between African ports and the Caribbean. By the early 1600s, 
+                    cultivars between African ports and the Caribbean. By the early 1600s, 
                     chili peppers had become so thoroughly integrated into West African 
                     cuisine that European observers sometimes mistook them for native 
                     species.<sup>[2]</sup>
@@ -395,7 +395,7 @@ export default function ColumbianExchange() {
                   
                   <p className="font-body text-foreground leading-relaxed">
                     The adoption was so complete that within two centuries, chili peppers 
-                    had become indispensable to Indian cuisine. Regional varieties 
+                    had become indispensable to Indian cuisine. Regional cultivars 
                     developed—the mild Kashmiri chili prized for its color, the fiery 
                     Guntur and Byadgi cultivars of the south—each adapted to local tastes 
                     and conditions. Today, India is the world's largest producer and 
@@ -449,7 +449,7 @@ export default function ColumbianExchange() {
                   
                   <p className="font-body text-foreground leading-relaxed">
                     Southeast Asian cuisines, many already incorporating local peppers 
-                    and other pungent spices, readily adopted <em>Capsicum</em> varieties 
+                    and other pungent spices, readily adopted <em>Capsicum</em> cultivars 
                     from Portuguese and later Dutch traders. Thai, Vietnamese, and 
                     Indonesian cuisines integrated chili peppers into existing culinary 
                     traditions, creating the complex, balanced heat that characterizes 
@@ -496,7 +496,7 @@ export default function ColumbianExchange() {
                     Hungary's embrace of the pepper proved exceptional. Introduced via 
                     Turkish trade in the sixteenth century, the pepper found ideal growing 
                     conditions in the Pannonian Basin. Hungarian cultivators developed 
-                    milder, sweeter varieties—the ancestors of modern paprika—that could 
+                    milder, sweeter cultivars—the ancestors of modern paprika—that could 
                     be used in quantity as a seasoning rather than merely as a fiery accent. 
                     By the eighteenth century, paprika had become a defining element of 
                     Hungarian cuisine.
@@ -552,7 +552,7 @@ export default function ColumbianExchange() {
                     The Columbian Exchange of the chili pepper was complete. But the story 
                     was far from over. In the centuries that followed, peppers would 
                     continue to evolve through cultivation and selection, developing into 
-                    the thousands of regional varieties we know today. They would become 
+                    the thousands of regional cultivars we know today. They would become 
                     so thoroughly integrated into local cuisines that their American origins 
                     would be forgotten, their presence taken for granted as if they had 
                     always been there. That story of global integration and regional 
