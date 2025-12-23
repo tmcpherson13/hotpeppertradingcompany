@@ -152,6 +152,13 @@ const tradeRoutes = {
       varieties: ['Central Asian varieties'],
       year: '1550',
     },
+    {
+      name: 'Caribbean Islands',
+      coordinates: [-66.1057, 18.4655] as [number, number],
+      description: 'African pepper varieties returned via slave trade, blending with native species.',
+      varieties: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
+      year: '1510',
+    },
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
@@ -168,6 +175,10 @@ const tradeRoutes = {
     { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[85, 15], [95, 18]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
     // Silk Road route: From Persia/Ottoman to Samarkand (overland)
     { from: [37.1343, 36.2021] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[45, 37], [52, 36], [58, 38]] as [number, number][], establishedYear: 1550, destinationName: 'Samarkand (Silk Road)', isOverland: true },
+    // Return route: West Africa to Caribbean - African varieties cross back
+    { from: [-1.0232, 7.9465] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
+    // Return route: Spain/Portugal to Caribbean - European cultivation returns
+    { from: [-10, 38] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-25, 30], [-45, 22]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
   ] as RouteData[],
 };
 
@@ -220,11 +231,12 @@ export function TradeRouteMap() {
     '1493': ['Mesoamerica', 'Peru & Bolivia'],
     '1498': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India'],
     '1500': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
-    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa'],
-    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)'],
-    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
-    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
-    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands'],
+    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
   };
 
   const getVisibleLocations = useCallback((year: number): string[] => {
