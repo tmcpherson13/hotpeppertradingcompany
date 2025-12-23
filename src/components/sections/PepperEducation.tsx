@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
+import logoDark from '@/assets/logo-dark.jpg';
 
 // Custom SVG icons for each historical era - Old nautical hand-drawn style
 const ScrollIcon = ({ className }: { className?: string }) => (
@@ -158,9 +159,7 @@ export function PepperEducation() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-              <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary">
-                <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
-              </svg>
+              <img src={logoDark} alt="" className="h-6 w-auto" aria-hidden="true" />
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
             <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">

@@ -44,7 +44,7 @@ export function Footer() {
               growing practices and culinary heritage.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
-              <span className="text-gold">✦</span>
+              <img src={logoWhite} alt="" className="h-4 w-auto mix-blend-screen" aria-hidden="true" />
               <span className="font-body text-sm italic">
                 Provenance verified. Quality guaranteed.
               </span>
