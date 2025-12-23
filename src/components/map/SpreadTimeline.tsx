@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Gauge } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 
 export interface TimelineEvent {
   year: number;
@@ -136,6 +137,7 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [animationSpeed, setAnimationSpeed] = useState(6000); // Default 6s (middle of range)
 
   const playing = externalPlaying !== undefined ? externalPlaying : isPlaying;
   const setPlaying = onPlayingChange || setIsPlaying;
@@ -151,10 +153,10 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
         }
         return prev + 1;
       });
-    }, 7500);
+    }, animationSpeed);
 
     return () => clearInterval(interval);
-  }, [playing, setPlaying]);
+  }, [playing, setPlaying, animationSpeed]);
 
   useEffect(() => {
     const event = timelineEvents[currentIndex];
@@ -313,6 +315,21 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
           <div className="font-body text-xs text-muted-foreground ml-2">
             {currentIndex + 1} / {timelineEvents.length}
           </div>
+        </div>
+
+        {/* Speed Control */}
+        <div className="flex items-center gap-3 mt-3 px-2">
+          <Gauge className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-[10px] font-body text-muted-foreground w-8">Fast</span>
+          <Slider
+            value={[animationSpeed]}
+            onValueChange={(value) => setAnimationSpeed(value[0])}
+            min={2000}
+            max={10000}
+            step={500}
+            className="flex-1"
+          />
+          <span className="text-[10px] font-body text-muted-foreground w-8">Slow</span>
         </div>
       </div>
     </div>
