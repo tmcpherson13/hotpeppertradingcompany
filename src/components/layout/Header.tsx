@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import logoDark from '@/assets/logo-dark.jpg';
 
 const navLinks = [
-  { name: 'Inventory', href: '#collection' },
-  { name: 'Heritage', href: '#heritage' },
-  { name: 'Origins', href: '#routes' },
-  { name: 'Inquiry', href: '#contact' },
+  { name: 'Inventory', href: '#collection', isRoute: false },
+  { name: 'Heritage', href: '#heritage', isRoute: false },
+  { name: 'Origins', href: '#routes', isRoute: false },
+  { name: 'The Compendium', href: '/compendium', isRoute: true },
+  { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
 
 export function Header() {
@@ -30,13 +31,23 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
-              >
-                {link.name}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
 
@@ -72,14 +83,25 @@ export function Header() {
           >
             <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
-                >
-                  {link.name}
-                </a>
+                link.isRoute ? (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
+                  >
+                    {link.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
+                  >
+                    {link.name}
+                  </a>
+                )
               ))}
             </nav>
           </motion.div>
