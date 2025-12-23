@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import logoDark from '@/assets/logo-dark.svg';
 
 const navLinks = [
-  { name: 'Inventory', href: '#collection', isRoute: false },
+  { name: 'The Cargo', href: '#collection', isRoute: false },
   { name: 'Heritage', href: '#heritage', isRoute: false },
-  { name: 'Origins', href: '#routes', isRoute: false },
+  { name: 'Trade Routes', href: '#routes', isRoute: false },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
@@ -35,7 +35,7 @@ export function Header() {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
+                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
                 >
                   {link.name}
                 </Link>
@@ -43,7 +43,7 @@ export function Header() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="font-heading text-sm uppercase tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors duration-300"
+                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
                 >
                   {link.name}
                 </a>
