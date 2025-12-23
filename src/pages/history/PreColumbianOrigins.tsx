@@ -209,7 +209,7 @@ export default function PreColumbianOrigins() {
                   
                   <blockquote className="border-l-4 border-primary pl-6 my-8 italic font-display text-xl text-foreground">
                     "The chiltepin is the 'mother of all peppers'—the wild form from which 
-                    countless domesticated varieties have descended."
+                    countless domesticated cultivars have descended."
                     <footer className="text-muted-foreground text-base font-body not-italic mt-2">
                       — Gary Paul Nabhan, ethnobotanist
                     </footer>
@@ -449,7 +449,7 @@ export default function PreColumbianOrigins() {
                     used by the Aztecs to denote hot peppers. This terminology was adopted by 
                     the Spanish and subsequently diffused worldwide, becoming the basis for 
                     names in languages from English to Hindi. The Nahuatl lexicon distinguished 
-                    dozens of pepper varieties by name, reflecting the agricultural sophistication 
+                    dozens of pepper cultivars by name, reflecting the agricultural sophistication 
                     of Mesoamerican pepper culture.<sup>[6]</sup>
                   </p>
                   
@@ -470,7 +470,7 @@ export default function PreColumbianOrigins() {
                     Similarly rich vocabularies existed in Maya languages, where peppers were 
                     classified by color, heat level, size, and culinary application. This 
                     linguistic complexity mirrors the biological diversity: pre-Columbian 
-                    Mesoamerica cultivated hundreds of distinct pepper varieties, far exceeding 
+                    Mesoamerica cultivated hundreds of distinct pepper cultivars, far exceeding 
                     the diversity maintained today.
                   </p>
                 </div>
@@ -517,7 +517,7 @@ export default function PreColumbianOrigins() {
                     yellow chiles, <em>cuauhchilli</em>, <em>tenpilchilli</em>, <em>chichioachilli</em>. 
                     He sells water chiles, <em>conchilli</em>; he sells smoked chiles, small chiles, 
                     tree chiles, thin chiles, those like beetles. He sells hot chiles, the 
-                    early variety, the hollow-based kind."
+                    early cultivar, the hollow-based kind."
                     <footer className="text-muted-foreground text-base font-body not-italic mt-2">
                       — Florentine Codex, Book 10, 16th century
                     </footer>
@@ -547,7 +547,7 @@ export default function PreColumbianOrigins() {
                   <p className="font-body text-foreground leading-relaxed mb-4">
                     Beyond their role as tribute, peppers circulated through the great markets 
                     of Mesoamerica. Spanish conquistadors marveled at the pepper vendors in the 
-                    Tlatelolco market, which offered dozens of varieties—fresh, dried, smoked, 
+                    Tlatelolco market, which offered dozens of cultivars—fresh, dried, smoked, 
                     and ground—organized by type, provenance, and heat level.
                   </p>
                   
@@ -593,7 +593,7 @@ export default function PreColumbianOrigins() {
                     The pre-Columbian history of <em>Capsicum</em> reveals one of humanity's 
                     great agricultural achievements. Over millennia, the indigenous peoples of 
                     the Americas transformed a small, wild berry into a dazzling array of 
-                    domesticated varieties, developing cultivation techniques and culinary 
+                    domesticated cultivars, developing cultivation techniques and culinary 
                     traditions of remarkable sophistication.
                   </p>
                   

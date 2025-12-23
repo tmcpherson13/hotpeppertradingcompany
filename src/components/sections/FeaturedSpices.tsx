@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { TradeRoutePattern, TradeRouteDivider } from '@/components/ui/TradeRoutePattern';
 import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
@@ -86,7 +87,7 @@ export function FeaturedSpices() {
             Regional Selections
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Each variety is sourced directly from growers in its region of origin. 
+            Each cultivar is sourced directly from growers in its region of origin. 
             Provenance verified. Heat levels documented.
           </p>
         </motion.div>
@@ -211,8 +212,8 @@ export function FeaturedSpices() {
               </span>
               <div className="w-16 h-px bg-gradient-to-l from-transparent to-ink/30" />
             </div>
-            <Button variant="pepper" size="lg">
-              View All Varieties
+            <Button variant="pepper" size="lg" asChild>
+              <Link to="/compendium">View All Cultivars</Link>
             </Button>
           </div>
         </motion.div>

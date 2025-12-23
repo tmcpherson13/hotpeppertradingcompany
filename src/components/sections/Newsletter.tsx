@@ -33,7 +33,7 @@ export function Newsletter() {
           </h2>
           <p className="font-body text-lg text-muted-foreground mb-8 leading-relaxed">
             Receive periodic updates on new arrivals, seasonal availability, 
-            and notes on capsicum varieties and cultivation.
+            and notes on capsicum cultivars and cultivation.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">

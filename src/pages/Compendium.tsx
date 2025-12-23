@@ -174,7 +174,7 @@ const Compendium = () => {
               <div className="flex items-center gap-4 mb-4">
                 <span className="h-px flex-1 bg-border" />
                 <h2 className="font-heading text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Registry of Varieties
+                  Registry of Cultivars
                 </h2>
                 <span className="h-px flex-1 bg-border" />
               </div>

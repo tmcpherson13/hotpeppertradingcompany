@@ -244,14 +244,14 @@ export default function GlobalIntegration() {
                   <p className="font-body text-foreground leading-relaxed mb-4">
                     India today stands as both the world's largest producer and largest 
                     consumer of chili peppers, cultivating approximately 1.5 million 
-                    metric tons annually across diverse regional varieties. The integration 
+                    metric tons annually across diverse regional cultivars. The integration 
                     is so complete that many Indians are surprised to learn the pepper is 
                     not indigenous.<sup>[1]</sup>
                   </p>
                   
                   <div className="bg-background/50 border border-border p-6 my-8">
                     <h4 className="font-heading text-lg text-foreground font-semibold mb-3">
-                      Major Indian Pepper Varieties
+                      Major Indian Pepper Cultivars
                     </h4>
                     <ul className="space-y-2 font-body text-foreground">
                       <li className="flex items-start gap-2">
@@ -352,7 +352,7 @@ export default function GlobalIntegration() {
                   <p className="font-body text-foreground leading-relaxed mb-4">
                     In their homeland, peppers never ceased to evolve. Mexico remains 
                     the world's center of <em>Capsicum</em> diversity, home to hundreds 
-                    of distinct varieties ranging from the mild poblano to the scorching 
+                    of distinct cultivars ranging from the mild poblano to the scorching 
                     habanero. Mexican cuisine distinguishes carefully between fresh and 
                     dried peppers—each with its own name and culinary application—in a 
                     sophistication unmatched elsewhere.<sup>[3]</sup>
@@ -363,7 +363,7 @@ export default function GlobalIntegration() {
                     in Louisiana and the Southwest. Tabasco sauce, first produced in 1868 
                     on Avery Island, Louisiana, became America's first nationally distributed 
                     hot sauce and remains an icon. The New Mexico chile industry, dating to 
-                    Spanish colonial times, produces distinctive Hatch and Chimayó varieties 
+                    Spanish colonial times, produces distinctive Hatch and Chimayó cultivars 
                     that inspire annual harvest celebrations.
                   </p>
                   
@@ -397,7 +397,7 @@ export default function GlobalIntegration() {
                     central to national cuisine. <em>Paprika</em>—the word itself Hungarian 
                     in origin—defines dishes from <em>gulyás</em> to <em>paprikás csirke</em>. 
                     The Kalocsa and Szeged regions hold protected status for their paprika 
-                    production, carefully grading varieties by heat and sweetness.<sup>[2]</sup>
+                    production, carefully grading cultivars by heat and sweetness.<sup>[2]</sup>
                   </p>
                   
                   <p className="font-body text-foreground leading-relaxed mb-4">
@@ -459,7 +459,7 @@ export default function GlobalIntegration() {
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary mt-1.5">•</span>
-                        <span><strong>Varieties Cultivated</strong> — 3,000+ named varieties worldwide</span>
+                        <span><strong>Cultivars Grown</strong> — 3,000+ named cultivars worldwide</span>
                       </li>
                     </ul>
                   </div>
@@ -583,7 +583,7 @@ export default function GlobalIntegration() {
                     to our cultures are often immigrants themselves, brought by trade 
                     and travel, shaped by local tastes and conditions, until they become 
                     inseparable from our identities. The pepper's journey continues, 
-                    as breeders develop new varieties, chefs discover new applications, 
+                    as breeders develop new cultivars, chefs discover new applications, 
                     and millions of people around the world reach, once again, for that 
                     irresistible burn.
                   </p>

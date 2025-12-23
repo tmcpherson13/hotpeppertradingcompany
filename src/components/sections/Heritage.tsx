@@ -86,7 +86,7 @@ export function Heritage() {
                 appreciate their place in global culinary traditions.
               </p>
               <p>
-                Our role is to celebrate these stories, document the varieties, and share 
+                Our role is to celebrate these stories, document the cultivars, and share 
                 our passion for the remarkable journey of capsicum around the world.
               </p>
             </div>
