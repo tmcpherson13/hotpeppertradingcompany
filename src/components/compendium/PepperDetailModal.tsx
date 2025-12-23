@@ -138,8 +138,8 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#5a4a3a]/30" />
           
           {/* Logo in top right */}
-          <div className="absolute top-3 right-12">
-            <img src={logoDark} alt="" className="w-14 h-14 object-contain" />
+          <div className="absolute top-3 right-12 opacity-20">
+            <img src={logoDark} alt="" className="w-20 h-20 object-contain" />
           </div>
           
           {/* In Stock Badge */}
