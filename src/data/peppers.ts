@@ -1,6 +1,20 @@
 export type Species = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
 export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
 
+export type ImageSource = 'ai-generated' | 'wikimedia' | 'user-contributed' | 'stock';
+export type ImageType = 'illustration' | 'photo' | 'dried' | 'plant';
+
+export interface PepperImage {
+  id: string;
+  url: string;
+  type: ImageType;
+  isPrimary?: boolean;
+  source: ImageSource;
+  license?: string;
+  author?: string;
+  sourceUrl?: string;
+}
+
 export interface Pepper {
   id: string;
   name: string;
@@ -22,6 +36,8 @@ export interface Pepper {
   culinaryUses: string[];
   pairings?: string[];
   inStock: boolean;
+  gallery?: PepperImage[];
+  // Legacy fields - kept for backward compatibility during migration
   imageUrl?: string;
   imageLicense?: string;
   attributionText?: string;
