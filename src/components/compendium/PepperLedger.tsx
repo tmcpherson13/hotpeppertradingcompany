@@ -80,8 +80,8 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
             <div className="absolute bottom-0 right-0 w-8 h-8 border-t border-l border-[#5a4a3a]/10" />
 
             {/* Logo watermark in top right */}
-            <div className="absolute top-2 right-2 z-0 opacity-15">
-              <img src={logoDark} alt="" className="w-10 h-10 object-contain" />
+            <div className="absolute top-2 right-2 z-0">
+              <img src={logoDark} alt="" className="w-14 h-14 object-contain" />
             </div>
 
             {/* In Stock Badge */}
