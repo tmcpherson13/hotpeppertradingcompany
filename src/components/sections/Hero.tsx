@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-spice-trade.jpg';
 import logoWhite from '@/assets/logo-white.svg';
 
@@ -149,8 +150,8 @@ export function Hero() {
             <Button variant="pepper" size="xl" className="min-w-[220px]">
               View Current Inventory
             </Button>
-            <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary">
-              Learn About Origins
+            <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary" asChild>
+              <Link to="/#heritage">Learn About Our Heritage</Link>
             </Button>
           </motion.div>
         </motion.div>
