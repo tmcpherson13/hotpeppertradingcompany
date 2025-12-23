@@ -40,7 +40,7 @@ export function Footer() {
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
               Celebrating the history, cultures, and cuisines of capsicum peppers 
-              since 1847. We develop pepper consortiums that honor traditional 
+              since 1493. We develop pepper consortiums that honor traditional 
               growing practices and culinary heritage.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
@@ -112,7 +112,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-body text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} Hot Pepper Trading Company. Est. 1847. All rights reserved.
+            © {new Date().getFullYear()} Hot Pepper Trading Company. Est. 1493. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
