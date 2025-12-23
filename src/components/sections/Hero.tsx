@@ -147,8 +147,8 @@ export function Hero() {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button variant="pepper" size="xl" className="min-w-[220px]">
-              View Current Inventory
+            <Button variant="pepper" size="xl" className="min-w-[220px]" asChild>
+              <Link to="/compendium">View Current Inventory</Link>
             </Button>
             <Button variant="outline" size="xl" className="min-w-[220px] border-parchment/50 text-parchment hover:bg-parchment/10 hover:border-primary" asChild>
               <Link to="/#heritage">Learn About Our Heritage</Link>
