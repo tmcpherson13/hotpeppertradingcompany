@@ -605,30 +605,30 @@ export function TradeRouteMap() {
           'background-color': '#e4d5b7', // Warmer, more aged parchment
         },
       },
-      // Graticule lines - hand-drawn navigational grid using ink-brown tones
+      // Graticule lines - delicate hand-drawn navigational grid
       {
         id: 'graticule-lines',
         type: 'line',
         source: 'graticule',
         filter: ['!=', ['get', 'type'], 'special'],
         paint: {
-          'line-color': '#5a4a3a', // Same ink-brown as site borders
-          'line-width': 0.4,
-          'line-opacity': 0.18,
-          'line-dasharray': [6, 8], // Longer dashes, feels more hand-drawn
+          'line-color': '#5a4a3a',
+          'line-width': 0.3,
+          'line-opacity': 0.12,
+          'line-dasharray': [8, 12],
         },
       },
-      // Special latitude lines (Equator, Tropics) - slightly bolder like important annotations
+      // Special latitude lines (Equator, Tropics) - subtle emphasis
       {
         id: 'graticule-special',
         type: 'line',
         source: 'graticule',
         filter: ['==', ['get', 'type'], 'special'],
         paint: {
-          'line-color': '#3a2a1a', // Darker ink for emphasis
-          'line-width': 0.6,
-          'line-opacity': 0.22,
-          'line-dasharray': [10, 6],
+          'line-color': '#3a2a1a',
+          'line-width': 0.5,
+          'line-opacity': 0.15,
+          'line-dasharray': [12, 8],
         },
       },
       // Land mass fill - aged vellum appearance
@@ -1129,51 +1129,65 @@ export function TradeRouteMap() {
       
       {/* Decorative ship silhouettes suggesting trade movement */}
       <div className="absolute pointer-events-none hidden md:block" style={{ top: '35%', left: '28%' }}>
-        <ShipSilhouette className="w-12 h-8 opacity-60" style={{ transform: 'rotate(25deg)' }} />
+        <ShipSilhouette className="w-14 h-10 opacity-50" style={{ transform: 'rotate(25deg)' }} />
       </div>
       <div className="absolute pointer-events-none hidden md:block" style={{ top: '55%', left: '18%' }}>
-        <ShipSilhouette className="w-10 h-6 opacity-40" style={{ transform: 'rotate(-15deg)' }} />
+        <ShipSilhouette className="w-12 h-8 opacity-35" style={{ transform: 'rotate(-15deg)' }} />
       </div>
       <div className="absolute pointer-events-none hidden lg:block" style={{ top: '40%', left: '45%' }}>
-        <ShipSilhouette className="w-8 h-5 opacity-30" style={{ transform: 'rotate(10deg)' }} />
+        <ShipSilhouette className="w-10 h-7 opacity-25" style={{ transform: 'rotate(10deg)' }} />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '28%', right: '30%' }}>
+        <ShipSilhouette className="w-9 h-6 opacity-20" style={{ transform: 'rotate(-5deg) scaleX(-1)' }} />
       </div>
       
       {/* Sea creatures - period cartographic decoration */}
-      <div className="absolute pointer-events-none hidden md:block" style={{ bottom: '30%', left: '8%' }}>
-        <SeaCreature className="w-16 h-6" variant="serpent" />
+      <div className="absolute pointer-events-none hidden md:block" style={{ bottom: '28%', left: '6%' }}>
+        <SeaCreature className="w-20 h-8" variant="serpent" />
       </div>
-      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '60%', right: '35%' }}>
-        <SeaCreature className="w-12 h-6" variant="whale" />
+      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '58%', right: '32%' }}>
+        <SeaCreature className="w-14 h-8" variant="whale" />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ bottom: '35%', right: '12%' }}>
+        <SeaCreature className="w-16 h-6" variant="serpent" />
       </div>
       
       {/* Wind heads - classical cartographic element */}
-      <div className="absolute pointer-events-none hidden md:block" style={{ top: '20%', right: '8%' }}>
-        <WindHead className="w-10 h-8" direction="west" />
+      <div className="absolute pointer-events-none hidden md:block" style={{ top: '18%', right: '6%' }}>
+        <WindHead className="w-12 h-10 opacity-80" direction="west" />
       </div>
-      <div className="absolute pointer-events-none hidden lg:block" style={{ bottom: '35%', left: '3%' }}>
-        <WindHead className="w-8 h-6" direction="east" />
+      <div className="absolute pointer-events-none hidden lg:block" style={{ bottom: '32%', left: '2%' }}>
+        <WindHead className="w-10 h-8 opacity-70" direction="east" />
+      </div>
+      <div className="absolute pointer-events-none hidden lg:block" style={{ top: '65%', left: '5%' }}>
+        <WindHead className="w-9 h-7 opacity-50" direction="east" />
       </div>
       
       {/* Narrative annotations - subtle period text */}
       <NarrativeAnnotation 
         text="Terra Incognita" 
         className="absolute hidden lg:block"
-        style={{ bottom: '25%', left: '8%', transform: 'rotate(-5deg)' }}
+        style={{ bottom: '22%', left: '6%', transform: 'rotate(-5deg)' }}
       />
       <NarrativeAnnotation 
         text="Mare Atlanticum" 
-        className="absolute hidden md:block text-[11px]"
-        style={{ top: '42%', left: '32%', transform: 'rotate(-2deg)', letterSpacing: '0.2em' }}
+        className="absolute hidden md:block text-[12px]"
+        style={{ top: '40%', left: '30%', transform: 'rotate(-2deg)', letterSpacing: '0.25em' }}
       />
       <NarrativeAnnotation 
         text="Via delle Spezie" 
         className="absolute hidden lg:block"
-        style={{ top: '32%', right: '22%', transform: 'rotate(3deg)' }}
+        style={{ top: '30%', right: '20%', transform: 'rotate(3deg)' }}
       />
       <NarrativeAnnotation 
         text="Novus Mundus" 
-        className="absolute hidden md:block text-[11px]"
-        style={{ top: '35%', left: '12%', transform: 'rotate(-8deg)', letterSpacing: '0.15em' }}
+        className="absolute hidden md:block text-[12px]"
+        style={{ top: '32%', left: '10%', transform: 'rotate(-8deg)', letterSpacing: '0.18em' }}
+      />
+      <NarrativeAnnotation 
+        text="Oceanus Indicus" 
+        className="absolute hidden lg:block text-[11px]"
+        style={{ top: '55%', right: '28%', transform: 'rotate(5deg)', letterSpacing: '0.2em' }}
       />
       
       {/* Compass Rose - bottom left */}
