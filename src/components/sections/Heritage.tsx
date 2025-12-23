@@ -66,8 +66,8 @@ export function Heritage() {
               </p>
               <p>
                 We are fascinated by this history—the trade routes that carried peppers from 
-                the Levant to Southeast Asia, the Indian subcontinent to the Americas. 
-                Understanding where peppers come from and how they traveled helps us 
+                the Levant to Southeast Asia, the Indian subcontinent, and back to the Americas. 
+                Understanding where peppers come from and how they traveled helps us
                 appreciate their place in global culinary traditions.
               </p>
               <p>
