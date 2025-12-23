@@ -65,14 +65,14 @@ export function Heritage() {
                 they had become essential to cuisines that had never known them.
               </p>
               <p>
-                We maintain direct relationships with growers in the principal hot pepper 
-                regions: the Levant, Southeast Asia, the Indian subcontinent, and the 
-                Americas. Each source is selected for quality, consistency, and adherence 
-                to traditional cultivation methods.
+                We are fascinated by this history—the trade routes that carried peppers from 
+                the Levant to Southeast Asia, the Indian subcontinent to the Americas. 
+                Understanding where peppers come from and how they traveled helps us 
+                appreciate their place in global culinary traditions.
               </p>
               <p>
-                Our role is straightforward: to identify exceptional product, verify its 
-                provenance, and make it available to those who understand its value.
+                Our role is to celebrate these stories, document the varieties, and share 
+                our passion for the remarkable journey of capsicum around the world.
               </p>
             </div>
 
