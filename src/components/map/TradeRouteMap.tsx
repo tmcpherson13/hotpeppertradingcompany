@@ -227,6 +227,19 @@ export function TradeRouteMap() {
   const previousVisibleRoutesRef = useRef<Set<number>>(new Set());
   const dashOffsetRef = useRef<number>(0);
   const animationFrameRef = useRef<number | null>(null);
+  
+  // REFS TO FIX STALE CLOSURES - MapLibre event handlers capture these refs, not stale state
+  const timelineYearRef = useRef<number>(timelineYear);
+  const selectedTimelineIndexRef = useRef<number | undefined>(selectedTimelineIndex);
+  
+  // Keep refs in sync with state
+  useEffect(() => {
+    timelineYearRef.current = timelineYear;
+  }, [timelineYear]);
+  
+  useEffect(() => {
+    selectedTimelineIndexRef.current = selectedTimelineIndex;
+  }, [selectedTimelineIndex]);
 
   // Handle region focus button click
   const handleRegionFocus = useCallback((region: RegionPreset) => {
@@ -290,6 +303,7 @@ export function TradeRouteMap() {
 
   // Handle location click -> sync with timeline
   // IMPORTANT: Never move timeline backward to prevent routes from disappearing
+  // Uses refs to get current values, not stale closure values
   const handleLocationClick = useCallback((location: typeof tradeRoutes.origins[0]) => {
     setSelectedLocation(location);
     
@@ -297,16 +311,17 @@ export function TradeRouteMap() {
     const eventIndex = findTimelineEventByLocation(location.name);
     if (eventIndex !== -1) {
       const clickedEvent = timelineEvents[eventIndex];
-      const currentIndex = selectedTimelineIndex ?? 0;
-      const currentEvent = timelineEvents[currentIndex];
+      // Use REF to get current timeline year (not stale closure value)
+      const currentYear = timelineYearRef.current;
       
-      // Only advance timeline forward, never go backward (prevents routes from disappearing)
-      if (clickedEvent.year > currentEvent.year) {
+      // Only advance timeline forward (by comparing YEARS, not indices)
+      // This prevents routes from disappearing when clicking earlier locations
+      if (clickedEvent.year > currentYear) {
         setSelectedTimelineIndex(eventIndex);
       }
       // If clicking an earlier location, just select it but keep timeline where it is
     }
-  }, [findTimelineEventByLocation, selectedTimelineIndex]);
+  }, [findTimelineEventByLocation]);
 
   // Handle timeline event selection (from clicking timeline markers)
   const handleTimelineEventSelect = useCallback((index: number) => {
@@ -712,6 +727,7 @@ export function TradeRouteMap() {
         });
 
         // Add click handler for routes - clicking a route selects it and advances timeline
+        // USES REFS to avoid stale closure issues with state values
         m?.on('click', (e) => {
           // Query all route layers at click point
           const routeLayerIds: string[] = [];
@@ -738,20 +754,19 @@ export function TradeRouteMap() {
                   setSelectedLocation(destination);
                 }
                 
-                // Find the timeline event for this route and advance to at least that year
-                const eventIndex = timelineEvents.findIndex(ev => 
-                  ev.year === route.establishedYear || 
-                  ev.location === route.destinationName ||
-                  ev.location.includes(route.destinationName.split(',')[0])
-                );
+                // USE REF to get current timeline year (not stale closure value)
+                const currentYear = timelineYearRef.current;
                 
-                if (eventIndex !== -1) {
-                  const currentIndex = selectedTimelineIndex ?? 0;
-                  // Always advance to at least the route's year so it stays visible
-                  if (eventIndex >= currentIndex) {
+                // If current timeline year is BEFORE this route's year, advance to show the route
+                if (currentYear < route.establishedYear) {
+                  // Find the timeline event for this route's year
+                  const eventIndex = timelineEvents.findIndex(ev => ev.year >= route.establishedYear);
+                  if (eventIndex !== -1) {
                     setSelectedTimelineIndex(eventIndex);
                   }
                 }
+                // If timeline is already past this route's year, route should already be visible
+                // No need to move timeline backward
               }
             }
           }
