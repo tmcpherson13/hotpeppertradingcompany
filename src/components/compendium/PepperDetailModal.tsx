@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pepper, peppers, speciesDisplayNames } from '@/data/peppers';
-import { Flame, MapPin, Calendar, Package } from 'lucide-react';
+import { Flame, MapPin, Package } from 'lucide-react';
 
 interface PepperDetailModalProps {
   pepper: Pepper | null;
@@ -26,11 +26,6 @@ const getHeatColor = (level: string) => {
 const formatScoville = (min: number, max: number) => {
   if (min === max) return min.toLocaleString();
   return `${min.toLocaleString()} – ${max.toLocaleString()}`;
-};
-
-const formatYear = (year: number) => {
-  if (year < 0) return `${Math.abs(year)} BCE`;
-  return `${year} CE`;
 };
 
 const generateTradeRouteSummary = (tags: string[], tradeRoute: string): string => {
@@ -164,11 +159,6 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
               <MapPin className="w-5 h-5 mx-auto mb-1 text-[#8b2942]" />
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Provenance</p>
               <p className="font-body text-sm font-medium text-[#3a2a1a]">{pepper.origin}, {pepper.region}</p>
-            </div>
-            <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
-              <Calendar className="w-5 h-5 mx-auto mb-1 text-[#d4a84b]" />
-              <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Introduced</p>
-              <p className="font-body text-sm font-medium text-[#3a2a1a]">{formatYear(pepper.yearIntroduced)}</p>
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <div className="w-5 h-5 mx-auto mb-1 flex items-center justify-center text-[#4a7c59] font-display text-xs">
