@@ -137,14 +137,14 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           {/* Corner ornaments */}
           <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#5a4a3a]/30" />
           
-          {/* Logo in top right */}
-          <div className="absolute top-3 right-12 opacity-20">
+          {/* Logo - positioned under pepper name area */}
+          <div className="absolute top-16 right-4 opacity-20">
             <img src={logoDark} alt="" className="w-20 h-20 object-contain" />
           </div>
           
-          {/* In Stock Badge */}
+          {/* In Stock Badge - positioned left to not cover name */}
           {pepper.inStock && (
-            <div className="absolute top-4 right-12">
+            <div className="absolute top-4 left-6">
               <div className="flex items-center gap-1 px-2 py-1 bg-[#2d5a3d] text-[#f5efe6] 
                 text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80">
                 <Package className="w-3 h-3" />
