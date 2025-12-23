@@ -45,6 +45,7 @@ export function Header() {
                 <Link
                   key={link.name}
                   to={link.href}
+                  onClick={() => window.scrollTo(0, 0)}
                   className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
                 >
                   {link.name}
@@ -98,7 +99,10 @@ export function Header() {
                   <Link
                     key={link.name}
                     to={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      setIsOpen(false);
+                    }}
                     className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
                   >
                     {link.name}
