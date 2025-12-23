@@ -155,7 +155,7 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button variant="pepper" size="xl" className="min-w-[220px]" asChild>
-              <Link to="/compendium">View Current Inventory</Link>
+              <Link to="/compendium">View Current Consignment</Link>
             </Button>
             <Button 
               variant="outline" 
