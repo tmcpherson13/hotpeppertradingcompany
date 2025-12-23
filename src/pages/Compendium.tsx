@@ -121,7 +121,7 @@ const Compendium = () => {
             </div>
 
             {/* Sub-line */}
-            <p className="mt-6 font-heading text-xs italic text-[#5a4a3a]/70 tracking-wide">
+            <p className="mt-6 font-heading text-sm font-bold italic text-[#5a4a3a]/70 tracking-wide">
               "An archive for those who value flavor, heat, and history in equal measure."
             </p>
 
