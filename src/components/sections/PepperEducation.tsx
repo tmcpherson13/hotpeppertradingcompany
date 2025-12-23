@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
-import logoDark from '@/assets/logo-dark-alpha.png';
+import logoDark from '@/assets/logo-dark.svg';
 
 // Custom SVG icons for each historical era - Old nautical hand-drawn style
 const ScrollIcon = ({ className }: { className?: string }) => (

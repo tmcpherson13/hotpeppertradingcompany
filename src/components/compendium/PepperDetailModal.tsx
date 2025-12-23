@@ -3,7 +3,7 @@ import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/pepper
 import { Flame, MapPin, Package } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
-import logoDark from '@/assets/logo-dark-alpha.png';
+import logoDark from '@/assets/logo-dark.svg';
 
 // Helper to get gallery from pepper (with legacy fallback)
 const getGalleryFromPepper = (pepper: Pepper): PepperImage[] => {

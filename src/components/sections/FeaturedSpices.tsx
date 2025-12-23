@@ -5,7 +5,7 @@ import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
 import spicePepper from '@/assets/spice-pepper.jpg';
 import spiceSaffron from '@/assets/spice-saffron.jpg';
-import logoDark from '@/assets/logo-dark-alpha.png';
+import logoDark from '@/assets/logo-dark.svg';
 
 const spices = [
   {
