@@ -86,7 +86,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
 
             {/* In Stock Badge */}
             {pepper.inStock && (
-              <div className="absolute top-12 right-2 z-10">
+              <div className="absolute top-24 right-2 z-10">
                 <div className="flex items-center gap-1 px-2 py-1 bg-[#2d5a3d] text-[#f5efe6] 
                   text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80
                   shadow-sm">
