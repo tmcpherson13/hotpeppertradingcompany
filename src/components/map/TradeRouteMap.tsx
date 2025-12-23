@@ -672,9 +672,9 @@ export function TradeRouteMap() {
       tradeRoutes.destinations.forEach((dest) => {
         const el = document.createElement('div');
         el.className = 'destination-marker';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.style.transition = 'opacity 0.5s ease';
         el.style.opacity = '0.3';
-        el.style.transform = 'scale(0.7)';
+        // Do NOT set transform on outer element - it will override MapLibre's positioning
         el.innerHTML = `
           <div class="marker-inner" style="
             width: 14px; 
@@ -684,6 +684,7 @@ export function TradeRouteMap() {
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 1px 4px rgba(90,74,58,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+            transform: scale(0.7);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
           "></div>
         `;
