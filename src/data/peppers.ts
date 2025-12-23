@@ -155,9 +155,18 @@ export const peppers: Pepper[] = [
     yearIntroduced: -3000,
     culinaryUses: ['Ceviche', 'Ají de gallina', 'Sauces'],
     inStock: true,
-    imageUrl: ajiAmarilloImg,
-    imageLicense: 'CC BY-SA 4.0',
-    attributionText: 'Photo by Frozenmadness, via Wikimedia Commons',
+    gallery: [
+      {
+        id: 'aji-amarillo-wikimedia',
+        url: ajiAmarilloImg,
+        type: 'photo',
+        isPrimary: true,
+        source: 'wikimedia',
+        license: 'CC BY-SA 4.0',
+        author: 'Frozenmadness',
+        sourceUrl: 'https://commons.wikimedia.org/wiki/File:Aji_amarillo_fruits.jpg',
+      },
+    ],
   },
   {
     id: 'aji-limon',
