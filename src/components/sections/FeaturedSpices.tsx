@@ -81,14 +81,14 @@ export function FeaturedSpices() {
             <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           </div>
           <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
-            Current Offerings
+            The Cargo
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
-            Regional Selections
+            Current Consignment
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Each cultivar is sourced directly from growers in its region of origin. 
-            Provenance verified. Heat levels documented.
+            Each cultivar is selected with intent—evaluated for flavor profile, pungency, and regional provenance. 
+            Availability is considered not as volume, but as suitability, allowing us to assemble small, deliberate Pepper Consortiums rather than uniform stock.
           </p>
         </motion.div>
 
