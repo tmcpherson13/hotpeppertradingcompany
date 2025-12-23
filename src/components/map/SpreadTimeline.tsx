@@ -126,6 +126,15 @@ export const timelineEvents: TimelineEvent[] = [
   },
 ];
 
+// Helper to calculate date-proportional position on timeline
+const MIN_YEAR = -4000; // 4000 BCE
+const MAX_YEAR = 1600;  // 1600 CE
+const TOTAL_SPAN = MAX_YEAR - MIN_YEAR; // 5600 years
+
+const getProportionalPosition = (year: number): number => {
+  return ((year - MIN_YEAR) / TOTAL_SPAN) * 100;
+};
+
 interface SpreadTimelineProps {
   onYearChange?: (year: number) => void;
   onEventChange?: (event: TimelineEvent) => void;
@@ -229,54 +238,80 @@ export function SpreadTimeline({ onYearChange, onEventChange, isPlaying: externa
 
       {/* Timeline Bar */}
       <div className="px-4 py-3">
-        {/* Progress Bar */}
-        <div className="relative h-2 bg-muted mb-3">
+        {/* Date-Proportional Timeline */}
+        <div className="relative h-2 bg-muted mb-8">
+          {/* Progress bar based on proportional position */}
           <motion.div 
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-gold"
             initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
+            animate={{ width: `${getProportionalPosition(currentEvent.year)}%` }}
             transition={{ duration: 0.3 }}
           />
           
-          {/* Event Markers */}
-          <div className="absolute inset-0 flex items-center">
+          {/* Event Markers with Year Labels */}
+          <div className="absolute inset-0">
             {timelineEvents.map((event, index) => {
-              const position = ((index + 1) / timelineEvents.length) * 100;
+              const position = getProportionalPosition(event.year);
               const isActive = index <= currentIndex;
               const isCurrent = index === currentIndex;
               
+              // Stagger labels above/below to reduce overlap
+              const labelBelow = index % 2 === 0;
+              
               return (
-                <button
+                <div
                   key={index}
-                  onClick={() => handleEventClick(index)}
-                  className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2"
-                  style={{ left: `${position}%` }}
+                  className="absolute transform -translate-x-1/2"
+                  style={{ left: `${position}%`, top: '50%' }}
                 >
-                  <motion.div
-                    className={`rounded-full transition-colors ${
-                      event.isOrigin 
-                        ? 'bg-primary border-2 border-gold' 
-                        : isActive 
-                          ? 'bg-gold border-2 border-primary' 
-                          : 'bg-muted-foreground/30 border border-border'
-                    }`}
-                    animate={{
-                      width: isCurrent ? 14 : 8,
-                      height: isCurrent ? 14 : 8,
-                    }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </button>
+                  {/* Marker dot */}
+                  <button
+                    onClick={() => handleEventClick(index)}
+                    className="transform -translate-y-1/2"
+                  >
+                    <motion.div
+                      className={`rounded-full transition-colors ${
+                        event.isOrigin 
+                          ? 'bg-primary border-2 border-gold' 
+                          : isActive 
+                            ? 'bg-gold border-2 border-primary' 
+                            : 'bg-muted-foreground/30 border border-border'
+                      }`}
+                      animate={{
+                        width: isCurrent ? 14 : 8,
+                        height: isCurrent ? 14 : 8,
+                      }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </button>
+                  
+                  {/* Year label */}
+                  <div 
+                    className={`absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap
+                      ${labelBelow ? 'top-3' : '-top-5'}
+                      ${isCurrent ? 'font-semibold text-gold' : 'text-muted-foreground'}
+                    `}
+                  >
+                    <span 
+                      className={`text-[8px] font-body ${
+                        event.year < 0 ? '' : 'rotate-[-45deg] inline-block origin-top-left'
+                      }`}
+                      style={event.year >= 0 ? { transform: 'rotate(-45deg)', transformOrigin: 'center' } : {}}
+                    >
+                      {event.yearDisplay}
+                    </span>
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
 
-        {/* Timeline Labels */}
+        {/* Timeline Range Labels */}
         <div className="flex justify-between text-[10px] font-body text-muted-foreground mb-3">
           <span>4000 BCE</span>
-          <span>1500</span>
-          <span>1600</span>
+          <span className="text-center flex-1">← Thousands of Years →</span>
+          <span>1600 CE</span>
         </div>
 
         {/* Controls */}
