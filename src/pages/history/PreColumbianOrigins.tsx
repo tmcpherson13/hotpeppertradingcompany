@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import logoDark from '@/assets/logo-dark.jpg';
 
 interface Citation {
   id: number;
@@ -111,6 +113,10 @@ function CitationLink({ citation }: { citation: Citation }) {
 }
 
 export default function PreColumbianOrigins() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -124,10 +130,10 @@ export default function PreColumbianOrigins() {
             opacity={0.04} 
           />
           
-          <CompassRose 
-            className="absolute top-12 right-8 md:right-20 opacity-8 text-primary" 
-            size={140}
-            variant="subtle"
+          <img 
+            src={logoDark} 
+            alt="Hot Pepper Trading Company" 
+            className="absolute top-12 right-8 md:right-20 w-[140px] h-[140px] object-contain mix-blend-multiply opacity-80"
           />
           
           <div className="container mx-auto px-4 relative z-10">
