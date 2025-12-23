@@ -60,6 +60,15 @@ export const timelineEvents: TimelineEvent[] = [
     hasRoute: true,
   },
   {
+    year: 1510,
+    yearDisplay: 'c. 1510',
+    location: 'Caribbean Islands',
+    region: 'The Americas',
+    description: 'African and European pepper varieties return to the New World, blending with native species.',
+    coordinates: [-66.1057, 18.4655],
+    hasRoute: true,
+  },
+  {
     year: 1542,
     yearDisplay: '1542',
     location: 'Philippines',
