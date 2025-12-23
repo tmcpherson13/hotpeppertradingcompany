@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Anchor, Globe, History } from 'lucide-react';
 import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
 
@@ -7,16 +8,19 @@ const facts = [
     icon: History,
     title: 'Pre-Columbian Origins',
     description: 'Archaeological evidence confirms capsicum cultivation in the Americas by 4000 BCE. The Aztecs and Maya developed sophisticated growing and preservation techniques.',
+    link: '/history/pre-columbian-origins',
   },
   {
     icon: Anchor,
     title: 'The Columbian Exchange',
     description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
+    link: null, // Coming soon
   },
   {
     icon: Globe,
     title: 'Global Integration',
     description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
+    link: null, // Coming soon
   },
 ];
 
@@ -76,21 +80,41 @@ export function PepperEducation() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center p-6 relative"
+                className="text-center p-6 relative group"
               >
                 {/* Subtle route connector */}
                 {index < facts.length - 1 && (
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-px bg-gradient-to-r from-primary/30 to-transparent" />
                 )}
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-primary/20 mb-6">
-                  <fact.icon className="w-7 h-7 text-primary" />
-                </div>
+                {fact.link ? (
+                  <Link to={fact.link} className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-primary/20 mb-6 transition-all duration-300 hover:bg-primary/20 hover:border-primary/40 hover:scale-105 cursor-pointer">
+                    <fact.icon className="w-7 h-7 text-primary" />
+                  </Link>
+                ) : (
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 border border-primary/20 mb-6 opacity-70">
+                    <fact.icon className="w-7 h-7 text-primary" />
+                  </div>
+                )}
                 <h3 className="font-display text-xl text-foreground font-semibold mb-3">
-                  {fact.title}
+                  {fact.link ? (
+                    <Link to={fact.link} className="hover:text-primary transition-colors">
+                      {fact.title}
+                    </Link>
+                  ) : (
+                    fact.title
+                  )}
                 </h3>
                 <p className="font-body text-muted-foreground leading-relaxed">
                   {fact.description}
                 </p>
+                {fact.link && (
+                  <Link 
+                    to={fact.link} 
+                    className="inline-block mt-4 text-sm text-primary hover:text-primary/80 font-heading underline underline-offset-4 transition-colors"
+                  >
+                    Read the full history →
+                  </Link>
+                )}
               </motion.div>
             ))}
           </div>
