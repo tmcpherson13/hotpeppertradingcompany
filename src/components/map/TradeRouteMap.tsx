@@ -605,30 +605,30 @@ export function TradeRouteMap() {
           'background-color': '#e4d5b7', // Warmer, more aged parchment
         },
       },
-      // Graticule lines - navigational grid (drawn first, under everything)
+      // Graticule lines - hand-drawn navigational grid using ink-brown tones
       {
         id: 'graticule-lines',
         type: 'line',
         source: 'graticule',
         filter: ['!=', ['get', 'type'], 'special'],
         paint: {
-          'line-color': '#8b7355',
-          'line-width': 0.5,
-          'line-opacity': 0.25,
-          'line-dasharray': [4, 4],
+          'line-color': '#5a4a3a', // Same ink-brown as site borders
+          'line-width': 0.4,
+          'line-opacity': 0.18,
+          'line-dasharray': [6, 8], // Longer dashes, feels more hand-drawn
         },
       },
-      // Special latitude lines (Equator, Tropics) - slightly more prominent
+      // Special latitude lines (Equator, Tropics) - slightly bolder like important annotations
       {
         id: 'graticule-special',
         type: 'line',
         source: 'graticule',
         filter: ['==', ['get', 'type'], 'special'],
         paint: {
-          'line-color': '#6b5344',
-          'line-width': 0.8,
-          'line-opacity': 0.35,
-          'line-dasharray': [8, 4],
+          'line-color': '#3a2a1a', // Darker ink for emphasis
+          'line-width': 0.6,
+          'line-opacity': 0.22,
+          'line-dasharray': [10, 6],
         },
       },
       // Land mass fill - aged vellum appearance
