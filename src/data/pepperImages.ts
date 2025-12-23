@@ -79,7 +79,48 @@ import ajiVerdeImg from '@/assets/peppers/aji-verde.jpg';
 import ajiGuyanaImg from '@/assets/peppers/aji-guyana.jpg';
 import pimentoImg from '@/assets/peppers/pimento.jpg';
 
+// New batch of 44 remaining peppers
+import ajiLimonLemonDropImg from '@/assets/peppers/aji-limon-lemon-drop.jpg';
+import calabrianChiliImg from '@/assets/peppers/calabrian-chili.jpg';
+import aleppoPepperImg from '@/assets/peppers/aleppo-pepper.jpg';
+import ajiCharapitaYellowImg from '@/assets/peppers/aji-charapita-yellow.jpg';
+import deArbolChileImg from '@/assets/peppers/de-arbol-chile.jpg';
+import pequinImg from '@/assets/peppers/pequin.jpg';
+import guineaPepperImg from '@/assets/peppers/guinea-pepper.jpg';
+import sanaamImg from '@/assets/peppers/sanaam.jpg';
+import hatchChileImg from '@/assets/peppers/hatch-chile.jpg';
+import chimayoImg from '@/assets/peppers/chimayo.jpg';
+import santaFeGrandeImg from '@/assets/peppers/santa-fe-grande.jpg';
+import ajiPineappleImg from '@/assets/peppers/aji-pineapple.jpg';
+import sugarRushPeachImg from '@/assets/peppers/sugar-rush-peach.jpg';
+import brazilianStarfishImg from '@/assets/peppers/brazilian-starfish.jpg';
+import gochugaruTaeyangchoImg from '@/assets/peppers/gochugaru-taeyangcho.jpg';
+import mulatoChileImg from '@/assets/peppers/mulato-chile.jpg';
+import chileNegroImg from '@/assets/peppers/chile-negro.jpg';
+import ajiRocotoRedImg from '@/assets/peppers/aji-rocoto-red.jpg';
+import ajiRocotoYellowImg from '@/assets/peppers/aji-rocoto-yellow.jpg';
+import hinkelhatzImg from '@/assets/peppers/hinkelhatz.jpg';
+import fishPepperImg from '@/assets/peppers/fish-pepper.jpg';
+import jimmyNardelloImg from '@/assets/peppers/jimmy-nardello.jpg';
+import habanadaImg from '@/assets/peppers/habanada.jpg';
+import ksLemonStarrburstImg from '@/assets/peppers/ks-lemon-starrburst.jpg';
+import ajiOmnicolorImg from '@/assets/peppers/aji-omnicolor.jpg';
+import ajiMangoImg from '@/assets/peppers/aji-mango.jpg';
+import madrasChiliImg from '@/assets/peppers/madras-chili.jpg';
+import kambuziImg from '@/assets/peppers/kambuzi.jpg';
+import chomboImg from '@/assets/peppers/chombo.jpg';
+import habaneroRedImg from '@/assets/peppers/habanero-red.jpg';
+import trinidadMorugaScorpionImg from '@/assets/peppers/trinidad-moruga-scorpion.jpg';
+import nagaMorichImg from '@/assets/peppers/naga-morich.jpg';
+import dundicutImg from '@/assets/peppers/dundicut.jpg';
+import birdPepperImg from '@/assets/peppers/bird-pepper.jpg';
+import congoBlackImg from '@/assets/peppers/congo-black.jpg';
+import ajiCristalImg from '@/assets/peppers/aji-cristal.jpg';
+import ajiCachoDeCabraImg from '@/assets/peppers/aji-cacho-de-cabra.jpg';
+import merkenPepperImg from '@/assets/peppers/merken-pepper.jpg';
+
 export const pepperImageMap: Record<string, string> = {
+  // Original 80 peppers
   'aleppo': aleppoImg,
   'afterglow': afterglowImg,
   'aji-amarillo': ajiAmarilloImg,
@@ -159,6 +200,46 @@ export const pepperImageMap: Record<string, string> = {
   'aji-verde': ajiVerdeImg,
   'aji-guyana': ajiGuyanaImg,
   'pimento': pimentoImg,
+  
+  // New 40 peppers
+  'aji-limon-lemon-drop': ajiLimonLemonDropImg,
+  'calabrian-chili': calabrianChiliImg,
+  'aleppo-pepper': aleppoPepperImg,
+  'aji-charapita-yellow': ajiCharapitaYellowImg,
+  'de-arbol-chile': deArbolChileImg,
+  'pequin': pequinImg,
+  'guinea-pepper': guineaPepperImg,
+  'sanaam': sanaamImg,
+  'hatch-chile': hatchChileImg,
+  'chimayo': chimayoImg,
+  'santa-fe-grande': santaFeGrandeImg,
+  'aji-pineapple': ajiPineappleImg,
+  'sugar-rush-peach': sugarRushPeachImg,
+  'brazilian-starfish': brazilianStarfishImg,
+  'gochugaru-taeyangcho': gochugaruTaeyangchoImg,
+  'mulato-chile': mulatoChileImg,
+  'chile-negro': chileNegroImg,
+  'aji-rocoto-red': ajiRocotoRedImg,
+  'aji-rocoto-yellow': ajiRocotoYellowImg,
+  'hinkelhatz': hinkelhatzImg,
+  'fish-pepper': fishPepperImg,
+  'jimmy-nardello': jimmyNardelloImg,
+  'habanada': habanadaImg,
+  'ks-lemon-starrburst': ksLemonStarrburstImg,
+  'aji-omnicolor': ajiOmnicolorImg,
+  'aji-mango': ajiMangoImg,
+  'madras-chili': madrasChiliImg,
+  'kambuzi': kambuziImg,
+  'chombo': chomboImg,
+  'habanero-red': habaneroRedImg,
+  'trinidad-moruga-scorpion': trinidadMorugaScorpionImg,
+  'naga-morich': nagaMorichImg,
+  'dundicut': dundicutImg,
+  'bird-pepper': birdPepperImg,
+  'congo-black': congoBlackImg,
+  'aji-cristal': ajiCristalImg,
+  'aji-cacho-de-cabra': ajiCachoDeCabraImg,
+  'merken-pepper': merkenPepperImg,
 };
 
 export function getPepperImage(pepperId: string): string | undefined {
