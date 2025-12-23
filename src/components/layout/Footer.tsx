@@ -39,9 +39,9 @@ export function Footer() {
               </Link>
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
-              Importers of fine hot peppers since 1847. We source directly from 
-              growers in the principal capsicum-producing regions and maintain 
-              rigorous quality standards.
+              Celebrating the history, cultures, and cuisines of capsicum peppers 
+              since 1847. We develop pepper consortiums that honor traditional 
+              growing practices and culinary heritage.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
               <span className="text-gold">✦</span>

@@ -118,7 +118,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-parchment/80 font-heading text-sm md:text-base uppercase tracking-[0.3em] mb-6 small-caps"
           >
-            Importers of Fine Hot Peppers Since 1847
+            Celebrating Pepper History, Culture & Cuisine Since 1847
           </motion.p>
 
           <motion.h1
