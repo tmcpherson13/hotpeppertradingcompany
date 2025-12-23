@@ -6,9 +6,9 @@ import logoDark from '@/assets/logo-dark.svg';
 
 const navLinks = [
   { name: 'The Cargo', href: '#collection', isRoute: false },
+  { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Heritage', href: '#heritage', isRoute: false },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
-  { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
 
