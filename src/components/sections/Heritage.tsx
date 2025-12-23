@@ -52,8 +52,17 @@ export function Heritage() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <div className="flex items-center gap-4">
-              <img src={logoDark} alt="" className="h-5 w-auto" aria-hidden="true" />
+            <div className="flex flex-col items-center gap-4 mb-8">
+              <div className="flex items-center gap-4">
+                <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                <img 
+                  src={logoDark} 
+                  alt="" 
+                  className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
+                  aria-hidden="true" 
+                />
+                <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+              </div>
               <span className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] small-caps">
                 Our Heritage
               </span>

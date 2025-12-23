@@ -159,7 +159,12 @@ export function PepperEducation() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-8">
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-              <img src={logoDark} alt="" className="h-6 w-auto" aria-hidden="true" />
+              <img 
+                src={logoDark} 
+                alt="" 
+                className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
+                aria-hidden="true" 
+              />
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
             <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">

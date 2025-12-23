@@ -5,6 +5,7 @@ import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
 import spicePepper from '@/assets/spice-pepper.jpg';
 import spiceSaffron from '@/assets/spice-saffron.jpg';
+import logoDark from '@/assets/logo-dark.jpg';
 
 const spices = [
   {
@@ -68,7 +69,16 @@ export function FeaturedSpices() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <TradeRouteDivider className="mb-8" />
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+            <img 
+              src={logoDark} 
+              alt="" 
+              className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
+              aria-hidden="true" 
+            />
+            <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          </div>
           <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
             Current Offerings
           </p>
@@ -137,9 +147,12 @@ export function FeaturedSpices() {
                   {/* Decorative line */}
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex-1 h-px bg-ink/20" />
-                    <svg width="12" height="12" viewBox="0 0 12 12" className="text-primary">
-                      <polygon points="6,1 7,5 11,5 8,7 9,11 6,8.5 3,11 4,7 1,5 5,5" fill="currentColor" />
-                    </svg>
+                    <img 
+                      src={logoDark} 
+                      alt="" 
+                      className="h-4 w-auto transition-transform duration-300 hover:scale-110" 
+                      aria-hidden="true" 
+                    />
                     <div className="flex-1 h-px bg-ink/20" />
                   </div>
                   
