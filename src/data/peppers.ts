@@ -1,17 +1,22 @@
+export type Species = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
+export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
+
 export interface Pepper {
   id: string;
   name: string;
   scientificName: string;
+  species: Species;
   origin: string;
   region: 'Americas' | 'Asia' | 'Africa' | 'Europe' | 'Middle East';
   scovilleMin: number;
   scovilleMax: number;
-  heatLevel: 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme';
+  heatLevel: HeatLevel;
   flavorNotes: string[];
   description: string;
   tradeRoute: string;
   yearIntroduced: number;
   culinaryUses: string[];
+  inStock: boolean;
 }
 
 export const peppers: Pepper[] = [
@@ -19,6 +24,7 @@ export const peppers: Pepper[] = [
     id: 'aleppo',
     name: 'Aleppo Pepper',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'Syria',
     region: 'Middle East',
     scovilleMin: 10000,
@@ -29,26 +35,30 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Mediterranean Sea Route via Ottoman traders',
     yearIntroduced: 1600,
     culinaryUses: ['Kebabs', 'Mezze', 'Grain dishes', 'Finishing spice'],
+    inStock: true,
   },
   {
     id: 'kashmiri',
     name: 'Kashmiri Chili',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'India',
     region: 'Asia',
     scovilleMin: 1000,
     scovilleMax: 2000,
-    heatLevel: 'Mild',
+    heatLevel: 'Very Mild',
     flavorNotes: ['Sweet', 'Smoky', 'Earthy', 'Vibrant Color'],
     description: 'Prized more for its brilliant crimson hue than its modest heat, the Kashmiri chili arrived in the subcontinent via Portuguese traders. It has become indispensable in tandoori preparations and rogan josh, imparting color without overwhelming pungency.',
     tradeRoute: 'Portuguese Cape Route to Goa',
     yearIntroduced: 1498,
     culinaryUses: ['Tandoori', 'Curries', 'Rice dishes', 'Color agent'],
+    inStock: true,
   },
   {
     id: 'birds-eye',
     name: "Bird's Eye Chili",
     scientificName: 'Capsicum frutescens',
+    species: 'frutescens',
     origin: 'Thailand',
     region: 'Asia',
     scovilleMin: 50000,
@@ -59,26 +69,30 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Portuguese Cape Route via Indian Ocean',
     yearIntroduced: 1550,
     culinaryUses: ['Thai curries', 'Stir-fries', 'Dipping sauces', 'Som tam'],
+    inStock: false,
   },
   {
     id: 'hungarian-paprika',
     name: 'Hungarian Paprika',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'Hungary',
     region: 'Europe',
     scovilleMin: 100,
     scovilleMax: 500,
-    heatLevel: 'Mild',
+    heatLevel: 'No Heat',
     flavorNotes: ['Sweet', 'Earthy', 'Slightly bitter', 'Rich color'],
     description: 'Though capsicum originated in the Americas, Hungary has cultivated it with such devotion that paprika became the national spice. The pepper arrived via Ottoman occupation in the 16th century. Hungarian growers developed sweet varieties prized throughout European kitchens.',
     tradeRoute: 'Ottoman overland routes through the Balkans',
     yearIntroduced: 1569,
     culinaryUses: ['Goulash', 'Paprikash', 'Sausages', 'Garnish'],
+    inStock: true,
   },
   {
     id: 'scotch-bonnet',
     name: 'Scotch Bonnet',
     scientificName: 'Capsicum chinense',
+    species: 'chinense',
     origin: 'Caribbean',
     region: 'Americas',
     scovilleMin: 100000,
@@ -89,11 +103,13 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Native to Caribbean; spread via colonial trade',
     yearIntroduced: -4000,
     culinaryUses: ['Jerk seasoning', 'Hot sauces', 'Curries', 'Marinades'],
+    inStock: false,
   },
   {
     id: 'piri-piri',
     name: 'Piri Piri',
     scientificName: 'Capsicum frutescens',
+    species: 'frutescens',
     origin: 'Africa',
     region: 'Africa',
     scovilleMin: 50000,
@@ -104,11 +120,13 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Portuguese Cape Route to West Africa',
     yearIntroduced: 1500,
     culinaryUses: ['Grilled chicken', 'Marinades', 'Hot sauces', 'Seafood'],
+    inStock: true,
   },
   {
     id: 'sichuan-facing-heaven',
     name: 'Facing Heaven Pepper',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'China',
     region: 'Asia',
     scovilleMin: 30000,
@@ -119,11 +137,13 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Overland via India and Burma',
     yearIntroduced: 1570,
     culinaryUses: ['Kung pao', 'Dry-fried dishes', 'Chili oil', 'Hot pot'],
+    inStock: false,
   },
   {
     id: 'urfa-biber',
     name: 'Urfa Biber',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'Turkey',
     region: 'Middle East',
     scovilleMin: 30000,
@@ -134,11 +154,13 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Silk Road overland routes',
     yearIntroduced: 1550,
     culinaryUses: ['Lahmacun', 'Grilled meats', 'Eggs', 'Finishing spice'],
+    inStock: true,
   },
   {
     id: 'habanero',
     name: 'Habanero',
     scientificName: 'Capsicum chinense',
+    species: 'chinense',
     origin: 'Mexico',
     region: 'Americas',
     scovilleMin: 100000,
@@ -149,11 +171,13 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Native to Mesoamerica; Columbus voyage 1493',
     yearIntroduced: -4000,
     culinaryUses: ['Hot sauces', 'Salsas', 'Marinades', 'Yucatecan cuisine'],
+    inStock: true,
   },
   {
     id: 'poblano',
     name: 'Poblano',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'Mexico',
     region: 'Americas',
     scovilleMin: 1000,
@@ -164,26 +188,30 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Native to Mexico; Spanish colonial trade',
     yearIntroduced: -4000,
     culinaryUses: ['Chiles rellenos', 'Mole', 'Rajas', 'Cream sauces'],
+    inStock: false,
   },
   {
     id: 'calabrian',
     name: 'Calabrian Chili',
     scientificName: 'Capsicum annuum',
+    species: 'annuum',
     origin: 'Italy',
     region: 'Europe',
     scovilleMin: 25000,
     scovilleMax: 40000,
-    heatLevel: 'Hot',
+    heatLevel: 'Medium',
     flavorNotes: ['Fruity', 'Smoky', 'Slightly salty', 'Complex'],
     description: 'From the sun-drenched toe of the Italian boot, Calabrian chilies arrived via Spanish trade in the 16th century. Often preserved in oil or crushed into a paste, they bring a smoky, fruity heat to Italian dishes. The region now produces more peppers than any other in Italy.',
     tradeRoute: 'Spanish Mediterranean trade routes',
     yearIntroduced: 1535,
     culinaryUses: ['Pasta', 'Pizza', 'Nduja', 'Preserved in oil'],
+    inStock: true,
   },
   {
     id: 'aji-amarillo',
     name: 'Ají Amarillo',
     scientificName: 'Capsicum baccatum',
+    species: 'baccatum',
     origin: 'Peru',
     region: 'Americas',
     scovilleMin: 30000,
@@ -194,8 +222,53 @@ export const peppers: Pepper[] = [
     tradeRoute: 'Native to Peru; limited colonial export',
     yearIntroduced: -3000,
     culinaryUses: ['Ceviche', 'Ají de gallina', 'Sauces', 'Causa'],
+    inStock: true,
+  },
+  {
+    id: 'carolina-reaper',
+    name: 'Carolina Reaper',
+    scientificName: 'Capsicum chinense',
+    species: 'chinense',
+    origin: 'United States',
+    region: 'Americas',
+    scovilleMin: 1400000,
+    scovilleMax: 2200000,
+    heatLevel: 'Superhot',
+    flavorNotes: ['Fruity', 'Sweet', 'Cinnamon hints', 'Devastating heat'],
+    description: 'Bred in South Carolina by Ed Currie, this modern cultivar held the Guinness World Record for hottest pepper. Its distinctive scorpion-like tail and wrinkled skin belie a surprisingly sweet, fruity flavor—before the capsaicin overwhelms all other sensation.',
+    tradeRoute: 'Modern commercial cultivation',
+    yearIntroduced: 2013,
+    culinaryUses: ['Extreme hot sauces', 'Challenges', 'Dried powder', 'Specialty products'],
+    inStock: false,
+  },
+  {
+    id: 'rocoto',
+    name: 'Rocoto',
+    scientificName: 'Capsicum pubescens',
+    species: 'pubescens',
+    origin: 'Peru',
+    region: 'Americas',
+    scovilleMin: 30000,
+    scovilleMax: 100000,
+    heatLevel: 'Very Hot',
+    flavorNotes: ['Apple-like', 'Juicy', 'Thick flesh', 'Lingering heat'],
+    description: 'One of the oldest domesticated peppers, the Rocoto is distinguished by its black seeds and ability to grow in cooler Andean climates. Its thick, apple-like flesh and distinctive heat make it ideal for stuffing. Unlike other peppers, it tolerates frost.',
+    tradeRoute: 'Ancient Andean cultivation; limited export',
+    yearIntroduced: -5000,
+    culinaryUses: ['Rocoto relleno', 'Fresh salsas', 'Stuffed preparations', 'Peruvian cuisine'],
+    inStock: true,
   },
 ];
 
 export const regions = ['All', 'Americas', 'Asia', 'Africa', 'Europe', 'Middle East'] as const;
-export const heatLevels = ['All', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme'] as const;
+export const heatLevels = ['All', 'No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'] as const;
+export const speciesList = ['All', 'annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;
+
+export const speciesDisplayNames: Record<string, string> = {
+  'All': 'All Species',
+  'annuum': 'C. annuum',
+  'chinense': 'C. chinense',
+  'frutescens': 'C. frutescens',
+  'baccatum': 'C. baccatum',
+  'pubescens': 'C. pubescens',
+};

@@ -12,19 +12,22 @@ const Compendium = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
   const [selectedHeat, setSelectedHeat] = useState('All');
+  const [selectedSpecies, setSelectedSpecies] = useState('All');
+  const [showInStockOnly, setShowInStockOnly] = useState(false);
   const [selectedPepper, setSelectedPepper] = useState<Pepper | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const filteredPeppers = useMemo(() => {
     return peppers.filter((pepper) => {
+      // In Stock filter
+      if (showInStockOnly && !pepper.inStock) {
+        return false;
+      }
+
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        const matchesSearch =
-          pepper.name.toLowerCase().includes(query) ||
-          pepper.origin.toLowerCase().includes(query) ||
-          pepper.scientificName.toLowerCase().includes(query) ||
-          pepper.flavorNotes.some((note) => note.toLowerCase().includes(query));
+        const matchesSearch = pepper.name.toLowerCase().includes(query);
         if (!matchesSearch) return false;
       }
 
@@ -38,9 +41,14 @@ const Compendium = () => {
         return false;
       }
 
+      // Species filter
+      if (selectedSpecies !== 'All' && pepper.species !== selectedSpecies) {
+        return false;
+      }
+
       return true;
     });
-  }, [searchQuery, selectedRegion, selectedHeat]);
+  }, [searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly]);
 
   const handleSelectPepper = (pepper: Pepper) => {
     setSelectedPepper(pepper);
@@ -152,6 +160,10 @@ const Compendium = () => {
               onRegionChange={setSelectedRegion}
               selectedHeat={selectedHeat}
               onHeatChange={setSelectedHeat}
+              selectedSpecies={selectedSpecies}
+              onSpeciesChange={setSelectedSpecies}
+              showInStockOnly={showInStockOnly}
+              onInStockChange={setShowInStockOnly}
             />
 
             {/* Ledger */}
