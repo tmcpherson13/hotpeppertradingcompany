@@ -15,8 +15,8 @@ const Index = () => {
         <Hero />
         <FeaturedSpices />
         <Heritage />
-        <TradeRoutes />
         <PepperEducation />
+        <TradeRoutes />
         <Newsletter />
       </main>
       <Footer />
