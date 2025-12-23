@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import antiqueMap from '@/assets/antique-map.jpg';
-import logoDark from '@/assets/logo-dark.jpg';
+import logoDark from '@/assets/logo-dark-alpha.png';
 
 export function Heritage() {
   const scrollToEducation = () => {

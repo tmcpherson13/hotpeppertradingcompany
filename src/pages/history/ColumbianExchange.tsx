@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
-import logoDark from '@/assets/logo-dark.jpg';
+import logoDark from '@/assets/logo-dark-alpha.png';
 
 const citations: Citation[] = [
   {

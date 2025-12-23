@@ -1,7 +1,7 @@
 import { Pepper, speciesDisplayNames, PepperImage } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
-import logoDark from '@/assets/logo-dark.jpg';
+import logoDark from '@/assets/logo-dark-alpha.png';
 
 // Helper to get primary image from gallery or legacy sources
 const getPrimaryImage = (pepper: Pepper): string | undefined => {
