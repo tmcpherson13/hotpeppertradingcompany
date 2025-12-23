@@ -11,6 +11,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
   :root {
     /* === CORE PALETTE === */
     /* Parchment - warm aged paper tones */
