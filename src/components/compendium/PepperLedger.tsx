@@ -1,5 +1,6 @@
 import { Pepper, speciesDisplayNames } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
+import { getPepperImage } from '@/data/pepperImages';
 
 interface PepperLedgerProps {
   peppers: Pepper[];
@@ -48,7 +49,11 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
     <div className="space-y-4">
       {/* Archival Catalog Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {peppers.map((pepper) => (
+        {peppers.map((pepper, index) => {
+          const pepperImage = getPepperImage(pepper.id);
+          const showThumbnail = index === 0 && pepperImage; // Only first card for review
+          
+          return (
           <button
             key={pepper.id}
             onClick={() => onSelectPepper(pepper)}
@@ -73,15 +78,28 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
               </div>
             )}
 
-            {/* Card Header - Variety Name */}
-            <div className="px-4 pt-4 pb-3 border-b border-[#5a4a3a]/15 bg-[#e8dcc4]/40">
-              <h3 className="font-display text-base uppercase tracking-[0.08em] text-[#3a2a1a] 
-                group-hover:text-[#8b2942] transition-colors leading-tight pr-16">
-                {pepper.name}
-              </h3>
-              <p className="font-body text-xs italic text-[#5a4a3a]/70 mt-1">
-                {speciesDisplayNames[pepper.species] || pepper.scientificName}
-              </p>
+            {/* Card Header with Thumbnail */}
+            <div className={`border-b border-[#5a4a3a]/15 bg-[#e8dcc4]/40 ${showThumbnail ? 'flex items-center gap-3 p-3' : 'px-4 pt-4 pb-3'}`}>
+              {/* Thumbnail - only on first card for review */}
+              {showThumbnail && (
+                <div className="flex-shrink-0 w-20 h-20 rounded overflow-hidden border border-[#5a4a3a]/20 bg-[#f5efe6]">
+                  <img 
+                    src={pepperImage} 
+                    alt={pepper.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              
+              <div className={showThumbnail ? 'flex-1 min-w-0' : ''}>
+                <h3 className={`font-display text-base uppercase tracking-[0.08em] text-[#3a2a1a] 
+                  group-hover:text-[#8b2942] transition-colors leading-tight ${!showThumbnail ? 'pr-16' : ''}`}>
+                  {pepper.name}
+                </h3>
+                <p className="font-body text-xs italic text-[#5a4a3a]/70 mt-1">
+                  {speciesDisplayNames[pepper.species] || pepper.scientificName}
+                </p>
+              </div>
             </div>
 
             {/* Card Body - Ledger Lines */}
@@ -130,7 +148,8 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                 transition-colors group-hover:translate-x-0.5 transform" />
             </div>
           </button>
-        ))}
+        );
+        })}
       </div>
 
       {/* Registry Footer */}
