@@ -14,13 +14,13 @@ const facts = [
     icon: Anchor,
     title: 'The Columbian Exchange',
     description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
-    link: null, // Coming soon
+    link: '/history/columbian-exchange',
   },
   {
     icon: Globe,
     title: 'Global Integration',
     description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
-    link: null, // Coming soon
+    link: '/history/global-integration',
   },
 ];
 

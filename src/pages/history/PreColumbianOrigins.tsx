@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
@@ -695,9 +695,13 @@ export default function PreColumbianOrigins() {
                   Return to Home
                 </Link>
                 
-                <p className="font-body text-sm text-muted-foreground text-center sm:text-right">
-                  Next: <span className="italic">The Columbian Exchange</span> — coming soon
-                </p>
+                <Link 
+                  to="/history/columbian-exchange" 
+                  className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-body"
+                >
+                  Next: The Columbian Exchange
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </motion.div>
             </div>
           </div>
