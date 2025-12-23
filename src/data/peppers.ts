@@ -63,6 +63,7 @@ import scotchBonnetImg from '@/assets/peppers/scotch-bonnet.jpg';
 import thaiImg from '@/assets/peppers/thai.jpg';
 import trinidadScorpionImg from '@/assets/peppers/trinidad-scorpion.jpg';
 import wiriWiriImg from '@/assets/peppers/wiri-wiri.jpg';
+import ajiAmarilloIllustration from '@/assets/peppers/aji-amarillo-illustration.jpg';
 
 // Helper function to generate slug from name
 function generateId(name: string): string {
@@ -157,10 +158,18 @@ export const peppers: Pepper[] = [
     inStock: true,
     gallery: [
       {
+        id: 'aji-amarillo-illustration',
+        url: ajiAmarilloIllustration,
+        type: 'illustration',
+        isPrimary: true,
+        source: 'ai-generated',
+        license: 'Lovable Generated',
+      },
+      {
         id: 'aji-amarillo-wikimedia',
         url: ajiAmarilloImg,
         type: 'photo',
-        isPrimary: true,
+        isPrimary: false,
         source: 'wikimedia',
         license: 'CC BY-SA 4.0',
         author: 'Frozenmadness',
