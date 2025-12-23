@@ -3,6 +3,7 @@ import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/pepper
 import { Flame, MapPin, Package } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
+import logoDark from '@/assets/logo-dark.jpg';
 
 // Helper to get gallery from pepper (with legacy fallback)
 const getGalleryFromPepper = (pepper: Pepper): PepperImage[] => {
@@ -135,7 +136,11 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
         <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
           {/* Corner ornaments */}
           <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#5a4a3a]/30" />
-          <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-[#5a4a3a]/30" />
+          
+          {/* Logo in top right */}
+          <div className="absolute top-3 right-12">
+            <img src={logoDark} alt="" className="w-14 h-14 object-contain" />
+          </div>
           
           {/* In Stock Badge */}
           {pepper.inStock && (
