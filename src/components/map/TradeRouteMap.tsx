@@ -289,15 +289,24 @@ export function TradeRouteMap() {
   }, []);
 
   // Handle location click -> sync with timeline
+  // IMPORTANT: Never move timeline backward to prevent routes from disappearing
   const handleLocationClick = useCallback((location: typeof tradeRoutes.origins[0]) => {
     setSelectedLocation(location);
     
     // Find matching timeline event
     const eventIndex = findTimelineEventByLocation(location.name);
     if (eventIndex !== -1) {
-      setSelectedTimelineIndex(eventIndex);
+      const clickedEvent = timelineEvents[eventIndex];
+      const currentIndex = selectedTimelineIndex ?? 0;
+      const currentEvent = timelineEvents[currentIndex];
+      
+      // Only advance timeline forward, never go backward (prevents routes from disappearing)
+      if (clickedEvent.year > currentEvent.year) {
+        setSelectedTimelineIndex(eventIndex);
+      }
+      // If clicking an earlier location, just select it but keep timeline where it is
     }
-  }, [findTimelineEventByLocation]);
+  }, [findTimelineEventByLocation, selectedTimelineIndex]);
 
   // Handle timeline event selection (from clicking timeline markers)
   const handleTimelineEventSelect = useCallback((index: number) => {
@@ -446,27 +455,43 @@ export function TradeRouteMap() {
 
   }, [currentEvent, isMapLoaded]);
 
-  // Flowing dash animation
+  // Flowing dash animation - STABILIZED to prevent MapLibre crashes
+  // Uses constant dasharray with opacity pulse instead of mutating dasharray values
   useEffect(() => {
     if (!map.current || !isMapLoaded) return;
 
     const m = map.current;
+    let frameCount = 0;
 
     const animateDashes = () => {
-      dashOffsetRef.current += 0.3;
-
-      tradeRoutes.routes.forEach((route, index) => {
-        if (visibleRoutes.has(index)) {
-          const highlightLayerId = `route-highlight-${index}`;
-          try {
-            // Animate dash pattern offset by changing dasharray
-            const offset = dashOffsetRef.current % 20;
-            m.setPaintProperty(highlightLayerId, 'line-dasharray', [8 + offset * 0.1, 12 - offset * 0.05]);
-          } catch (e) {
-            // Layer may not exist
+      frameCount++;
+      
+      // Only update every 10th frame to reduce load and prevent instability
+      if (frameCount % 10 === 0) {
+        tradeRoutes.routes.forEach((route, index) => {
+          if (visibleRoutes.has(index)) {
+            const highlightLayerId = `route-highlight-${index}`;
+            try {
+              // Check if layer exists before setting property
+              if (!m.getLayer(highlightLayerId)) return;
+              
+              // Use sinusoidal variation that ALWAYS stays positive (min 4, max 12)
+              // This prevents zero/negative dasharray values that crash MapLibre
+              const phase = (frameCount * 0.02) % (Math.PI * 2);
+              const dashLength = 8 + Math.sin(phase) * 2;  // Range: 6 to 10
+              const gapLength = 12 + Math.cos(phase) * 2;  // Range: 10 to 14
+              
+              // Extra safety: clamp values to ensure they're always valid
+              const safeDash = Math.max(4, dashLength);
+              const safeGap = Math.max(4, gapLength);
+              
+              m.setPaintProperty(highlightLayerId, 'line-dasharray', [safeDash, safeGap]);
+            } catch (e) {
+              // Layer may not exist or map may be in transition - silently ignore
+            }
           }
-        }
-      });
+        });
+      }
 
       animationFrameRef.current = requestAnimationFrame(animateDashes);
     };
@@ -684,6 +709,52 @@ export function TradeRouteMap() {
               'line-dasharray': [8, 12],
             },
           });
+        });
+
+        // Add click handler for routes - clicking a route selects it and advances timeline
+        m?.on('click', (e) => {
+          // Query all route layers at click point
+          const routeLayerIds: string[] = [];
+          tradeRoutes.routes.forEach((_, index) => {
+            routeLayerIds.push(`route-line-${index}`, `route-highlight-${index}`);
+          });
+          
+          const features = m?.queryRenderedFeatures(e.point, {
+            layers: routeLayerIds.filter(id => m?.getLayer(id))
+          });
+          
+          if (features && features.length > 0) {
+            // Extract route index from layer ID
+            const layerId = features[0].layer?.id;
+            const match = layerId?.match(/route-(?:line|highlight)-(\d+)/);
+            if (match) {
+              const routeIndex = parseInt(match[1], 10);
+              const route = tradeRoutes.routes[routeIndex];
+              
+              if (route) {
+                // Find the destination in our data
+                const destination = tradeRoutes.destinations.find(d => d.name === route.destinationName);
+                if (destination) {
+                  setSelectedLocation(destination);
+                }
+                
+                // Find the timeline event for this route and advance to at least that year
+                const eventIndex = timelineEvents.findIndex(ev => 
+                  ev.year === route.establishedYear || 
+                  ev.location === route.destinationName ||
+                  ev.location.includes(route.destinationName.split(',')[0])
+                );
+                
+                if (eventIndex !== -1) {
+                  const currentIndex = selectedTimelineIndex ?? 0;
+                  // Always advance to at least the route's year so it stays visible
+                  if (eventIndex >= currentIndex) {
+                    setSelectedTimelineIndex(eventIndex);
+                  }
+                }
+              }
+            }
+          }
         });
 
         setIsMapLoaded(true);
