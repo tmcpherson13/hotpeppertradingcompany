@@ -1,5 +1,5 @@
 import { Search, Package } from 'lucide-react';
-import { regions, heatLevels, speciesList, speciesDisplayNames } from '@/data/peppers';
+import { regions, heatLevels, domesticatedSpeciesList, ancestralSpeciesList, speciesDisplayNames, Species } from '@/data/peppers';
 import { Switch } from '@/components/ui/switch';
 
 interface CompendiumFiltersProps {
@@ -122,11 +122,21 @@ export function CompendiumFilters({
             style={selectStyle}
           >
             <option value="All">All Species</option>
-            {speciesList.map((species) => (
-              <option key={species} value={species}>
-                {speciesDisplayNames[species]}
-              </option>
-            ))}
+            <option value="all-ancestral">— All Ancestral Species —</option>
+            <optgroup label="Domesticated Species">
+              {domesticatedSpeciesList.map((species) => (
+                <option key={species} value={species}>
+                  {speciesDisplayNames[species as Species]}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="Ancestral Capsicum Species">
+              {ancestralSpeciesList.map((species) => (
+                <option key={species} value={species}>
+                  {speciesDisplayNames[species as Species]}
+                </option>
+              ))}
+            </optgroup>
           </select>
         </div>
 
@@ -176,7 +186,7 @@ export function CompendiumFilters({
             )}
             {selectedSpecies !== 'All' && (
               <span className="px-2 py-1 text-xs font-body bg-[#d4a84b]/20 border border-[#d4a84b]/30 text-[#3a2a1a]">
-                {speciesDisplayNames[selectedSpecies]}
+                {selectedSpecies === 'all-ancestral' ? 'All Ancestral Species' : speciesDisplayNames[selectedSpecies as Species]}
               </span>
             )}
             {selectedRegion !== 'All' && (

@@ -4,7 +4,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
 import { PepperDetailModal } from '@/components/compendium/PepperDetailModal';
-import { peppers, Pepper } from '@/data/peppers';
+import { peppers, Pepper, ancestralSpeciesList, AncestralSpecies } from '@/data/peppers';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
 
@@ -44,9 +44,15 @@ const Compendium = () => {
         return false;
       }
 
-      // Species filter
-      if (selectedSpecies !== 'All' && pepper.species !== selectedSpecies) {
-        return false;
+      // Species filter - handle "all-ancestral" as a group filter
+      if (selectedSpecies !== 'All') {
+        if (selectedSpecies === 'all-ancestral') {
+          if (!ancestralSpeciesList.includes(pepper.species as AncestralSpecies)) {
+            return false;
+          }
+        } else if (pepper.species !== selectedSpecies) {
+          return false;
+        }
       }
 
       return true;
