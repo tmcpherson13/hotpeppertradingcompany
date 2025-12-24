@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
+import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIndiaModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
+import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
 import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
 import spicePepper from '@/assets/spice-pepper.jpg';
@@ -20,6 +22,7 @@ interface Spice {
   price: string;
   image: string;
   isConsortium?: boolean;
+  consortiumId?: string;
 }
 
 const spices: Spice[] = [
@@ -33,6 +36,19 @@ const spices: Spice[] = [
     price: '$36',
     image: echoesOfAfricaImg,
     isConsortium: true,
+    consortiumId: 'africa',
+  },
+  {
+    name: 'Inspirations of India',
+    origin: 'Multi-Origin',
+    region: 'Indian Subcontinent',
+    tradeLot: 'CONSORTIUM № 002',
+    weight: '3 oz / 85g',
+    description: 'A chromatic journey from Kashmir\'s crimson valleys to Assam\'s volcanic fire—color, aroma, and relentless heat.',
+    price: '$38',
+    image: inspirationsOfIndiaImg,
+    isConsortium: true,
+    consortiumId: 'india',
   },
   {
     name: 'Aleppo Pepper',
@@ -68,6 +84,15 @@ const spices: Spice[] = [
 
 export function FeaturedSpices() {
   const [consortiumModalOpen, setConsortiumModalOpen] = useState(false);
+  const [indiaModalOpen, setIndiaModalOpen] = useState(false);
+
+  const handleConsortiumClick = (consortiumId?: string) => {
+    if (consortiumId === 'africa') {
+      setConsortiumModalOpen(true);
+    } else if (consortiumId === 'india') {
+      setIndiaModalOpen(true);
+    }
+  };
 
   return (
     <section id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
@@ -110,7 +135,7 @@ export function FeaturedSpices() {
         </motion.div>
 
         {/* Trade Goods Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {spices.map((spice, index) => (
             <motion.article
               key={spice.name}
@@ -200,7 +225,7 @@ export function FeaturedSpices() {
                         variant="outline" 
                         size="sm" 
                         className="w-full text-xs uppercase tracking-[0.15em] border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"
-                        onClick={() => setConsortiumModalOpen(true)}
+                        onClick={() => handleConsortiumClick(spice.consortiumId)}
                       >
                         Examine Full Manifest
                       </Button>
@@ -249,10 +274,14 @@ export function FeaturedSpices() {
         </motion.div>
       </div>
 
-      {/* Consortium Detail Modal */}
+      {/* Consortium Detail Modals */}
       <ConsortiumDetailModal 
         open={consortiumModalOpen} 
         onOpenChange={setConsortiumModalOpen} 
+      />
+      <InspirationsOfIndiaModal 
+        open={indiaModalOpen} 
+        onOpenChange={setIndiaModalOpen} 
       />
     </section>
   );
