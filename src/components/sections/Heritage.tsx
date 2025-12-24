@@ -91,28 +91,6 @@ export function Heritage() {
               </p>
             </div>
 
-            {/* Stats with route connectors */}
-            <div className="relative grid grid-cols-3 gap-6 pt-8 border-t border-border mt-8">
-              {/* Route line connecting stats */}
-              <div className="absolute top-0 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-              
-              {[
-                { value: '27', label: 'Countries' },
-                { value: '150+', label: 'Artisan Growers' },
-                { value: '500', label: 'Years of Trade' },
-              ].map((stat, index) => (
-                <div key={stat.label} className="text-center relative">
-                  {/* Waypoint marker */}
-                  <div className="absolute -top-[17px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary/50" />
-                  <div className="font-display text-2xl md:text-3xl text-foreground font-semibold">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </motion.div>
         </div>
 
