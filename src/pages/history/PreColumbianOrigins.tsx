@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll, Calendar } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
-import { DomesticationTimeline } from '@/components/history/DomesticationTimeline';
+import { domesticationEvents, DomesticationDetails, DomesticationEvent } from '@/components/history/DomesticationTimeline';
 import logoDark from '@/assets/logo-dark.svg';
 import preColumbianArtwork from '@/assets/history/pre-columbian-artwork.jpg';
 
@@ -69,6 +69,8 @@ const citations: Citation[] = [
 ];
 
 export default function PreColumbianOrigins() {
+  const [selectedEvent, setSelectedEvent] = useState<DomesticationEvent | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -330,65 +332,6 @@ export default function PreColumbianOrigins() {
                 </div>
               </motion.section>
 
-              {/* Timeline of Domestication */}
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="mb-16"
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <Clock className="w-5 h-5 text-primary" />
-                  <h2 className="font-display text-2xl md:text-3xl text-foreground">
-                    Timeline of Domestication
-                  </h2>
-                </div>
-                
-                <div className="prose prose-lg max-w-none">
-                  <p className="font-body text-foreground leading-relaxed mb-4">
-                    Archaeological evidence reveals a remarkable pattern: across thousands of 
-                    miles and over several millennia, indigenous peoples of the Americas 
-                    independently domesticated five distinct <em>Capsicum</em> species. This timeline 
-                    traces these domestication events from the earliest evidence to the 
-                    flourishing of pepper cultivation in pre-Columbian civilizations.
-                  </p>
-                  
-                  <p className="font-body text-foreground leading-relaxed mb-6">
-                    The convergence of starch fossil analysis, macrobotanical remains, and 
-                    genetic studies has allowed researchers to reconstruct the approximate 
-                    timing and geographic origins of each domestication event. What emerges 
-                    is a picture of parallel agricultural innovation—separate peoples, in 
-                    separate regions, independently recognizing the value of wild peppers and 
-                    selecting for larger fruits, varied heat levels, and diverse colors over 
-                    generations of careful cultivation.<sup>[2]</sup>
-                  </p>
-                </div>
-
-                {/* Interactive Timeline Component */}
-                <DomesticationTimeline />
-
-                <div className="prose prose-lg max-w-none mt-8">
-                  <p className="font-body text-muted-foreground text-sm italic">
-                    Dates shown in years before present (BP). Ranges reflect uncertainty in 
-                    archaeological dating; earlier dates often represent possible use or 
-                    proto-domestication, while later dates represent confirmed evidence of 
-                    fully domesticated forms with recognizable cultivar traits.
-                  </p>
-                  
-                  <p className="font-body text-foreground leading-relaxed mt-6">
-                    The timeline reveals that the domestication of <em>Capsicum annuum</em> in 
-                    Mesoamerica and <em>Capsicum chinense</em> in lowland South America occurred 
-                    nearly simultaneously—both around 6,000 years ago—yet these events were 
-                    entirely independent. The two species cannot interbreed naturally, confirming 
-                    that separate human populations, with no contact between them, arrived at 
-                    remarkably similar agricultural innovations. This parallel development speaks 
-                    to the universality of the pepper's appeal: its pungency, its preservative 
-                    qualities, and its ability to transform bland staples into flavorful meals 
-                    made it irresistible to agriculturalists across the hemisphere.
-                  </p>
-                </div>
-              </motion.section>
 
               {/* Domestication in Mesoamerica */}
               <motion.section
@@ -443,30 +386,53 @@ export default function PreColumbianOrigins() {
                     originating in different regions of the Americas:
                   </p>
                   
+                  {/* Interactive Species Buttons */}
                   <div className="bg-background/50 border border-border p-6 my-8">
-                    <ul className="space-y-3 font-body text-foreground">
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-semibold">1.</span>
-                        <span><strong><em>Capsicum annuum</em></strong> — Mexico (jalapeño, serrano, poblano, cayenne)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-semibold">2.</span>
-                        <span><strong><em>Capsicum chinense</em></strong> — Amazon Basin (habanero, Scotch bonnet)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-semibold">3.</span>
-                        <span><strong><em>Capsicum frutescens</em></strong> — Central/South America (tabasco, piri piri)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-semibold">4.</span>
-                        <span><strong><em>Capsicum baccatum</em></strong> — Bolivia/Peru (aji amarillo, aji limo)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-semibold">5.</span>
-                        <span><strong><em>Capsicum pubescens</em></strong> — Andean highlands (rocoto, manzano)</span>
-                      </li>
-                    </ul>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                      {domesticationEvents.map((event, index) => (
+                        <motion.button
+                          key={event.species}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.1 }}
+                          onClick={() => setSelectedEvent(event)}
+                          className={`text-left p-4 bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group ${
+                            selectedEvent?.species === event.species ? 'ring-2 ring-primary border-primary' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className={`w-4 h-4 rounded-full ${event.colorClass} group-hover:scale-110 transition-transform`} />
+                            <span className="font-heading text-sm italic text-foreground group-hover:text-primary transition-colors">
+                              {event.species}
+                            </span>
+                          </div>
+                          <p className="font-body text-xs text-muted-foreground mb-2">
+                            {event.origin}
+                          </p>
+                          <div className="flex items-center gap-1 text-primary">
+                            <Calendar className="w-3 h-3" />
+                            <span className="font-body text-xs font-semibold">
+                              ~{event.dateRange.confirmed.toLocaleString()} BP
+                            </span>
+                          </div>
+                          <p className="font-body text-xs text-muted-foreground mt-2 line-clamp-2">
+                            {event.commonExamples.slice(0, 3).join(', ')}
+                          </p>
+                        </motion.button>
+                      ))}
+                    </div>
+                    
+                    <p className="mt-4 font-body text-sm text-muted-foreground text-center italic">
+                      Click on a species to view detailed archaeological evidence.
+                    </p>
                   </div>
+                  
+                  {/* Detail Panel */}
+                  <DomesticationDetails 
+                    selectedEvent={selectedEvent} 
+                    onClose={() => setSelectedEvent(null)} 
+                  />
                   
                   <p className="font-body text-foreground leading-relaxed">
                     These independent domestication events—occurring across thousands of miles 
