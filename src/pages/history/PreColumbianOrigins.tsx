@@ -390,9 +390,9 @@ export default function PreColumbianOrigins() {
                   <div className="bg-background/50 border border-border p-6 my-8">
                     <motion.p 
                       className="mb-6 font-body text-base text-primary text-center italic font-medium"
-                      initial={{ opacity: 0.6 }}
-                      animate={{ opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: [0.7, 1, 0.7], y: [0, 2, 0] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                     >
                       ↓ Click on a species below to view detailed archaeological evidence ↓
                     </motion.p>
@@ -405,6 +405,8 @@ export default function PreColumbianOrigins() {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: index * 0.1 }}
+                          whileHover={{ scale: 1.03, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
                           onClick={() => setSelectedEvent(event)}
                           className={`text-left p-4 bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group ${
                             selectedEvent?.species === event.species ? 'ring-2 ring-primary border-primary' : ''
