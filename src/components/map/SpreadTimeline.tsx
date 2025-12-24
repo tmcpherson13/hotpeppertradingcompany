@@ -182,12 +182,12 @@ export const timelineEvents: TimelineEvent[] = [
 ];
 
 // Helper to calculate linear timeline position
-// Linear scale from 1492 to 1600, spanning 5% to 95% of the timeline width
+// Linear scale from 1492 to 1600, spanning 5% to 90% of the timeline width
 const getDisplayPosition = (year: number): number => {
   const minYear = 1492;
   const maxYear = 1600;
   const minPos = 5;   // 1492 at 5% from left
-  const maxPos = 95;  // 1600 at 95% (moved right by ~4cm equivalent)
+  const maxPos = 90;  // 1600 at 90%
   
   // Clamp year to range
   const clampedYear = Math.max(minYear, Math.min(maxYear, year));
