@@ -110,6 +110,13 @@ const tradeRoutes = {
       cultivars: ['Caribbean peppers'],
       year: '1493',
     },
+    {
+      name: 'Lisbon, Portugal',
+      coordinates: [-9.1393, 38.7223] as [number, number],
+      description: 'Hub of the Portuguese maritime empire. Center of the Carreira da Índia spice trade.',
+      cultivars: ['Piri Piri', 'Portuguese varieties'],
+      year: '1499',
+    },
   ],
   destinations: [
     {
@@ -129,16 +136,16 @@ const tradeRoutes = {
     {
       name: 'Goa, India',
       coordinates: [73.8567, 15.2993] as [number, number],
-      description: 'Portuguese introduced peppers via trade routes.',
+      description: 'Portuguese capital of the Estado da Índia. Gateway to Asian spice trade.',
       cultivars: ['Kashmiri', 'Bhut Jolokia'],
       year: '1498',
     },
     {
       name: 'Cochin, India',
       coordinates: [76.2673, 9.9312] as [number, number],
-      description: 'Major spice trading port on the Malabar Coast.',
+      description: 'Major spice trading port on the Malabar Coast. Portuguese fort established 1503.',
       cultivars: ['Kerala varieties'],
-      year: '1550',
+      year: '1503',
     },
     {
       name: 'Sichuan, China',
@@ -196,6 +203,41 @@ const tradeRoutes = {
       cultivars: ['First European peppers'],
       year: '1493',
     },
+    {
+      name: 'Mozambique Island',
+      coordinates: [40.7347, -15.0344] as [number, number],
+      description: 'Key Portuguese resupply station on the Cape Route to India.',
+      cultivars: ['Piri Piri', 'African varieties'],
+      year: '1507',
+    },
+    {
+      name: 'Hormuz',
+      coordinates: [56.4547, 27.0769] as [number, number],
+      description: 'Portuguese controlled this strategic strait, dominating Persian Gulf spice trade.',
+      cultivars: ['Persian varieties'],
+      year: '1515',
+    },
+    {
+      name: 'Malacca',
+      coordinates: [102.2501, 2.1896] as [number, number],
+      description: 'Portuguese captured this strategic port in 1511, gateway to the Spice Islands.',
+      cultivars: ['Southeast Asian varieties'],
+      year: '1511',
+    },
+    {
+      name: 'Ternate (Moluccas)',
+      coordinates: [127.3866, 0.7893] as [number, number],
+      description: 'The legendary Spice Islands. Portuguese reached here in 1522.',
+      cultivars: ['Moluccan varieties'],
+      year: '1522',
+    },
+    {
+      name: 'Macao',
+      coordinates: [113.5439, 22.1987] as [number, number],
+      description: 'Portuguese trading post established in 1557, gateway to China.',
+      cultivars: ['Chinese varieties'],
+      year: '1557',
+    },
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
@@ -224,6 +266,38 @@ const tradeRoutes = {
     { from: [121.774, 12.8797] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[115, 10], [108, 8], [105, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
     // Thailand to Cochin - across Bay of Bengal and around Sri Lanka
     { from: [100.5018, 13.7563] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[92, 10], [85, 8], [80, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Cochin, India' },
+    
+    // === PORTUGUESE TRADE NETWORK ===
+    
+    // Carreira da Índia (Cape Route): Lisbon to Mozambique
+    { from: [-9.1393, 38.7223] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[-15, 30], [-18, 15], [-10, 0], [0, -15], [15, -30], [25, -35], [35, -25]] as [number, number][], establishedYear: 1507, destinationName: 'Mozambique Island' },
+    
+    // Mozambique to Goa - continuation of Cape Route
+    { from: [40.7347, -15.0344] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[45, -10], [50, 0], [60, 10], [68, 14]] as [number, number][], establishedYear: 1507, destinationName: 'Goa, India' },
+    
+    // Goa to Cochin - Malabar Coast trade
+    { from: [73.8567, 15.2993] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[74, 12]] as [number, number][], establishedYear: 1503, destinationName: 'Cochin, India' },
+    
+    // Cochin to Mozambique - spices returning to Africa
+    { from: [76.2673, 9.9312] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[68, 5], [55, -5], [48, -12]] as [number, number][], establishedYear: 1510, destinationName: 'Mozambique Island' },
+    
+    // Goa to Mozambique - direct route
+    { from: [73.8567, 15.2993] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[65, 8], [55, 0], [48, -8]] as [number, number][], establishedYear: 1510, destinationName: 'Mozambique Island' },
+    
+    // Goa to Hormuz - Persian Gulf connection
+    { from: [73.8567, 15.2993] as [number, number], to: [56.4547, 27.0769] as [number, number], via: [[68, 18], [62, 22]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
+    
+    // Goa to Malacca - Bay of Bengal crossing
+    { from: [73.8567, 15.2993] as [number, number], to: [102.2501, 2.1896] as [number, number], via: [[80, 12], [88, 8], [95, 5]] as [number, number][], establishedYear: 1511, destinationName: 'Malacca' },
+    
+    // Malacca to Ternate - through Indonesian archipelago
+    { from: [102.2501, 2.1896] as [number, number], to: [127.3866, 0.7893] as [number, number], via: [[108, 0], [115, -2], [122, 0]] as [number, number][], establishedYear: 1522, destinationName: 'Ternate (Moluccas)' },
+    
+    // Malacca to Macao - South China Sea route
+    { from: [102.2501, 2.1896] as [number, number], to: [113.5439, 22.1987] as [number, number], via: [[105, 8], [108, 15]] as [number, number][], establishedYear: 1557, destinationName: 'Macao' },
+    
+    // Goa to Lisbon - return voyage (full Carreira da Índia)
+    { from: [73.8567, 15.2993] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[60, 10], [45, -5], [30, -25], [18, -35], [0, -30], [-10, -10], [-15, 20], [-12, 35]] as [number, number][], establishedYear: 1499, destinationName: 'Lisbon, Portugal' },
   ] as RouteData[],
 };
 
