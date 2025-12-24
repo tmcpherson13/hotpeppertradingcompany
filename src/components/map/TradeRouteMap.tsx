@@ -238,6 +238,71 @@ const tradeRoutes = {
       cultivars: ['Chinese varieties'],
       year: '1557',
     },
+    // === BRAZILIAN PORTS ===
+    {
+      name: 'Salvador (Bahia)',
+      coordinates: [-38.5108, -12.9714] as [number, number],
+      description: 'First capital of colonial Brazil. Major sugar and later spice export hub.',
+      cultivars: ['Malagueta', 'Dedo de Moça'],
+      year: '1549',
+    },
+    {
+      name: 'Recife',
+      coordinates: [-34.8811, -8.0476] as [number, number],
+      description: 'Major sugar export port in northeast Brazil.',
+      cultivars: ['Brazilian varieties'],
+      year: '1537',
+    },
+    {
+      name: 'Rio de Janeiro',
+      coordinates: [-43.1729, -22.9068] as [number, number],
+      description: 'Founded 1565, became major colonial port for gold and spices.',
+      cultivars: ['Cumari', 'Biquinho'],
+      year: '1565',
+    },
+    // === ADDITIONAL AFRICAN PORTS ===
+    {
+      name: 'Elmina (Gold Coast)',
+      coordinates: [-1.3509, 5.0840] as [number, number],
+      description: 'Portuguese fort established 1482. Key Gold Coast trading post.',
+      cultivars: ['West African varieties'],
+      year: '1482',
+    },
+    {
+      name: 'Luanda',
+      coordinates: [13.2343, -8.8390] as [number, number],
+      description: 'Founded 1575. Major slave trade hub and gateway to Angola.',
+      cultivars: ['Angolan varieties'],
+      year: '1575',
+    },
+    {
+      name: 'São Tomé',
+      coordinates: [6.7273, 0.3365] as [number, number],
+      description: 'Portuguese sugar colony and key slave trade transit point.',
+      cultivars: ['African peppers'],
+      year: '1493',
+    },
+    {
+      name: 'Cape Verde',
+      coordinates: [-23.6052, 15.1111] as [number, number],
+      description: 'Strategic resupply station on Atlantic routes to Africa and Americas.',
+      cultivars: ['Malagueta'],
+      year: '1462',
+    },
+    {
+      name: 'Sofala',
+      coordinates: [34.7459, -20.1503] as [number, number],
+      description: 'Portuguese gold trading post on the Mozambique coast.',
+      cultivars: ['East African varieties'],
+      year: '1505',
+    },
+    {
+      name: 'Mombasa',
+      coordinates: [39.6682, -4.0435] as [number, number],
+      description: 'East African port contested by Portuguese and Arabs. Fort Jesus built 1593.',
+      cultivars: ['Swahili coast peppers'],
+      year: '1505',
+    },
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
@@ -333,6 +398,52 @@ const tradeRoutes = {
     
     // Thailand to Sichuan - overland through Burma/Yunnan
     { from: [100.5018, 13.7563] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[100, 18], [101, 23], [102, 27]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
+    
+    // === BRAZILIAN PORT ROUTES ===
+    
+    // Lisbon to Cape Verde - Atlantic island chain
+    { from: [-9.1393, 38.7223] as [number, number], to: [-23.6052, 15.1111] as [number, number], via: [[-15, 30], [-20, 22]] as [number, number][], establishedYear: 1462, destinationName: 'Cape Verde' },
+    
+    // Cape Verde to Elmina (Gold Coast)
+    { from: [-23.6052, 15.1111] as [number, number], to: [-1.3509, 5.0840] as [number, number], via: [[-18, 10], [-10, 6]] as [number, number][], establishedYear: 1482, destinationName: 'Elmina (Gold Coast)' },
+    
+    // Lisbon to Salvador (Bahia) - Brazil route
+    { from: [-9.1393, 38.7223] as [number, number], to: [-38.5108, -12.9714] as [number, number], via: [[-20, 25], [-28, 10], [-35, -5]] as [number, number][], establishedYear: 1549, destinationName: 'Salvador (Bahia)' },
+    
+    // Lisbon to Recife
+    { from: [-9.1393, 38.7223] as [number, number], to: [-34.8811, -8.0476] as [number, number], via: [[-22, 22], [-30, 8], [-32, -2]] as [number, number][], establishedYear: 1537, destinationName: 'Recife' },
+    
+    // Salvador to Lisbon - return voyage
+    { from: [-38.5108, -12.9714] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[-35, 0], [-25, 15], [-18, 30]] as [number, number][], establishedYear: 1549, destinationName: 'Lisbon, Portugal' },
+    
+    // Salvador to West Africa - triangular trade
+    { from: [-38.5108, -12.9714] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-25, -8], [-15, 0], [-8, 5]] as [number, number][], establishedYear: 1550, destinationName: 'West Africa' },
+    
+    // Lisbon to Rio de Janeiro
+    { from: [-9.1393, 38.7223] as [number, number], to: [-43.1729, -22.9068] as [number, number], via: [[-20, 25], [-30, 5], [-38, -12]] as [number, number][], establishedYear: 1565, destinationName: 'Rio de Janeiro' },
+    
+    // === AFRICAN COASTAL ROUTES ===
+    
+    // Elmina to São Tomé
+    { from: [-1.3509, 5.0840] as [number, number], to: [6.7273, 0.3365] as [number, number], via: [[2, 3]] as [number, number][], establishedYear: 1493, destinationName: 'São Tomé' },
+    
+    // São Tomé to Luanda
+    { from: [6.7273, 0.3365] as [number, number], to: [13.2343, -8.8390] as [number, number], via: [[10, -4]] as [number, number][], establishedYear: 1575, destinationName: 'Luanda' },
+    
+    // Luanda to Salvador - transatlantic slave route
+    { from: [13.2343, -8.8390] as [number, number], to: [-38.5108, -12.9714] as [number, number], via: [[0, -10], [-20, -12]] as [number, number][], establishedYear: 1575, destinationName: 'Salvador (Bahia)' },
+    
+    // Sofala to Mozambique Island - East African coast
+    { from: [34.7459, -20.1503] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[37, -18]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
+    
+    // Mombasa to Mozambique Island
+    { from: [39.6682, -4.0435] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[40, -10]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
+    
+    // Lisbon to Sofala via Cape
+    { from: [-9.1393, 38.7223] as [number, number], to: [34.7459, -20.1503] as [number, number], via: [[-15, 25], [-18, 10], [-10, -5], [5, -25], [18, -35], [28, -30]] as [number, number][], establishedYear: 1505, destinationName: 'Sofala' },
+    
+    // Goa to Mombasa - Indian Ocean route
+    { from: [73.8567, 15.2993] as [number, number], to: [39.6682, -4.0435] as [number, number], via: [[62, 10], [50, 2], [45, -2]] as [number, number][], establishedYear: 1505, destinationName: 'Mombasa' },
   ] as RouteData[],
 };
 
@@ -396,22 +507,29 @@ export function TradeRouteMap() {
   const yearToLocations: Record<number, string[]> = {
     '-4000': ['Mesoamerica'],
     '-3000': ['Mesoamerica', 'Peru & Bolivia'],
-    '1493': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola'],
-    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India'],
-    '1499': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal'],
-    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
-    '1503': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
-    '1507': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
-    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India', 'Caribbean Islands'],
-    '1511': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca'],
-    '1515': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz'],
-    '1522': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)'],
-    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines'],
-    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)'],
-    '1557': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao'],
-    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary'],
-    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary', 'Sichuan, China'],
-    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+    '1462': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde'],
+    '1482': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)'],
+    '1493': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé'],
+    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India'],
+    '1499': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal'],
+    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
+    '1503': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
+    '1505': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India', 'Sofala', 'Mombasa'],
+    '1507': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India', 'Sofala', 'Mombasa'],
+    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India', 'Sofala', 'Mombasa', 'Caribbean Islands'],
+    '1511': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca'],
+    '1515': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz'],
+    '1522': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)'],
+    '1537': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife'],
+    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines'],
+    '1549': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)'],
+    '1557': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao'],
+    '1565': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Rio de Janeiro'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Rio de Janeiro', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Rio de Janeiro', 'Hungary', 'Sichuan, China'],
+    '1575': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Rio de Janeiro', 'Hungary', 'Sichuan, China', 'Luanda'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Cape Verde', 'Elmina (Gold Coast)', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'São Tomé', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Sofala', 'Mombasa', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Recife', 'Philippines', 'Salvador (Bahia)', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Rio de Janeiro', 'Hungary', 'Sichuan, China', 'Luanda', 'Aleppo, Syria', 'Gaziantep, Turkey'],
   };
 
   const getVisibleLocations = useCallback((year: number): string[] => {
