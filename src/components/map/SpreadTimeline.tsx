@@ -264,7 +264,7 @@ export function SpreadTimeline({
                 </div>
               </div>
               <div className="flex-1">
-                <h4 className="font-display text-sm uppercase tracking-wide text-foreground mb-1">
+                <h4 className="font-display text-base md:text-lg uppercase tracking-wide text-foreground mb-1">
                   {currentEvent.location}
                 </h4>
                 <p className="font-body text-sm text-muted-foreground leading-relaxed">
