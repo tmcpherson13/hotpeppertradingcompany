@@ -173,38 +173,57 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-8"
           >
-            <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(6,75%,45%,0.5)]" asChild>
-              <a href="#collection">View Current Consignment</a>
-            </Button>
-            <Button 
-              variant="tyrian" 
-              size="xl" 
-              className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(300,100%,18%,0.5)]"
-              onClick={scrollToHeritage}
-            >
-              Learn About Our Heritage
-            </Button>
+            {/* Market Button with Label */}
+            <div className="flex flex-col items-center gap-3">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3, duration: 0.8 }}
+              >
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="flex flex-col items-center gap-2 text-parchment/60"
+                >
+                  <span className="text-xs uppercase tracking-widest font-body">Market</span>
+                  <ChevronDown className="w-5 h-5" />
+                </motion.div>
+              </motion.div>
+              <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(6,75%,45%,0.5)]" asChild>
+                <a href="#collection">View Current Consignment</a>
+              </Button>
+            </div>
+
+            {/* Discover Button with Label */}
+            <div className="flex flex-col items-center gap-3">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 0.8 }}
+              >
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+                  className="flex flex-col items-center gap-2 text-parchment/60"
+                >
+                  <span className="text-xs uppercase tracking-widest font-body">Discover</span>
+                  <ChevronDown className="w-5 h-5" />
+                </motion.div>
+              </motion.div>
+              <Button 
+                variant="tyrian" 
+                size="xl" 
+                className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(300,100%,18%,0.5)]"
+                onClick={scrollToHeritage}
+              >
+                Learn About Our Heritage
+              </Button>
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-[40%]"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-2 text-parchment/60"
-          >
-            <span className="text-xs uppercase tracking-widest font-body">Discover</span>
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </motion.div>
       </div>
 
       {/* Vignette Effect */}
