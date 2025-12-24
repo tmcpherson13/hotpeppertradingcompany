@@ -106,7 +106,7 @@ export default function GlobalIntegration() {
                   <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
                 </div>
                 
-                <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.3em] mb-4 small-caps">
+                <p className="text-muted-foreground font-heading text-base md:text-lg uppercase tracking-[0.3em] mb-4 small-caps">
                   A Historical Treatise
                 </p>
                 
@@ -117,7 +117,7 @@ export default function GlobalIntegration() {
                   </span>
                 </h1>
                 
-                <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                <p className="font-body text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                   From regional curiosity to global commodity—how chili peppers became 
                   one of the most widely cultivated spices on Earth.
                 </p>
