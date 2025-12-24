@@ -267,7 +267,7 @@ export function SpreadTimeline({
                 <h4 className="font-display text-base md:text-lg uppercase tracking-wide text-foreground mb-1">
                   {currentEvent.location}
                 </h4>
-                <p className="font-body text-base text-muted-foreground leading-relaxed">
+                <p className="font-body text-lg text-muted-foreground leading-relaxed">
                   {currentEvent.description}
                 </p>
               </div>
