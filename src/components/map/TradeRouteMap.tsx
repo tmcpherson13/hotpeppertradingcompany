@@ -185,7 +185,7 @@ const tradeRoutes = {
     {
       name: 'Caribbean Islands',
       coordinates: [-66.1057, 18.4655] as [number, number],
-      description: 'African pepper cultivars returned via slave trade, blending with native species.',
+      description: 'African and European pepper cultivars arrived via Atlantic trade routes, blending with native species.',
       cultivars: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
       year: '1510',
     },
@@ -271,14 +271,14 @@ const tradeRoutes = {
     {
       name: 'Luanda',
       coordinates: [13.2343, -8.8390] as [number, number],
-      description: 'Founded 1575. Major slave trade hub and gateway to Angola.',
+      description: 'Founded 1575. Major Portuguese trading post and gateway to Angolan ivory and spices.',
       cultivars: ['Angolan varieties'],
       year: '1575',
     },
     {
       name: 'São Tomé',
       coordinates: [6.7273, 0.3365] as [number, number],
-      description: 'Portuguese sugar colony and key slave trade transit point.',
+      description: 'Portuguese sugar and spice colony. Key transit point for African pepper varieties.',
       cultivars: ['African peppers'],
       year: '1493',
     },
@@ -430,7 +430,7 @@ const tradeRoutes = {
     // São Tomé to Luanda
     { from: [6.7273, 0.3365] as [number, number], to: [13.2343, -8.8390] as [number, number], via: [[10, -4]] as [number, number][], establishedYear: 1575, destinationName: 'Luanda' },
     
-    // Luanda to Salvador - transatlantic slave route
+    // Luanda to Salvador - transatlantic goods and spice route
     { from: [13.2343, -8.8390] as [number, number], to: [-38.5108, -12.9714] as [number, number], via: [[0, -10], [-20, -12]] as [number, number][], establishedYear: 1575, destinationName: 'Salvador (Bahia)' },
     
     // Sofala to Mozambique Island - East African coast
