@@ -100,9 +100,9 @@ const bpToYear = (bp: number) => {
   return currentYear - bp;
 };
 
-// Timeline spans from 7000 BP to 5000 BP for better visibility of clustered events
+// Timeline spans from 7000 BP to 5555 BP for better visibility of clustered events
 const timelineStart = 7000;
-const timelineEnd = 4000;
+const timelineEnd = 5555;
 const timelineRange = timelineStart - timelineEnd;
 
 // Compute label row assignments to avoid horizontal overlap
@@ -185,10 +185,7 @@ export function DomesticationTimeline() {
             <span>7,000 BP</span>
             <span>6,500 BP</span>
             <span>6,000 BP</span>
-            <span>5,500 BP</span>
-            <span>5,000 BP</span>
-            <span>4,500 BP</span>
-            <span>4,000 BP</span>
+            <span>5,555 BP</span>
           </div>
         </div>
 
@@ -202,7 +199,7 @@ export function DomesticationTimeline() {
           
           {/* Era markers */}
           <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 flex justify-between">
-            {[7000, 6500, 6000, 5500, 5000, 4500, 4000].map((bp) => (
+            {[7000, 6500, 6000, 5555].map((bp) => (
               <div key={bp} className="w-px h-3 bg-border" />
             ))}
           </div>
