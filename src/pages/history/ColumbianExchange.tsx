@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
 import logoDark from '@/assets/logo-dark.svg';
+import columbianExchangeArtwork from '@/assets/history/columbian-exchange-artwork.jpg';
 
 const citations: Citation[] = [
   {
@@ -127,6 +128,31 @@ export default function ColumbianExchange() {
                   of the Americas to every corner of the known world within a single century.
                 </p>
               </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Artwork Section */}
+        <section className="relative bg-card py-8 md:py-12">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="relative overflow-hidden rounded-lg border-4 border-border/50 shadow-2xl">
+                <img 
+                  src={columbianExchangeArtwork} 
+                  alt="Fleet of Spanish galleons and Portuguese carracks sailing across the Atlantic Ocean"
+                  className="w-full h-auto object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+              </div>
+              <p className="text-center text-sm text-muted-foreground font-body italic mt-4">
+                Spanish galleons and Portuguese carracks carried New World treasures across the Atlantic
+              </p>
             </motion.div>
           </div>
         </section>
