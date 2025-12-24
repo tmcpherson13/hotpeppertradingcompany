@@ -408,8 +408,8 @@ export default function PreColumbianOrigins() {
                           whileHover={{ scale: 1.03, y: -2 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setSelectedEvent(event)}
-                          className={`text-left p-4 bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group ${
-                            selectedEvent?.species === event.species ? 'ring-2 ring-primary border-primary' : ''
+                          className={`text-left p-4 bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group hover:shadow-lg hover:shadow-primary/20 ${
+                            selectedEvent?.species === event.species ? 'ring-2 ring-primary border-primary shadow-lg shadow-primary/30' : ''
                           }`}
                         >
                           <div className="flex items-center gap-3 mb-3">
