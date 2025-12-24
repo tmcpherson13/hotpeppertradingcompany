@@ -264,10 +264,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-parchment leading-tight mb-6 hero-engraved-text text-engraved"
+            className="font-blackpearl text-4xl md:text-6xl lg:text-7xl text-parchment leading-tight mb-6 hero-engraved-text text-engraved normal-case"
           >
             Hot Pepper <br />
-            <span className="font-heading italic text-gold normal-case">Trading Company</span>
+            <span className="text-gold">Trading Company</span>
           </motion.h1>
 
           <motion.p
