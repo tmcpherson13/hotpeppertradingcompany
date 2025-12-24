@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
 import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIndiaModal';
+import { SoulsOfTheAmericasModal } from '@/components/sections/SoulsOfTheAmericasModal';
+import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
+import { VoicesOfTheAndesModal } from '@/components/sections/VoicesOfTheAndesModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
-import spiceChili from '@/assets/spice-red-chili.jpg';
-import spicePaprika from '@/assets/spice-paprika.jpg';
-import spicePepper from '@/assets/spice-pepper.jpg';
+import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
+import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
+import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
 interface Spice {
@@ -51,46 +54,67 @@ const spices: Spice[] = [
     consortiumId: 'india',
   },
   {
-    name: 'Aleppo Pepper',
-    origin: 'Syria',
-    region: 'The Levant',
-    tradeLot: 'LOT № 1847',
-    weight: '4 oz / 113g',
-    description: 'Sun-dried and hand-crushed. Moderate heat with fruity undertones of raisin and mild cumin. A foundation of Levantine cooking.',
-    price: '$24',
-    image: spiceChili,
-  },
-  {
-    name: 'Pimentón de la Vera',
-    origin: 'Extremadura, Spain',
-    region: 'Iberian Peninsula',
-    tradeLot: 'LOT № 2391',
+    name: 'Souls of the Americas',
+    origin: 'Multi-Origin',
+    region: 'Pan-American',
+    tradeLot: 'CONSORTIUM № 003',
     weight: '3 oz / 85g',
-    description: 'Oak-smoked for two weeks using traditional methods. Deep, earthy character with sustained warmth. Essential to Spanish cuisine.',
-    price: '$18',
-    image: spicePaprika,
+    description: 'From Aztec temples to Caribbean shores—the ancestral fire that launched a thousand ships and changed cuisine forever.',
+    price: '$40',
+    image: soulsOfTheAmericasImg,
+    isConsortium: true,
+    consortiumId: 'americas',
   },
   {
-    name: 'Prik Kee Noo',
-    origin: 'Thailand',
-    region: 'Southeast Asia',
-    tradeLot: 'LOT № 0762',
-    weight: '2 oz / 57g',
-    description: 'Intensely pungent with bright citrus notes. The defining heat of Thai cooking. Handle with appropriate care.',
-    price: '$22',
-    image: spicePepper,
+    name: 'Spirits of Asia',
+    origin: 'Multi-Origin',
+    region: 'Pan-Asian',
+    tradeLot: 'CONSORTIUM № 004',
+    weight: '3 oz / 85g',
+    description: 'From the Silk Road to the Spice Islands—the fire that crossed oceans and became the soul of a continent.',
+    price: '$35',
+    image: spiritsOfAsiaImg,
+    isConsortium: true,
+    consortiumId: 'asia',
+  },
+  {
+    name: 'Voices of the Andes',
+    origin: 'Multi-Origin',
+    region: 'Andean Origin',
+    tradeLot: 'CONSORTIUM № 005',
+    weight: '3 oz / 85g',
+    description: 'From mountain terraces to coastal markets—the fire that fueled empires and still burns in every ceviche today.',
+    price: '$42',
+    image: voicesOfTheAndesImg,
+    isConsortium: true,
+    consortiumId: 'andes',
   },
 ];
 
 export function FeaturedSpices() {
-  const [consortiumModalOpen, setConsortiumModalOpen] = useState(false);
+  const [africaModalOpen, setAfricaModalOpen] = useState(false);
   const [indiaModalOpen, setIndiaModalOpen] = useState(false);
+  const [americasModalOpen, setAmericasModalOpen] = useState(false);
+  const [asiaModalOpen, setAsiaModalOpen] = useState(false);
+  const [andesModalOpen, setAndesModalOpen] = useState(false);
 
   const handleConsortiumClick = (consortiumId?: string) => {
-    if (consortiumId === 'africa') {
-      setConsortiumModalOpen(true);
-    } else if (consortiumId === 'india') {
-      setIndiaModalOpen(true);
+    switch (consortiumId) {
+      case 'africa':
+        setAfricaModalOpen(true);
+        break;
+      case 'india':
+        setIndiaModalOpen(true);
+        break;
+      case 'americas':
+        setAmericasModalOpen(true);
+        break;
+      case 'asia':
+        setAsiaModalOpen(true);
+        break;
+      case 'andes':
+        setAndesModalOpen(true);
+        break;
     }
   };
 
@@ -276,12 +300,24 @@ export function FeaturedSpices() {
 
       {/* Consortium Detail Modals */}
       <ConsortiumDetailModal 
-        open={consortiumModalOpen} 
-        onOpenChange={setConsortiumModalOpen} 
+        open={africaModalOpen} 
+        onOpenChange={setAfricaModalOpen} 
       />
       <InspirationsOfIndiaModal 
         open={indiaModalOpen} 
         onOpenChange={setIndiaModalOpen} 
+      />
+      <SoulsOfTheAmericasModal 
+        open={americasModalOpen} 
+        onOpenChange={setAmericasModalOpen} 
+      />
+      <SpiritsOfAsiaModal 
+        open={asiaModalOpen} 
+        onOpenChange={setAsiaModalOpen} 
+      />
+      <VoicesOfTheAndesModal 
+        open={andesModalOpen} 
+        onOpenChange={setAndesModalOpen} 
       />
     </section>
   );
