@@ -178,7 +178,7 @@ export function PepperEducation() {
             <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
               The Global Spread of Capsicum
             </h2>
-            <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="font-body text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               No other cultivated plant has achieved such rapid global adoption. 
               Within a century of first contact, capsicum peppers had become 
               indispensable to cuisines across four continents.
