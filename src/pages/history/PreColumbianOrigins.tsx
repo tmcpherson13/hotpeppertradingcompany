@@ -78,7 +78,13 @@ export default function PreColumbianOrigins() {
       
       <main className="relative">
         {/* Hero Section */}
-        <section className="relative py-24 md:py-32 bg-background paper-texture overflow-hidden">
+        <section 
+          className="relative py-24 md:py-32 overflow-hidden bg-cover bg-center"
+          style={{ backgroundImage: `url(${preColumbianArtwork})` }}
+        >
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-background/85" />
+          
           <TradeRoutePattern 
             className="inset-0 w-full h-full" 
             variant="subtle" 
@@ -88,7 +94,7 @@ export default function PreColumbianOrigins() {
           <img 
             src={logoDark} 
             alt="Hot Pepper Trading Company" 
-            className="absolute top-12 right-8 md:right-20 w-[186px] h-[186px] object-contain mix-blend-multiply opacity-80"
+            className="absolute top-12 right-8 md:right-20 w-[186px] h-[186px] object-contain mix-blend-multiply opacity-80 z-10"
           />
           
           <div className="container mx-auto px-4 relative z-10">
@@ -132,31 +138,6 @@ export default function PreColumbianOrigins() {
                   before European contact.
                 </p>
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Artwork Section */}
-        <section className="relative bg-card py-8 md:py-12">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="max-w-4xl mx-auto"
-            >
-              <div className="relative overflow-hidden rounded-lg border-4 border-border/50 shadow-2xl">
-                <img 
-                  src={preColumbianArtwork} 
-                  alt="Ancient Mesoamerican scene depicting indigenous farmers cultivating chili peppers near a temple pyramid"
-                  className="w-full h-auto object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
-              </div>
-              <p className="text-center text-sm text-muted-foreground font-body italic mt-4">
-                Indigenous cultivators tending chili pepper gardens in the shadow of Mesoamerican temples
-              </p>
             </motion.div>
           </div>
         </section>
