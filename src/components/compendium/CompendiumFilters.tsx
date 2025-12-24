@@ -122,21 +122,12 @@ export function CompendiumFilters({
             style={selectStyle}
           >
             <option value="All">All Species</option>
-            <option value="all-ancestral">— All Ancestral Species —</option>
-            <optgroup label="Domesticated Species">
-              {domesticatedSpeciesList.map((species) => (
-                <option key={species} value={species}>
-                  {speciesDisplayNames[species as Species]}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label="Ancestral Capsicum Species">
-              {ancestralSpeciesList.map((species) => (
-                <option key={species} value={species}>
-                  {speciesDisplayNames[species as Species]}
-                </option>
-              ))}
-            </optgroup>
+            {domesticatedSpeciesList.map((species) => (
+              <option key={species} value={species}>
+                {speciesDisplayNames[species as Species]}
+              </option>
+            ))}
+            <option value="ancestral">Ancestral Species</option>
           </select>
         </div>
 
@@ -186,7 +177,7 @@ export function CompendiumFilters({
             )}
             {selectedSpecies !== 'All' && (
               <span className="px-2 py-1 text-xs font-body bg-[#d4a84b]/20 border border-[#d4a84b]/30 text-[#3a2a1a]">
-                {selectedSpecies === 'all-ancestral' ? 'All Ancestral Species' : speciesDisplayNames[selectedSpecies as Species]}
+                {selectedSpecies === 'ancestral' ? 'Ancestral Species' : speciesDisplayNames[selectedSpecies as Species]}
               </span>
             )}
             {selectedRegion !== 'All' && (

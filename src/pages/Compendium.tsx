@@ -44,9 +44,9 @@ const Compendium = () => {
         return false;
       }
 
-      // Species filter - handle "all-ancestral" as a group filter
+      // Species filter - handle "ancestral" as a group filter
       if (selectedSpecies !== 'All') {
-        if (selectedSpecies === 'all-ancestral') {
+        if (selectedSpecies === 'ancestral') {
           if (!ancestralSpeciesList.includes(pepper.species as AncestralSpecies)) {
             return false;
           }
