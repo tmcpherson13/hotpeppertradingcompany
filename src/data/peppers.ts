@@ -1,4 +1,9 @@
-export type Species = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
+// Domesticated species
+export type DomesticatedSpecies = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
+// Ancestral/wild species
+export type AncestralSpecies = 'chacoense' | 'galapagoense' | 'praetermissum' | 'eximium' | 'tovarii' | 'cardenasii' | 'glabriusculum' | 'rhomboideum';
+// All species
+export type Species = DomesticatedSpecies | AncestralSpecies;
 export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
 
 export type ImageSource = 'ai-generated' | 'wikimedia' | 'user-contributed' | 'stock';
@@ -84,6 +89,15 @@ function extractSpecies(scientificName: string): Species {
   if (scientificName.includes('frutescens')) return 'frutescens';
   if (scientificName.includes('baccatum')) return 'baccatum';
   if (scientificName.includes('pubescens')) return 'pubescens';
+  // Ancestral species
+  if (scientificName.includes('chacoense')) return 'chacoense';
+  if (scientificName.includes('galapagoense')) return 'galapagoense';
+  if (scientificName.includes('praetermissum')) return 'praetermissum';
+  if (scientificName.includes('eximium')) return 'eximium';
+  if (scientificName.includes('tovarii')) return 'tovarii';
+  if (scientificName.includes('cardenasii')) return 'cardenasii';
+  if (scientificName.includes('glabriusculum')) return 'glabriusculum';
+  if (scientificName.includes('rhomboideum')) return 'rhomboideum';
   return 'annuum';
 }
 
@@ -2683,17 +2697,210 @@ export const peppers: Pepper[] = [
     inStock: false,
     imageLicense: 'To-be-verified',
   },
+  // ===== ANCESTRAL / WILD CAPSICUM SPECIES =====
+  {
+    id: 'chiltepin',
+    name: 'Chiltepin',
+    alternateNames: ['Chiltepin', 'Chiltepín', 'Chile Tepin', 'Bird Pepper', "Bird's Eye"],
+    scientificName: 'Capsicum annuum var. glabriusculum',
+    species: 'glabriusculum',
+    origin: 'Sonoran Desert, Mexico/Arizona',
+    region: 'Americas',
+    scovilleMin: 50000,
+    scovilleMax: 100000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Intense', 'Sharp', 'Quick-fading heat'],
+    aromaNotes: ['Earthy', 'Herbaceous'],
+    description: 'The "mother of all peppers" — the wild progenitor of Capsicum annuum and all its domesticated descendants including jalapeños, serranos, and bell peppers.',
+    historicalNotes: 'The only wild Capsicum native north of Colombia. Archaeological evidence suggests humans have consumed chiltepin for over 8,000 years. Still harvested wild in the Sonoran Desert today, it is protected as a traditional food resource by indigenous communities.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor'],
+    yearIntroduced: -8000,
+    culinaryUses: ['Traditional salsas', 'Crushed as table condiment', 'Pickling'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-chacoense',
+    name: 'Capsicum chacoense',
+    alternateNames: ['Chaco Pepper', 'Wild Chaco Chile'],
+    scientificName: 'Capsicum chacoense',
+    species: 'chacoense',
+    origin: 'Gran Chaco region (Argentina, Paraguay, Bolivia)',
+    region: 'Americas',
+    scovilleMin: 30000,
+    scovilleMax: 60000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Sharp', 'Clean heat', 'Slightly bitter'],
+    aromaNotes: ['Green', 'Herbaceous'],
+    description: 'A wild species from the semi-arid Gran Chaco scrubland, closely related to the Baccatum complex. Bears small, erect fruits dispersed by birds.',
+    historicalNotes: 'Part of the Baccatum clade, this species represents an important branch in the evolutionary tree of pungent Capsicum. Its resistance to drought has made it valuable for breeding programs.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor'],
+    yearIntroduced: -6000,
+    culinaryUses: ['Wild harvest', 'Local traditional use'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-galapagoense',
+    name: 'Capsicum galapagoense',
+    alternateNames: ['Galápagos Pepper', 'Galápagos Wild Chile'],
+    scientificName: 'Capsicum galapagoense',
+    species: 'galapagoense',
+    origin: 'Galápagos Islands, Ecuador',
+    region: 'Americas',
+    scovilleMin: 40000,
+    scovilleMax: 80000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Bright', 'Citrus notes', 'Sharp heat'],
+    aromaNotes: ['Tropical', 'Green'],
+    description: 'An endemic wild species found only on the Galápagos Islands. Part of the Annuum clade, it evolved in isolation and represents a unique branch of Capsicum evolution.',
+    historicalNotes: 'This species is within the Annuum complex and is thought to have dispersed to the Galápagos via bird migration. Its isolated evolution provides insight into Capsicum speciation.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor', 'Island Endemic'],
+    yearIntroduced: -5000,
+    culinaryUses: ['Not cultivated', 'Scientific study'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-praetermissum',
+    name: 'Capsicum praetermissum',
+    alternateNames: ['Cumari-do-Pará', 'Brazilian Wild Pepper'],
+    scientificName: 'Capsicum praetermissum',
+    species: 'praetermissum',
+    origin: 'Atlantic Forest, Brazil',
+    region: 'Americas',
+    scovilleMin: 50000,
+    scovilleMax: 100000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Fruity', 'Bright', 'Complex'],
+    aromaNotes: ['Floral', 'Tropical'],
+    description: 'A striking wild species from the Brazilian Atlantic Forest with distinctive small, erect, purple-to-red fruits. Part of the Baccatum clade.',
+    historicalNotes: 'Endemic to the threatened Atlantic Forest biome, this species is sometimes semi-cultivated in Brazil. Its beautiful ornamental qualities and fruity heat make it prized by collectors.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor', 'Brazilian Endemic'],
+    yearIntroduced: -4000,
+    culinaryUses: ['Local Brazilian cuisine', 'Hot sauces', 'Ornamental'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-eximium',
+    name: 'Capsicum eximium',
+    alternateNames: ['Andean Wild Pepper', 'Purple Corolla Pepper'],
+    scientificName: 'Capsicum eximium',
+    species: 'eximium',
+    origin: 'Bolivian & Peruvian Highlands',
+    region: 'Americas',
+    scovilleMin: 30000,
+    scovilleMax: 50000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Earthy', 'Complex', 'Slightly bitter'],
+    aromaNotes: ['Herbaceous', 'Mountain herbs'],
+    description: 'A high-altitude wild species from the Andes with distinctive purple flowers. Part of the Purple Corolla clade and a direct ancestor of domesticated C. pubescens (rocoto).',
+    historicalNotes: 'This species is crucial to understanding Capsicum evolution. The Purple Corolla clade (C. eximium, C. cardenasii) gave rise to C. pubescens, the only domesticated species with purple flowers and black seeds.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor', 'Andean'],
+    yearIntroduced: -6000,
+    culinaryUses: ['Traditional Andean use', 'Ancestor of rocoto'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-tovarii',
+    name: 'Capsicum tovarii',
+    alternateNames: ['Tovar\'s Pepper', 'Peruvian Rare Pepper'],
+    scientificName: 'Capsicum tovarii',
+    species: 'tovarii',
+    origin: 'Central Peru',
+    region: 'Americas',
+    scovilleMin: 15000,
+    scovilleMax: 30000,
+    heatLevel: 'Medium',
+    flavorNotes: ['Mild', 'Green', 'Vegetal'],
+    aromaNotes: ['Fresh', 'Herbaceous'],
+    description: 'One of the rarest wild Capsicum species, known from only a few locations in central Peru. Represents its own distinct evolutionary lineage.',
+    historicalNotes: 'Discovered relatively recently and named after botanist Oscar Tovar. This species forms its own monotypic clade in the Capsicum phylogeny, making it significant for understanding pepper evolution.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor', 'Rare Endemic'],
+    yearIntroduced: -5000,
+    culinaryUses: ['Not cultivated', 'Scientific study', 'Conservation'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'ulupica',
+    name: 'Ulupica',
+    alternateNames: ['Capsicum cardenasii', 'Bolivian Wild Pepper'],
+    scientificName: 'Capsicum cardenasii',
+    species: 'cardenasii',
+    origin: 'Bolivian Highlands',
+    region: 'Americas',
+    scovilleMin: 30000,
+    scovilleMax: 60000,
+    heatLevel: 'Hot',
+    flavorNotes: ['Fruity', 'Aromatic', 'Complex heat'],
+    aromaNotes: ['Floral', 'Berry-like'],
+    description: 'A wild/semi-domesticated Andean pepper with purple flowers, closely related to C. eximium. Part of the Purple Corolla clade ancestral to C. pubescens.',
+    historicalNotes: 'Named after Bolivian botanist Martín Cárdenas. While technically wild, ulupica has been semi-cultivated by Andean peoples for centuries. Together with C. eximium, it represents the ancestral lineage of rocoto peppers.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Wild Ancestor', 'Andean', 'Semi-domesticated'],
+    yearIntroduced: -4000,
+    culinaryUses: ['Bolivian llajwa sauce', 'Traditional condiments', 'Fresh eating'],
+    inStock: false,
+    gallery: [],
+  },
+  {
+    id: 'capsicum-rhomboideum',
+    name: 'Capsicum rhomboideum',
+    alternateNames: ['Rhomboid Pepper', 'Non-pungent Ancestor'],
+    scientificName: 'Capsicum rhomboideum',
+    species: 'rhomboideum',
+    origin: 'Northern Andes (Colombia, Ecuador)',
+    region: 'Americas',
+    scovilleMin: 0,
+    scovilleMax: 0,
+    heatLevel: 'No Heat',
+    flavorNotes: ['Sweet', 'Mild', 'Berry-like'],
+    aromaNotes: ['Subtle', 'Fresh'],
+    description: 'A non-pungent ancestral species representing the earliest-diverging lineage in the genus Capsicum. Lacks the ability to produce capsaicin.',
+    historicalNotes: 'This species is of immense evolutionary significance. The Andean clade (C. rhomboideum and allies) represents the oldest living Capsicum lineage. The absence of pungency suggests capsaicin production evolved AFTER this early divergence.',
+    tradeRoute: 'Pre-Columbian Dispersal',
+    tradeRouteTags: ['Pre-Columbian', 'Ancestral Lineage', 'Non-pungent'],
+    yearIntroduced: -10000,
+    culinaryUses: ['Not cultivated', 'Evolutionary research'],
+    inStock: false,
+    gallery: [],
+  },
 ];
 
 // Filter data
 export const regions = ['Americas', 'Asia', 'Africa', 'Europe', 'Middle East'] as const;
 export const heatLevels = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'] as const;
-export const speciesList = ['annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;
+
+// Domesticated species list
+export const domesticatedSpeciesList = ['annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;
+// Ancestral species list
+export const ancestralSpeciesList = ['glabriusculum', 'chacoense', 'galapagoense', 'praetermissum', 'eximium', 'tovarii', 'cardenasii', 'rhomboideum'] as const;
+// Combined list for backward compatibility
+export const speciesList = [...domesticatedSpeciesList, ...ancestralSpeciesList] as const;
 
 export const speciesDisplayNames: Record<Species, string> = {
+  // Domesticated
   annuum: 'Capsicum annuum',
   chinense: 'Capsicum chinense',
   frutescens: 'Capsicum frutescens',
   baccatum: 'Capsicum baccatum',
   pubescens: 'Capsicum pubescens',
+  // Ancestral
+  glabriusculum: 'C. annuum var. glabriusculum',
+  chacoense: 'Capsicum chacoense',
+  galapagoense: 'Capsicum galapagoense',
+  praetermissum: 'Capsicum praetermissum',
+  eximium: 'Capsicum eximium',
+  tovarii: 'Capsicum tovarii',
+  cardenasii: 'Capsicum cardenasii',
+  rhomboideum: 'Capsicum rhomboideum',
 };

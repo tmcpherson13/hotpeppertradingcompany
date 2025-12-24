@@ -1,4 +1,4 @@
-import { Pepper, speciesDisplayNames, PepperImage } from '@/data/peppers';
+import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
 import logoDark from '@/assets/logo-dark.svg';
@@ -115,6 +115,12 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   {pepper.name}
                 </h3>
                 <p className="font-body text-xs italic text-[#5a4a3a]/70 mt-1">
+                  {ancestralSpeciesList.includes(pepper.species as AncestralSpecies) && (
+                    <span className="text-[#6b5b4d] not-italic font-heading text-[9px] uppercase tracking-wider mr-2 
+                      px-1.5 py-0.5 bg-[#d4a84b]/15 border border-[#d4a84b]/30">
+                      Ancestral
+                    </span>
+                  )}
                   {speciesDisplayNames[pepper.species] || pepper.scientificName}
                 </p>
               </div>
