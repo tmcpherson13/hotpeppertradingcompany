@@ -864,6 +864,12 @@ export function TradeRouteMap() {
 
           // Initial opacity - routes hidden until their timeline year is reached
           const ghostOpacity = 0;
+          
+          // Color scheme based on route type
+          const isOverland = route.isOverland === true;
+          const colors = isOverland 
+            ? { aura: '#8B4513', glowOuter: '#A0522D', glowInner: '#CD853F', main: '#8B4513', accent: '#DAA520' }  // Sienna/Brown for overland
+            : { aura: '#5B005B', glowOuter: '#7B1A7B', glowInner: '#8B2A8B', main: '#5B005B', accent: '#d4a84b' }; // Tyrian Purple for maritime
 
           // Outermost diffuse glow - prestige aura
           m?.addLayer({
@@ -875,14 +881,14 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#5B005B', // Tyrian Purple
+              'line-color': colors.aura,
               'line-width': 18,
               'line-opacity': ghostOpacity,
               'line-blur': 8,
             },
           });
 
-          // Secondary glow layer - rich purple halo
+          // Secondary glow layer - rich halo
           m?.addLayer({
             id: `route-glow-outer-${index}`,
             type: 'line',
@@ -892,14 +898,14 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#7B1A7B', // Lighter Tyrian Purple
+              'line-color': colors.glowOuter,
               'line-width': 10,
               'line-opacity': ghostOpacity,
               'line-blur': 4,
             },
           });
 
-          // Inner glow - concentrated prestige
+          // Inner glow - concentrated
           m?.addLayer({
             id: `route-glow-inner-${index}`,
             type: 'line',
@@ -909,7 +915,7 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#8B2A8B',
+              'line-color': colors.glowInner,
               'line-width': 6,
               'line-opacity': ghostOpacity,
               'line-blur': 2,
@@ -926,9 +932,10 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#5B005B', // Tyrian Purple
+              'line-color': colors.main,
               'line-width': 3,
               'line-opacity': ghostOpacity,
+              ...(isOverland ? { 'line-dasharray': [6, 4] } : {}), // Dashed for overland
             },
           });
 
@@ -942,10 +949,10 @@ export function TradeRouteMap() {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#d4a84b', // Gold accent
+              'line-color': colors.accent,
               'line-width': 1,
               'line-opacity': ghostOpacity,
-              'line-dasharray': [8, 12],
+              'line-dasharray': isOverland ? [4, 6] : [8, 12],
             },
           });
         });
