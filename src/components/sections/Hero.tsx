@@ -63,29 +63,6 @@ export function Hero() {
         </svg>
       </div>
 
-      {/* Trade Route Lines - Right Side */}
-      <div className="absolute top-1/4 right-0 w-1/3 h-1/2 opacity-10 pointer-events-none overflow-hidden">
-        <svg className="w-full h-full" viewBox="0 0 200 300" preserveAspectRatio="none">
-          <path
-            d="M200,50 Q150,80 180,120 T140,180 Q100,220 120,280"
-            fill="none"
-            stroke="hsl(var(--parchment))"
-            strokeWidth="1"
-            strokeDasharray="4,4"
-          />
-          <path
-            d="M200,100 Q160,130 170,170 T130,230 Q90,270 100,300"
-            fill="none"
-            stroke="hsl(var(--parchment))"
-            strokeWidth="0.5"
-            strokeDasharray="2,3"
-          />
-          {/* Route waypoints */}
-          <circle cx="175" cy="90" r="3" fill="hsl(var(--parchment))" opacity="0.5" />
-          <circle cx="160" cy="150" r="3" fill="hsl(var(--parchment))" opacity="0.5" />
-          <circle cx="130" cy="210" r="3" fill="hsl(var(--parchment))" opacity="0.5" />
-        </svg>
-      </div>
 
       {/* Latitude/Longitude Grid Overlay */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
