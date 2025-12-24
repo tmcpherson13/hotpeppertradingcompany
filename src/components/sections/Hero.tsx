@@ -40,26 +40,87 @@ export function Hero() {
         <div className="absolute inset-0 hero-parchment-overlay" />
       </motion.div>
 
-      {/* Compass Rose - Top Left */}
-      <div className="absolute top-20 left-8 md:left-16 opacity-20 pointer-events-none">
-        <svg width="120" height="120" viewBox="0 0 120 120" className="text-parchment">
-          <circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" strokeWidth="0.5" />
-          <circle cx="60" cy="60" r="45" fill="none" stroke="currentColor" strokeWidth="0.3" />
-          <circle cx="60" cy="60" r="35" fill="none" stroke="currentColor" strokeWidth="0.3" />
-          {/* Cardinal directions */}
-          <line x1="60" y1="5" x2="60" y2="25" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="60" y1="95" x2="60" y2="115" stroke="currentColor" strokeWidth="1" />
-          <line x1="5" y1="60" x2="25" y2="60" stroke="currentColor" strokeWidth="1" />
-          <line x1="95" y1="60" x2="115" y2="60" stroke="currentColor" strokeWidth="1" />
-          {/* Ordinal directions */}
-          <line x1="20" y1="20" x2="32" y2="32" stroke="currentColor" strokeWidth="0.5" />
-          <line x1="100" y1="20" x2="88" y2="32" stroke="currentColor" strokeWidth="0.5" />
-          <line x1="20" y1="100" x2="32" y2="88" stroke="currentColor" strokeWidth="0.5" />
-          <line x1="100" y1="100" x2="88" y2="88" stroke="currentColor" strokeWidth="0.5" />
-          {/* Center star */}
-          <polygon points="60,40 63,55 78,55 66,65 70,80 60,70 50,80 54,65 42,55 57,55" fill="currentColor" opacity="0.6" />
-          {/* N marker */}
-          <text x="60" y="18" textAnchor="middle" fill="currentColor" fontSize="8" fontFamily="serif">N</text>
+      {/* Period-Accurate Compass Rose - Top Left */}
+      <div className="absolute top-20 left-8 md:left-16 opacity-25 pointer-events-none">
+        <svg width="140" height="140" viewBox="0 0 140 140" className="text-parchment">
+          {/* Outer decorative rings */}
+          <circle cx="70" cy="70" r="66" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          <circle cx="70" cy="70" r="64" fill="none" stroke="currentColor" strokeWidth="1" />
+          <circle cx="70" cy="70" r="58" fill="none" stroke="currentColor" strokeWidth="0.3" />
+          
+          {/* 32-point degree markers */}
+          {Array.from({ length: 32 }).map((_, i) => {
+            const angle = (i * 11.25 - 90) * Math.PI / 180;
+            const isCardinal = i % 8 === 0;
+            const isIntercardinal = i % 4 === 0 && !isCardinal;
+            const innerR = isCardinal ? 58 : isIntercardinal ? 60 : 62;
+            const outerR = 64;
+            return (
+              <line
+                key={i}
+                x1={70 + innerR * Math.cos(angle)}
+                y1={70 + innerR * Math.sin(angle)}
+                x2={70 + outerR * Math.cos(angle)}
+                y2={70 + outerR * Math.sin(angle)}
+                stroke="currentColor"
+                strokeWidth={isCardinal ? 1.5 : isIntercardinal ? 1 : 0.5}
+                opacity={isCardinal ? 1 : isIntercardinal ? 0.8 : 0.5}
+              />
+            );
+          })}
+          
+          {/* Cardinal points - Large fleur-de-lis style pointers */}
+          {/* North - Primary with fleur-de-lis */}
+          <g>
+            <polygon points="70,8 76,50 70,58 64,50" fill="currentColor" />
+            <polygon points="70,8 73,20 70,15 67,20" fill="hsl(var(--gold))" opacity="0.6" />
+            {/* Fleur-de-lis ornament */}
+            <path d="M70,4 C72,6 74,5 74,3 C74,7 70,10 70,10 C70,10 66,7 66,3 C66,5 68,6 70,4" fill="currentColor" opacity="0.8" />
+          </g>
+          <polygon points="70,132 76,90 70,82 64,90" fill="currentColor" opacity="0.7" />
+          <polygon points="8,70 50,64 58,70 50,76" fill="currentColor" opacity="0.7" />
+          <polygon points="132,70 90,64 82,70 90,76" fill="currentColor" opacity="0.7" />
+          
+          {/* Intercardinal points - Smaller ornate pointers */}
+          <polygon points="21,21 52,58 58,58 58,52" fill="currentColor" opacity="0.5" />
+          <polygon points="119,21 88,58 82,58 82,52" fill="currentColor" opacity="0.5" />
+          <polygon points="21,119 52,82 58,82 58,88" fill="currentColor" opacity="0.5" />
+          <polygon points="119,119 88,82 82,82 82,88" fill="currentColor" opacity="0.5" />
+          
+          {/* Secondary intercardinals - thin lines */}
+          {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((deg) => {
+            const angle = (deg - 90) * Math.PI / 180;
+            return (
+              <line
+                key={deg}
+                x1={70 + 25 * Math.cos(angle)}
+                y1={70 + 25 * Math.sin(angle)}
+                x2={70 + 50 * Math.cos(angle)}
+                y2={70 + 50 * Math.sin(angle)}
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.4"
+              />
+            );
+          })}
+          
+          {/* Center decorative rings */}
+          <circle cx="70" cy="70" r="18" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          <circle cx="70" cy="70" r="12" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.4" />
+          <circle cx="70" cy="70" r="6" fill="hsl(var(--parchment))" stroke="currentColor" strokeWidth="1" opacity="0.8" />
+          <circle cx="70" cy="70" r="2" fill="hsl(var(--gold))" opacity="0.7" />
+          
+          {/* Cardinal direction labels - period script style */}
+          <text x="70" y="22" textAnchor="middle" fill="currentColor" fontSize="7" fontFamily="serif" fontWeight="bold">N</text>
+          <text x="70" y="128" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">S</text>
+          <text x="128" y="72" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">E</text>
+          <text x="12" y="72" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">W</text>
+          
+          {/* Intercardinal labels */}
+          <text x="110" y="32" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">NE</text>
+          <text x="110" y="112" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">SE</text>
+          <text x="30" y="112" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">SW</text>
+          <text x="30" y="32" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">NW</text>
         </svg>
       </div>
 
