@@ -113,18 +113,21 @@ const facts = [
   {
     icon: ScrollIcon,
     title: 'Pre-Columbian Origins',
+    dateRange: '6000 BP – 1492',
     description: 'Archaeological evidence confirms capsicum cultivation in the Americas by 4000 BCE. The Aztecs and Maya developed sophisticated growing and preservation techniques.',
     link: '/history/pre-columbian-origins',
   },
   {
     icon: SailingShipIcon,
     title: 'The Columbian Exchange',
+    dateRange: '1492 – 1600',
     description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
     link: '/history/columbian-exchange',
   },
   {
     icon: OldGlobeIcon,
     title: 'Global Integration',
+    dateRange: '1600 – Present',
     description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
     link: '/history/global-integration',
   },
@@ -246,13 +249,13 @@ export function PepperEducation() {
                       {fact.title}
                     </h3>
                     
-                    {/* Decorative divider */}
+                    {/* Date range divider */}
                     <div className="flex items-center justify-center gap-2 mb-4">
-                      <span className="w-8 h-px bg-gradient-to-r from-transparent to-tyrian/40" />
-                      <svg className="w-2 h-2" viewBox="0 0 8 8">
-                        <polygon points="4,0 5,3 8,4 5,5 4,8 3,5 0,4 3,3" fill="hsl(var(--tyrian))" fillOpacity="0.5" />
-                      </svg>
-                      <span className="w-8 h-px bg-gradient-to-l from-transparent to-tyrian/40" />
+                      <span className="w-6 h-px bg-gradient-to-r from-transparent to-tyrian/40" />
+                      <span className="font-heading text-[11px] uppercase tracking-[0.15em] text-tyrian/70 small-caps">
+                        {fact.dateRange}
+                      </span>
+                      <span className="w-6 h-px bg-gradient-to-l from-transparent to-tyrian/40" />
                     </div>
                     
                     {/* Description - flex-grow to push button down */}
