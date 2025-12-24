@@ -73,7 +73,7 @@ export function Heritage() {
               <span className="font-heading italic text-primary normal-case">Ancient Routes</span>
             </h2>
 
-            <div className="space-y-4 font-body text-muted-foreground text-lg leading-relaxed">
+            <div className="space-y-4 font-body text-muted-foreground text-xl md:text-2xl leading-relaxed">
               <p>
                 Capsicum peppers originated in the Americas more than six thousand years ago. 
                 The Columbian Exchange carried them across every ocean, and within decades 
