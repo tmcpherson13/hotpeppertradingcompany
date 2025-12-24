@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import heroImage from '@/assets/hero-spice-trade.jpg';
+import heroImage from '@/assets/hero-spice-trade-new.jpg';
 import logoWhite from '@/assets/logo-white.svg';
 
 export function Hero() {
