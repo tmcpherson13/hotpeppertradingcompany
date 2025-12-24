@@ -155,10 +155,18 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.8 }}
-            className="text-parchment/90 font-body text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-parchment/90 font-body text-base md:text-lg max-w-3xl mx-auto mb-6 leading-relaxed"
           >
-            Hot peppers originated in the Americas and reshaped global cuisine through centuries of trade. 
-            We source directly from the regions that perfected their cultivation.
+            The Hot Pepper Trading Company is an online trading house devoted to peppers—prepared and offered as curated Cargo, and recorded in the Compendium from which they are drawn. Each cultivar is selected for its flavor profile, pungency, and regional provenance, then assembled into small Pepper Consortiums as availability allows. Alongside the Cargo, the Compendium preserves the history of peppers and the routes by which they traveled, offering context for what is traded as well as what is studied.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="text-parchment/70 font-heading italic text-sm md:text-base max-w-2xl mx-auto mb-10"
+          >
+            The Cargo serves as our storefront. The Compendium serves as our record.
           </motion.p>
 
           <motion.div
