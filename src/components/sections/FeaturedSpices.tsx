@@ -1,14 +1,39 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { TradeRoutePattern, TradeRouteDivider } from '@/components/ui/TradeRoutePattern';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
+import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import spiceChili from '@/assets/spice-red-chili.jpg';
 import spicePaprika from '@/assets/spice-paprika.jpg';
 import spicePepper from '@/assets/spice-pepper.jpg';
-import spiceSaffron from '@/assets/spice-saffron.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
-const spices = [
+interface Spice {
+  name: string;
+  origin: string;
+  region: string;
+  tradeLot: string;
+  weight: string;
+  description: string;
+  price: string;
+  image: string;
+  isConsortium?: boolean;
+}
+
+const spices: Spice[] = [
+  {
+    name: 'Echoes of Africa',
+    origin: 'Multi-Origin',
+    region: 'Pan-African Routes',
+    tradeLot: 'CONSORTIUM № 001',
+    weight: '3 oz / 85g',
+    description: 'A layered symphony of heat from Aleppo to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
+    price: '$36',
+    image: echoesOfAfricaImg,
+    isConsortium: true,
+  },
   {
     name: 'Aleppo Pepper',
     origin: 'Syria',
@@ -39,19 +64,11 @@ const spices = [
     price: '$22',
     image: spicePepper,
   },
-  {
-    name: 'Carolina Reaper',
-    origin: 'South Carolina, USA',
-    region: 'The Americas',
-    tradeLot: 'LOT № 3104',
-    weight: '1 oz / 28g',
-    description: 'Verified at 2.2 million Scoville units. Initial fruity sweetness followed by extreme, persistent heat. For experienced users.',
-    price: '$48',
-    image: spiceSaffron,
-  },
 ];
 
 export function FeaturedSpices() {
+  const [consortiumModalOpen, setConsortiumModalOpen] = useState(false);
+
   return (
     <section id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
       {/* Trade Route Background Pattern */}
@@ -123,9 +140,11 @@ export function FeaturedSpices() {
                     <div className="absolute inset-0 border-2 border-primary/60 rounded-full" />
                     <div className="absolute inset-1 border border-primary/40 rounded-full" />
                     <div className="text-center">
-                      <span className="block text-[8px] uppercase tracking-wider text-primary font-display">Origin</span>
+                      <span className="block text-[8px] uppercase tracking-wider text-primary font-display">
+                        {spice.isConsortium ? 'Blend' : 'Origin'}
+                      </span>
                       <span className="block text-[10px] uppercase tracking-wide text-primary font-heading font-semibold leading-tight">
-                        {spice.origin.split(',')[0]}
+                        {spice.isConsortium ? 'Multi' : spice.origin.split(',')[0]}
                       </span>
                     </div>
                   </div>
@@ -176,13 +195,24 @@ export function FeaturedSpices() {
                   
                   {/* Bottom Decorative Border */}
                   <div className="border-t border-dashed border-ink/20 pt-3">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full text-xs uppercase tracking-[0.15em] border-ink/30 text-ink hover:bg-ink hover:text-parchment"
-                    >
-                      Add to Order
-                    </Button>
+                    {spice.isConsortium ? (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full text-xs uppercase tracking-[0.15em] border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => setConsortiumModalOpen(true)}
+                      >
+                        View Full Record
+                      </Button>
+                    ) : (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full text-xs uppercase tracking-[0.15em] border-ink/30 text-ink hover:bg-ink hover:text-parchment"
+                      >
+                        Add to Order
+                      </Button>
+                    )}
                   </div>
                 </div>
                 
@@ -218,6 +248,12 @@ export function FeaturedSpices() {
           </div>
         </motion.div>
       </div>
+
+      {/* Consortium Detail Modal */}
+      <ConsortiumDetailModal 
+        open={consortiumModalOpen} 
+        onOpenChange={setConsortiumModalOpen} 
+      />
     </section>
   );
 }
