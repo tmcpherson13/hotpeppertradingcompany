@@ -17,22 +17,14 @@ export interface TimelineEvent {
 
 export const timelineEvents: TimelineEvent[] = [
   {
-    year: -4000,
-    yearDisplay: '4000 BCE',
-    location: 'Mesoamerica',
+    year: 1492,
+    yearDisplay: '1492',
+    location: 'San Salvador, Bahamas',
     region: 'The Americas',
-    description: 'Capsicum domesticated by indigenous peoples. Earliest evidence of cultivation.',
-    coordinates: [-99.1332, 19.4326],
+    description: 'Columbus makes first landfall in the New World, encountering chili peppers.',
+    coordinates: [-74.5310, 24.0833],
     isOrigin: true,
-  },
-  {
-    year: -3000,
-    yearDisplay: '3000 BCE',
-    location: 'Peru & Bolivia',
-    region: 'The Americas',
-    description: 'Secondary center of capsicum diversity develops in the Andes.',
-    coordinates: [-68.1193, -16.4897],
-    isOrigin: true,
+    hasRoute: true,
   },
   {
     year: 1493,
@@ -189,35 +181,19 @@ export const timelineEvents: TimelineEvent[] = [
   },
 ];
 
-// Helper to calculate compressed timeline position
-// Custom non-linear scale per user specification:
-// - 4000 BCE at extreme left (2%)
-// - 3000 BCE ~1.5cm from 4000 BCE (6%)
-// - 1493 ~3cm from 3000 BCE (12%)
-// - 1498-1600 spread from 18% to 82% (leaving room for Navigate button)
+// Helper to calculate linear timeline position
+// Linear scale from 1492 to 1600, spanning 5% to 95% of the timeline width
 const getDisplayPosition = (year: number): number => {
-  // Explicit positions for specific years
-  if (year === -4000) return 2;       // 4000 BCE - extreme left
-  if (year === -3000) return 6;       // 3000 BCE - ~1.5cm gap
-  if (year === 1493) return 12;       // 1493 - ~3cm from 3000 BCE
+  const minYear = 1492;
+  const maxYear = 1600;
+  const minPos = 5;   // 1492 at 5% from left
+  const maxPos = 95;  // 1600 at 95% (moved right by ~4cm equivalent)
   
-  // Spread remaining events (1498-1600) across 18% to 82%
-  // This ensures last event stays LEFT of Navigate button
-  if (year >= 1498) {
-    const minYear = 1498;
-    const maxYear = 1600;
-    const minPos = 18;
-    const maxPos = 82; // Stop before Navigate button
-    return minPos + ((year - minYear) / (maxYear - minYear)) * (maxPos - minPos);
-  }
+  // Clamp year to range
+  const clampedYear = Math.max(minYear, Math.min(maxYear, year));
   
-  // Fallback for any other years (interpolate between known points)
-  if (year < 0) {
-    // Between -4000 and -3000: interpolate 2% to 6%
-    return 2 + ((year + 4000) / 1000) * 4;
-  }
-  // Between 0 and 1493: interpolate 6% to 12%
-  return 6 + (year / 1493) * 6;
+  // Linear interpolation
+  return minPos + ((clampedYear - minYear) / (maxYear - minYear)) * (maxPos - minPos);
 };
 
 interface SpreadTimelineProps {
@@ -341,13 +317,11 @@ export function SpreadTimeline({
 
       {/* Timeline Bar */}
       <div className="px-4 py-3">
-        {/* Compressed Non-Linear Timeline */}
+        {/* Linear Timeline 1492-1600 */}
         <div className="relative h-3 bg-muted/50 mb-10 rounded-sm">
-          {/* Era sections background */}
+          {/* Era section background - Age of Exploration */}
           <div className="absolute inset-0 flex rounded-sm overflow-hidden">
-            <div className="bg-primary/10" style={{ width: '15%' }} title="Ancient History" />
-            <div className="bg-muted" style={{ width: '5%' }} title="Medieval" />
-            <div className="bg-gold/10" style={{ width: '80%' }} title="Age of Exploration" />
+            <div className="bg-gold/10 w-full" title="Age of Exploration (1492-1600)" />
           </div>
           
           {/* Progress bar based on compressed position */}
@@ -431,10 +405,10 @@ export function SpreadTimeline({
           </div>
           
           {/* Era labels */}
-          <div className="absolute -bottom-6 left-0 right-0 flex text-[8px] font-body text-muted-foreground/60">
-            <div className="text-center" style={{ width: '15%' }}>Ancient</div>
-            <div className="text-center" style={{ width: '5%' }}></div>
-            <div className="text-center" style={{ width: '80%' }}>Age of Exploration</div>
+          <div className="absolute -bottom-6 left-0 right-0 flex justify-between text-[9px] font-body text-muted-foreground/80 px-1">
+            <span>1492</span>
+            <span className="text-center">Age of Exploration</span>
+            <span>1600</span>
           </div>
         </div>
 
