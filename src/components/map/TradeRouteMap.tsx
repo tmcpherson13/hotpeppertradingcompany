@@ -310,6 +310,29 @@ const tradeRoutes = {
     
     // South America (Peru/Bolivia) to Lisbon - direct Atlantic route via Brazil
     { from: [-68.1193, -16.4897] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[-50, -20], [-35, -15], [-25, 0], [-18, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
+    
+    // === OVERLAND ASIAN ROUTES (1600) ===
+    
+    // Samarkand to Sichuan - Central Asian Silk Road
+    { from: [66.9597, 39.6542] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[72, 40], [80, 38], [90, 35], [98, 32]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
+    
+    // Hormuz to Aleppo - Persian overland route
+    { from: [56.4547, 27.0769] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[52, 30], [48, 33], [44, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
+    
+    // Hormuz to Samarkand - through Persia to Central Asia
+    { from: [56.4547, 27.0769] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[55, 32], [58, 35], [62, 38]] as [number, number][], establishedYear: 1600, destinationName: 'Samarkand (Silk Road)', isOverland: true },
+    
+    // Goa to Aleppo - overland via Persia
+    { from: [73.8567, 15.2993] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[68, 22], [60, 28], [52, 32], [45, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
+    
+    // Macao to Sichuan - inland China route
+    { from: [113.5439, 22.1987] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[110, 25], [107, 28]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
+    
+    // Aleppo to Hungary - Ottoman/European overland
+    { from: [37.1343, 36.2021] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[32, 38], [28, 41], [24, 44]] as [number, number][], establishedYear: 1600, destinationName: 'Hungary', isOverland: true },
+    
+    // Thailand to Sichuan - overland through Burma/Yunnan
+    { from: [100.5018, 13.7563] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[100, 18], [101, 23], [102, 27]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
   ] as RouteData[],
 };
 
