@@ -119,6 +119,46 @@ import ajiCristalImg from '@/assets/peppers/aji-cristal.jpg';
 import ajiCachoDeCabraImg from '@/assets/peppers/aji-cacho-de-cabra.jpg';
 import merkenPepperImg from '@/assets/peppers/merken-pepper.jpg';
 
+// New batch - 35+ missing peppers
+import sevenPotBarrackporeImg from '@/assets/peppers/7-pot-barrackpore.jpg';
+import sevenPotJonahImg from '@/assets/peppers/7-pot-jonah.jpg';
+import sevenPotBrainStrainImg from '@/assets/peppers/7-pot-brain-strain.jpg';
+import sevenPotBubblegumImg from '@/assets/peppers/7-pot-bubblegum.jpg';
+import infinityChiliImg from '@/assets/peppers/infinity-chili.jpg';
+import chocolateBhutlahImg from '@/assets/peppers/chocolate-bhutlah.jpg';
+import apocalypseScorpionImg from '@/assets/peppers/apocalypse-scorpion.jpg';
+import armageddonImg from '@/assets/peppers/armageddon.jpg';
+import nagabonImg from '@/assets/peppers/nagabon.jpg';
+import ajiCitoImg from '@/assets/peppers/aji-cito.jpg';
+import ajiCambaImg from '@/assets/peppers/aji-camba.jpg';
+import ajiChunchoImg from '@/assets/peppers/aji-chuncho.jpg';
+import ajiChirelImg from '@/assets/peppers/aji-chirel.jpg';
+import ajiAhuachapanImg from '@/assets/peppers/aji-ahuachapan.jpg';
+import ajiChampionImg from '@/assets/peppers/aji-champion.jpg';
+import ajiDukeImg from '@/assets/peppers/aji-duke.jpg';
+import ajiCachuchaImg from '@/assets/peppers/aji-cachucha.jpg';
+import purpleTigerImg from '@/assets/peppers/purple-tiger.jpg';
+import triColourNishImg from '@/assets/peppers/tri-colour-nish.jpg';
+import numexEasterImg from '@/assets/peppers/numex-easter.jpg';
+import fushimiImg from '@/assets/peppers/fushimi.jpg';
+import tapDeCortiImg from '@/assets/peppers/tap-de-corti.jpg';
+import lemonStarrburstImg from '@/assets/peppers/lemon-starrburst.jpg';
+import bondaMaJacquesImg from '@/assets/peppers/bonda-ma-jacques.jpg';
+import pinkTigerImg from '@/assets/peppers/pink-tiger.jpg';
+import sugarRushCreamImg from '@/assets/peppers/sugar-rush-cream.jpg';
+import cp115Img from '@/assets/peppers/cp115.jpg';
+import jamaicaYellowMushroomImg from '@/assets/peppers/jamaican-yellow-mushroom.jpg';
+import redAmazonImg from '@/assets/peppers/red-amazon.jpg';
+import jayPeachGhostScorpionImg from '@/assets/peppers/jay-peach-ghost-scorpion.jpg';
+import brazilianGhostImg from '@/assets/peppers/brazilian-ghost.jpg';
+import morugaBlendImg from '@/assets/peppers/moruga-blend.jpg';
+import yellowBhutJolokiaImg from '@/assets/peppers/yellow-bhut-jolokia.jpg';
+import whiteHabaneroImg from '@/assets/peppers/white-habanero.jpg';
+import blackPearlImg from '@/assets/peppers/black-pearl.jpg';
+import chiltepinImg from '@/assets/peppers/chiltepin.jpg';
+import ajiLargoImg from '@/assets/peppers/aji-largo.jpg';
+import ajiLimonYellowImg from '@/assets/peppers/aji-limon-yellow.jpg';
+
 export const pepperImageMap: Record<string, string> = {
   // Original 80 peppers
   'aleppo': aleppoImg,
@@ -240,6 +280,46 @@ export const pepperImageMap: Record<string, string> = {
   'aji-cristal': ajiCristalImg,
   'aji-cacho-de-cabra': ajiCachoDeCabraImg,
   'merken-pepper': merkenPepperImg,
+  
+  // New batch - 35+ missing peppers
+  '7-pot-barrackpore': sevenPotBarrackporeImg,
+  '7-pot-jonah': sevenPotJonahImg,
+  '7-pot-brain-strain': sevenPotBrainStrainImg,
+  '7-pot-bubblegum': sevenPotBubblegumImg,
+  'infinity-chili': infinityChiliImg,
+  'chocolate-bhutlah': chocolateBhutlahImg,
+  'apocalypse-scorpion': apocalypseScorpionImg,
+  'armageddon': armageddonImg,
+  'nagabon': nagabonImg,
+  'aji-cito': ajiCitoImg,
+  'aji-camba': ajiCambaImg,
+  'aji-chuncho': ajiChunchoImg,
+  'aji-chirel': ajiChirelImg,
+  'aji-ahuachapan': ajiAhuachapanImg,
+  'aji-champion': ajiChampionImg,
+  'aji-duke': ajiDukeImg,
+  'aji-cachucha': ajiCachuchaImg,
+  'purple-tiger': purpleTigerImg,
+  'tri-colour-nish': triColourNishImg,
+  'numex-easter': numexEasterImg,
+  'fushimi': fushimiImg,
+  'tap-de-corti': tapDeCortiImg,
+  'lemon-starrburst': lemonStarrburstImg,
+  'bonda-ma-jacques': bondaMaJacquesImg,
+  'pink-tiger': pinkTigerImg,
+  'sugar-rush-cream': sugarRushCreamImg,
+  'cp115': cp115Img,
+  'jamaican-yellow-mushroom': jamaicaYellowMushroomImg,
+  'red-amazon': redAmazonImg,
+  'jay-peach-ghost-scorpion': jayPeachGhostScorpionImg,
+  'brazilian-ghost': brazilianGhostImg,
+  'moruga-blend': morugaBlendImg,
+  'yellow-bhut-jolokia': yellowBhutJolokiaImg,
+  'white-habanero': whiteHabaneroImg,
+  'black-pearl': blackPearlImg,
+  'chiltepin': chiltepinImg,
+  'aji-largo': ajiLargoImg,
+  'aji-limon-yellow': ajiLimonYellowImg,
 };
 
 export function getPepperImage(pepperId: string): string | undefined {
