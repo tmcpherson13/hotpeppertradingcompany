@@ -142,7 +142,7 @@ export function DomesticationTimeline() {
         </div>
 
         {/* Main Timeline - Desktop */}
-        <div className="hidden md:block relative h-16 mb-8">
+        <div className="hidden md:block relative h-24 mb-8">
           {/* Timeline line */}
           <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-border -translate-y-1/2" />
           
@@ -186,13 +186,16 @@ export function DomesticationTimeline() {
                   aria-label={`View details for ${event.scientificName}`}
                 />
                 
-                {/* Species label */}
+                {/* Species label - stagger vertically to avoid overlap */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.15 + 0.2 }}
-                  className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap
-                    ${index % 2 === 0 ? 'top-10' : '-top-10'}`}
+                  className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
+                  style={{ 
+                    top: index % 2 === 0 ? '2.5rem' : undefined,
+                    bottom: index % 2 === 1 ? '2.5rem' : undefined
+                  }}
                 >
                   <span className="font-heading text-xs italic text-foreground">{event.species}</span>
                 </motion.div>
