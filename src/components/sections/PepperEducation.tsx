@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { TradeRoutePattern, CompassRose } from '@/components/ui/TradeRoutePattern';
+import { CompassRose } from '@/components/ui/TradeRoutePattern';
 import logoDark from '@/assets/logo-dark.svg';
+import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
 // Custom SVG icons for each historical era - Old nautical hand-drawn style
 const ScrollIcon = ({ className }: { className?: string }) => (
@@ -135,13 +136,14 @@ const facts = [
 
 export function PepperEducation() {
   return (
-    <section id="pepper-education" className="relative py-20 bg-background paper-texture overflow-hidden">
-      {/* Trade Route Background */}
-      <TradeRoutePattern 
-        className="inset-0 w-full h-full" 
-        variant="subtle" 
-        opacity={0.06} 
+    <section id="pepper-education" className="relative py-20 overflow-hidden">
+      {/* Full Background Map Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${tradeRoutesBg})` }}
       />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-background/85" />
       
       {/* Decorative Compass */}
       <CompassRose 
