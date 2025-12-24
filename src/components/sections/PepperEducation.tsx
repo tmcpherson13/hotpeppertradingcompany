@@ -261,7 +261,7 @@ export function PepperEducation() {
                     </div>
                     
                     {/* Description - flex-grow to push button down */}
-                    <p className="font-body text-muted-foreground text-center leading-relaxed mb-6 text-sm flex-grow">
+                    <p className="font-body text-muted-foreground text-center leading-relaxed mb-6 text-base flex-grow">
                       {fact.description}
                     </p>
                     
