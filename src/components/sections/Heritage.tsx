@@ -63,7 +63,7 @@ export function Heritage() {
                 />
                 <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
               </div>
-              <span className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] small-caps">
+              <span className="text-foreground font-heading text-lg md:text-xl font-bold uppercase tracking-[0.25em] small-caps">
                 Our Heritage
               </span>
             </div>
