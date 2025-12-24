@@ -94,84 +94,24 @@ const domesticationEvents: DomesticationEvent[] = [
   }
 ];
 
-// Convert BP to approximate calendar year for display
-const bpToYear = (bp: number) => {
-  const currentYear = 2000; // Reference year for BP dates
-  return currentYear - bp;
-};
-
-// Timeline spans from 7000 BP to 5555 BP for better visibility of clustered events
-const timelineStart = 7000;
-const timelineEnd = 5555;
-const timelineRange = timelineStart - timelineEnd;
-
-// Compute label row assignments to avoid horizontal overlap
-function computeLabelRows(events: DomesticationEvent[], getPositionPercent: (bp: number) => number) {
-  const minGapPercent = 12; // Minimum gap between labels (as % of timeline width)
-  const rows: { species: string; posPercent: number }[][] = [[], []]; // Start with 2 rows (above/below)
-  
-  // Sort events by position for greedy packing
-  const sortedEvents = [...events].sort((a, b) => 
-    getPositionPercent(a.dateRange.earliest) - getPositionPercent(b.dateRange.earliest)
-  );
-  
-  const rowAssignments: Map<string, number> = new Map();
-  
-  for (const event of sortedEvents) {
-    const pos = getPositionPercent(event.dateRange.earliest);
-    let assignedRow = -1;
-    
-    // Try to fit in existing rows
-    for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
-      const row = rows[rowIdx];
-      const lastInRow = row[row.length - 1];
-      
-      if (!lastInRow || pos - lastInRow.posPercent >= minGapPercent) {
-        // Fits in this row
-        row.push({ species: event.species, posPercent: pos });
-        assignedRow = rowIdx;
-        break;
-      }
-    }
-    
-    // If no existing row fits, create a new one
-    if (assignedRow === -1) {
-      assignedRow = rows.length;
-      rows.push([{ species: event.species, posPercent: pos }]);
-    }
-    
-    rowAssignments.set(event.species, assignedRow);
-  }
-  
-  return { rowAssignments, totalRows: rows.length };
-}
-
 export function DomesticationTimeline() {
   const [selectedEvent, setSelectedEvent] = useState<DomesticationEvent | null>(null);
-  const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
 
-  const getPositionPercent = (bp: number) => {
-    return ((timelineStart - bp) / timelineRange) * 100;
+  // Convert BP to approximate calendar year for display
+  const bpToYear = (bp: number) => {
+    const currentYear = 2000; // Reference year for BP dates
+    return currentYear - bp;
   };
-  
-  // Compute row assignments for labels
-  const { rowAssignments, totalRows } = computeLabelRows(domesticationEvents, getPositionPercent);
-  
-  // Calculate dynamic height based on number of label rows
-  const baseHeight = 48; // Base height for timeline line area
-  const rowHeight = 24; // Height per label row
-  const labelAreaHeight = Math.max(totalRows, 2) * rowHeight;
-  const totalHeight = baseHeight + labelAreaHeight * 2; // Space above and below
 
   return (
     <div className="relative">
-      {/* Timeline Container */}
+      {/* Species Cards */}
       <div className="bg-background/50 border border-border p-6 md:p-8 paper-texture">
-        {/* Timeline Header */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="w-4 h-4" />
-            <span className="font-heading text-sm uppercase tracking-wider">Years Before Present</span>
+            <Leaf className="w-4 h-4" />
+            <span className="font-heading text-sm uppercase tracking-wider">Domesticated Species</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Shovel className="w-4 h-4" />
@@ -179,131 +119,39 @@ export function DomesticationTimeline() {
           </div>
         </div>
 
-        {/* Timeline Scale - Desktop */}
-        <div className="hidden md:block relative mb-4">
-          <div className="flex justify-between text-sm font-heading text-muted-foreground uppercase tracking-wide">
-            <span>7,000 BP</span>
-            <span>6,500 BP</span>
-            <span>6,000 BP</span>
-            <span>5,555 BP</span>
-          </div>
-        </div>
-
-        {/* Main Timeline - Desktop */}
-        <div 
-          className="hidden md:block relative mb-8"
-          style={{ height: `${totalHeight}px` }}
-        >
-          {/* Timeline line */}
-          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-border -translate-y-1/2" />
-          
-          {/* Era markers */}
-          <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 flex justify-between">
-            {[7000, 6500, 6000, 5555].map((bp) => (
-              <div key={bp} className="w-px h-3 bg-border" />
-            ))}
-          </div>
-
-          {/* Domestication event markers */}
-          {domesticationEvents.map((event, index) => {
-            const confirmedPos = getPositionPercent(event.dateRange.confirmed);
-            const earliestPos = getPositionPercent(event.dateRange.earliest);
-            const rangeWidth = confirmedPos - earliestPos;
-            const rowIndex = rowAssignments.get(event.species) ?? 0;
-            const isAbove = rowIndex % 2 === 0;
-            const rowOffset = Math.floor(rowIndex / 2);
-            
-            return (
-              <motion.div
-                key={event.species}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.15, duration: 0.4 }}
-                className="absolute top-1/2 -translate-y-1/2"
-                style={{ left: `${earliestPos}%` }}
-              >
-                {/* Date range bar */}
-                <div 
-                  className={`absolute top-1/2 -translate-y-1/2 h-2 ${event.colorClass} opacity-30 rounded-full`}
-                  style={{ width: `${rangeWidth}%`, minWidth: '20px' }}
-                />
-                
-                {/* Main marker */}
-                <motion.button
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedEvent(event)}
-                  onMouseEnter={() => setHoveredEvent(event.species)}
-                  onMouseLeave={() => setHoveredEvent(null)}
-                  className={`relative z-10 w-5 h-5 rounded-full ${event.colorClass} border-2 border-background shadow-md cursor-pointer
-                    ${hoveredEvent === event.species ? 'ring-2 ring-offset-2 ring-offset-background ring-primary/50' : ''}`}
-                  aria-label={`View details for ${event.scientificName}`}
-                />
-                
-                {/* Species label - collision-aware row stacking */}
-                <motion.button
-                  initial={{ opacity: 0, y: isAbove ? -10 : 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.15 + 0.2 }}
-                  onClick={() => setSelectedEvent(event)}
-                  className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap cursor-pointer hover:text-primary transition-colors"
-                  style={{ 
-                    top: isAbove ? undefined : `${24 + rowOffset * rowHeight}px`,
-                    bottom: isAbove ? `${24 + rowOffset * rowHeight}px` : undefined
-                  }}
-                >
-                  <span className="font-heading text-xs italic text-foreground hover:text-primary transition-colors">
-                    {event.species}
-                  </span>
-                </motion.button>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Mobile Timeline - Vertical Cards */}
-        <div className="md:hidden space-y-4">
+        {/* Species Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {domesticationEvents.map((event, index) => (
             <motion.button
               key={event.species}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               onClick={() => setSelectedEvent(event)}
-              className="w-full text-left p-4 bg-card border border-border hover:border-primary/30 transition-colors"
+              className={`text-left p-4 bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group ${
+                selectedEvent?.species === event.species ? 'ring-2 ring-primary border-primary' : ''
+              }`}
             >
-              <div className="flex items-start gap-3">
-                <div className={`w-3 h-3 rounded-full ${event.colorClass} mt-1.5`} />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-heading text-sm italic text-foreground">{event.scientificName}</span>
-                    <span className="font-body text-xs text-muted-foreground">
-                      ~{event.dateRange.confirmed.toLocaleString()} BP
-                    </span>
-                  </div>
-                  <p className="font-body text-xs text-muted-foreground mt-1">{event.origin}</p>
-                </div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-4 h-4 rounded-full ${event.colorClass} group-hover:scale-110 transition-transform`} />
+                <span className="font-heading text-sm italic text-foreground group-hover:text-primary transition-colors">
+                  {event.species}
+                </span>
               </div>
+              <p className="font-body text-xs text-muted-foreground mb-2">
+                {event.origin}
+              </p>
+              <div className="flex items-center gap-1 text-primary">
+                <Calendar className="w-3 h-3" />
+                <span className="font-body text-xs font-semibold">
+                  ~{event.dateRange.confirmed.toLocaleString()} BP
+                </span>
+              </div>
+              <p className="font-body text-xs text-muted-foreground mt-2 line-clamp-2">
+                {event.commonExamples.slice(0, 3).join(', ')}
+              </p>
             </motion.button>
           ))}
-        </div>
-
-        {/* Legend */}
-        <div className="mt-8 pt-6 border-t border-border">
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-            {domesticationEvents.map((event) => (
-              <button
-                key={event.species}
-                onClick={() => setSelectedEvent(event)}
-                className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer group"
-              >
-                <div className={`w-3 h-3 rounded-full ${event.colorClass}`} />
-                <span className="font-heading text-xs italic text-muted-foreground group-hover:text-foreground transition-colors">
-                  {event.scientificName}
-                </span>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
