@@ -298,6 +298,9 @@ const tradeRoutes = {
     
     // Goa to Lisbon - return voyage (full Carreira da Índia)
     { from: [73.8567, 15.2993] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[60, 10], [45, -5], [30, -25], [18, -35], [0, -30], [-10, -10], [-15, 20], [-12, 35]] as [number, number][], establishedYear: 1499, destinationName: 'Lisbon, Portugal' },
+    
+    // South America (Peru/Bolivia) to Lisbon - direct Atlantic route via Brazil
+    { from: [-68.1193, -16.4897] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[-50, -20], [-35, -15], [-25, 0], [-18, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
   ] as RouteData[],
 };
 
@@ -361,15 +364,22 @@ export function TradeRouteMap() {
   const yearToLocations: Record<number, string[]> = {
     '-4000': ['Mesoamerica'],
     '-3000': ['Mesoamerica', 'Peru & Bolivia'],
-    '1493': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain'],
-    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India'],
-    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa'],
-    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands'],
-    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines'],
-    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)'],
-    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary'],
-    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China'],
-    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'Goa, India', 'West Africa', 'Caribbean Islands', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
+    '1493': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola'],
+    '1498': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India'],
+    '1499': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal'],
+    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa'],
+    '1503': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India'],
+    '1507': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island'],
+    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands'],
+    '1511': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca'],
+    '1515': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz'],
+    '1522': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)'],
+    '1542': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines'],
+    '1550': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)'],
+    '1557': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao'],
+    '1569': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary'],
+    '1570': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary', 'Sichuan, China'],
+    '1600': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)', 'Philippines', 'Thailand', 'Samarkand (Silk Road)', 'Macao', 'Hungary', 'Sichuan, China', 'Aleppo, Syria', 'Gaziantep, Turkey'],
   };
 
   const getVisibleLocations = useCallback((year: number): string[] => {
@@ -457,8 +467,8 @@ export function TradeRouteMap() {
         'highlight': 0.4,
       };
 
-      // Ghost opacity (barely visible hint for future routes)
-      const ghostOpacity = 0.03;
+      // Ghost opacity - hide routes until their timeline year is reached
+      const ghostOpacity = 0;
 
       layerIds.forEach((layerId) => {
         try {
@@ -820,8 +830,8 @@ export function TradeRouteMap() {
             },
           });
 
-          // Ghost opacity for routes not yet established
-          const ghostOpacity = 0.03;
+          // Initial opacity - routes hidden until their timeline year is reached
+          const ghostOpacity = 0;
 
           // Outermost diffuse glow - prestige aura
           m?.addLayer({
