@@ -30,12 +30,15 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <Link to="/">
+              <Link to="/" className="block">
                 <img 
                   src={logoWhite} 
                   alt="Hot Pepper Trading Company" 
-                  className="h-32 w-auto mix-blend-screen"
+                  className="h-24 w-auto mix-blend-screen mb-3"
                 />
+                <span className="font-blackpearl text-2xl text-primary-foreground/90">
+                  Hot Pepper Trading Company
+                </span>
               </Link>
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
@@ -111,8 +114,8 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-body text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} Hot Pepper Trading Company. Est. 1493. All rights reserved.
+          <p className="text-sm text-primary-foreground/60">
+            © {new Date().getFullYear()} <span className="font-blackpearl text-base">Hot Pepper Trading Company</span>. Est. 1493. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
