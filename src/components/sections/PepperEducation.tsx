@@ -172,7 +172,7 @@ export function PepperEducation() {
               />
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
-            <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
+            <p className="text-foreground font-heading text-lg md:text-xl font-bold uppercase tracking-[0.25em] mb-4 small-caps">
               Historical Context
             </p>
             <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
