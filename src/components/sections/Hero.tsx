@@ -1,11 +1,21 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-spice-trade-new.jpg';
 import logoWhite from '@/assets/logo-white.svg';
+import { useRef } from 'react';
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
   const scrollToHeritage = () => {
     const heritageSection = document.getElementById('heritage');
     if (heritageSection) {
@@ -14,18 +24,21 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div 
+        className="absolute inset-0"
+        style={{ y: backgroundY }}
+      >
         <img
           src={heroImage}
           alt="Ancient maritime spice trade scene with Phoenician ships and exotic spices"
-          className="w-full h-full object-cover"
+          className="w-full h-[120%] object-cover"
         />
         {/* Aged parchment overlay */}
         <div className="absolute inset-0 bg-gradient-hero" />
         <div className="absolute inset-0 hero-parchment-overlay" />
-      </div>
+      </motion.div>
 
       {/* Compass Rose - Top Left */}
       <div className="absolute top-20 left-8 md:left-16 opacity-20 pointer-events-none">
