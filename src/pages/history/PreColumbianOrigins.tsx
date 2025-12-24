@@ -388,6 +388,15 @@ export default function PreColumbianOrigins() {
                   
                   {/* Interactive Species Buttons */}
                   <div className="bg-background/50 border border-border p-6 my-8">
+                    <motion.p 
+                      className="mb-6 font-body text-base text-primary text-center italic font-medium"
+                      initial={{ opacity: 0.6 }}
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      ↓ Click on a species below to view detailed archaeological evidence ↓
+                    </motion.p>
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                       {domesticationEvents.map((event, index) => (
                         <motion.button
@@ -422,15 +431,6 @@ export default function PreColumbianOrigins() {
                         </motion.button>
                       ))}
                     </div>
-                    
-                    <motion.p 
-                      className="mt-6 font-body text-base text-primary text-center italic font-medium"
-                      initial={{ opacity: 0.6 }}
-                      animate={{ opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      ↓ Click on a species to view detailed archaeological evidence ↓
-                    </motion.p>
                   </div>
                   
                   {/* Detail Panel */}
