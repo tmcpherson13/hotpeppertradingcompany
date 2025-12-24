@@ -40,89 +40,170 @@ export function Hero() {
         <div className="absolute inset-0 hero-parchment-overlay" />
       </motion.div>
 
-      {/* Period-Accurate Compass Rose - Top Left */}
-      <div className="absolute top-20 left-8 md:left-16 opacity-25 pointer-events-none">
-        <svg width="140" height="140" viewBox="0 0 140 140" className="text-parchment">
-          {/* Outer decorative rings */}
-          <circle cx="70" cy="70" r="66" fill="none" stroke="currentColor" strokeWidth="0.5" />
-          <circle cx="70" cy="70" r="64" fill="none" stroke="currentColor" strokeWidth="1" />
-          <circle cx="70" cy="70" r="58" fill="none" stroke="currentColor" strokeWidth="0.3" />
+      {/* Ornate Period-Accurate Compass Rose - Top Left */}
+      <motion.div 
+        className="absolute top-20 left-8 md:left-16 opacity-25 pointer-events-none"
+        animate={{ rotate: [0, 2, -2, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <motion.svg 
+          width="160" 
+          height="160" 
+          viewBox="0 0 160 160" 
+          className="text-parchment"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {/* Outermost decorative ring with flourishes */}
+          <circle cx="80" cy="80" r="76" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.6" />
+          <circle cx="80" cy="80" r="74" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="80" cy="80" r="72" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.5" />
           
-          {/* 32-point degree markers */}
+          {/* Ornate outer flourish ring */}
+          {Array.from({ length: 16 }).map((_, i) => {
+            const angle = (i * 22.5 - 90) * Math.PI / 180;
+            const x = 80 + 74 * Math.cos(angle);
+            const y = 80 + 74 * Math.sin(angle);
+            return (
+              <circle key={`flourish-${i}`} cx={x} cy={y} r="2" fill="currentColor" opacity="0.4" />
+            );
+          })}
+          
+          {/* 32-point degree markers with ornate ends */}
           {Array.from({ length: 32 }).map((_, i) => {
             const angle = (i * 11.25 - 90) * Math.PI / 180;
             const isCardinal = i % 8 === 0;
             const isIntercardinal = i % 4 === 0 && !isCardinal;
-            const innerR = isCardinal ? 58 : isIntercardinal ? 60 : 62;
-            const outerR = 64;
+            const innerR = isCardinal ? 64 : isIntercardinal ? 66 : 68;
+            const outerR = 72;
             return (
-              <line
-                key={i}
-                x1={70 + innerR * Math.cos(angle)}
-                y1={70 + innerR * Math.sin(angle)}
-                x2={70 + outerR * Math.cos(angle)}
-                y2={70 + outerR * Math.sin(angle)}
-                stroke="currentColor"
-                strokeWidth={isCardinal ? 1.5 : isIntercardinal ? 1 : 0.5}
-                opacity={isCardinal ? 1 : isIntercardinal ? 0.8 : 0.5}
+              <g key={i}>
+                <line
+                  x1={80 + innerR * Math.cos(angle)}
+                  y1={80 + innerR * Math.sin(angle)}
+                  x2={80 + outerR * Math.cos(angle)}
+                  y2={80 + outerR * Math.sin(angle)}
+                  stroke="currentColor"
+                  strokeWidth={isCardinal ? 2 : isIntercardinal ? 1.2 : 0.5}
+                  opacity={isCardinal ? 1 : isIntercardinal ? 0.8 : 0.4}
+                />
+                {isCardinal && (
+                  <circle 
+                    cx={80 + (outerR + 1) * Math.cos(angle)} 
+                    cy={80 + (outerR + 1) * Math.sin(angle)} 
+                    r="1.5" 
+                    fill="currentColor" 
+                    opacity="0.6" 
+                  />
+                )}
+              </g>
+            );
+          })}
+          
+          {/* Inner decorative ring */}
+          <circle cx="80" cy="80" r="64" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.4" strokeDasharray="2 2" />
+          
+          {/* North - Ornate fleur-de-lis pointer */}
+          <g>
+            {/* Main north pointer */}
+            <polygon points="80,10 88,58 80,66 72,58" fill="currentColor" />
+            {/* Gold accent */}
+            <polygon points="80,10 84,28 80,22 76,28" fill="hsl(var(--gold))" opacity="0.7" />
+            {/* Fleur-de-lis top */}
+            <path d="M80,4 C84,8 88,6 88,2 C88,10 80,16 80,16 C80,16 72,10 72,2 C72,6 76,8 80,4" fill="currentColor" opacity="0.9" />
+            {/* Fleur-de-lis side curls */}
+            <path d="M72,10 C68,8 66,12 68,14 C66,10 72,8 72,10" fill="currentColor" opacity="0.7" />
+            <path d="M88,10 C92,8 94,12 92,14 C94,10 88,8 88,10" fill="currentColor" opacity="0.7" />
+          </g>
+          
+          {/* South pointer */}
+          <g>
+            <polygon points="80,150 88,102 80,94 72,102" fill="currentColor" opacity="0.6" />
+            <polygon points="80,150 84,138 80,142 76,138" fill="currentColor" opacity="0.3" />
+          </g>
+          
+          {/* East pointer */}
+          <g>
+            <polygon points="150,80 102,72 94,80 102,88" fill="currentColor" opacity="0.6" />
+            <path d="M150,80 C146,76 142,78 144,82 C140,78 148,76 150,80" fill="currentColor" opacity="0.4" />
+          </g>
+          
+          {/* West pointer */}
+          <g>
+            <polygon points="10,80 58,72 66,80 58,88" fill="currentColor" opacity="0.6" />
+            <path d="M10,80 C14,76 18,78 16,82 C20,78 12,76 10,80" fill="currentColor" opacity="0.4" />
+          </g>
+          
+          {/* Intercardinal ornate pointers */}
+          <polygon points="24,24 58,64 66,64 64,56" fill="currentColor" opacity="0.45" />
+          <polygon points="136,24 102,64 94,64 96,56" fill="currentColor" opacity="0.45" />
+          <polygon points="24,136 58,96 66,96 64,104" fill="currentColor" opacity="0.45" />
+          <polygon points="136,136 102,96 94,96 96,104" fill="currentColor" opacity="0.45" />
+          
+          {/* Decorative intercardinal diamonds */}
+          {[45, 135, 225, 315].map((deg) => {
+            const angle = (deg - 90) * Math.PI / 180;
+            const x = 80 + 56 * Math.cos(angle);
+            const y = 80 + 56 * Math.sin(angle);
+            return (
+              <polygon 
+                key={deg}
+                points={`${x},${y-3} ${x+2},${y} ${x},${y+3} ${x-2},${y}`}
+                fill="hsl(var(--gold))"
+                opacity="0.5"
               />
             );
           })}
           
-          {/* Cardinal points - Large fleur-de-lis style pointers */}
-          {/* North - Primary with fleur-de-lis */}
-          <g>
-            <polygon points="70,8 76,50 70,58 64,50" fill="currentColor" />
-            <polygon points="70,8 73,20 70,15 67,20" fill="hsl(var(--gold))" opacity="0.6" />
-            {/* Fleur-de-lis ornament */}
-            <path d="M70,4 C72,6 74,5 74,3 C74,7 70,10 70,10 C70,10 66,7 66,3 C66,5 68,6 70,4" fill="currentColor" opacity="0.8" />
-          </g>
-          <polygon points="70,132 76,90 70,82 64,90" fill="currentColor" opacity="0.7" />
-          <polygon points="8,70 50,64 58,70 50,76" fill="currentColor" opacity="0.7" />
-          <polygon points="132,70 90,64 82,70 90,76" fill="currentColor" opacity="0.7" />
-          
-          {/* Intercardinal points - Smaller ornate pointers */}
-          <polygon points="21,21 52,58 58,58 58,52" fill="currentColor" opacity="0.5" />
-          <polygon points="119,21 88,58 82,58 82,52" fill="currentColor" opacity="0.5" />
-          <polygon points="21,119 52,82 58,82 58,88" fill="currentColor" opacity="0.5" />
-          <polygon points="119,119 88,82 82,82 82,88" fill="currentColor" opacity="0.5" />
-          
-          {/* Secondary intercardinals - thin lines */}
+          {/* Secondary intercardinal rays */}
           {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((deg) => {
             const angle = (deg - 90) * Math.PI / 180;
             return (
               <line
                 key={deg}
-                x1={70 + 25 * Math.cos(angle)}
-                y1={70 + 25 * Math.sin(angle)}
-                x2={70 + 50 * Math.cos(angle)}
-                y2={70 + 50 * Math.sin(angle)}
+                x1={80 + 28 * Math.cos(angle)}
+                y1={80 + 28 * Math.sin(angle)}
+                x2={80 + 54 * Math.cos(angle)}
+                y2={80 + 54 * Math.sin(angle)}
                 stroke="currentColor"
-                strokeWidth="0.5"
-                opacity="0.4"
+                strokeWidth="0.8"
+                opacity="0.35"
               />
             );
           })}
           
-          {/* Center decorative rings */}
-          <circle cx="70" cy="70" r="18" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.6" />
-          <circle cx="70" cy="70" r="12" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.4" />
-          <circle cx="70" cy="70" r="6" fill="hsl(var(--parchment))" stroke="currentColor" strokeWidth="1" opacity="0.8" />
-          <circle cx="70" cy="70" r="2" fill="hsl(var(--gold))" opacity="0.7" />
+          {/* Center ornate rose */}
+          <circle cx="80" cy="80" r="24" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          <circle cx="80" cy="80" r="20" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
           
-          {/* Cardinal direction labels - period script style */}
-          <text x="70" y="22" textAnchor="middle" fill="currentColor" fontSize="7" fontFamily="serif" fontWeight="bold">N</text>
-          <text x="70" y="128" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">S</text>
-          <text x="128" y="72" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">E</text>
-          <text x="12" y="72" textAnchor="middle" fill="currentColor" fontSize="6" fontFamily="serif" opacity="0.7">W</text>
+          {/* Inner star pattern */}
+          <polygon 
+            points="80,60 83,74 97,74 86,83 90,97 80,88 70,97 74,83 63,74 77,74" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="0.8" 
+            opacity="0.4"
+          />
+          
+          {/* Center decorative rings */}
+          <circle cx="80" cy="80" r="12" fill="hsl(var(--parchment))" fillOpacity="0.3" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+          <circle cx="80" cy="80" r="8" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.5" />
+          <circle cx="80" cy="80" r="4" fill="hsl(var(--gold))" opacity="0.6" />
+          <circle cx="80" cy="80" r="1.5" fill="hsl(var(--parchment))" />
+          
+          {/* Cardinal direction labels - ornate script */}
+          <text x="80" y="28" textAnchor="middle" fill="currentColor" fontSize="9" fontFamily="serif" fontWeight="bold" fontStyle="italic">N</text>
+          <text x="80" y="148" textAnchor="middle" fill="currentColor" fontSize="7" fontFamily="serif" opacity="0.6" fontStyle="italic">S</text>
+          <text x="146" y="83" textAnchor="middle" fill="currentColor" fontSize="7" fontFamily="serif" opacity="0.6" fontStyle="italic">E</text>
+          <text x="14" y="83" textAnchor="middle" fill="currentColor" fontSize="7" fontFamily="serif" opacity="0.6" fontStyle="italic">W</text>
           
           {/* Intercardinal labels */}
-          <text x="110" y="32" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">NE</text>
-          <text x="110" y="112" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">SE</text>
-          <text x="30" y="112" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">SW</text>
-          <text x="30" y="32" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.5">NW</text>
-        </svg>
-      </div>
+          <text x="126" y="38" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.4">NE</text>
+          <text x="126" y="128" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.4">SE</text>
+          <text x="34" y="128" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.4">SW</text>
+          <text x="34" y="38" textAnchor="middle" fill="currentColor" fontSize="5" fontFamily="serif" opacity="0.4">NW</text>
+        </motion.svg>
+      </motion.div>
 
 
       {/* Latitude/Longitude Grid Overlay */}
