@@ -329,8 +329,8 @@ export default function ColumbianExchange() {
                   </p>
                   
                   <p className="font-body text-foreground leading-relaxed mb-4">
-                    The transatlantic slave trade, tragically, accelerated this dispersal. 
-                    Peppers were included on British slave ships as provisions, spreading 
+                    The Atlantic trade networks accelerated this dispersal. 
+                    Peppers were included on merchant ships as provisions and trade goods, spreading 
                     cultivars between African ports and the Caribbean. By the early 1600s, 
                     chili peppers had become so thoroughly integrated into West African 
                     cuisine that European observers sometimes mistook them for native 
