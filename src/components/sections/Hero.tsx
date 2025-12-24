@@ -264,7 +264,8 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="font-blackpearl text-4xl md:text-6xl lg:text-7xl text-parchment leading-tight mb-6 hero-engraved-text text-engraved normal-case"
+            className="font-blackpearl text-4xl md:text-6xl lg:text-7xl text-parchment leading-tight mb-6 normal-case"
+            style={{ textShadow: '0 0 20px hsla(42, 72%, 48%, 0.4), 0 0 40px hsla(42, 72%, 48%, 0.2), 0 2px 4px hsla(28, 35%, 10%, 0.5)' }}
           >
             Hot Pepper <br />
             <span className="text-gold">Trading Company</span>
