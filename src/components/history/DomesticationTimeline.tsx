@@ -105,6 +105,47 @@ const timelineStart = 8000;
 const timelineEnd = 3000;
 const timelineRange = timelineStart - timelineEnd;
 
+// Compute label row assignments to avoid horizontal overlap
+function computeLabelRows(events: DomesticationEvent[], getPositionPercent: (bp: number) => number) {
+  const minGapPercent = 12; // Minimum gap between labels (as % of timeline width)
+  const rows: { species: string; posPercent: number }[][] = [[], []]; // Start with 2 rows (above/below)
+  
+  // Sort events by position for greedy packing
+  const sortedEvents = [...events].sort((a, b) => 
+    getPositionPercent(a.dateRange.earliest) - getPositionPercent(b.dateRange.earliest)
+  );
+  
+  const rowAssignments: Map<string, number> = new Map();
+  
+  for (const event of sortedEvents) {
+    const pos = getPositionPercent(event.dateRange.earliest);
+    let assignedRow = -1;
+    
+    // Try to fit in existing rows
+    for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
+      const row = rows[rowIdx];
+      const lastInRow = row[row.length - 1];
+      
+      if (!lastInRow || pos - lastInRow.posPercent >= minGapPercent) {
+        // Fits in this row
+        row.push({ species: event.species, posPercent: pos });
+        assignedRow = rowIdx;
+        break;
+      }
+    }
+    
+    // If no existing row fits, create a new one
+    if (assignedRow === -1) {
+      assignedRow = rows.length;
+      rows.push([{ species: event.species, posPercent: pos }]);
+    }
+    
+    rowAssignments.set(event.species, assignedRow);
+  }
+  
+  return { rowAssignments, totalRows: rows.length };
+}
+
 export function DomesticationTimeline() {
   const [selectedEvent, setSelectedEvent] = useState<DomesticationEvent | null>(null);
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
@@ -112,6 +153,15 @@ export function DomesticationTimeline() {
   const getPositionPercent = (bp: number) => {
     return ((timelineStart - bp) / timelineRange) * 100;
   };
+  
+  // Compute row assignments for labels
+  const { rowAssignments, totalRows } = computeLabelRows(domesticationEvents, getPositionPercent);
+  
+  // Calculate dynamic height based on number of label rows
+  const baseHeight = 48; // Base height for timeline line area
+  const rowHeight = 24; // Height per label row
+  const labelAreaHeight = Math.max(totalRows, 2) * rowHeight;
+  const totalHeight = baseHeight + labelAreaHeight * 2; // Space above and below
 
   return (
     <div className="relative">
@@ -142,7 +192,10 @@ export function DomesticationTimeline() {
         </div>
 
         {/* Main Timeline - Desktop */}
-        <div className="hidden md:block relative h-24 mb-8">
+        <div 
+          className="hidden md:block relative mb-8"
+          style={{ height: `${totalHeight}px` }}
+        >
           {/* Timeline line */}
           <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-border -translate-y-1/2" />
           
@@ -158,6 +211,9 @@ export function DomesticationTimeline() {
             const confirmedPos = getPositionPercent(event.dateRange.confirmed);
             const earliestPos = getPositionPercent(event.dateRange.earliest);
             const rangeWidth = confirmedPos - earliestPos;
+            const rowIndex = rowAssignments.get(event.species) ?? 0;
+            const isAbove = rowIndex % 2 === 0;
+            const rowOffset = Math.floor(rowIndex / 2);
             
             return (
               <motion.div
@@ -171,7 +227,7 @@ export function DomesticationTimeline() {
                 {/* Date range bar */}
                 <div 
                   className={`absolute top-1/2 -translate-y-1/2 h-2 ${event.colorClass} opacity-30 rounded-full`}
-                  style={{ width: `${(rangeWidth / 100) * 800}px` }}
+                  style={{ width: `${rangeWidth}%`, minWidth: '20px' }}
                 />
                 
                 {/* Main marker */}
@@ -186,19 +242,22 @@ export function DomesticationTimeline() {
                   aria-label={`View details for ${event.scientificName}`}
                 />
                 
-                {/* Species label - stagger vertically to avoid overlap */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                {/* Species label - collision-aware row stacking */}
+                <motion.button
+                  initial={{ opacity: 0, y: isAbove ? -10 : 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.15 + 0.2 }}
-                  className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
+                  onClick={() => setSelectedEvent(event)}
+                  className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap cursor-pointer hover:text-primary transition-colors"
                   style={{ 
-                    top: index % 2 === 0 ? '2.5rem' : undefined,
-                    bottom: index % 2 === 1 ? '2.5rem' : undefined
+                    top: isAbove ? undefined : `${24 + rowOffset * rowHeight}px`,
+                    bottom: isAbove ? `${24 + rowOffset * rowHeight}px` : undefined
                   }}
                 >
-                  <span className="font-heading text-xs italic text-foreground">{event.species}</span>
-                </motion.div>
+                  <span className="font-heading text-xs italic text-foreground hover:text-primary transition-colors">
+                    {event.species}
+                  </span>
+                </motion.button>
               </motion.div>
             );
           })}
