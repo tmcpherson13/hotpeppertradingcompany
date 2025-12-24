@@ -8,11 +8,13 @@ import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIn
 import { SoulsOfTheAmericasModal } from '@/components/sections/SoulsOfTheAmericasModal';
 import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
 import { VoicesOfTheAndesModal } from '@/components/sections/VoicesOfTheAndesModal';
+import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
 import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
+import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
 interface Spice {
@@ -89,6 +91,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'andes',
   },
+  {
+    name: 'Rhythms of the Caribbean',
+    origin: 'Multi-Origin',
+    region: 'Caribbean Archipelago',
+    tradeLot: 'CONSORTIUM № 006',
+    weight: '3 oz / 85g',
+    description: 'From turquoise waters to volcanic peaks—island fire that carries the spirit of resistance, resilience, and celebration.',
+    price: '$38',
+    image: rhythmsOfTheCaribbeanImg,
+    isConsortium: true,
+    consortiumId: 'caribbean',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -97,6 +111,7 @@ export function FeaturedSpices() {
   const [americasModalOpen, setAmericasModalOpen] = useState(false);
   const [asiaModalOpen, setAsiaModalOpen] = useState(false);
   const [andesModalOpen, setAndesModalOpen] = useState(false);
+  const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
 
   const handleConsortiumClick = (consortiumId?: string) => {
     switch (consortiumId) {
@@ -114,6 +129,9 @@ export function FeaturedSpices() {
         break;
       case 'andes':
         setAndesModalOpen(true);
+        break;
+      case 'caribbean':
+        setCaribbeanModalOpen(true);
         break;
     }
   };
@@ -318,6 +336,10 @@ export function FeaturedSpices() {
       <VoicesOfTheAndesModal 
         open={andesModalOpen} 
         onOpenChange={setAndesModalOpen} 
+      />
+      <RhythmsOfTheCaribbeanModal 
+        open={caribbeanModalOpen} 
+        onOpenChange={setCaribbeanModalOpen} 
       />
     </section>
   );
