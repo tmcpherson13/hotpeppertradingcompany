@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll, Clock } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
+import { DomesticationTimeline } from '@/components/history/DomesticationTimeline';
 import logoDark from '@/assets/logo-dark.svg';
 import preColumbianArtwork from '@/assets/history/pre-columbian-artwork.jpg';
 
@@ -325,6 +326,66 @@ export default function PreColumbianOrigins() {
                     pan-American crop, cultivated from Peru to the Caribbean. The rapidity of 
                     this dispersal speaks to the importance early Americans placed on this 
                     pungent condiment.
+                  </p>
+                </div>
+              </motion.section>
+
+              {/* Timeline of Domestication */}
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mb-16"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <h2 className="font-display text-2xl md:text-3xl text-foreground">
+                    Timeline of Domestication
+                  </h2>
+                </div>
+                
+                <div className="prose prose-lg max-w-none">
+                  <p className="font-body text-foreground leading-relaxed mb-4">
+                    Archaeological evidence reveals a remarkable pattern: across thousands of 
+                    miles and over several millennia, indigenous peoples of the Americas 
+                    independently domesticated five distinct <em>Capsicum</em> species. This timeline 
+                    traces these domestication events from the earliest evidence to the 
+                    flourishing of pepper cultivation in pre-Columbian civilizations.
+                  </p>
+                  
+                  <p className="font-body text-foreground leading-relaxed mb-6">
+                    The convergence of starch fossil analysis, macrobotanical remains, and 
+                    genetic studies has allowed researchers to reconstruct the approximate 
+                    timing and geographic origins of each domestication event. What emerges 
+                    is a picture of parallel agricultural innovation—separate peoples, in 
+                    separate regions, independently recognizing the value of wild peppers and 
+                    selecting for larger fruits, varied heat levels, and diverse colors over 
+                    generations of careful cultivation.<sup>[2]</sup>
+                  </p>
+                </div>
+
+                {/* Interactive Timeline Component */}
+                <DomesticationTimeline />
+
+                <div className="prose prose-lg max-w-none mt-8">
+                  <p className="font-body text-muted-foreground text-sm italic">
+                    Dates shown in years before present (BP). Ranges reflect uncertainty in 
+                    archaeological dating; earlier dates often represent possible use or 
+                    proto-domestication, while later dates represent confirmed evidence of 
+                    fully domesticated forms with recognizable cultivar traits.
+                  </p>
+                  
+                  <p className="font-body text-foreground leading-relaxed mt-6">
+                    The timeline reveals that the domestication of <em>Capsicum annuum</em> in 
+                    Mesoamerica and <em>Capsicum chinense</em> in lowland South America occurred 
+                    nearly simultaneously—both around 6,000 years ago—yet these events were 
+                    entirely independent. The two species cannot interbreed naturally, confirming 
+                    that separate human populations, with no contact between them, arrived at 
+                    remarkably similar agricultural innovations. This parallel development speaks 
+                    to the universality of the pepper's appeal: its pungency, its preservative 
+                    qualities, and its ability to transform bland staples into flavorful meals 
+                    made it irresistible to agriculturalists across the hemisphere.
                   </p>
                 </div>
               </motion.section>
