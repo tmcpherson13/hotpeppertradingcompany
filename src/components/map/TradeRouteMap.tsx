@@ -278,11 +278,20 @@ const tradeRoutes = {
     // Goa to Cochin - Malabar Coast trade
     { from: [73.8567, 15.2993] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[74, 12]] as [number, number][], establishedYear: 1503, destinationName: 'Cochin, India' },
     
-    // Cochin to Mozambique - spices returning to Africa
-    { from: [76.2673, 9.9312] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[68, 5], [55, -5], [48, -12]] as [number, number][], establishedYear: 1510, destinationName: 'Mozambique Island' },
+    // Cochin to Mozambique - spices returning to Africa (1500)
+    { from: [76.2673, 9.9312] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[68, 5], [55, -5], [48, -12]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
     
-    // Goa to Mozambique - direct route
-    { from: [73.8567, 15.2993] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[65, 8], [55, 0], [48, -8]] as [number, number][], establishedYear: 1510, destinationName: 'Mozambique Island' },
+    // Goa to Mozambique - direct route (1500)
+    { from: [73.8567, 15.2993] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[65, 8], [55, 0], [48, -8]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
+    
+    // Mozambique to Lisbon - Cape Route return voyage (1500)
+    { from: [40.7347, -15.0344] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[30, -28], [18, -35], [5, -35], [-10, -25], [-15, -5], [-15, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
+    
+    // Mozambique to West Africa - along African coast (1500)
+    { from: [40.7347, -15.0344] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[25, -25], [15, -30], [5, -25], [-5, -10], [-5, 0]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
+    
+    // Mozambique to Caribbean - transatlantic via Cape (1500)
+    { from: [40.7347, -15.0344] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[25, -28], [10, -35], [-10, -30], [-30, -15], [-45, 5], [-55, 15]] as [number, number][], establishedYear: 1500, destinationName: 'Caribbean Islands' },
     
     // Goa to Hormuz - Persian Gulf connection
     { from: [73.8567, 15.2993] as [number, number], to: [56.4547, 27.0769] as [number, number], via: [[68, 18], [62, 22]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
@@ -367,10 +376,10 @@ export function TradeRouteMap() {
     '1493': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola'],
     '1498': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India'],
     '1499': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal'],
-    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa'],
-    '1503': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India'],
-    '1507': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island'],
-    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands'],
+    '1500': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
+    '1503': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
+    '1507': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India'],
+    '1510': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Mozambique Island', 'Cochin, India', 'Caribbean Islands'],
     '1511': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca'],
     '1515': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz'],
     '1522': ['Mesoamerica', 'Peru & Bolivia', 'Sanlúcar de Barrameda, Spain', 'La Isabela, Hispaniola', 'Goa, India', 'Lisbon, Portugal', 'West Africa', 'Cochin, India', 'Mozambique Island', 'Caribbean Islands', 'Malacca', 'Hormuz', 'Ternate (Moluccas)'],
