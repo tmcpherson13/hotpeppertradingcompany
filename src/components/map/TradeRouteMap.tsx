@@ -689,7 +689,6 @@ export function TradeRouteMap() {
         center: [-30, 15], // Centered to show all trade routes including Pacific
         pitch: 10,
         bearing: 0,
-        maxBounds: [[-200, -60], [200, 80]], // Expanded to include Pacific Ocean and all routes
         attributionControl: false,
       });
 
