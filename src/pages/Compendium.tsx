@@ -18,45 +18,47 @@ const Compendium = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const filteredPeppers = useMemo(() => {
-    return peppers.filter((pepper) => {
-      // In Stock filter
-      if (showInStockOnly && !pepper.inStock) {
-        return false;
-      }
-
-      // Search filter - includes alternate names
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        const matchesName = pepper.name.toLowerCase().includes(query);
-        const matchesAlternate = pepper.alternateNames?.some(
-          altName => altName.toLowerCase().includes(query)
-        ) || false;
-        if (!matchesName && !matchesAlternate) return false;
-      }
-
-      // Region filter
-      if (selectedRegion !== 'All' && pepper.region !== selectedRegion) {
-        return false;
-      }
-
-      // Heat filter
-      if (selectedHeat !== 'All' && pepper.heatLevel !== selectedHeat) {
-        return false;
-      }
-
-      // Species filter - handle "ancestral" as a group filter
-      if (selectedSpecies !== 'All') {
-        if (selectedSpecies === 'ancestral') {
-          if (!ancestralSpeciesList.includes(pepper.species as AncestralSpecies)) {
-            return false;
-          }
-        } else if (pepper.species !== selectedSpecies) {
+    return peppers
+      .filter((pepper) => {
+        // In Stock filter
+        if (showInStockOnly && !pepper.inStock) {
           return false;
         }
-      }
 
-      return true;
-    });
+        // Search filter - includes alternate names
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          const matchesName = pepper.name.toLowerCase().includes(query);
+          const matchesAlternate = pepper.alternateNames?.some(
+            altName => altName.toLowerCase().includes(query)
+          ) || false;
+          if (!matchesName && !matchesAlternate) return false;
+        }
+
+        // Region filter
+        if (selectedRegion !== 'All' && pepper.region !== selectedRegion) {
+          return false;
+        }
+
+        // Heat filter
+        if (selectedHeat !== 'All' && pepper.heatLevel !== selectedHeat) {
+          return false;
+        }
+
+        // Species filter - handle "ancestral" as a group filter
+        if (selectedSpecies !== 'All') {
+          if (selectedSpecies === 'ancestral') {
+            if (!ancestralSpeciesList.includes(pepper.species as AncestralSpecies)) {
+              return false;
+            }
+          } else if (pepper.species !== selectedSpecies) {
+            return false;
+          }
+        }
+
+        return true;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly]);
 
   const handleSelectPepper = (pepper: Pepper) => {
