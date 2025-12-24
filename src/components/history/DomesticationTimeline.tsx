@@ -109,11 +109,11 @@ export function DomesticationDetails({ selectedEvent, onClose }: DomesticationDe
     <AnimatePresence mode="wait">
       {selectedEvent && (
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            initial={{ opacity: 0, y: 16, scale: 0.99 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="mt-6 bg-card border border-border p-6 md:p-8 relative overflow-hidden"
+            exit={{ opacity: 0, y: 10, scale: 0.995 }}
+            transition={{ duration: 0.35, ease: [0.33, 1, 0.68, 1] }}
+            className="mt-6 bg-card border border-border p-6 md:p-8 relative overflow-hidden will-change-transform"
           >
           <button
             onClick={onClose}
@@ -126,16 +126,16 @@ export function DomesticationDetails({ selectedEvent, onClose }: DomesticationDe
             <div className="grid md:grid-cols-2 gap-6">
               {/* Left Column - Species Info */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15, duration: 0.35 }}
+                transition={{ delay: 0.1, duration: 0.3, ease: "easeOut" }}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <motion.div 
                     className={`w-4 h-4 rounded-full ${selectedEvent.colorClass}`}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: "spring", stiffness: 400 }}
+                    transition={{ delay: 0.18, type: "spring", stiffness: 200, damping: 15 }}
                   />
                   <h4 className="font-display text-xl text-foreground">
                     <em>{selectedEvent.scientificName}</em>
@@ -193,9 +193,9 @@ export function DomesticationDetails({ selectedEvent, onClose }: DomesticationDe
 
               {/* Right Column - Archaeological Sites */}
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 15 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.35 }}
+                transition={{ delay: 0.15, duration: 0.3, ease: "easeOut" }}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <Shovel className="w-4 h-4 text-primary" />
