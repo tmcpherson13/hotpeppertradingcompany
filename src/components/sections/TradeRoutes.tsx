@@ -53,8 +53,8 @@ export function TradeRoutes() {
             <Navigation className="w-6 h-6 text-gold" />
             <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           </div>
-          <p className="text-muted-foreground font-heading text-xs uppercase tracking-[0.3em] mb-3 small-caps">
-            Sourcing Regions
+          <p className="text-foreground font-heading text-lg md:text-xl font-bold uppercase tracking-[0.3em] mb-3 small-caps">
+            Sourcing Regions & Trading Ports
           </p>
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4 text-engraved">
             Principal Trade Routes
