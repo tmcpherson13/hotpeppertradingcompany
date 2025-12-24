@@ -160,7 +160,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
             <div className="px-4 py-2 bg-[#e8dcc4]/30 border-t border-[#5a4a3a]/10 
               flex items-center justify-between">
               <span className="font-body text-[10px] italic text-[#5a4a3a]/50">
-                View full record
+                View Trade Record
               </span>
               <ChevronRight className="w-4 h-4 text-[#5a4a3a]/30 group-hover:text-[#8b2942] 
                 transition-colors group-hover:translate-x-0.5 transform" />
@@ -176,7 +176,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
           {peppers.length} {peppers.length === 1 ? 'entry' : 'entries'} in registry
         </span>
         <span className="font-body text-[10px] text-[#5a4a3a]/50">
-          Select entry to view full record
+          Select entry to view trade record
         </span>
       </div>
     </div>
