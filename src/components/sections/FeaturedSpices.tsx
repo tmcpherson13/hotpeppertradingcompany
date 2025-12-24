@@ -167,7 +167,7 @@ export function FeaturedSpices() {
           <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
             The Cargo
           </p>
-          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
+          <h2 className="font-blackpearl text-3xl md:text-5xl text-foreground mb-6">
             Current Consignment
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -243,8 +243,8 @@ export function FeaturedSpices() {
                     <div className="flex-1 h-px bg-ink/20" />
                   </div>
                   
-                  {/* Product Name - Engraved Style */}
-                  <h3 className="font-display text-lg text-ink text-center uppercase tracking-wide mb-2">
+                  {/* Product Name - Blackpearl Style */}
+                  <h3 className="font-blackpearl text-xl text-ink text-center mb-2">
                     {spice.name}
                   </h3>
                   

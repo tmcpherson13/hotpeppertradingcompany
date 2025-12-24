@@ -30,12 +30,15 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center">
+          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-3">
             <img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
-              className="h-16 w-auto mix-blend-multiply"
+              className="h-12 w-auto mix-blend-multiply"
             />
+            <span className="hidden lg:block font-blackpearl text-lg text-foreground">
+              Hot Pepper Trading Company
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
