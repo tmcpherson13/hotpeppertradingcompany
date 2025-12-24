@@ -103,6 +103,13 @@ const tradeRoutes = {
       cultivars: ['Ají Amarillo', 'Rocoto'],
       year: '3000 BCE',
     },
+    {
+      name: 'La Isabela, Hispaniola',
+      coordinates: [-71.08, 19.82] as [number, number],
+      description: 'Columbus departed here in 1493 with pepper seeds for Spain.',
+      cultivars: ['Caribbean peppers'],
+      year: '1493',
+    },
   ],
   destinations: [
     {
