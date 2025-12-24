@@ -202,7 +202,7 @@ export function FeaturedSpices() {
                         className="w-full text-xs uppercase tracking-[0.15em] border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"
                         onClick={() => setConsortiumModalOpen(true)}
                       >
-                        View Full Record
+                        Examine Full Manifest
                       </Button>
                     ) : (
                       <Button 
@@ -210,7 +210,7 @@ export function FeaturedSpices() {
                         size="sm" 
                         className="w-full text-xs uppercase tracking-[0.15em] border-ink/30 text-ink hover:bg-ink hover:text-parchment"
                       >
-                        Add to Order
+                        Procure Stock
                       </Button>
                     )}
                   </div>
