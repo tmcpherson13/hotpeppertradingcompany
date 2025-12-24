@@ -6,6 +6,13 @@
 @import url('@fontsource/crimson-pro/500.css');
 @import url('@fontsource/crimson-pro/600.css');
 
+@font-face {
+  font-family: 'Blackpearl';
+  src: url('/fonts/Blackpearl.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -208,6 +215,10 @@
 
   .font-body {
     font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-blackpearl {
+    font-family: 'Blackpearl', Georgia, serif;
   }
 
   /* Engraved text effect */

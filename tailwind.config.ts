@@ -20,6 +20,8 @@ export default {
         heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         // EB Garamond - Classic readable body text
         body: ['"EB Garamond"', '"Cormorant Garamond"', 'Georgia', 'serif'],
+        // Blackpearl - Custom decorative font
+        blackpearl: ['"Blackpearl"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
