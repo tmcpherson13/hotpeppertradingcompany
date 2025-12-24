@@ -120,18 +120,6 @@ export function TradeRoutes() {
           ))}
         </div>
 
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-center"
-        >
-          <Button variant="parchment" size="lg">
-            Request Trade Information
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
