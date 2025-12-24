@@ -423,9 +423,14 @@ export default function PreColumbianOrigins() {
                       ))}
                     </div>
                     
-                    <p className="mt-4 font-body text-sm text-muted-foreground text-center italic">
-                      Click on a species to view detailed archaeological evidence.
-                    </p>
+                    <motion.p 
+                      className="mt-6 font-body text-base text-primary text-center italic font-medium"
+                      initial={{ opacity: 0.6 }}
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      ↓ Click on a species to view detailed archaeological evidence ↓
+                    </motion.p>
                   </div>
                   
                   {/* Detail Panel */}
