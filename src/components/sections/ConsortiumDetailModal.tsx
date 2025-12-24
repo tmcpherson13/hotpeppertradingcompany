@@ -74,7 +74,7 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
                 src={echoesOfAfricaImg}
-                alt="Echoes of Africa Pepper Consortium blend"
+                alt="Echoes of Africa Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
@@ -109,7 +109,7 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                   </p>
                   <p>
                     Feel the sun on ancient soil. The hum of distant markets. The sizzle of meat on open flame. 
-                    This is not just a blend—it's a passage through time, across deserts and oceans, woven from 
+                    This is not just a consortium—it's a passage through time, across deserts and oceans, woven from 
                     the hands of growers, traders, and cooks who understood one truth: heat is memory.
                   </p>
                   <p>

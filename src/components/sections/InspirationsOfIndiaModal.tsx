@@ -74,7 +74,7 @@ export function InspirationsOfIndiaModal({ open, onOpenChange }: InspirationsOfI
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
                 src={inspirationsOfIndiaImg}
-                alt="Inspirations of India Pepper Consortium blend"
+                alt="Inspirations of India Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
@@ -109,7 +109,7 @@ export function InspirationsOfIndiaModal({ open, onOpenChange }: InspirationsOfI
                   </p>
                   <p>
                     In the crimson valleys of Kashmir, merchants have measured saffron by the gram and chilies 
-                    by the handful since before the Mughals crossed the passes. This is not merely a blend—it 
+                    by the handful since before the Mughals crossed the passes. This is not merely a consortium—it 
                     is an odyssey through the subcontinent, from the misty highlands where color is currency 
                     to the volcanic northeast where heat defies comprehension.
                   </p>
