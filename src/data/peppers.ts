@@ -70,6 +70,42 @@ import trinidadScorpionImg from '@/assets/peppers/trinidad-scorpion.jpg';
 import wiriWiriImg from '@/assets/peppers/wiri-wiri.jpg';
 import ajiAmarilloIllustration from '@/assets/peppers/aji-amarillo-illustration.jpg';
 
+// Import images for newly added peppers
+import pepperXImg from '@/assets/peppers/pepper-x.jpg';
+import fataliiImg from '@/assets/peppers/fatalii.jpg';
+import nagaViperImg from '@/assets/peppers/naga-viper.jpg';
+import komodoDragonImg from '@/assets/peppers/komodo-dragon.jpg';
+import apolloPepperImg from '@/assets/peppers/apollo-pepper.jpg';
+import malaguetaImg from '@/assets/peppers/malagueta.jpg';
+import cumariImg from '@/assets/peppers/cumari.jpg';
+import dedoDeMocaImg from '@/assets/peppers/dedo-de-moca.jpg';
+import murupiImg from '@/assets/peppers/murupi.jpg';
+import jwalaImg from '@/assets/peppers/jwala.jpg';
+import xiaoMiLaImg from '@/assets/peppers/xiao-mi-la.jpg';
+import silingMahabaImg from '@/assets/peppers/siling-mahaba.jpg';
+import prikKeeNuImg from '@/assets/peppers/prik-kee-nu.jpg';
+import hainanYellowLanternImg from '@/assets/peppers/hainan-yellow-lantern.jpg';
+import dangjoImg from '@/assets/peppers/dangjo.jpg';
+import peperoncinoImg from '@/assets/peppers/peperoncino.jpg';
+import peperoneCruscoImg from '@/assets/peppers/peperone-crusco.jpg';
+import friggitelliImg from '@/assets/peppers/friggitelli.jpg';
+import blackHungarianImg from '@/assets/peppers/black-hungarian.jpg';
+import bakloutiImg from '@/assets/peppers/baklouti.jpg';
+import bishopsCrownImg from '@/assets/peppers/bishops-crown.jpg';
+import peterPepperImg from '@/assets/peppers/peter-pepper.jpg';
+import numexTwilightImg from '@/assets/peppers/numex-twilight.jpg';
+import canarioImg from '@/assets/peppers/canario.jpg';
+import piriPiriAfricanImg from '@/assets/peppers/piri-piri-african.jpg';
+import mombasaChiliImg from '@/assets/peppers/mombasa-chili.jpg';
+import shitoPepperImg from '@/assets/peppers/shito-pepper.jpg';
+import turkishSivriImg from '@/assets/peppers/turkish-sivri.jpg';
+import isotImg from '@/assets/peppers/isot.jpg';
+import marasPepperImg from '@/assets/peppers/maras-pepper.jpg';
+import ksWhiteThaiImg from '@/assets/peppers/ks-white-thai.jpg';
+import ajiFantasyImg from '@/assets/peppers/aji-fantasy.jpg';
+import chocolateHabaneroImg from '@/assets/peppers/chocolate-habanero.jpg';
+import thunderMountainLonghornImg from '@/assets/peppers/thunder-mountain-longhorn.jpg';
+
 // Helper function to generate slug from name
 function generateId(name: string): string {
   return name.toLowerCase()
@@ -2720,7 +2756,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2023,
     culinaryUses: ['Hot sauce production', 'Extreme food challenges', 'Capsaicin extraction'],
     inStock: false,
-    gallery: [],
+    imageUrl: pepperXImg,
   },
   {
     id: 'fatalii',
@@ -2742,7 +2778,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1500,
     culinaryUses: ['Hot sauces', 'Caribbean cuisine', 'African stews'],
     inStock: false,
-    gallery: [],
+    imageUrl: fataliiImg,
   },
   {
     id: 'naga-viper',
@@ -2764,7 +2800,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2011,
     culinaryUses: ['Extreme hot sauces', 'Chili challenges'],
     inStock: false,
-    gallery: [],
+    imageUrl: nagaViperImg,
   },
   {
     id: 'komodo-dragon',
@@ -2786,7 +2822,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2015,
     culinaryUses: ['Hot sauces', 'Marinades', 'Chili con carne'],
     inStock: false,
-    gallery: [],
+    imageUrl: komodoDragonImg,
   },
   {
     id: 'apollo-pepper',
@@ -2808,7 +2844,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2020,
     culinaryUses: ['Ultra-hot sauces', 'Extreme food challenges'],
     inStock: false,
-    gallery: [],
+    imageUrl: apolloPepperImg,
   },
   
   // --- SOUTH AMERICAN VARIETIES ---
@@ -2832,7 +2868,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Moqueca', 'Acarajé', 'Vinagrete sauce', 'Feijoada'],
     inStock: false,
-    gallery: [],
+    imageUrl: malaguetaImg,
   },
   {
     id: 'cumari',
@@ -2854,7 +2890,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -3000,
     culinaryUses: ['Cachaça infusions', 'Hot sauces', 'Traditional Brazilian cooking'],
     inStock: false,
-    gallery: [],
+    imageUrl: cumariImg,
   },
   {
     id: 'dedo-de-moca',
@@ -2876,7 +2912,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -2000,
     culinaryUses: ['Everyday seasoning', 'Conservas', 'Brazilian condiments'],
     inStock: false,
-    gallery: [],
+    imageUrl: dedoDeMocaImg,
   },
   {
     id: 'murupi',
@@ -2898,7 +2934,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -5000,
     culinaryUses: ['Tucupi sauce', 'Fish dishes', 'Amazonian cuisine'],
     inStock: false,
-    gallery: [],
+    imageUrl: murupiImg,
   },
   
   // --- ASIAN VARIETIES ---
@@ -2922,7 +2958,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Curries', 'Chutneys', 'Pickles', 'Fresh garnish'],
     inStock: false,
-    gallery: [],
+    imageUrl: jwalaImg,
   },
   {
     id: 'xiao-mi-la',
@@ -2944,7 +2980,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Cold dishes', 'Pickled preparations', 'Stir-fries', 'Hot pot'],
     inStock: false,
-    gallery: [],
+    imageUrl: xiaoMiLaImg,
   },
   {
     id: 'siling-mahaba',
@@ -2966,7 +3002,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1571,
     culinaryUses: ['Sinigang', 'Adobo', 'Sawsawan', 'Stir-fries'],
     inStock: false,
-    gallery: [],
+    imageUrl: silingMahabaImg,
   },
   {
     id: 'prik-kee-nu',
@@ -2988,7 +3024,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Som tam', 'Tom yum', 'Nam prik', 'Green curry'],
     inStock: false,
-    gallery: [],
+    imageUrl: prikKeeNuImg,
   },
   {
     id: 'hainan-yellow-lantern',
@@ -3010,7 +3046,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Hainanese hot sauces', 'Seafood dishes', 'Fermented preparations'],
     inStock: false,
-    gallery: [],
+    imageUrl: hainanYellowLanternImg,
   },
   {
     id: 'dangjo',
@@ -3032,7 +3068,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Fresh eating', 'With ssamjang', 'Ssam wraps', 'Light stir-fries'],
     inStock: false,
-    gallery: [],
+    imageUrl: dangjoImg,
   },
   
   // --- EUROPEAN VARIETIES ---
@@ -3056,7 +3092,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1526,
     culinaryUses: ['Pasta aglio e olio', 'Arrabbiata', 'Olio piccante', 'Nduja'],
     inStock: false,
-    gallery: [],
+    imageUrl: peperoncinoImg,
   },
   {
     id: 'peperone-crusco',
@@ -3078,7 +3114,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Fried as snack', 'Crushed on pasta', 'Garnish', 'Traditional Lucanian cuisine'],
     inStock: false,
-    gallery: [],
+    imageUrl: peperoneCruscoImg,
   },
   {
     id: 'friggitelli',
@@ -3100,7 +3136,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Fried in olive oil', 'With sausages', 'Antipasto', 'Pizza topping'],
     inStock: false,
-    gallery: [],
+    imageUrl: friggitelliImg,
   },
   {
     id: 'black-hungarian',
@@ -3122,7 +3158,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1570,
     culinaryUses: ['Roasting', 'Paprika production', 'Ornamental', 'Fresh eating'],
     inStock: false,
-    gallery: [],
+    imageUrl: blackHungarianImg,
   },
   {
     id: 'baklouti',
@@ -3144,7 +3180,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Harissa', 'Mechouia salad', 'Tagines', 'Grilled dishes'],
     inStock: false,
-    gallery: [],
+    imageUrl: bakloutiImg,
   },
   
   // --- NORTH AMERICAN VARIETIES ---
@@ -3168,7 +3204,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1700,
     culinaryUses: ['Fresh salads', 'Stuffing', 'Pickling', 'Caribbean cuisine'],
     inStock: false,
-    gallery: [],
+    imageUrl: bishopsCrownImg,
   },
   {
     id: 'peter-pepper',
@@ -3190,7 +3226,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1800,
     culinaryUses: ['Salsas', 'Novelty gifts', 'Pickling', 'Hot sauces'],
     inStock: false,
-    gallery: [],
+    imageUrl: peterPepperImg,
   },
   {
     id: 'numex-twilight',
@@ -3212,7 +3248,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1993,
     culinaryUses: ['Ornamental', 'Container gardening', 'Dried', 'Fresh eating'],
     inStock: false,
-    gallery: [],
+    imageUrl: numexTwilightImg,
   },
   {
     id: 'canario',
@@ -3234,7 +3270,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: -4000,
     culinaryUses: ['Rocoto relleno', 'Salsas', 'Fresh eating', 'Peruvian cuisine'],
     inStock: false,
-    gallery: [],
+    imageUrl: canarioImg,
   },
   
   // --- AFRICAN VARIETIES ---
@@ -3258,7 +3294,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1500,
     culinaryUses: ['Peri-peri chicken', 'Piri piri sauce', 'Grilled seafood', 'African stews'],
     inStock: false,
-    gallery: [],
+    imageUrl: piriPiriAfricanImg,
   },
   {
     id: 'mombasa-chili',
@@ -3280,7 +3316,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Swahili cuisine', 'Pilau rice', 'Coconut curries', 'Grilled meats'],
     inStock: false,
-    gallery: [],
+    imageUrl: mombasaChiliImg,
   },
   {
     id: 'shito-pepper',
@@ -3302,7 +3338,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Shito sauce', 'Jollof rice', 'Waakye', 'Grilled tilapia'],
     inStock: false,
-    gallery: [],
+    imageUrl: shitoPepperImg,
   },
   
   // --- MIDDLE EASTERN VARIETIES ---
@@ -3326,7 +3362,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1550,
     culinaryUses: ['Dolma', 'Grilling', 'Frying', 'Pickles'],
     inStock: false,
-    gallery: [],
+    imageUrl: turkishSivriImg,
   },
   {
     id: 'isot',
@@ -3348,7 +3384,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Kebabs', 'Lahmacun', 'Turkish breakfast', 'Finishing spice'],
     inStock: false,
-    gallery: [],
+    imageUrl: isotImg,
   },
   {
     id: 'maras-pepper',
@@ -3370,7 +3406,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1600,
     culinaryUses: ['Finishing flakes', 'Kebabs', 'Eggs', 'Salads'],
     inStock: false,
-    gallery: [],
+    imageUrl: marasPepperImg,
   },
   
   // --- RARE & SPECIALTY VARIETIES ---
@@ -3394,7 +3430,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2010,
     culinaryUses: ['Thai cuisine', 'Specialty hot sauces', 'Visual garnish'],
     inStock: false,
-    gallery: [],
+    imageUrl: ksWhiteThaiImg,
   },
   {
     id: 'aji-fantasy',
@@ -3416,7 +3452,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2013,
     culinaryUses: ['Raw eating', 'Salads', 'Salsas', 'Sweet applications'],
     inStock: false,
-    gallery: [],
+    imageUrl: ajiFantasyImg,
   },
   {
     id: 'chocolate-habanero',
@@ -3438,7 +3474,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 1800,
     culinaryUses: ['Jerk seasoning', 'Dark hot sauces', 'Caribbean cuisine', 'Mole-style preparations'],
     inStock: false,
-    gallery: [],
+    imageUrl: chocolateHabaneroImg,
   },
   {
     id: 'thunder-mountain-longhorn',
