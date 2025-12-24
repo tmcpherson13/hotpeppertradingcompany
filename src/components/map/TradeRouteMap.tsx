@@ -215,7 +215,9 @@ const tradeRoutes = {
     // Return route: Spain/Portugal to Caribbean - European cultivation returns
     { from: [-6.3508, 36.7783] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Manila-Acapulco Galleon Route - Pacific crossing from Acapulco to Manila (westward)
-    { from: [-99.9, 16.85] as [number, number], to: [121.774, 12.8797] as [number, number], via: [[-105, 16], [-120, 14], [-140, 12], [-160, 10], [-175, 8], [175, 8], [160, 10], [145, 12]] as [number, number][], establishedYear: 1542, destinationName: 'Philippines' },
+    // Using continuous westward coordinates past -180 to prevent antimeridian rendering issues
+    // Manila (121.774°E) expressed as -238.226° for continuous westward path
+    { from: [-99.9, 16.85] as [number, number], to: [-238.226, 12.8797] as [number, number], via: [[-110, 15], [-130, 12], [-150, 10], [-170, 8], [-190, 8], [-210, 10], [-225, 12]] as [number, number][], establishedYear: 1542, destinationName: 'Philippines' },
     // Columbus return voyage: La Isabela, Hispaniola to Sanlúcar de Barrameda, Spain (1493)
     { from: [-71.08, 19.82] as [number, number], to: [-6.3508, 36.7783] as [number, number], via: [[-55, 25], [-35, 32], [-20, 35]] as [number, number][], establishedYear: 1493, destinationName: 'Sanlúcar de Barrameda, Spain' },
     // Philippines to Thailand - South China Sea route
