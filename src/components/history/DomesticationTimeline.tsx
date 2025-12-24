@@ -191,8 +191,8 @@ export function DomesticationTimeline() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.15 + 0.2 }}
-                  className={`absolute top-8 left-1/2 -translate-x-1/2 whitespace-nowrap
-                    ${index % 2 === 0 ? '' : 'top-auto -bottom-8'}`}
+                  className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap
+                    ${index % 2 === 0 ? 'top-10' : '-top-10'}`}
                 >
                   <span className="font-heading text-xs italic text-foreground">{event.species}</span>
                 </motion.div>
