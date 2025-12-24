@@ -35,7 +35,7 @@ const spices: Spice[] = [
     name: 'Echoes of Africa',
     origin: 'Multi-Origin',
     region: 'Pan-African Routes',
-    tradeLot: 'CONSORTIUM № 001',
+    tradeLot: 'CONSORTIUM № 412',
     weight: '3 oz / 85g',
     description: 'A layered symphony of heat from Aleppo to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
     price: '$36',
@@ -47,7 +47,7 @@ const spices: Spice[] = [
     name: 'Inspirations of India',
     origin: 'Multi-Origin',
     region: 'Indian Subcontinent',
-    tradeLot: 'CONSORTIUM № 002',
+    tradeLot: 'CONSORTIUM № 738',
     weight: '3 oz / 85g',
     description: 'A chromatic journey from Kashmir\'s crimson valleys to Assam\'s volcanic fire—color, aroma, and relentless heat.',
     price: '$38',
@@ -59,7 +59,7 @@ const spices: Spice[] = [
     name: 'Souls of the Americas',
     origin: 'Multi-Origin',
     region: 'Pan-American',
-    tradeLot: 'CONSORTIUM № 003',
+    tradeLot: 'CONSORTIUM № 256',
     weight: '3 oz / 85g',
     description: 'From Aztec temples to Caribbean shores—the ancestral fire that launched a thousand ships and changed cuisine forever.',
     price: '$40',
@@ -71,7 +71,7 @@ const spices: Spice[] = [
     name: 'Spirits of Asia',
     origin: 'Multi-Origin',
     region: 'Pan-Asian',
-    tradeLot: 'CONSORTIUM № 004',
+    tradeLot: 'CONSORTIUM № 593',
     weight: '3 oz / 85g',
     description: 'From the Silk Road to the Spice Islands—the fire that crossed oceans and became the soul of a continent.',
     price: '$35',
@@ -83,7 +83,7 @@ const spices: Spice[] = [
     name: 'Voices of the Andes',
     origin: 'Multi-Origin',
     region: 'Andean Origin',
-    tradeLot: 'CONSORTIUM № 005',
+    tradeLot: 'CONSORTIUM № 164',
     weight: '3 oz / 85g',
     description: 'From mountain terraces to coastal markets—the fire that fueled empires and still burns in every ceviche today.',
     price: '$42',
@@ -95,7 +95,7 @@ const spices: Spice[] = [
     name: 'Rhythms of the Caribbean',
     origin: 'Multi-Origin',
     region: 'Caribbean Archipelago',
-    tradeLot: 'CONSORTIUM № 006',
+    tradeLot: 'CONSORTIUM № 847',
     weight: '3 oz / 85g',
     description: 'From turquoise waters to volcanic peaks—island fire that carries the spirit of resistance, resilience, and celebration.',
     price: '$38',
@@ -167,9 +167,12 @@ export function FeaturedSpices() {
           <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.25em] mb-4 small-caps">
             The Cargo
           </p>
-          <h2 className="font-blackpearl text-3xl md:text-5xl text-foreground mb-6">
+          <h2 className="font-blackpearl text-3xl md:text-5xl text-foreground mb-2">
             Current Consignment
           </h2>
+          <p className="text-primary font-heading text-xs uppercase tracking-[0.3em] mb-6">
+            Regional Consortiums
+          </p>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Each cultivar is selected with intent—evaluated for flavor profile, pungency, and regional provenance. 
             Availability is considered not as volume, but as suitability, allowing us to assemble small, deliberate Pepper Consortiums rather than uniform stock.
