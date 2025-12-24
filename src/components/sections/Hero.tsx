@@ -164,7 +164,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="text-parchment/70 font-heading italic text-sm md:text-base max-w-2xl mx-auto mb-10"
+            className="text-parchment/70 font-heading italic text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-10"
           >
             The Cargo serves as our storefront. The Compendium serves as our record.
           </motion.p>
