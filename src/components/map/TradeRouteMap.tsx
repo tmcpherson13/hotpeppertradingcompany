@@ -29,6 +29,15 @@ const regionPresets: RegionPreset[] = [
     description: 'Birthplace of all capsicum species',
   },
   {
+    id: 'pacific',
+    name: 'Pacific & Manila Galleon',
+    shortName: 'Pacific',
+    center: [-150, 15],
+    zoom: 2.5,
+    icon: <Ship className="w-3.5 h-3.5" />,
+    description: 'Trans-Pacific galleon trade 1542-1815',
+  },
+  {
     id: 'mediterranean',
     name: 'Mediterranean & Levant',
     shortName: 'Levant',
@@ -59,10 +68,10 @@ const regionPresets: RegionPreset[] = [
     id: 'global',
     name: 'Global Overview',
     shortName: 'World',
-    center: [0, 20],
-    zoom: 2.2,
+    center: [-30, 15],
+    zoom: 1.8,
     icon: <Globe className="w-3.5 h-3.5" />,
-    description: 'Full world view',
+    description: 'Full world view including Pacific',
   },
 ];
 
@@ -676,11 +685,11 @@ export function TradeRouteMap() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: antiqueMapStyle,
-        zoom: 2.2,
-        center: [0, 20], // Centered to show all trade routes
+        zoom: 1.8,
+        center: [-30, 15], // Centered to show all trade routes including Pacific
         pitch: 10,
         bearing: 0,
-        maxBounds: [[-130, -40], [130, 70]], // Expanded to include all routes
+        maxBounds: [[-200, -60], [200, 80]], // Expanded to include Pacific Ocean and all routes
         attributionControl: false,
       });
 
