@@ -8,7 +8,7 @@ const navLinks = [
   { name: 'The Cargo', href: '#collection', isRoute: false },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Historical Context', href: '#heritage', isRoute: false },
-  { name: 'Sourcing Regions & Trading Ports', href: '#routes', isRoute: false },
+  { name: 'Trade Routes', href: '#routes', isRoute: false },
   { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
 
