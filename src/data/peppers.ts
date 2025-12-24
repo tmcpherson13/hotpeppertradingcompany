@@ -990,8 +990,8 @@ export const peppers: Pepper[] = [
   },
   {
     id: 'aji-limon-lemon-drop',
-    name: 'Aji Limon (Lemon Drop)',
-    alternateNames: ['Ají Limón', 'Lemon Drop', 'Aji Limon', 'Ají Limon (Lemon Drop)'],
+    name: 'Aji Limon, Lemon Drop',
+    alternateNames: ['Aji Limon (Lemon Drop)', 'Ají Limón', 'Lemon Drop', 'Ají Limon (Lemon Drop)'],
     scientificName: 'Capsicum baccatum',
     species: 'baccatum',
     origin: 'Peru',
