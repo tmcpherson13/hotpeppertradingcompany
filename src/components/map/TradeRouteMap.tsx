@@ -127,6 +127,13 @@ const tradeRoutes = {
       year: '1498',
     },
     {
+      name: 'Cochin, India',
+      coordinates: [76.2673, 9.9312] as [number, number],
+      description: 'Major spice trading port on the Malabar Coast.',
+      cultivars: ['Kerala varieties'],
+      year: '1550',
+    },
+    {
       name: 'Sichuan, China',
       coordinates: [104.0665, 30.5728] as [number, number],
       description: 'Chilies transformed regional cuisine.',
@@ -188,8 +195,6 @@ const tradeRoutes = {
     { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-40, 32], [-10, 36], [10, 37], [25, 36]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
     // Portuguese route to Goa - around Cape of Good Hope
     { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-40, 10], [-20, -5], [0, -30], [18, -35], [30, -30], [45, -15], [55, 5]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
-    // Route to Thailand - via Cape, Indian Ocean
-    { from: [-99.1332, 19.4326] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[-40, 10], [-20, -5], [0, -30], [18, -35], [45, -20], [70, 0], [85, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
     // Atlantic to Spain, overland to Hungary
     { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-40, 32], [-10, 38], [5, 42]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
     // Peru to West Africa - across Atlantic
@@ -202,10 +207,14 @@ const tradeRoutes = {
     { from: [-1.0232, 7.9465] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Return route: Spain/Portugal to Caribbean - European cultivation returns
     { from: [-6.3508, 36.7783] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
-    // Manila-Acapulco Galleon Route - Pacific crossing from Mexico
-    { from: [-99.9, 16.85] as [number, number], to: [121.774, 12.8797] as [number, number], via: [[-120, 18], [-150, 15], [-180, 12], [150, 10], [135, 12]] as [number, number][], establishedYear: 1542, destinationName: 'Philippines' },
+    // Manila-Acapulco Galleon Route - Pacific crossing from Acapulco to Manila (westward)
+    { from: [-99.9, 16.85] as [number, number], to: [121.774, 12.8797] as [number, number], via: [[-105, 16], [-120, 14], [-140, 12], [-160, 10], [-175, 8], [175, 8], [160, 10], [145, 12]] as [number, number][], establishedYear: 1542, destinationName: 'Philippines' },
     // Columbus return voyage: La Isabela, Hispaniola to Sanlúcar de Barrameda, Spain (1493)
     { from: [-71.08, 19.82] as [number, number], to: [-6.3508, 36.7783] as [number, number], via: [[-55, 25], [-35, 32], [-20, 35]] as [number, number][], establishedYear: 1493, destinationName: 'Sanlúcar de Barrameda, Spain' },
+    // Philippines to Thailand - South China Sea route
+    { from: [121.774, 12.8797] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[115, 10], [108, 8], [105, 10]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
+    // Thailand to Cochin - across Bay of Bengal and around Sri Lanka
+    { from: [100.5018, 13.7563] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[92, 10], [85, 8], [80, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Cochin, India' },
   ] as RouteData[],
 };
 
