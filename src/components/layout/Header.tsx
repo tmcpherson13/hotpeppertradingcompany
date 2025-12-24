@@ -21,7 +21,14 @@ export function Header() {
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!isHomePage) {
       e.preventDefault();
-      navigate('/' + href);
+      const targetId = href.replace('#', '');
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
   };
 
