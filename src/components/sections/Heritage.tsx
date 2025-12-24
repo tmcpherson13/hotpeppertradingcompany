@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
-import antiqueMap from '@/assets/antique-map.jpg';
+import heritageMap from '@/assets/heritage-map.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
 export function Heritage() {
@@ -32,8 +32,8 @@ export function Heritage() {
           >
             <div className="relative overflow-hidden border-4 border-border shadow-deep">
               <img
-                src={antiqueMap}
-                alt="Antique compass rose map showing Mediterranean trade routes"
+                src={heritageMap}
+                alt="Stylized 17th century nautical map with compass rose and trade routes"
                 className="w-full aspect-square object-cover"
               />
               {/* Decorative overlay */}
