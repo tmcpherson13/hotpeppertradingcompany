@@ -90,37 +90,94 @@ const generateTradeRouteSummary = (tags: string[], tradeRoute: string): string =
   return summary;
 };
 
-const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): Pepper[] => {
-  const related: Pepper[] = [];
+// Weighted scoring for related peppers
+const WEIGHTS = {
+  species: 25,        // Same species is a strong indicator
+  region: 20,         // Same region often means similar culinary traditions
+  flavorMatch: 15,    // Per matching flavor note
+  aromaMatch: 10,     // Per matching aroma note
+  tradeRouteTag: 8,   // Per shared trade route tag
+  scovilleProximity: 20, // Based on how close the Scoville ranges are
+  heatLevel: 12,      // Same or adjacent heat level
+};
+
+const calculateScovilleProximity = (pepper1: Pepper, pepper2: Pepper): number => {
+  // Calculate midpoints
+  const mid1 = (pepper1.scovilleMin + pepper1.scovilleMax) / 2;
+  const mid2 = (pepper2.scovilleMin + pepper2.scovilleMax) / 2;
   
-  // Find by similar heat level
+  // Use logarithmic scale since Scoville ranges vary enormously
+  const log1 = Math.log10(mid1 + 1);
+  const log2 = Math.log10(mid2 + 1);
+  const maxLog = Math.log10(3000001); // Pepper X range
+  
+  // Calculate proximity (0-1, where 1 is identical)
+  const logDiff = Math.abs(log1 - log2);
+  const proximity = Math.max(0, 1 - (logDiff / maxLog) * 2);
+  
+  return proximity;
+};
+
+const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): Pepper[] => {
   const heatOrder = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'];
   const currentHeatIndex = heatOrder.indexOf(pepper.heatLevel);
   
-  allPeppers.forEach(p => {
-    if (p.id === pepper.id) return;
-    
-    const pHeatIndex = heatOrder.indexOf(p.heatLevel);
-    const heatDiff = Math.abs(currentHeatIndex - pHeatIndex);
-    
-    // Same or adjacent heat level
-    if (heatDiff <= 1) {
-      related.push(p);
-    }
-    // Shared trade route tags
-    else if (pepper.tradeRouteTags && p.tradeRouteTags) {
-      const sharedTags = pepper.tradeRouteTags.filter(tag => 
-        p.tradeRouteTags?.includes(tag)
-      );
-      if (sharedTags.length >= 2) {
-        related.push(p);
+  const scored = allPeppers
+    .filter(p => p.id !== pepper.id)
+    .map(p => {
+      let score = 0;
+      
+      // Species match (exact match)
+      if (p.species === pepper.species) {
+        score += WEIGHTS.species;
       }
-    }
-  });
+      
+      // Region match
+      if (p.region === pepper.region) {
+        score += WEIGHTS.region;
+      }
+      
+      // Flavor profile overlap
+      const sharedFlavors = pepper.flavorNotes.filter(note => 
+        p.flavorNotes.includes(note)
+      );
+      score += sharedFlavors.length * WEIGHTS.flavorMatch;
+      
+      // Aroma profile overlap
+      if (pepper.aromaNotes && p.aromaNotes) {
+        const sharedAromas = pepper.aromaNotes.filter(note => 
+          p.aromaNotes?.includes(note)
+        );
+        score += sharedAromas.length * WEIGHTS.aromaMatch;
+      }
+      
+      // Trade route tags overlap
+      if (pepper.tradeRouteTags && p.tradeRouteTags) {
+        const sharedTags = pepper.tradeRouteTags.filter(tag => 
+          p.tradeRouteTags?.includes(tag)
+        );
+        score += sharedTags.length * WEIGHTS.tradeRouteTag;
+      }
+      
+      // Scoville proximity (logarithmic scale)
+      const scovilleScore = calculateScovilleProximity(pepper, p) * WEIGHTS.scovilleProximity;
+      score += scovilleScore;
+      
+      // Heat level adjacency
+      const pHeatIndex = heatOrder.indexOf(p.heatLevel);
+      const heatDiff = Math.abs(currentHeatIndex - pHeatIndex);
+      if (heatDiff === 0) {
+        score += WEIGHTS.heatLevel;
+      } else if (heatDiff === 1) {
+        score += WEIGHTS.heatLevel * 0.5;
+      }
+      
+      return { pepper: p, score };
+    })
+    .filter(item => item.score > 20) // Minimum threshold for relevance
+    .sort((a, b) => b.score - a.score);
   
-  // Return unique, limit to 3
-  const unique = [...new Set(related)];
-  return unique.slice(0, 3);
+  return scored.slice(0, 3).map(item => item.pepper);
 };
 
 export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }: PepperDetailModalProps) {
