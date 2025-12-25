@@ -4374,9 +4374,10 @@ export const speciesDisplayNames: Record<Species, string> = {
   rhomboideum: 'Capsicum rhomboideum',
 };
 
-// Development-only duplicate validation
+// Development-only duplicate validation and report
 if (import.meta.env.DEV) {
-  import('@/utils/pepperDuplicates').then(({ validatePepperData }) => {
+  import('@/utils/pepperDuplicates').then(({ validatePepperData, generateDuplicateReport }) => {
     validatePepperData(peppers);
+    generateDuplicateReport(peppers);
   });
 }
