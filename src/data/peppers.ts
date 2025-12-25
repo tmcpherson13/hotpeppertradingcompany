@@ -106,6 +106,16 @@ import ajiFantasyImg from '@/assets/peppers/aji-fantasy.jpg';
 import chocolateHabaneroImg from '@/assets/peppers/chocolate-habanero.jpg';
 import thunderMountainLonghornImg from '@/assets/peppers/thunder-mountain-longhorn.jpg';
 
+// Hippy Seed Company varieties
+import australianBroomeImg from '@/assets/peppers/australian-broome.jpg';
+import scarlettsChilliImg from '@/assets/peppers/scarletts-chilli.jpg';
+import sugarRushPeachHscImg from '@/assets/peppers/sugar-rush-peach-hsc.jpg';
+import sugarRushCreamHscImg from '@/assets/peppers/sugar-rush-cream-hsc.jpg';
+import sugarRushStripeyImg from '@/assets/peppers/sugar-rush-stripey.jpg';
+import nagaSmookyRainbowImg from '@/assets/peppers/naga-smooky-rainbow.jpg';
+import triColourNishHscImg from '@/assets/peppers/tri-colour-nish-hsc.jpg';
+import godStopperImg from '@/assets/peppers/god-stopper.jpg';
+
 // Helper function to generate slug from name
 function generateId(name: string): string {
   return name.toLowerCase()
@@ -4219,7 +4229,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2000,
     culinaryUses: ['Fresh eating', 'Salsas', 'Pickling', 'Australian bush cuisine'],
     inStock: false,
-    gallery: [],
+    imageUrl: australianBroomeImg,
   },
   {
     id: 'scarletts-chilli',
@@ -4241,7 +4251,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2010,
     culinaryUses: ['Salsas', 'Sauces', 'Stir-fries', 'Ornamental'],
     inStock: false,
-    gallery: [],
+    imageUrl: scarlettsChilliImg,
   },
   {
     id: 'sugar-rush-peach',
@@ -4263,7 +4273,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2015,
     culinaryUses: ['Sweet hot sauces', 'Salsas', 'Fresh eating', 'Marinades'],
     inStock: false,
-    gallery: [],
+    imageUrl: sugarRushPeachHscImg,
   },
   {
     id: 'sugar-rush-cream',
@@ -4285,7 +4295,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2016,
     culinaryUses: ['Fresh eating', 'Sweet sauces', 'Stir-fries', 'Salsas'],
     inStock: false,
-    gallery: [],
+    imageUrl: sugarRushCreamHscImg,
   },
   {
     id: 'sugar-rush-stripey',
@@ -4307,7 +4317,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2017,
     culinaryUses: ['Salads', 'Pickling', 'Sweet sauces', 'Ornamental'],
     inStock: false,
-    gallery: [],
+    imageUrl: sugarRushStripeyImg,
   },
   {
     id: 'naga-smooky-rainbow',
@@ -4329,7 +4339,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2018,
     culinaryUses: ['Hot sauces', 'Pepper powders', 'Stir-fries'],
     inStock: false,
-    gallery: [],
+    imageUrl: nagaSmookyRainbowImg,
   },
   {
     id: 'tri-colour-nish',
@@ -4351,7 +4361,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2015,
     culinaryUses: ['Pickling', 'Sweet chilli sauces', 'Fresh eating', 'Ornamental'],
     inStock: false,
-    gallery: [],
+    imageUrl: triColourNishHscImg,
   },
   {
     id: 'god-stopper',
@@ -4373,7 +4383,7 @@ export const peppers: Pepper[] = [
     yearIntroduced: 2018,
     culinaryUses: ['Extreme hot sauces', 'Pepper extracts', 'Competition cooking'],
     inStock: false,
-    gallery: [],
+    imageUrl: godStopperImg,
   },
 ];
 
