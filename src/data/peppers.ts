@@ -1943,28 +1943,7 @@ export const peppers: Pepper[] = [
     inStock: false,
     imageLicense: 'To-be-verified',
   },
-  {
-    id: 'sugar-rush-peach',
-    name: 'Sugar Rush, Peach',
-    alternateNames: ['Sugar Rush Peach', 'Peach Sugar Rush'],
-    scientificName: 'Capsicum baccatum',
-    species: 'baccatum',
-    origin: 'UK',
-    region: 'Europe',
-    scovilleMin: 15000,
-    scovilleMax: 30000,
-    heatLevel: 'Medium',
-    flavorNotes: ['Sweet', 'Fruity'],
-    aromaNotes: ['Fruity'],
-    description: 'Modern baccatum cultivar.',
-    historicalNotes: 'Modern baccatum cultivar.',
-    tradeRoute: 'Modern',
-    tradeRouteTags: ['Modern'],
-    yearIntroduced: 2012,
-    culinaryUses: ['Fresh eating', 'Sauces'],
-    inStock: false,
-    imageLicense: 'To-be-verified',
-  },
+  // NOTE: Sugar Rush Peach moved to Hippy Seed Company section with more complete data
   {
     id: 'brazilian-starfish',
     name: 'Brazilian Starfish',
@@ -4007,28 +3986,7 @@ export const peppers: Pepper[] = [
   },
   
   // --- SPECIALTY CROSSES & MODERN VARIETIES ---
-  {
-    id: 'sugar-rush-cream',
-    name: 'Sugar Rush, Cream',
-    alternateNames: ['Sugar Rush Cream', 'Cream Sugar Rush'],
-    scientificName: 'Capsicum baccatum',
-    species: 'baccatum',
-    origin: 'Wales, UK',
-    region: 'Europe',
-    scovilleMin: 50000,
-    scovilleMax: 100000,
-    heatLevel: 'Very Hot',
-    flavorNotes: ['Sweet', 'Fruity', 'Tropical', 'Creamy'],
-    aromaNotes: ['Sweet', 'Aromatic'],
-    description: 'A cream-colored variant of the Sugar Rush series, developed by Welsh breeder Chris Fowler, offering intense sweetness with significant heat.',
-    historicalNotes: 'Part of the acclaimed Sugar Rush series that revolutionized sweet-heat peppers in the 2010s.',
-    tradeRoute: 'Modern European Breeding',
-    tradeRouteTags: ['European', 'British', 'Modern'],
-    yearIntroduced: 2016,
-    culinaryUses: ['Sweet-heat sauces', 'Fruit salsas', 'Pepper jellies'],
-    inStock: false,
-    gallery: [],
-  },
+  // NOTE: Sugar Rush Cream moved to Hippy Seed Company section with more complete data
   {
     id: 'cp115',
     name: 'CP115',
@@ -4256,7 +4214,7 @@ export const peppers: Pepper[] = [
   {
     id: 'sugar-rush-peach',
     name: 'Sugar Rush Peach',
-    alternateNames: ['Sugar Rush'],
+    alternateNames: ['Sugar Rush', 'Peach Sugar Rush', 'Sugar Rush, Peach'],
     scientificName: 'Capsicum baccatum',
     species: 'baccatum',
     origin: 'United Kingdom (Wales)',
@@ -4278,7 +4236,7 @@ export const peppers: Pepper[] = [
   {
     id: 'sugar-rush-cream',
     name: 'Sugar Rush Cream',
-    alternateNames: [],
+    alternateNames: ['Cream Sugar Rush', 'Sugar Rush, Cream'],
     scientificName: 'Capsicum baccatum',
     species: 'baccatum',
     origin: 'United Kingdom (Wales)',
@@ -4415,3 +4373,10 @@ export const speciesDisplayNames: Record<Species, string> = {
   cardenasii: 'Capsicum cardenasii',
   rhomboideum: 'Capsicum rhomboideum',
 };
+
+// Development-only duplicate validation
+if (import.meta.env.DEV) {
+  import('@/utils/pepperDuplicates').then(({ validatePepperData }) => {
+    validatePepperData(peppers);
+  });
+}
