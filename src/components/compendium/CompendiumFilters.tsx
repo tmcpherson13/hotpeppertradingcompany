@@ -1,6 +1,7 @@
-import { Search, Package } from 'lucide-react';
-import { regions, heatLevels, domesticatedSpeciesList, ancestralSpeciesList, speciesDisplayNames, Species } from '@/data/peppers';
+import { Search, Package, ArrowUpAZ, ArrowDownAZ } from 'lucide-react';
+import { regions, heatLevels, domesticatedSpeciesList, speciesDisplayNames, Species } from '@/data/peppers';
 import { Switch } from '@/components/ui/switch';
+import { SortField, SortDirection } from '@/pages/Compendium';
 
 interface CompendiumFiltersProps {
   searchQuery: string;
@@ -13,7 +14,19 @@ interface CompendiumFiltersProps {
   onSpeciesChange: (species: string) => void;
   showInStockOnly: boolean;
   onInStockChange: (inStock: boolean) => void;
+  sortField: SortField;
+  onSortFieldChange: (field: SortField) => void;
+  sortDirection: SortDirection;
+  onSortDirectionChange: (direction: SortDirection) => void;
 }
+
+const sortFieldLabels: Record<SortField, string> = {
+  name: 'Name',
+  heat: 'Heat Level',
+  scoville: 'Scoville (SHU)',
+  region: 'Region',
+  species: 'Species',
+};
 
 export function CompendiumFilters({
   searchQuery,
@@ -26,6 +39,10 @@ export function CompendiumFilters({
   onSpeciesChange,
   showInStockOnly,
   onInStockChange,
+  sortField,
+  onSortFieldChange,
+  sortDirection,
+  onSortDirectionChange,
 }: CompendiumFiltersProps) {
   const selectStyle = {
     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a4a3a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
@@ -64,7 +81,7 @@ export function CompendiumFilters({
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Search Input */}
         <div>
           <label className="block font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60 mb-2">
@@ -153,10 +170,47 @@ export function CompendiumFilters({
             ))}
           </select>
         </div>
+
+        {/* Sort Controls */}
+        <div>
+          <label className="block font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60 mb-2">
+            Sort By
+          </label>
+          <div className="flex gap-2">
+            <select
+              value={sortField}
+              onChange={(e) => onSortFieldChange(e.target.value as SortField)}
+              className="flex-1 px-4 py-2.5 bg-[#e8dcc4]/50 border border-[#5a4a3a]/20 
+                font-body text-sm text-[#3a2a1a] 
+                focus:outline-none focus:border-[#d4a84b]/50 focus:bg-[#e8dcc4] transition-colors
+                appearance-none cursor-pointer"
+              style={selectStyle}
+            >
+              {(Object.keys(sortFieldLabels) as SortField[]).map((field) => (
+                <option key={field} value={field}>
+                  {sortFieldLabels[field]}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => onSortDirectionChange(sortDirection === 'asc' ? 'desc' : 'asc')}
+              className="px-3 py-2.5 bg-[#e8dcc4]/50 border border-[#5a4a3a]/20 
+                hover:bg-[#e8dcc4] hover:border-[#d4a84b]/50 transition-colors
+                flex items-center justify-center"
+              title={sortDirection === 'asc' ? 'Ascending order' : 'Descending order'}
+            >
+              {sortDirection === 'asc' ? (
+                <ArrowUpAZ className="w-4 h-4 text-[#5a4a3a]" />
+              ) : (
+                <ArrowDownAZ className="w-4 h-4 text-[#5a4a3a]" />
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Active filters indicator */}
-      {(searchQuery || selectedRegion !== 'All' || selectedHeat !== 'All' || selectedSpecies !== 'All' || showInStockOnly) && (
+      {(searchQuery || selectedRegion !== 'All' || selectedHeat !== 'All' || selectedSpecies !== 'All' || showInStockOnly || sortField !== 'name' || sortDirection !== 'asc') && (
         <div className="mt-4 pt-4 border-t border-[#5a4a3a]/10 flex items-center gap-4 flex-wrap">
           <span className="font-body text-xs text-[#5a4a3a]/60">Active filters:</span>
           <div className="flex flex-wrap gap-2">
@@ -185,6 +239,11 @@ export function CompendiumFilters({
                 {selectedRegion}
               </span>
             )}
+            {(sortField !== 'name' || sortDirection !== 'asc') && (
+              <span className="px-2 py-1 text-xs font-body bg-[#5a4a3a]/10 border border-[#5a4a3a]/20 text-[#3a2a1a]">
+                Sort: {sortFieldLabels[sortField]} ({sortDirection === 'asc' ? 'A→Z' : 'Z→A'})
+              </span>
+            )}
           </div>
           <button
             onClick={() => {
@@ -193,6 +252,8 @@ export function CompendiumFilters({
               onHeatChange('All');
               onSpeciesChange('All');
               onInStockChange(false);
+              onSortFieldChange('name');
+              onSortDirectionChange('asc');
             }}
             className="ml-auto font-heading text-[10px] uppercase tracking-wider text-[#5a4a3a]/60 hover:text-primary transition-colors"
           >

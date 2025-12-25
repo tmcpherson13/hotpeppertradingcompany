@@ -4,9 +4,23 @@ import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
 import { PepperDetailModal } from '@/components/compendium/PepperDetailModal';
-import { peppers, Pepper, ancestralSpeciesList, AncestralSpecies } from '@/data/peppers';
+import { peppers, Pepper, ancestralSpeciesList, AncestralSpecies, HeatLevel } from '@/data/peppers';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+
+export type SortField = 'name' | 'heat' | 'scoville' | 'region' | 'species';
+export type SortDirection = 'asc' | 'desc';
+
+const heatOrder: Record<HeatLevel, number> = {
+  'No Heat': 0,
+  'Very Mild': 1,
+  'Mild': 2,
+  'Medium': 3,
+  'Hot': 4,
+  'Very Hot': 5,
+  'Extreme': 6,
+  'Superhot': 7,
+};
 
 const Compendium = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,6 +30,8 @@ const Compendium = () => {
   const [showInStockOnly, setShowInStockOnly] = useState(false);
   const [selectedPepper, setSelectedPepper] = useState<Pepper | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('name');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   const filteredPeppers = useMemo(() => {
     return peppers
@@ -58,8 +74,30 @@ const Compendium = () => {
 
         return true;
       })
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly]);
+      .sort((a, b) => {
+        let comparison = 0;
+        
+        switch (sortField) {
+          case 'name':
+            comparison = a.name.localeCompare(b.name);
+            break;
+          case 'heat':
+            comparison = heatOrder[a.heatLevel] - heatOrder[b.heatLevel];
+            break;
+          case 'scoville':
+            comparison = a.scovilleMax - b.scovilleMax;
+            break;
+          case 'region':
+            comparison = a.region.localeCompare(b.region);
+            break;
+          case 'species':
+            comparison = a.species.localeCompare(b.species);
+            break;
+        }
+        
+        return sortDirection === 'asc' ? comparison : -comparison;
+      });
+  }, [searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly, sortField, sortDirection]);
 
   const handleSelectPepper = (pepper: Pepper) => {
     setSelectedPepper(pepper);
@@ -175,6 +213,10 @@ const Compendium = () => {
               onSpeciesChange={setSelectedSpecies}
               showInStockOnly={showInStockOnly}
               onInStockChange={setShowInStockOnly}
+              sortField={sortField}
+              onSortFieldChange={setSortField}
+              sortDirection={sortDirection}
+              onSortDirectionChange={setSortDirection}
             />
 
             {/* Ledger */}
