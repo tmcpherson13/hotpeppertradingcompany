@@ -1,4 +1,4 @@
-import { Pepper } from '@/data/peppers';
+import { Pepper } from '@/data/pepperTypes';
 
 /**
  * Normalize a pepper name for comparison
