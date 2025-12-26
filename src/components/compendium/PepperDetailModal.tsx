@@ -124,6 +124,76 @@ interface RelatedPepperResult {
   reasons: string[];
 }
 
+// Reason tiers for diverse badge selection
+type ReasonTier = 'identity' | 'sensory' | 'heat' | 'history';
+
+interface WeightedReason {
+  text: string;
+  weight: number;
+  tier: ReasonTier;
+}
+
+// Simple seeded random for consistent but varied selection
+const seededRandom = (seed: number): number => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+// Select diverse reasons: one from each tier where available, with controlled randomness
+const selectDiverseReasons = (reasons: WeightedReason[], seed: number): string[] => {
+  const tiers: ReasonTier[] = ['identity', 'sensory', 'heat', 'history'];
+  const selected: string[] = [];
+  
+  // Group reasons by tier
+  const byTier: Record<ReasonTier, WeightedReason[]> = {
+    identity: [],
+    sensory: [],
+    heat: [],
+    history: []
+  };
+  
+  for (const reason of reasons) {
+    byTier[reason.tier].push(reason);
+  }
+  
+  // Shuffle tier order based on seed for variety between peppers
+  const shuffledTiers = [...tiers].sort((a, b) => {
+    const aVal = seededRandom(seed + a.charCodeAt(0));
+    const bVal = seededRandom(seed + b.charCodeAt(0));
+    return aVal - bVal;
+  });
+  
+  // Pick one reason from each tier (if available)
+  for (const tier of shuffledTiers) {
+    if (selected.length >= 3) break;
+    
+    const tierReasons = byTier[tier];
+    if (tierReasons.length === 0) continue;
+    
+    // If multiple reasons in tier, use seeded random to pick one
+    if (tierReasons.length > 1) {
+      const idx = Math.floor(seededRandom(seed + tier.charCodeAt(0) * 100) * tierReasons.length);
+      selected.push(tierReasons[idx].text);
+    } else {
+      selected.push(tierReasons[0].text);
+    }
+  }
+  
+  // If we still have fewer than 3, fill from remaining high-weight reasons
+  if (selected.length < 3) {
+    const remaining = reasons
+      .filter(r => !selected.includes(r.text))
+      .sort((a, b) => b.weight - a.weight);
+    
+    for (const r of remaining) {
+      if (selected.length >= 3) break;
+      selected.push(r.text);
+    }
+  }
+  
+  return selected;
+};
+
 const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepperResult[] => {
   const heatOrder = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'];
   const currentHeatIndex = heatOrder.indexOf(pepper.heatLevel);
@@ -132,32 +202,32 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepper
     .filter(p => p.id !== pepper.id)
     .map(p => {
       let score = 0;
-      const reasons: { text: string; weight: number }[] = [];
+      const reasons: WeightedReason[] = [];
       
-      // Species match (exact match)
+      // Species match (exact match) - Identity tier
       if (p.species === pepper.species) {
         score += WEIGHTS.species;
         const speciesName = speciesDisplayNames[p.species] || p.species;
-        reasons.push({ text: `Same species (${speciesName})`, weight: WEIGHTS.species });
+        reasons.push({ text: `Same species (${speciesName})`, weight: WEIGHTS.species, tier: 'identity' });
       }
       
-      // Region match
+      // Region match - Identity tier
       if (p.region === pepper.region) {
         score += WEIGHTS.region;
-        reasons.push({ text: 'Same region', weight: WEIGHTS.region });
+        reasons.push({ text: 'Same region', weight: WEIGHTS.region, tier: 'identity' });
       }
       
-      // Flavor profile overlap
+      // Flavor profile overlap - Sensory tier
       const sharedFlavors = pepper.flavorNotes.filter(note => 
         p.flavorNotes.includes(note)
       );
       const flavorScore = sharedFlavors.length * WEIGHTS.flavorMatch;
       score += flavorScore;
       if (sharedFlavors.length >= 2) {
-        reasons.push({ text: 'Shared flavors', weight: flavorScore });
+        reasons.push({ text: 'Shared flavors', weight: flavorScore, tier: 'sensory' });
       }
       
-      // Aroma profile overlap
+      // Aroma profile overlap - Sensory tier
       if (pepper.aromaNotes && p.aromaNotes) {
         const sharedAromas = pepper.aromaNotes.filter(note => 
           p.aromaNotes?.includes(note)
@@ -165,11 +235,11 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepper
         const aromaScore = sharedAromas.length * WEIGHTS.aromaMatch;
         score += aromaScore;
         if (sharedAromas.length >= 1) {
-          reasons.push({ text: 'Similar aroma', weight: aromaScore });
+          reasons.push({ text: 'Similar aroma', weight: aromaScore, tier: 'sensory' });
         }
       }
       
-      // Trade route tags overlap
+      // Trade route tags overlap - History tier
       if (pepper.tradeRouteTags && p.tradeRouteTags) {
         const sharedTags = pepper.tradeRouteTags.filter(tag => 
           p.tradeRouteTags?.includes(tag)
@@ -177,36 +247,37 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepper
         const routeScore = sharedTags.length * WEIGHTS.tradeRouteTag;
         score += routeScore;
         if (sharedTags.length >= 1) {
-          reasons.push({ text: 'Trade route', weight: routeScore });
+          reasons.push({ text: 'Trade route', weight: routeScore, tier: 'history' });
         }
       }
       
-      // Scoville proximity (logarithmic scale)
+      // Scoville proximity (logarithmic scale) - Heat tier
       const scovilleProximity = calculateScovilleProximity(pepper, p);
       const scovilleScore = scovilleProximity * WEIGHTS.scovilleProximity;
       score += scovilleScore;
       if (scovilleProximity > 0.7) {
-        reasons.push({ text: 'Similar Scoville', weight: scovilleScore });
+        reasons.push({ text: 'Similar Scoville', weight: scovilleScore, tier: 'heat' });
       }
       
-      // Heat level adjacency
+      // Heat level adjacency - Heat tier
       const pHeatIndex = heatOrder.indexOf(p.heatLevel);
       const heatDiff = Math.abs(currentHeatIndex - pHeatIndex);
       if (heatDiff === 0) {
         score += WEIGHTS.heatLevel;
-        reasons.push({ text: 'Same heat', weight: WEIGHTS.heatLevel });
+        reasons.push({ text: 'Same heat', weight: WEIGHTS.heatLevel, tier: 'heat' });
       } else if (heatDiff === 1) {
         score += WEIGHTS.heatLevel * 0.5;
-        reasons.push({ text: 'Similar heat', weight: WEIGHTS.heatLevel * 0.5 });
+        reasons.push({ text: 'Similar heat', weight: WEIGHTS.heatLevel * 0.5, tier: 'heat' });
       }
       
-      // Sort reasons by weight and take top 3
-      const topReasons = reasons
-        .sort((a, b) => b.weight - a.weight)
-        .slice(0, 3)
-        .map(r => r.text);
+      // Create a consistent seed from both pepper IDs for reproducible randomness
+      const seed = pepper.id.charCodeAt(0) * 1000 + p.id.charCodeAt(0) * 100 + 
+                   pepper.id.charCodeAt(pepper.id.length - 1) + p.id.charCodeAt(p.id.length - 1);
       
-      return { pepper: p, score, reasons: topReasons };
+      // Select diverse reasons using tiered selection with controlled randomness
+      const diverseReasons = selectDiverseReasons(reasons, seed);
+      
+      return { pepper: p, score, reasons: diverseReasons };
     })
     .filter(item => item.score > 20) // Minimum threshold for relevance
     .sort((a, b) => b.score - a.score);
