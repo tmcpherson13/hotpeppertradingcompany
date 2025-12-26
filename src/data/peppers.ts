@@ -1,52 +1,26 @@
-// Domesticated species
-export type DomesticatedSpecies = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
-// Ancestral/wild species
-export type AncestralSpecies = 'chacoense' | 'galapagoense' | 'praetermissum' | 'eximium' | 'tovarii' | 'cardenasii' | 'glabriusculum' | 'rhomboideum';
-// All species
-export type Species = DomesticatedSpecies | AncestralSpecies;
-export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
+// Re-export types from pepperTypes for backward compatibility
+export type { 
+  DomesticatedSpecies, 
+  AncestralSpecies, 
+  Species, 
+  HeatLevel, 
+  ImageSource, 
+  ImageType, 
+  PepperImage, 
+  Pepper 
+} from '@/data/pepperTypes';
 
-export type ImageSource = 'ai-generated' | 'wikimedia' | 'user-contributed' | 'stock';
-export type ImageType = 'illustration' | 'photo' | 'dried' | 'plant';
+export { 
+  regions, 
+  heatLevels, 
+  domesticatedSpeciesList, 
+  ancestralSpeciesList, 
+  speciesList, 
+  speciesDisplayNames 
+} from '@/data/pepperTypes';
 
-export interface PepperImage {
-  id: string;
-  url: string;
-  type: ImageType;
-  isPrimary?: boolean;
-  source: ImageSource;
-  license?: string;
-  author?: string;
-  sourceUrl?: string;
-}
-
-export interface Pepper {
-  id: string;
-  name: string;
-  alternateNames?: string[];
-  scientificName: string;
-  species: Species;
-  origin: string;
-  region: 'Americas' | 'Asia' | 'Africa' | 'Europe' | 'Middle East';
-  scovilleMin: number;
-  scovilleMax: number;
-  heatLevel: HeatLevel;
-  flavorNotes: string[];
-  aromaNotes?: string[];
-  description: string;
-  historicalNotes?: string;
-  tradeRoute: string;
-  tradeRouteTags?: string[];
-  yearIntroduced: number;
-  culinaryUses: string[];
-  pairings?: string[];
-  inStock: boolean;
-  gallery?: PepperImage[];
-  // Legacy fields - kept for backward compatibility during migration
-  imageUrl?: string;
-  imageLicense?: string;
-  attributionText?: string;
-}
+import type { Pepper, Species } from '@/data/pepperTypes';
+import { deduplicatePeppers } from '@/utils/pepperDuplicates';
 
 // Import pepper images for in-stock items
 import aleppoImg from '@/assets/peppers/aleppo.jpg';
@@ -157,7 +131,7 @@ function mapRegion(provenance: string): 'Americas' | 'Asia' | 'Africa' | 'Europe
   return 'Americas';
 }
 
-export const peppers: Pepper[] = [
+const rawPeppers: Pepper[] = [
   // ===== IN STOCK PEPPERS (from CSV rows 2-20) =====
   {
     id: 'afterglow',
@@ -3742,28 +3716,6 @@ export const peppers: Pepper[] = [
     gallery: [],
   },
   {
-    id: 'tri-colour-nish',
-    name: 'Tri Colour Nish',
-    alternateNames: ['Tri Color Nish', 'Nish Tricolor'],
-    scientificName: 'Capsicum annuum',
-    species: 'annuum',
-    origin: 'Australia',
-    region: 'Asia',
-    scovilleMin: 10000,
-    scovilleMax: 30000,
-    heatLevel: 'Medium',
-    flavorNotes: ['Mild heat', 'Fresh', 'Peppery'],
-    aromaNotes: ['Light', 'Clean'],
-    description: 'An Australian ornamental variety producing pods in three colors—purple, yellow, and red—on the same plant simultaneously.',
-    historicalNotes: 'Developed by Australian pepper enthusiasts for both ornamental display and culinary use.',
-    tradeRoute: 'Australian Pepper Trade',
-    tradeRouteTags: ['Australian', 'Ornamental', 'Modern'],
-    yearIntroduced: 2010,
-    culinaryUses: ['Decorative displays', 'Colorful salsas', 'Garnishes'],
-    inStock: false,
-    gallery: [],
-  },
-  {
     id: 'numex-easter',
     name: 'Numex Easter',
     alternateNames: ['NuMex Easter', 'Easter Pepper'],
@@ -4280,39 +4232,17 @@ export const peppers: Pepper[] = [
   },
 ];
 
-// Filter data
-export const regions = ['Americas', 'Asia', 'Africa', 'Europe', 'Middle East'] as const;
-export const heatLevels = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'] as const;
-
-// Domesticated species list
-export const domesticatedSpeciesList = ['annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;
-// Ancestral species list
-export const ancestralSpeciesList = ['glabriusculum', 'chacoense', 'galapagoense', 'praetermissum', 'eximium', 'tovarii', 'cardenasii', 'rhomboideum'] as const;
-// Combined list for backward compatibility
-export const speciesList = [...domesticatedSpeciesList, ...ancestralSpeciesList] as const;
-
-export const speciesDisplayNames: Record<Species, string> = {
-  // Domesticated
-  annuum: 'Capsicum annuum',
-  chinense: 'Capsicum chinense',
-  frutescens: 'Capsicum frutescens',
-  baccatum: 'Capsicum baccatum',
-  pubescens: 'Capsicum pubescens',
-  // Ancestral
-  glabriusculum: 'C. annuum var. glabriusculum',
-  chacoense: 'Capsicum chacoense',
-  galapagoense: 'Capsicum galapagoense',
-  praetermissum: 'Capsicum praetermissum',
-  eximium: 'Capsicum eximium',
-  tovarii: 'Capsicum tovarii',
-  cardenasii: 'Capsicum cardenasii',
-  rhomboideum: 'Capsicum rhomboideum',
-};
+// Export deduplicated peppers
+export const peppers = deduplicatePeppers(rawPeppers);
 
 // Development-only duplicate validation and report
 if (import.meta.env.DEV) {
-  import('@/utils/pepperDuplicates').then(({ validatePepperData, generateDuplicateReport }) => {
-    validatePepperData(peppers);
-    generateDuplicateReport(peppers);
+  if (rawPeppers.length !== peppers.length) {
+    console.warn(
+      `⚠️ Auto-deduped ${rawPeppers.length - peppers.length} duplicate pepper(s). Check the data source to remove duplicates permanently.`
+    );
+  }
+  import('@/utils/pepperDuplicates').then(({ generateDuplicateReport }) => {
+    generateDuplicateReport(rawPeppers);
   });
 }
