@@ -118,7 +118,13 @@ const calculateScovilleProximity = (pepper1: Pepper, pepper2: Pepper): number =>
   return proximity;
 };
 
-const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): Pepper[] => {
+interface RelatedPepperResult {
+  pepper: Pepper;
+  score: number;
+  reasons: string[];
+}
+
+const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepperResult[] => {
   const heatOrder = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'];
   const currentHeatIndex = heatOrder.indexOf(pepper.heatLevel);
   
@@ -126,29 +132,41 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): Pepper[] => {
     .filter(p => p.id !== pepper.id)
     .map(p => {
       let score = 0;
+      const reasons: { text: string; weight: number }[] = [];
       
       // Species match (exact match)
       if (p.species === pepper.species) {
         score += WEIGHTS.species;
+        const speciesName = speciesDisplayNames[p.species] || p.species;
+        reasons.push({ text: `Same species (${speciesName})`, weight: WEIGHTS.species });
       }
       
       // Region match
       if (p.region === pepper.region) {
         score += WEIGHTS.region;
+        reasons.push({ text: 'Same region', weight: WEIGHTS.region });
       }
       
       // Flavor profile overlap
       const sharedFlavors = pepper.flavorNotes.filter(note => 
         p.flavorNotes.includes(note)
       );
-      score += sharedFlavors.length * WEIGHTS.flavorMatch;
+      const flavorScore = sharedFlavors.length * WEIGHTS.flavorMatch;
+      score += flavorScore;
+      if (sharedFlavors.length >= 2) {
+        reasons.push({ text: 'Shared flavors', weight: flavorScore });
+      }
       
       // Aroma profile overlap
       if (pepper.aromaNotes && p.aromaNotes) {
         const sharedAromas = pepper.aromaNotes.filter(note => 
           p.aromaNotes?.includes(note)
         );
-        score += sharedAromas.length * WEIGHTS.aromaMatch;
+        const aromaScore = sharedAromas.length * WEIGHTS.aromaMatch;
+        score += aromaScore;
+        if (sharedAromas.length >= 1) {
+          reasons.push({ text: 'Similar aroma', weight: aromaScore });
+        }
       }
       
       // Trade route tags overlap
@@ -156,28 +174,44 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): Pepper[] => {
         const sharedTags = pepper.tradeRouteTags.filter(tag => 
           p.tradeRouteTags?.includes(tag)
         );
-        score += sharedTags.length * WEIGHTS.tradeRouteTag;
+        const routeScore = sharedTags.length * WEIGHTS.tradeRouteTag;
+        score += routeScore;
+        if (sharedTags.length >= 1) {
+          reasons.push({ text: 'Trade route', weight: routeScore });
+        }
       }
       
       // Scoville proximity (logarithmic scale)
-      const scovilleScore = calculateScovilleProximity(pepper, p) * WEIGHTS.scovilleProximity;
+      const scovilleProximity = calculateScovilleProximity(pepper, p);
+      const scovilleScore = scovilleProximity * WEIGHTS.scovilleProximity;
       score += scovilleScore;
+      if (scovilleProximity > 0.7) {
+        reasons.push({ text: 'Similar Scoville', weight: scovilleScore });
+      }
       
       // Heat level adjacency
       const pHeatIndex = heatOrder.indexOf(p.heatLevel);
       const heatDiff = Math.abs(currentHeatIndex - pHeatIndex);
       if (heatDiff === 0) {
         score += WEIGHTS.heatLevel;
+        reasons.push({ text: 'Same heat', weight: WEIGHTS.heatLevel });
       } else if (heatDiff === 1) {
         score += WEIGHTS.heatLevel * 0.5;
+        reasons.push({ text: 'Similar heat', weight: WEIGHTS.heatLevel * 0.5 });
       }
       
-      return { pepper: p, score };
+      // Sort reasons by weight and take top 3
+      const topReasons = reasons
+        .sort((a, b) => b.weight - a.weight)
+        .slice(0, 3)
+        .map(r => r.text);
+      
+      return { pepper: p, score, reasons: topReasons };
     })
     .filter(item => item.score > 20) // Minimum threshold for relevance
     .sort((a, b) => b.score - a.score);
   
-  return scored.slice(0, 3).map(item => item.pepper);
+  return scored.slice(0, 3);
 };
 
 export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }: PepperDetailModalProps) {
@@ -407,20 +441,33 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
                 Related Peppers
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {relatedPeppers.map((related) => (
+                {relatedPeppers.map((result) => (
                   <button
-                    key={related.id}
-                    onClick={() => onSelectPepper(related)}
+                    key={result.pepper.id}
+                    onClick={() => onSelectPepper(result.pepper)}
                     className="text-left p-3 bg-[#e8dcc4]/40 border border-[#5a4a3a]/15 
                       hover:border-[#5a4a3a]/30 hover:bg-[#e8dcc4]/60 transition-colors group"
                   >
                     <p className="font-display text-sm uppercase tracking-wide text-[#3a2a1a] 
                       group-hover:text-[#8b2942] transition-colors">
-                      {related.name}
+                      {result.pepper.name}
                     </p>
                     <p className="font-body text-[10px] text-[#5a4a3a]/60 mt-0.5">
-                      {related.heatLevel} · {related.origin}
+                      {result.pepper.heatLevel} · {result.pepper.origin}
                     </p>
+                    {result.reasons.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {result.reasons.map((reason, idx) => (
+                          <span
+                            key={idx}
+                            className="px-1.5 py-0.5 text-[9px] font-heading uppercase tracking-wider 
+                              bg-[#5a4a3a]/5 border border-[#5a4a3a]/15 text-[#5a4a3a]/70"
+                          >
+                            {reason}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
