@@ -12,53 +12,56 @@ export const BrandPhilosophy = () => {
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with enhanced depth */}
       <div className="absolute inset-0">
         <img
           src={tradeRoutesBg}
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-105"
           aria-hidden="true"
         />
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-background/90" />
+        {/* Multi-layer overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
       </div>
       
       {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 opacity-[0.04]">
-        <TradeRoutePattern variant="subtle" />
+      <div className="absolute inset-0 opacity-[0.05]">
+        <TradeRoutePattern variant="tyrian" />
       </div>
       
       {/* Parchment texture overlay */}
-      <div className="absolute inset-0 paper-texture opacity-30" />
+      <div className="absolute inset-0 paper-texture opacity-25" />
       
       {/* Decorative top border */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       
-      {/* Vignette effect */}
+      {/* Enhanced vignette effect */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse at center, transparent 0%, hsla(var(--background)) 100%)'
+        background: 'radial-gradient(ellipse at center, transparent 20%, hsla(var(--background) / 0.6) 70%, hsla(var(--background)) 100%)'
       }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
-          {/* Logo and decorative header */}
+          {/* Larger Logo and decorative header */}
           <motion.div 
-            className="flex flex-col items-center mb-12"
+            className="flex flex-col items-center mb-14"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-4 mb-6">
-              <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-              <img 
+            <div className="flex items-center gap-6 mb-6">
+              <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+              <motion.img 
                 src={logoDark} 
                 alt="" 
-                className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
-                aria-hidden="true" 
+                className="h-20 md:h-24 w-auto" 
+                aria-hidden="true"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
               />
-              <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+              <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             </div>
             
             {/* Decorative compass element */}
@@ -97,13 +100,18 @@ export const BrandPhilosophy = () => {
                   {index === 0 ? paragraph.slice(1) : paragraph}
                 </p>
                 
-                {/* Decorative divider between paragraphs */}
+                {/* Decorative divider with logo between paragraphs */}
                 {index < paragraphs.length - 1 && (
                   <div className="flex items-center justify-center mt-10">
                     <div className="h-px w-20 bg-gradient-to-r from-transparent to-border/60" />
-                    <svg width="20" height="20" viewBox="0 0 20 20" className="mx-4 text-primary/40">
-                      <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" fill="currentColor" />
-                    </svg>
+                    <motion.img 
+                      src={logoDark} 
+                      alt="" 
+                      className="h-8 w-auto mx-4 opacity-40"
+                      aria-hidden="true"
+                      whileHover={{ scale: 1.15, opacity: 0.7 }}
+                      transition={{ duration: 0.3 }}
+                    />
                     <div className="h-px w-20 bg-gradient-to-l from-transparent to-border/60" />
                   </div>
                 )}
@@ -147,22 +155,100 @@ export const BrandPhilosophy = () => {
         </div>
       </div>
       
-      {/* Decorative corner flourishes */}
-      <div className="absolute top-8 left-8 opacity-10 pointer-events-none hidden md:block">
-        <svg width="60" height="60" viewBox="0 0 60 60" className="text-foreground">
-          <path d="M0,60 Q15,45 30,45 Q45,45 45,30 Q45,15 60,0" fill="none" stroke="currentColor" strokeWidth="1" />
-          <path d="M0,50 Q12,38 25,38 Q38,38 38,25 Q38,12 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        </svg>
-      </div>
-      <div className="absolute top-8 right-8 opacity-10 pointer-events-none hidden md:block">
-        <svg width="60" height="60" viewBox="0 0 60 60" className="text-foreground" style={{ transform: 'scaleX(-1)' }}>
-          <path d="M0,60 Q15,45 30,45 Q45,45 45,30 Q45,15 60,0" fill="none" stroke="currentColor" strokeWidth="1" />
-          <path d="M0,50 Q12,38 25,38 Q38,38 38,25 Q38,12 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        </svg>
-      </div>
+      {/* Animated corner flourishes */}
+      <motion.div 
+        className="absolute top-8 left-8 opacity-15 pointer-events-none hidden md:block"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 0.15, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <motion.svg 
+          width="80" 
+          height="80" 
+          viewBox="0 0 80 80" 
+          className="text-foreground"
+          animate={{ rotate: [0, 1, -1, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
+        </motion.svg>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute top-8 right-8 opacity-15 pointer-events-none hidden md:block"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 0.15, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <motion.svg 
+          width="80" 
+          height="80" 
+          viewBox="0 0 80 80" 
+          className="text-foreground" 
+          style={{ transform: 'scaleX(-1)' }}
+          animate={{ rotate: [0, -1, 1, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        >
+          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
+        </motion.svg>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute bottom-8 left-8 opacity-15 pointer-events-none hidden md:block"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 0.15, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <motion.svg 
+          width="80" 
+          height="80" 
+          viewBox="0 0 80 80" 
+          className="text-foreground" 
+          style={{ transform: 'scaleY(-1)' }}
+          animate={{ rotate: [0, 1, -1, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        >
+          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
+        </motion.svg>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute bottom-8 right-8 opacity-15 pointer-events-none hidden md:block"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 0.15, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
+        <motion.svg 
+          width="80" 
+          height="80" 
+          viewBox="0 0 80 80" 
+          className="text-foreground" 
+          style={{ transform: 'scale(-1, -1)' }}
+          animate={{ rotate: [0, -1, 1, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        >
+          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
+        </motion.svg>
+      </motion.div>
       
       {/* Decorative bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
     </section>
   );
 };
