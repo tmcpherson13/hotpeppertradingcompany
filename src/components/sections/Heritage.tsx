@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import { DropCap } from '@/components/ui/DropCap';
+import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import heritageMap from '@/assets/heritage-map.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
@@ -13,6 +15,8 @@ export function Heritage() {
   });
   
   const imageY = useTransform(scrollYProgress, [0, 1], ["-5%", "10%"]);
+  const ornamentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 0.15, 0.15, 0.1]);
+  
   const scrollToEducation = () => {
     const educationSection = document.getElementById('pepper-education');
     if (educationSection) {
@@ -28,6 +32,9 @@ export function Heritage() {
         variant="subtle" 
         opacity={0.08} 
       />
+      
+      {/* Corner Flourishes */}
+      <CornerFlourishes variant="ornate" scrollOpacity={ornamentOpacity} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -84,11 +91,11 @@ export function Heritage() {
             </h2>
 
             <div className="space-y-4 font-body text-muted-foreground text-xl md:text-2xl leading-relaxed">
-              <p>
+              <DropCap>
                 Capsicum peppers originated in the Americas more than six thousand years ago. 
                 The Columbian Exchange carried them across every ocean, and within decades 
                 they had become essential to cuisines that had never known them.
-              </p>
+              </DropCap>
               <p>
                 We are fascinated by this history—the trade routes that carried peppers from 
                 the Levant to Southeast Asia, the Indian subcontinent, and back to the Americas. 

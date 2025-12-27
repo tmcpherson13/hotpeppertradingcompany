@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import { DropCap } from '@/components/ui/DropCap';
+import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import logoDark from '@/assets/logo-dark.svg';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
@@ -99,14 +101,15 @@ export const BrandPhilosophy = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
               >
-                <p className="font-body text-lg md:text-xl leading-relaxed text-foreground/85 text-center">
-                  {index === 0 && (
-                    <span className="float-left text-5xl md:text-6xl font-display text-primary leading-none mr-3 mt-1 text-engraved">
-                      {paragraph.charAt(0)}
-                    </span>
-                  )}
-                  {index === 0 ? paragraph.slice(1) : paragraph}
-                </p>
+                {index === 0 ? (
+                  <DropCap className="text-lg md:text-xl text-foreground/85 text-center">
+                    {paragraph}
+                  </DropCap>
+                ) : (
+                  <p className="font-body text-lg md:text-xl leading-relaxed text-foreground/85 text-center">
+                    {paragraph}
+                  </p>
+                )}
                 
                 {/* Decorative divider with subtle logo between paragraphs */}
                 {index < paragraphs.length - 1 && (
@@ -167,97 +170,8 @@ export const BrandPhilosophy = () => {
         </div>
       </div>
       
-      {/* Animated corner flourishes */}
-      <motion.div 
-        className="absolute top-8 left-8 opacity-15 pointer-events-none hidden md:block"
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.15, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <motion.svg 
-          width="80" 
-          height="80" 
-          viewBox="0 0 80 80" 
-          className="text-foreground"
-          animate={{ rotate: [0, 1, -1, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
-          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
-          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
-        </motion.svg>
-      </motion.div>
-      
-      <motion.div 
-        className="absolute top-8 right-8 opacity-15 pointer-events-none hidden md:block"
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.15, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-      >
-        <motion.svg 
-          width="80" 
-          height="80" 
-          viewBox="0 0 80 80" 
-          className="text-foreground" 
-          style={{ transform: 'scaleX(-1)' }}
-          animate={{ rotate: [0, -1, 1, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        >
-          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
-          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
-          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
-        </motion.svg>
-      </motion.div>
-      
-      <motion.div 
-        className="absolute bottom-8 left-8 opacity-15 pointer-events-none hidden md:block"
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.15, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-      >
-        <motion.svg 
-          width="80" 
-          height="80" 
-          viewBox="0 0 80 80" 
-          className="text-foreground" 
-          style={{ transform: 'scaleY(-1)' }}
-          animate={{ rotate: [0, 1, -1, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >
-          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
-          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
-          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
-        </motion.svg>
-      </motion.div>
-      
-      <motion.div 
-        className="absolute bottom-8 right-8 opacity-15 pointer-events-none hidden md:block"
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 0.15, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        <motion.svg 
-          width="80" 
-          height="80" 
-          viewBox="0 0 80 80" 
-          className="text-foreground" 
-          style={{ transform: 'scale(-1, -1)' }}
-          animate={{ rotate: [0, -1, 1, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        >
-          <path d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M0,65 Q15,50 32,50 Q50,50 50,32 Q50,15 65,0" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
-          <path d="M0,50 Q10,40 25,40 Q40,40 40,25 Q40,10 50,0" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
-          <circle cx="40" cy="40" r="2" fill="currentColor" opacity="0.4" />
-        </motion.svg>
-      </motion.div>
+      {/* Animated corner flourishes - using reusable component */}
+      <CornerFlourishes variant="ornate" animated />
       
       {/* Decorative bottom border */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />

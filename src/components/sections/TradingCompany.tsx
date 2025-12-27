@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { DropCap } from '@/components/ui/DropCap';
 import { LogoDivider } from '@/components/ui/LogoDivider';
+import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 
 export const TradingCompany = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,73 +25,8 @@ export const TradingCompany = () => {
         style={{ y: backgroundY }}
       />
 
-      {/* Decorative corner flourishes */}
-      <motion.div 
-        className="absolute top-8 left-8 w-24 h-24 opacity-20"
-        style={{ opacity: ornamentOpacity }}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
-          <path 
-            d="M5 5 L5 40 M5 5 L40 5" 
-            stroke="currentColor" 
-            strokeWidth="1" 
-            fill="none"
-          />
-          <circle cx="5" cy="5" r="3" fill="currentColor" />
-          <path 
-            d="M10 10 Q25 10 25 25" 
-            stroke="currentColor" 
-            strokeWidth="0.5" 
-            fill="none"
-            opacity="0.6"
-          />
-        </svg>
-      </motion.div>
-
-      <motion.div 
-        className="absolute top-8 right-8 w-24 h-24 opacity-20 rotate-90"
-        style={{ opacity: ornamentOpacity }}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
-          <path 
-            d="M5 5 L5 40 M5 5 L40 5" 
-            stroke="currentColor" 
-            strokeWidth="1" 
-            fill="none"
-          />
-          <circle cx="5" cy="5" r="3" fill="currentColor" />
-        </svg>
-      </motion.div>
-
-      <motion.div 
-        className="absolute bottom-8 left-8 w-24 h-24 opacity-20 -rotate-90"
-        style={{ opacity: ornamentOpacity }}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
-          <path 
-            d="M5 5 L5 40 M5 5 L40 5" 
-            stroke="currentColor" 
-            strokeWidth="1" 
-            fill="none"
-          />
-          <circle cx="5" cy="5" r="3" fill="currentColor" />
-        </svg>
-      </motion.div>
-
-      <motion.div 
-        className="absolute bottom-8 right-8 w-24 h-24 opacity-20 rotate-180"
-        style={{ opacity: ornamentOpacity }}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
-          <path 
-            d="M5 5 L5 40 M5 5 L40 5" 
-            stroke="currentColor" 
-            strokeWidth="1" 
-            fill="none"
-          />
-          <circle cx="5" cy="5" r="3" fill="currentColor" />
-        </svg>
-      </motion.div>
+      {/* Decorative corner flourishes - using reusable component */}
+      <CornerFlourishes variant="simple" scrollOpacity={ornamentOpacity} />
 
       {/* Content */}
       <div className="container relative z-10 max-w-4xl mx-auto px-6">
