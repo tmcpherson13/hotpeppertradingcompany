@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { DropCap } from '@/components/ui/DropCap';
-import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import heritageMap from '@/assets/heritage-map.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
@@ -32,9 +31,6 @@ export function Heritage() {
         variant="subtle" 
         opacity={0.08} 
       />
-      
-      {/* Corner Flourishes */}
-      <CornerFlourishes variant="ornate" scrollOpacity={ornamentOpacity} />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

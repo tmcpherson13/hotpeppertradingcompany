@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
-import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
 import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIndiaModal';
 import { SoulsOfTheAmericasModal } from '@/components/sections/SoulsOfTheAmericasModal';
@@ -155,9 +154,6 @@ export function FeaturedSpices() {
           opacity={0.05} 
         />
       </motion.div>
-      
-      {/* Corner Flourishes - simple variant for product section */}
-      <CornerFlourishes variant="simple" />
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}

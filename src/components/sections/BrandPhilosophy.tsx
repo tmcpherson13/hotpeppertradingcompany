@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { DropCap } from '@/components/ui/DropCap';
-import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import logoDark from '@/assets/logo-dark.svg';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
@@ -169,9 +168,6 @@ export const BrandPhilosophy = () => {
           </motion.div>
         </div>
       </div>
-      
-      {/* Animated corner flourishes - using reusable component */}
-      <CornerFlourishes variant="ornate" animated />
       
       {/* Decorative bottom border */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
