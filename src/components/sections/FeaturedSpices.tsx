@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
@@ -106,12 +106,20 @@ const spices: Spice[] = [
 ];
 
 export function FeaturedSpices() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [africaModalOpen, setAfricaModalOpen] = useState(false);
   const [indiaModalOpen, setIndiaModalOpen] = useState(false);
   const [americasModalOpen, setAmericasModalOpen] = useState(false);
   const [asiaModalOpen, setAsiaModalOpen] = useState(false);
   const [andesModalOpen, setAndesModalOpen] = useState(false);
   const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const patternY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
 
   const handleConsortiumClick = (consortiumId?: string) => {
     switch (consortiumId) {
@@ -137,13 +145,15 @@ export function FeaturedSpices() {
   };
 
   return (
-    <section id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
-      {/* Trade Route Background Pattern */}
-      <TradeRoutePattern 
-        className="inset-0 w-full h-full" 
-        variant="subtle" 
-        opacity={0.05} 
-      />
+    <section ref={sectionRef} id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
+      {/* Trade Route Background Pattern with Parallax */}
+      <motion.div style={{ y: patternY }}>
+        <TradeRoutePattern 
+          className="inset-0 w-full h-full" 
+          variant="subtle" 
+          opacity={0.05} 
+        />
+      </motion.div>
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}

@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CompassRose } from '@/components/ui/TradeRoutePattern';
 import logoDark from '@/assets/logo-dark.svg';
@@ -135,12 +136,24 @@ const facts = [
 ];
 
 export function PepperEducation() {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+
   return (
-    <section id="pepper-education" className="relative py-20 overflow-hidden">
-      {/* Full Background Map Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${tradeRoutesBg})` }}
+    <section ref={sectionRef} id="pepper-education" className="relative py-20 overflow-hidden">
+      {/* Full Background Map Image with Parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
+        style={{ 
+          backgroundImage: `url(${tradeRoutesBg})`,
+          y: backgroundY 
+        }}
       />
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-background/85" />

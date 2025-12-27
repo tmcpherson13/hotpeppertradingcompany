@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Ship, Compass, Navigation } from 'lucide-react';
 import { TradeRouteMap } from '@/components/map/TradeRouteMap';
@@ -29,12 +30,24 @@ const regions = [
 ];
 
 export function TradeRoutes() {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
   return (
-    <section id="routes" className="py-16 relative overflow-hidden">
-      {/* Full Background Map Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${tradeRoutesBg})` }}
+    <section ref={sectionRef} id="routes" className="py-16 relative overflow-hidden">
+      {/* Full Background Map Image with Parallax */}
+      <motion.div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
+        style={{ 
+          backgroundImage: `url(${tradeRoutesBg})`,
+          y: backgroundY 
+        }}
       />
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-background/85" />

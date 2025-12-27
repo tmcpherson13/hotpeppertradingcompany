@@ -1,10 +1,18 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { TradeRouteDivider } from '@/components/ui/TradeRoutePattern';
-import { useState } from 'react';
 
 export function Newsletter() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [email, setEmail] = useState('');
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,9 +22,9 @@ export function Newsletter() {
   };
 
   return (
-    <section id="contact" className="relative py-16 bg-card paper-texture overflow-hidden">
-      {/* Subtle route accent */}
-      <div className="absolute inset-0 trade-route-bg" />
+    <section ref={sectionRef} id="contact" className="relative py-16 bg-card paper-texture overflow-hidden">
+      {/* Subtle route accent with Parallax */}
+      <motion.div className="absolute inset-0 trade-route-bg" style={{ y: backgroundY }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
