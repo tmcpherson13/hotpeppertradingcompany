@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CompassRose } from '@/components/ui/TradeRoutePattern';
 import { DropCap } from '@/components/ui/DropCap';
-import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import logoDark from '@/assets/logo-dark.svg';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
@@ -159,9 +158,6 @@ export function PepperEducation() {
       />
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-background/85" />
-      
-      {/* Corner Flourishes */}
-      <CornerFlourishes variant="ornate" animated />
       
       {/* Decorative Compass */}
       <CompassRose 

@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { TradeRouteDivider } from '@/components/ui/TradeRoutePattern';
+import { LogoDivider } from '@/components/ui/LogoDivider';
+import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
 export function Newsletter() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -12,7 +13,7 @@ export function Newsletter() {
     offset: ["start end", "end start"]
   });
   
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +23,30 @@ export function Newsletter() {
   };
 
   return (
-    <section ref={sectionRef} id="contact" className="relative py-16 bg-card paper-texture overflow-hidden">
-      {/* Subtle route accent with Parallax */}
-      <motion.div className="absolute inset-0 trade-route-bg" style={{ y: backgroundY }} />
+    <section ref={sectionRef} id="contact" className="relative py-20 md:py-28 overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+        <img
+          src={tradeRoutesBg}
+          alt=""
+          className="w-full h-full object-cover scale-110"
+          aria-hidden="true"
+        />
+        {/* Multi-layer overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+      </motion.div>
+      
+      {/* Parchment texture overlay */}
+      <div className="absolute inset-0 paper-texture opacity-25" />
+      
+      {/* Decorative top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      
+      {/* Enhanced vignette effect */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'radial-gradient(ellipse at center, transparent 20%, hsla(var(--background) / 0.6) 70%, hsla(var(--background)) 100%)'
+      }} />
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -34,7 +56,7 @@ export function Newsletter() {
           transition={{ duration: 0.8 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <TradeRouteDivider className="mb-8" />
+          <LogoDivider variant="ornate" size="md" className="mb-8" />
 
           <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4 text-engraved">
             Trade Correspondence
@@ -61,8 +83,14 @@ export function Newsletter() {
           <p className="text-xs text-muted-foreground mt-4 font-body">
             We respect your privacy. Unsubscribe at any time.
           </p>
+          
+          {/* Bottom decorative element */}
+          <LogoDivider variant="standard" size="sm" className="mt-10" />
         </motion.div>
       </div>
+      
+      {/* Decorative bottom border */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
     </section>
   );
 }

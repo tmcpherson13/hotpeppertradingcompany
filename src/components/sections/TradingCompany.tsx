@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { DropCap } from '@/components/ui/DropCap';
 import { LogoDivider } from '@/components/ui/LogoDivider';
-import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 
 export const TradingCompany = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,9 +23,6 @@ export const TradingCompany = () => {
         className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-muted/30"
         style={{ y: backgroundY }}
       />
-
-      {/* Decorative corner flourishes - using reusable component */}
-      <CornerFlourishes variant="simple" scrollOpacity={ornamentOpacity} />
 
       {/* Content */}
       <div className="container relative z-10 max-w-4xl mx-auto px-6">
