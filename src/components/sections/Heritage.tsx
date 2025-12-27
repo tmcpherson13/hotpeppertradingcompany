@@ -119,14 +119,18 @@ export function Heritage() {
           >
             <span className="text-xs uppercase tracking-[0.25em] font-heading">Explore the History</span>
             
-            {/* Old-School Compass Rose */}
+            {/* Old-School Compass Rose with Floating Animation */}
             <motion.svg 
               width="80" 
               height="80" 
               viewBox="0 0 80 80" 
               className="text-primary"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ 
+                scale: [1, 1.05, 1],
+                y: [0, -6, 0, 6, 0],
+                rotate: [0, 1, -1, 0]
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
               {/* Outer decorative ring */}
               <circle cx="40" cy="40" r="38" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
