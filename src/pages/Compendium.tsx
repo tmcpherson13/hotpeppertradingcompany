@@ -1,12 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
 import { PepperDetailModal } from '@/components/compendium/PepperDetailModal';
 import { peppers, Pepper, ancestralSpeciesList, AncestralSpecies, HeatLevel } from '@/data/peppers';
-import { motion } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { LogoDivider } from '@/components/ui/LogoDivider';
+import antiqueMap from '@/assets/antique-map.jpg';
 
 export type SortField = 'name' | 'heat' | 'scoville' | 'region' | 'species';
 export type SortDirection = 'asc' | 'desc';
@@ -32,6 +33,13 @@ const Compendium = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   const filteredPeppers = useMemo(() => {
     return peppers
@@ -108,8 +116,20 @@ const Compendium = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Header - Restrained with Cartographic Elements */}
-      <section className="pt-24 pb-12 bg-[#e8dcc4] relative overflow-hidden">
+      {/* Hero Header - with parallax background */}
+      <section ref={heroRef} className="pt-24 pb-12 relative overflow-hidden">
+        {/* Parallax background image */}
+        <motion.div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ 
+            backgroundImage: `url(${antiqueMap})`,
+            y: backgroundY 
+          }}
+        />
+        
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-[#e8dcc4]/90" />
+        
         {/* Subtle cartographic grid */}
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -150,12 +170,8 @@ const Compendium = () => {
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center"
           >
-            {/* Decorative flourish */}
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <span className="h-px w-10 bg-[#5a4a3a]/30" />
-              <BookOpen className="w-5 h-5 text-[#8b2942]" />
-              <span className="h-px w-10 bg-[#5a4a3a]/30" />
-            </div>
+            {/* Logo divider */}
+            <LogoDivider variant="standard" size="sm" className="mb-4" />
 
             <h1 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.15em] text-[#3a2a1a] mb-6">
               The Pepper Compendium
@@ -182,12 +198,8 @@ const Compendium = () => {
               "An archive for those who value flavor, heat, and history in equal measure."
             </p>
 
-            {/* Decorative divider */}
-            <div className="mt-6 flex items-center justify-center gap-2">
-              <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#d4a84b]/50" />
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#d4a84b]/70" />
-              <span className="h-px w-12 bg-gradient-to-l from-transparent to-[#d4a84b]/50" />
-            </div>
+            {/* Logo divider */}
+            <LogoDivider variant="ornate" size="sm" className="mt-6" />
           </motion.div>
         </div>
       </section>

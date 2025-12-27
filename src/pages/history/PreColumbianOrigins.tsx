@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Flame, BookOpen, Globe, MapPin, Languages, Scroll, Calendar } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Globe, MapPin, Languages, Scroll, Calendar, Flame } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
 import { domesticationEvents, DomesticationDetails, DomesticationEvent } from '@/components/history/DomesticationTimeline';
+import { LogoDivider } from '@/components/ui/LogoDivider';
 import logoDark from '@/assets/logo-dark.svg';
 import preColumbianArtwork from '@/assets/history/pre-columbian-artwork.jpg';
 
@@ -70,6 +71,13 @@ const citations: Citation[] = [
 
 export default function PreColumbianOrigins() {
   const [selectedEvent, setSelectedEvent] = useState<DomesticationEvent | null>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -82,9 +90,18 @@ export default function PreColumbianOrigins() {
       <main className="relative">
         {/* Hero Section */}
         <section 
-          className="relative py-24 md:py-32 overflow-hidden bg-cover bg-center"
-          style={{ backgroundImage: `url(${preColumbianArtwork})` }}
+          ref={heroRef}
+          className="relative py-24 md:py-32 overflow-hidden"
         >
+          {/* Parallax background image */}
+          <motion.div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: `url(${preColumbianArtwork})`,
+              y: backgroundY 
+            }}
+          />
+          
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-background/85" />
           
@@ -118,11 +135,7 @@ export default function PreColumbianOrigins() {
               
               {/* Header */}
               <div className="text-center mb-12">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                  <Flame className="w-6 h-6 text-primary" />
-                  <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                </div>
+                <LogoDivider variant="standard" size="md" className="mb-6" />
                 
                 <p className="text-muted-foreground font-heading text-base md:text-lg uppercase tracking-[0.3em] mb-4 small-caps">
                   A Historical Treatise
