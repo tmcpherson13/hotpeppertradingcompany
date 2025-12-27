@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CompassRose } from '@/components/ui/TradeRoutePattern';
+import { DropCap } from '@/components/ui/DropCap';
+import { CornerFlourishes } from '@/components/ui/CornerFlourishes';
 import logoDark from '@/assets/logo-dark.svg';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
@@ -158,6 +160,9 @@ export function PepperEducation() {
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-background/85" />
       
+      {/* Corner Flourishes */}
+      <CornerFlourishes variant="ornate" animated />
+      
       {/* Decorative Compass */}
       <CompassRose 
         className="absolute top-16 right-8 md:right-16 opacity-10 text-primary" 
@@ -191,11 +196,11 @@ export function PepperEducation() {
             <h2 className="font-display text-3xl md:text-5xl text-foreground mb-6 text-engraved">
               The Global Spread of Capsicum
             </h2>
-            <p className="font-body text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <DropCap className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               No other cultivated plant has achieved such rapid global adoption. 
               Within a century of first contact, capsicum peppers had become 
               indispensable to cuisines across four continents.
-            </p>
+            </DropCap>
           </div>
 
           {/* Educational Content - Nautical Themed Cards */}
