@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Anchor, Ship, Globe, MapPin, Compass } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Ship, Globe, MapPin, Compass, Anchor } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
+import { LogoDivider } from '@/components/ui/LogoDivider';
 import logoDark from '@/assets/logo-dark.svg';
 import columbianExchangeArtwork from '@/assets/history/columbian-exchange-artwork.jpg';
 
@@ -65,6 +66,14 @@ const citations: Citation[] = [
 ];
 
 export default function ColumbianExchange() {
+  const heroRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -76,9 +85,18 @@ export default function ColumbianExchange() {
       <main className="relative">
         {/* Hero Section */}
         <section 
-          className="relative py-24 md:py-32 overflow-hidden bg-cover bg-center"
-          style={{ backgroundImage: `url(${columbianExchangeArtwork})` }}
+          ref={heroRef}
+          className="relative py-24 md:py-32 overflow-hidden"
         >
+          {/* Parallax background image */}
+          <motion.div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: `url(${columbianExchangeArtwork})`,
+              y: backgroundY 
+            }}
+          />
+          
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-background/85" />
           
@@ -112,11 +130,7 @@ export default function ColumbianExchange() {
               
               {/* Header */}
               <div className="text-center mb-12">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                  <Anchor className="w-6 h-6 text-primary" />
-                  <span className="w-20 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                </div>
+                <LogoDivider variant="standard" size="md" className="mb-6" />
                 
                 <p className="text-muted-foreground font-heading text-base md:text-lg uppercase tracking-[0.3em] mb-4 small-caps">
                   A Historical Treatise

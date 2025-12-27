@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { DropCap } from '@/components/ui/DropCap';
+import { LogoDivider } from '@/components/ui/LogoDivider';
 
 export const TradingCompany = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -100,12 +102,8 @@ export const TradingCompany = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
         >
-          {/* Decorative line above title */}
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/40" />
-            <div className="w-2 h-2 rotate-45 border border-primary/40" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/40" />
-          </div>
+          {/* Logo divider above title */}
+          <LogoDivider variant="standard" size="sm" className="mb-6" />
 
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground tracking-wide mb-4">
             The Trading Company
@@ -115,15 +113,8 @@ export const TradingCompany = () => {
             Tradition, Method, and Intent
           </p>
 
-          {/* Decorative line below subtitle */}
-          <div className="flex items-center justify-center gap-3 mt-6">
-            <div className="h-px w-12 bg-primary/30" />
-            <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary/50">
-              <circle cx="10" cy="10" r="2" fill="currentColor" />
-              <circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            </svg>
-            <div className="h-px w-12 bg-primary/30" />
-          </div>
+          {/* Logo divider below subtitle */}
+          <LogoDivider variant="minimal" size="sm" className="mt-6" />
         </motion.div>
 
         {/* Body Content */}
@@ -134,9 +125,9 @@ export const TradingCompany = () => {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <p className="text-foreground/90 text-lg md:text-xl leading-relaxed font-body text-center md:text-left first-letter:text-5xl first-letter:font-heading first-letter:text-primary first-letter:float-left first-letter:mr-3 first-letter:mt-1">
+          <DropCap className="text-foreground/90 text-lg md:text-xl text-center md:text-left">
             A trading company is defined less by what it sells than by how it selects. Hot Pepper Trading Company operates within that older definition, drawing from a tradition where flavor moved along routes rather than trends, and goods were chosen with purpose rather than volume.
-          </p>
+          </DropCap>
 
           <p className="text-foreground/80 text-base md:text-lg leading-relaxed font-body">
             Our approach is rooted in curation. Peppers are not treated as interchangeable commodities, but as trade goods shaped by region, climate, and cultivation. Each collection is assembled to reflect a specific lineage — geographic, cultural, or historical — and presented as part of a broader body of work rather than a standalone product.
@@ -155,31 +146,7 @@ export const TradingCompany = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          <svg width="120" height="30" viewBox="0 0 120 30" className="text-primary/40">
-            {/* Left flourish */}
-            <path 
-              d="M0 15 Q15 15 20 10 Q25 5 35 5 L55 5" 
-              stroke="currentColor" 
-              strokeWidth="1" 
-              fill="none"
-            />
-            {/* Center diamond */}
-            <path 
-              d="M55 5 L60 0 L65 5 L60 10 Z" 
-              fill="currentColor"
-              opacity="0.6"
-            />
-            {/* Right flourish */}
-            <path 
-              d="M65 5 L85 5 Q95 5 100 10 Q105 15 120 15" 
-              stroke="currentColor" 
-              strokeWidth="1" 
-              fill="none"
-            />
-            {/* Additional decorative elements */}
-            <circle cx="40" cy="5" r="1.5" fill="currentColor" />
-            <circle cx="80" cy="5" r="1.5" fill="currentColor" />
-          </svg>
+          <LogoDivider variant="ornate" size="md" />
         </motion.div>
       </div>
     </section>
