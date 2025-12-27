@@ -1,9 +1,17 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import logoDark from '@/assets/logo-dark.svg';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
 export const BrandPhilosophy = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
   const paragraphs = [
     "Hot Pepper Trading Company was founded on an older idea of trade — when flavor moved by sail, spice followed routes rather than trends, and provenance mattered as much as heat. Long before peppers were reduced to Scoville ratings and bulk bins, they were cargo: carefully sourced, deliberately transported, and exchanged with intention.",
     "We operate as a modern trading company in the classic sense. Our work begins far from the shelf, tracing historic spice corridors, regional growing traditions, and the hands that cultivate them. Each collection we assemble reflects a route, a climate, and a story — not just an ingredient.",
@@ -11,19 +19,19 @@ export const BrandPhilosophy = () => {
   ];
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
-      {/* Background Image with enhanced depth */}
-      <div className="absolute inset-0">
+    <section ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden">
+      {/* Background Image with parallax effect */}
+      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
         <img
           src={tradeRoutesBg}
           alt=""
-          className="w-full h-full object-cover scale-105"
+          className="w-full h-full object-cover scale-110"
           aria-hidden="true"
         />
         {/* Multi-layer overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
-      </div>
+      </motion.div>
       
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.05]">
@@ -100,19 +108,23 @@ export const BrandPhilosophy = () => {
                   {index === 0 ? paragraph.slice(1) : paragraph}
                 </p>
                 
-                {/* Decorative divider with logo between paragraphs */}
+                {/* Decorative divider with subtle logo between paragraphs */}
                 {index < paragraphs.length - 1 && (
                   <div className="flex items-center justify-center mt-10">
-                    <div className="h-px w-20 bg-gradient-to-r from-transparent to-border/60" />
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-border/50" />
                     <motion.img 
                       src={logoDark} 
                       alt="" 
-                      className="h-8 w-auto mx-4 opacity-40"
+                      className="h-6 w-auto mx-4 opacity-25"
                       aria-hidden="true"
-                      whileHover={{ scale: 1.15, opacity: 0.7 }}
-                      transition={{ duration: 0.3 }}
+                      animate={{ opacity: [0.25, 0.35, 0.25] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      whileHover={{ 
+                        opacity: 0.5, 
+                        filter: "drop-shadow(0 0 8px rgba(139, 69, 19, 0.3))"
+                      }}
                     />
-                    <div className="h-px w-20 bg-gradient-to-l from-transparent to-border/60" />
+                    <div className="h-px w-16 bg-gradient-to-l from-transparent to-border/50" />
                   </div>
                 )}
               </motion.div>
