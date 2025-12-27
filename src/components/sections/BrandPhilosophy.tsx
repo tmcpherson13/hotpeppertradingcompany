@@ -10,7 +10,7 @@ export const BrandPhilosophy = () => {
     target: sectionRef,
     offset: ["start end", "end start"]
   });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-5%", "15%"]);
 
   const paragraphs = [
     "Hot Pepper Trading Company was founded on an older idea of trade — when flavor moved by sail, spice followed routes rather than trends, and provenance mattered as much as heat. Long before peppers were reduced to Scoville ratings and bulk bins, they were cargo: carefully sourced, deliberately transported, and exchanged with intention.",
@@ -94,10 +94,10 @@ export const BrandPhilosophy = () => {
             {paragraphs.map((paragraph, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                initial={{ opacity: 0, y: 30, filter: "blur(4px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
               >
                 <p className="font-body text-lg md:text-xl leading-relaxed text-foreground/85 text-center">
                   {index === 0 && (
