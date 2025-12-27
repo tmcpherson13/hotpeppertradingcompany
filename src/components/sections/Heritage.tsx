@@ -1,9 +1,18 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import heritageMap from '@/assets/heritage-map.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 
 export function Heritage() {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-5%", "10%"]);
   const scrollToEducation = () => {
     const educationSection = document.getElementById('pepper-education');
     if (educationSection) {
@@ -12,7 +21,7 @@ export function Heritage() {
   };
 
   return (
-    <section id="heritage" className="relative py-20 bg-background overflow-hidden">
+    <section ref={sectionRef} id="heritage" className="relative py-20 bg-background overflow-hidden">
       {/* Trade Route Background */}
       <TradeRoutePattern 
         className="inset-0 w-full h-full" 
@@ -22,7 +31,7 @@ export function Heritage() {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image */}
+          {/* Image with Parallax */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -31,10 +40,11 @@ export function Heritage() {
             className="relative"
           >
             <div className="relative overflow-hidden border-4 border-border shadow-deep">
-              <img
+              <motion.img
                 src={heritageMap}
                 alt="Stylized 17th century nautical map with compass rose and trade routes"
-                className="w-full aspect-square object-cover"
+                className="w-full aspect-square object-cover scale-110"
+                style={{ y: imageY }}
               />
               {/* Decorative overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-card/30 to-transparent" />

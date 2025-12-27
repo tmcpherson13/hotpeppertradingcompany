@@ -40,10 +40,13 @@ export function Hero() {
         <div className="absolute inset-0 hero-parchment-overlay" />
       </motion.div>
 
-      {/* Ornate Period-Accurate Compass Rose - Top Left */}
+      {/* Ornate Period-Accurate Compass Rose - Top Left with Floating Animation */}
       <motion.div 
         className="absolute top-20 left-8 md:left-16 opacity-25 pointer-events-none"
-        animate={{ rotate: [0, 2, -2, 0] }}
+        animate={{ 
+          rotate: [0, 2, -2, 0],
+          y: [0, -8, 0, 8, 0]
+        }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       >
         <motion.svg 
