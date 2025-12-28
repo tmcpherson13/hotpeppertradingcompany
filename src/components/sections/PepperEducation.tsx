@@ -193,9 +193,10 @@ export function PepperEducation() {
               The Global Spread of Capsicum
             </h2>
             <DropCap className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              No other cultivated plant has achieved such rapid global adoption. 
-              Within a century of first contact, capsicum peppers had become 
-              indispensable to cuisines across four continents.
+              Hot Pepper Trading Company studies and preserves these routes, presenting 
+              collections that honor the corridors by which capsicum traveled. No other 
+              cultivated plant achieved such rapid global adoption—within a century of 
+              first contact, peppers had become indispensable to cuisines across four continents.
             </DropCap>
           </div>
 

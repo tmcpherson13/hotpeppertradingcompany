@@ -109,17 +109,18 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                   </p>
                   <p>
                     When Portuguese traders brought capsicum to Asia in the 16th century, they sparked 
-                    a culinary revolution. This is not merely a consortium—it is a testament to how 
-                    a New World fruit became the heart of a continent's cuisine in just four centuries.
+                    a culinary revolution. Hot Pepper Trading Company assembled this consortium as a 
+                    testament to how a New World fruit became the heart of a continent's cuisine in 
+                    just four centuries.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Spirits of Asia</span> traces the routes 
-                    from Korean kimchi pots to Thai street woks, from Sichuan pepper mills to Philippine 
-                    marketplaces. Each pepper represents a culture that embraced the fire and made it 
-                    entirely their own.
+                    from Korean kimchi pots to Thai street woks. Each pepper was selected for its role 
+                    in the regional tradition—curated not as a sampling, but as a deliberate study of 
+                    adaptation and mastery.
                   </p>
                   <p>
-                    This is adaptation. This is mastery. This is heat perfected through generations.
+                    This is a release honoring heat perfected through generations.
                   </p>
                 </div>
               </section>

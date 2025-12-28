@@ -109,17 +109,17 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                   </p>
                   <p>
                     Feel the sun on ancient soil. The hum of distant markets. The sizzle of meat on open flame. 
-                    This is not just a consortium—it's a passage through time, across deserts and oceans, woven from 
-                    the hands of growers, traders, and cooks who understood one truth: heat is memory.
+                    Hot Pepper Trading Company assembled this consortium as a passage through time—across deserts 
+                    and oceans, woven from the hands of growers, traders, and cooks who understood one truth: heat is memory.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Echoes of Africa</span> traces the routes that peppers 
                     traveled from Africa's coasts to the Caribbean, from the Levant to the New World. Each pepper 
-                    in this consortium carries the spirit of its origin—the smoky savanna, the salt-kissed shores, 
-                    the tropical highlands.
+                    was selected with intent—not for volume, but for its role in the layered narrative of flavor 
+                    and provenance.
                   </p>
                   <p>
-                    This is more than flavor. It's a conversation between continents. A story told in Scoville.
+                    This is more than a collection. It is a conversation between continents, curated by route and lineage.
                   </p>
                 </div>
               </section>

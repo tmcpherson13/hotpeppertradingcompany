@@ -109,18 +109,17 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
                   </p>
                   <p>
                     High above the clouds, where the Inca once built their terraces into impossible 
-                    slopes, the aji has flourished for millennia. This is not merely a consortium—it 
-                    is an excavation of flavor, a journey to the birthplace of the baccatum species 
-                    where peppers grow in colors the conquistadors never imagined.
+                    slopes, the aji has flourished for millennia. Hot Pepper Trading Company assembled 
+                    this consortium as an excavation of flavor—a journey to the birthplace of the 
+                    baccatum species where peppers grow in colors the conquistadors never imagined.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Voices of the Andes</span> gathers the 
-                    treasures of Peru, Bolivia, and Ecuador—from the golden aji amarillo that colors 
-                    Lima's markets to the cold-hardy rocoto that defies the thin mountain air. Each 
-                    pepper is a voice from the past, singing of pre-Columbian feasts and Incan roads.
+                    treasures of Peru, Bolivia, and Ecuador. Each cultivar was selected for its place 
+                    in the Andean lineage—curated by altitude and heritage rather than mere availability.
                   </p>
                   <p>
-                    This is altitude. This is heritage. This is fire from the roof of the world.
+                    This is a release presenting fire from the roof of the world, assembled with intent.
                   </p>
                 </div>
               </section>

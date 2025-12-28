@@ -93,14 +93,15 @@ export function Heritage() {
                 they had become essential to cuisines that had never known them.
               </DropCap>
               <p>
-                We are fascinated by this history—the trade routes that carried peppers from 
-                the Levant to Southeast Asia, the Indian subcontinent, and back to the Americas. 
-                Understanding where peppers come from and how they traveled helps us
-                appreciate their place in global culinary traditions.
+                Hot Pepper Trading Company traces its work to these same routes—sourcing, 
+                selecting, and presenting cultivars as cargo rather than commodity. We study 
+                the corridors by which capsicum traveled from the Levant to Southeast Asia, 
+                the Indian subcontinent, and back across the Atlantic.
               </p>
               <p>
-                Our role is to celebrate these stories, document the cultivars, and share 
-                our passion for the remarkable journey of capsicum around the world.
+                Our role is not to sell peppers, but to curate them—assembling collections 
+                that honor the lineages, the growers, and the centuries of cultivation that 
+                brought each variety to its present form.
               </p>
             </div>
 

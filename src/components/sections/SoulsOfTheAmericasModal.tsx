@@ -109,19 +109,18 @@ export function SoulsOfTheAmericasModal({ open, onOpenChange }: SoulsOfTheAmeric
                   </p>
                   <p>
                     Before Columbus ever dreamed of spice, the peoples of Mesoamerica had cultivated 
-                    chilies for five thousand years. This is not merely a consortium—it is a homecoming, 
-                    a return to the birthplace of capsicum where every pepper tells a story of empire, 
-                    trade, and transformation.
+                    chilies for five thousand years. Hot Pepper Trading Company assembled this consortium 
+                    as a homecoming—a return to the birthplace of capsicum where every pepper tells a story 
+                    of empire, trade, and transformation.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Souls of the Americas</span> spans from 
-                    the ancient markets of Tenochtitlan to the sun-drenched islands of the Caribbean, 
-                    from Florida's Minorcan settlers to the high desert valleys of New Mexico. Each pepper 
-                    carries the weight of history—Aztec ritual, Spanish conquest, African diaspora, 
-                    and American innovation.
+                    the ancient markets of Tenochtitlan to the sun-drenched islands of the Caribbean. 
+                    Each cultivar was selected for its place in the ancestral lineage—curated by historical 
+                    context rather than commercial convenience.
                   </p>
                   <p>
-                    This is where it all began. This is the fire that changed the world.
+                    This is where it all began. A collection presented with the gravity it deserves.
                   </p>
                 </div>
               </section>
