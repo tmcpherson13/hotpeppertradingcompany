@@ -310,7 +310,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
               <div className="flex items-center gap-1 px-2 py-1 bg-[#2d5a3d] text-[#f5efe6] 
                 text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80">
                 <Package className="w-3 h-3" />
-                <span>In Stock</span>
+                <span>In Cargo</span>
               </div>
             </div>
           )}
@@ -551,7 +551,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <span className="font-body text-[10px] text-[#5a4a3a]/50 italic block">
-                Catalogued by the Hot Pepper Trading Company
+                Recorded in the archives of Hot Pepper Trading Company — curated selections from routes ancient and modern.
               </span>
             </div>
             <button

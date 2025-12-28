@@ -179,17 +179,18 @@ const Compendium = () => {
 
             <div className="font-body text-lg md:text-xl text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto space-y-4">
               <p>
-                The Pepper Compendium is the trading house's record of peppers — their origins, 
-                character, heat, and the routes by which they traveled the world.
+                Hot Pepper Trading Company maintains the Pepper Compendium as its formal record of 
+                cultivars—their origins, character, heat, and the routes by which they traveled the world.
               </p>
               <p>
                 Before modern supply chains, peppers moved by sail and caravan, shaped by geography, 
-                climate, and culture. This archive records where each pepper came from, how it tastes, 
+                climate, and culture. This archive records where each cultivar came from, how it tastes, 
                 how fiercely it burns, and how it entered global cuisine.
               </p>
               <p>
-                Some peppers listed here are currently held in our stores. Others appear for reference 
-                alone. All are included for understanding.
+                Some cultivars listed here are currently held in our cargo. Others appear for reference 
+                alone. All are included to preserve the knowledge that informs how Hot Pepper Trading 
+                Company selects and presents its collections.
               </p>
             </div>
 

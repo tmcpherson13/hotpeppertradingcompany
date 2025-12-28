@@ -91,7 +91,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   text-[10px] font-heading uppercase tracking-wider border border-[#2d5a3d]/80
                   shadow-sm">
                   <Package className="w-3 h-3" />
-                  <span>In Stock</span>
+                  <span>In Cargo</span>
                 </div>
               </div>
             )}

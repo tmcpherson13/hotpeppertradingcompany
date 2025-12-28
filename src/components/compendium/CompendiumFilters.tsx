@@ -70,7 +70,7 @@ export function CompendiumFilters({
               Show In Stock Only
             </span>
             <p className="font-body text-xs text-[#5a4a3a]/60 mt-0.5">
-              Display only peppers currently held in our stores
+              Display only cultivars currently held in cargo
             </p>
           </div>
         </div>
