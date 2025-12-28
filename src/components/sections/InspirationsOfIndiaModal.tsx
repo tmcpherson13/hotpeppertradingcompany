@@ -109,18 +109,18 @@ export function InspirationsOfIndiaModal({ open, onOpenChange }: InspirationsOfI
                   </p>
                   <p>
                     In the crimson valleys of Kashmir, merchants have measured saffron by the gram and chilies 
-                    by the handful since before the Mughals crossed the passes. This is not merely a consortium—it 
-                    is an odyssey through the subcontinent, from the misty highlands where color is currency 
-                    to the volcanic northeast where heat defies comprehension.
+                    by the handful since before the Mughals crossed the passes. Hot Pepper Trading Company 
+                    assembled this consortium as an odyssey through the subcontinent—from the misty highlands 
+                    where color is currency to the volcanic northeast where heat defies comprehension.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Inspirations of India</span> traces the ancient 
-                    spice routes that made kingdoms rich and cuisines immortal. From the deep mahogany of 
-                    Karnataka's Byadgi to the legendary inferno of Assam's Bhut Jolokia, each pepper carries 
-                    centuries of cultivation, trade, and culinary tradition.
+                    spice routes that made kingdoms rich and cuisines immortal. Each pepper was selected for 
+                    its role in the chromatic spectrum—curated not as inventory, but as a deliberate progression 
+                    from color to aroma to fire.
                   </p>
                   <p>
-                    This is color that blooms into aroma. Aroma that builds into fire. Fire that becomes memory.
+                    This is a release assembled with restraint, honoring centuries of cultivation and trade.
                   </p>
                 </div>
               </section>

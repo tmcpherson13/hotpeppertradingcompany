@@ -184,8 +184,9 @@ export function FeaturedSpices() {
             Regional Consortiums
           </p>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Each cultivar is selected with intent—evaluated for flavor profile, pungency, and regional provenance. 
-            Availability is considered not as volume, but as suitability, allowing us to assemble small, deliberate Pepper Consortiums rather than uniform stock.
+            Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 
+            is evaluated for flavor profile, pungency, and regional provenance—selected not for volume, 
+            but for suitability. These are not products; they are releases, curated by route and lineage.
           </p>
         </motion.div>
 
@@ -318,12 +319,12 @@ export function FeaturedSpices() {
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-px bg-gradient-to-r from-transparent to-ink/30" />
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                Complete Inventory
+                Full Compendium
               </span>
               <div className="w-16 h-px bg-gradient-to-l from-transparent to-ink/30" />
             </div>
             <Button variant="pepper" size="lg" asChild>
-              <Link to="/compendium" onClick={() => window.scrollTo(0, 0)}>View All Cultivars</Link>
+              <Link to="/compendium" onClick={() => window.scrollTo(0, 0)}>Consult the Compendium</Link>
             </Button>
           </div>
         </motion.div>

@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import logoWhite from '@/assets/logo-white.svg';
 
 const footerLinks = {
-  inventory: [
+  cargo: [
     { name: 'All Cultivars', href: '#collection' },
-    { name: 'By Region', href: '#routes' },
-    { name: 'Seasonal Offerings', href: '#' },
-    { name: 'Wholesale Inquiries', href: '#' },
+    { name: 'By Route', href: '#routes' },
+    { name: 'Seasonal Releases', href: '#' },
+    { name: 'Trade Inquiries', href: '#' },
   ],
   knowledge: [
     { name: 'Company Heritage', href: '#heritage' },
@@ -42,25 +42,25 @@ export function Footer() {
               </Link>
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
-              Celebrating the history, cultures, and cuisines of capsicum peppers 
-              since 1493. We develop pepper consortiums that honor traditional 
-              growing practices and culinary heritage.
+              Hot Pepper Trading Company curates capsicum collections assembled by route, 
+              region, and lineage. We are a trading house, not a commodity seller—presenting 
+              cultivars with intent, restraint, and respect for provenance.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
               <img src={logoWhite} alt="" className="h-4 w-auto mix-blend-screen" aria-hidden="true" />
               <span className="font-body text-sm italic">
-                Provenance verified. Quality guaranteed.
+                Selection with intent. Trade with purpose.
               </span>
             </div>
           </div>
 
-          {/* Inventory Links */}
+          {/* Cargo Links */}
           <div>
             <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
-              Inventory
+              Cargo
             </h4>
             <ul className="space-y-3">
-              {footerLinks.inventory.map((link) => (
+              {footerLinks.cargo.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}

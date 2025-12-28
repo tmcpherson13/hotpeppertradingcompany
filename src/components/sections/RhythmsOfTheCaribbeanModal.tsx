@@ -108,19 +108,19 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
                     From turquoise waters to volcanic peaks.
                   </p>
                   <p>
-                    This is not just a consortium—it's a carnival of fire. The Caribbean archipelago, scattered like 
-                    emeralds across azure waters, became the crucible where African, Indigenous, European, and Asian 
-                    food traditions collided and created something entirely new.
+                    The Caribbean archipelago, scattered like emeralds across azure waters, became the crucible 
+                    where African, Indigenous, European, and Asian food traditions collided. Hot Pepper Trading 
+                    Company assembled this consortium to honor that convergence—a collection curated by island 
+                    route rather than commercial expedience.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Rhythms of the Caribbean</span> traces the peppers from 
-                    the jerk pits of Jamaica to the pepperpots of Guyana, from the hot sauces of Trinidad to the datil 
-                    preserves of Florida's Minorcan coast. These peppers carry the rhythm of steel drums, the memory 
-                    of sugar plantations, and the defiant spirit of island peoples who transformed ingredients of 
-                    survival into cuisines of celebration.
+                    the jerk pits of Jamaica to the pepperpots of Guyana. Each cultivar was selected for its role 
+                    in the island narrative—carrying the rhythm of steel drums, the memory of sugar plantations, 
+                    and the defiant spirit of peoples who transformed ingredients of survival into cuisines of celebration.
                   </p>
                   <p>
-                    This is more than flavor. It's resilience made edible. A story told in island fire.
+                    This is a release presenting resilience made edible, assembled with deliberate care.
                   </p>
                 </div>
               </section>

@@ -62,8 +62,8 @@ export function Newsletter() {
             Trade Correspondence
           </h2>
           <p className="font-body text-lg text-muted-foreground mb-8 leading-relaxed">
-            Receive periodic updates on new arrivals, seasonal availability, 
-            and notes on capsicum cultivars and cultivation.
+            Hot Pepper Trading Company issues periodic correspondence regarding new releases, 
+            seasonal cargo, and notes on cultivar provenance and regional growing traditions.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
