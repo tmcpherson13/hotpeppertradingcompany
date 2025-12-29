@@ -214,7 +214,7 @@ export function PepperEducation() {
                 {/* Route connector between cards - Animated Arrow */}
                 {index < facts.length - 1 && (
                   <motion.div 
-                    className="hidden md:flex absolute top-1/2 -right-3 lg:-right-4 w-6 lg:w-8 items-center justify-center z-10"
+                    className="hidden md:flex absolute top-1/2 -right-6 lg:-right-8 translate-x-1/2 -translate-y-1/2 w-6 lg:w-8 items-center justify-center z-10"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
