@@ -234,7 +234,7 @@ export function Hero() {
 
       {/* Bottom Right Compass Rose - Enhanced Visibility with Floating Animation */}
       <motion.div 
-        className="absolute bottom-16 right-8 md:right-16 opacity-50 pointer-events-none"
+        className="absolute bottom-16 right-8 md:right-16 opacity-25 pointer-events-none"
         animate={{ 
           rotate: [0, 3, -3, 0],
           y: [0, -6, 0, 6, 0],
@@ -243,8 +243,8 @@ export function Hero() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       >
         <motion.svg 
-          width="120" 
-          height="120" 
+          width="160" 
+          height="160"
           viewBox="0 0 100 100" 
           className="text-parchment"
           animate={{ 
