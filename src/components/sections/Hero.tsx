@@ -234,7 +234,7 @@ export function Hero() {
 
       {/* Bottom Right Compass Rose - Enhanced Visibility with Floating Animation */}
       <motion.div 
-        className="absolute bottom-16 right-8 md:right-16 opacity-40 pointer-events-none"
+        className="absolute bottom-16 right-8 md:right-16 opacity-50 pointer-events-none"
         animate={{ 
           rotate: [0, 3, -3, 0],
           y: [0, -6, 0, 6, 0],
