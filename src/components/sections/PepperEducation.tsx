@@ -211,18 +211,58 @@ export function PepperEducation() {
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="relative"
               >
-                {/* Route connector between cards */}
+                {/* Route connector between cards - Animated Arrow */}
                 {index < facts.length - 1 && (
-                  <div className="hidden md:flex absolute top-1/2 -right-3 lg:-right-4 w-6 lg:w-8 items-center justify-center z-10">
-                    <div className="w-full h-px border-t-2 border-dashed border-tyrian/40" />
-                    <svg className="absolute w-3 h-3" viewBox="0 0 12 12">
-                      <polygon 
-                        points="6,0 7.5,4.5 12,6 7.5,7.5 6,12 4.5,7.5 0,6 4.5,4.5" 
-                        fill="hsl(var(--tyrian))" 
-                        fillOpacity="0.5"
+                  <motion.div 
+                    className="hidden md:flex absolute top-1/2 -right-3 lg:-right-4 w-6 lg:w-8 items-center justify-center z-10"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 + index * 0.15 }}
+                  >
+                    <motion.svg 
+                      className="w-6 h-4" 
+                      viewBox="0 0 24 16" 
+                      fill="none"
+                      animate={{
+                        filter: [
+                          'drop-shadow(0 0 0px hsl(var(--tyrian)))',
+                          'drop-shadow(0 0 4px hsl(var(--tyrian)))',
+                          'drop-shadow(0 0 0px hsl(var(--tyrian)))'
+                        ],
+                        opacity: [0.5, 0.85, 0.5]
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: index * 0.4
+                      }}
+                    >
+                      {/* Arrow shaft - dashed for trade route feel */}
+                      <path 
+                        d="M0 8h16" 
+                        stroke="hsl(var(--tyrian))" 
+                        strokeWidth="1.5"
+                        strokeDasharray="3 2"
                       />
-                    </svg>
-                  </div>
+                      {/* Arrowhead - triangular point */}
+                      <path 
+                        d="M14 5l6 3-6 3" 
+                        stroke="hsl(var(--tyrian))" 
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
+                        fill="none"
+                      />
+                      {/* Decorative tail feather */}
+                      <path 
+                        d="M2 8l-2-2M2 8l-2 2" 
+                        stroke="hsl(var(--tyrian))" 
+                        strokeWidth="1"
+                        opacity="0.6"
+                      />
+                    </motion.svg>
+                  </motion.div>
                 )}
 
                 <Link 
