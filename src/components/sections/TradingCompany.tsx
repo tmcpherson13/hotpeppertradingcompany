@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { DropCap } from '@/components/ui/DropCap';
 import { LogoDivider } from '@/components/ui/LogoDivider';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
 export const TradingCompany = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,6 +13,7 @@ export const TradingCompany = () => {
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-5%", "10%"]);
   const ornamentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 0.6, 0.6, 0.3]);
 
   return (
@@ -18,10 +21,40 @@ export const TradingCompany = () => {
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
     >
-      {/* Background with subtle texture */}
+      {/* Background image with parallax */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-muted/30"
+        className="absolute inset-0 z-0"
+        style={{ y: imageY }}
+      >
+        <img 
+          src={tradeRoutesBg} 
+          alt="" 
+          className="w-full h-[120%] object-cover opacity-15 sepia-[0.3]"
+          aria-hidden="true"
+        />
+      </motion.div>
+
+      {/* Trade Route Pattern overlay */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full z-[1]" 
+        variant="tyrian" 
+        opacity={0.06} 
+      />
+
+      {/* Gradient overlay for text readability */}
+      <motion.div 
+        className="absolute inset-0 z-[2] bg-gradient-to-b from-background/90 via-background/85 to-background/90"
         style={{ y: backgroundY }}
+      />
+
+      {/* Aged paper texture */}
+      <div className="absolute inset-0 z-[3] paper-texture opacity-60" />
+
+      {/* Decorative vignette */}
+      <div className="absolute inset-0 z-[4] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, hsla(28, 35%, 12%, 0.15) 100%)'
+        }}
       />
 
       {/* Content */}
