@@ -16,6 +16,7 @@ import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
 import logoDark from '@/assets/logo-dark.svg';
+import antiqueMap from '@/assets/antique-map.jpg';
 
 interface Spice {
   name: string;
@@ -145,15 +146,41 @@ export function FeaturedSpices() {
   };
 
   return (
-    <section ref={sectionRef} id="collection" className="relative py-20 bg-card paper-texture overflow-hidden">
+    <section ref={sectionRef} id="collection" className="relative py-20 overflow-hidden">
+      {/* Background image with parallax */}
+      <motion.div 
+        className="absolute inset-0 z-0"
+        style={{ y: patternY }}
+      >
+        <img 
+          src={antiqueMap} 
+          alt="" 
+          className="w-full h-[120%] object-cover opacity-12 sepia-[0.4]"
+          aria-hidden="true"
+        />
+      </motion.div>
+
+      {/* Base card background */}
+      <div className="absolute inset-0 z-[1] bg-card/95" />
+
       {/* Trade Route Background Pattern with Parallax */}
-      <motion.div style={{ y: patternY }}>
+      <motion.div style={{ y: patternY }} className="z-[2]">
         <TradeRoutePattern 
           className="inset-0 w-full h-full" 
-          variant="subtle" 
+          variant="tyrian" 
           opacity={0.05} 
         />
       </motion.div>
+
+      {/* Paper texture overlay */}
+      <div className="absolute inset-0 z-[3] paper-texture" />
+
+      {/* Decorative vignette */}
+      <div className="absolute inset-0 z-[4] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 50%, hsla(28, 35%, 12%, 0.08) 100%)'
+        }}
+      />
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
