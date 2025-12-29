@@ -21,7 +21,7 @@ export const TradingCompany = () => {
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
     >
-      {/* Background image with parallax */}
+      {/* Background image with parallax - increased visibility */}
       <motion.div 
         className="absolute inset-0 z-0"
         style={{ y: imageY }}
@@ -29,7 +29,7 @@ export const TradingCompany = () => {
         <img 
           src={tradeRoutesBg} 
           alt="" 
-          className="w-full h-[120%] object-cover opacity-15 sepia-[0.3]"
+          className="w-full h-[120%] object-cover opacity-30 sepia-[0.3]"
           aria-hidden="true"
         />
       </motion.div>
@@ -38,17 +38,17 @@ export const TradingCompany = () => {
       <TradeRoutePattern 
         className="inset-0 w-full h-full z-[1]" 
         variant="tyrian" 
-        opacity={0.06} 
+        opacity={0.08} 
       />
 
-      {/* Gradient overlay for text readability */}
+      {/* Gradient overlay for text readability - reduced opacity for more visible background */}
       <motion.div 
-        className="absolute inset-0 z-[2] bg-gradient-to-b from-background/90 via-background/85 to-background/90"
+        className="absolute inset-0 z-[2] bg-gradient-to-b from-background/75 via-background/70 to-background/75"
         style={{ y: backgroundY }}
       />
 
       {/* Aged paper texture */}
-      <div className="absolute inset-0 z-[3] paper-texture opacity-60" />
+      <div className="absolute inset-0 z-[3] paper-texture opacity-40" />
 
       {/* Decorative vignette */}
       <div className="absolute inset-0 z-[4] pointer-events-none"
