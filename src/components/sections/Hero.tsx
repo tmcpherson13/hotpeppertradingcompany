@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-spice-trade-new.jpg';
 import logoWhite from '@/assets/logo-white.svg';
 import { useRef } from 'react';
+import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -39,6 +40,16 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-hero" />
         <div className="absolute inset-0 hero-parchment-overlay" />
       </motion.div>
+
+      {/* Trade Route Pattern overlay */}
+      <TradeRoutePattern 
+        className="inset-0 w-full h-full z-[1]" 
+        variant="tyrian" 
+        opacity={0.04} 
+      />
+
+      {/* Paper texture overlay */}
+      <div className="absolute inset-0 z-[2] paper-texture opacity-20" />
 
       {/* Ornate Period-Accurate Compass Rose - Top Left with Floating Animation */}
       <motion.div 
@@ -221,8 +232,12 @@ export function Hero() {
         </svg>
       </div>
 
-      {/* Decorative Corner Flourishes */}
-      <div className="absolute bottom-10 left-8 md:left-16 opacity-15 pointer-events-none">
+      {/* Decorative Corner Flourishes - Bottom Left */}
+      <motion.div 
+        className="absolute bottom-10 left-8 md:left-16 opacity-15 pointer-events-none"
+        animate={{ opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
         <svg width="80" height="80" viewBox="0 0 80 80" className="text-parchment">
           <path
             d="M0,80 Q20,60 40,60 Q60,60 60,40 Q60,20 80,0"
@@ -237,7 +252,101 @@ export function Hero() {
             strokeWidth="0.5"
           />
         </svg>
-      </div>
+      </motion.div>
+
+      {/* Decorative Corner Flourish - Top Right */}
+      <motion.div 
+        className="absolute top-20 right-8 md:right-16 opacity-10 pointer-events-none"
+        animate={{ opacity: [0.08, 0.15, 0.08] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      >
+        <svg width="60" height="60" viewBox="0 0 60 60" className="text-parchment rotate-180">
+          <path
+            d="M0,60 Q15,45 30,45 Q45,45 45,30 Q45,15 60,0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.8"
+          />
+          <path
+            d="M0,52 Q12,40 26,40 Q38,40 38,26 Q38,14 50,0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.4"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Bottom Right Compass Rose - smaller, slower rotation */}
+      <motion.div 
+        className="absolute bottom-24 right-8 md:right-20 opacity-15 pointer-events-none"
+        animate={{ 
+          rotate: [0, -1, 1, 0],
+          scale: [1, 1.03, 1]
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <svg width="100" height="100" viewBox="0 0 100 100" className="text-parchment">
+          {/* Outer ring */}
+          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.5" />
+          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="1" />
+          
+          {/* Degree marks */}
+          {Array.from({ length: 16 }).map((_, i) => {
+            const angle = (i * 22.5 - 90) * Math.PI / 180;
+            const isCardinal = i % 4 === 0;
+            const innerR = isCardinal ? 38 : 40;
+            return (
+              <line
+                key={i}
+                x1={50 + innerR * Math.cos(angle)}
+                y1={50 + innerR * Math.sin(angle)}
+                x2={50 + 44 * Math.cos(angle)}
+                y2={50 + 44 * Math.sin(angle)}
+                stroke="currentColor"
+                strokeWidth={isCardinal ? 1.5 : 0.6}
+                opacity={isCardinal ? 0.7 : 0.4}
+              />
+            );
+          })}
+          
+          {/* Cardinal points */}
+          <polygon points="50,8 54,40 50,46 46,40" fill="currentColor" opacity="0.5" />
+          <polygon points="50,92 54,60 50,54 46,60" fill="currentColor" opacity="0.3" />
+          <polygon points="92,50 60,46 54,50 60,54" fill="currentColor" opacity="0.3" />
+          <polygon points="8,50 40,46 46,50 40,54" fill="currentColor" opacity="0.3" />
+          
+          {/* Center */}
+          <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
+          <circle cx="50" cy="50" r="2" fill="hsl(var(--gold))" opacity="0.4" />
+        </svg>
+      </motion.div>
+
+      {/* Animated navigation stars */}
+      {[
+        { x: '15%', y: '25%', delay: 0, size: 8 },
+        { x: '85%', y: '35%', delay: 1.5, size: 6 },
+        { x: '20%', y: '70%', delay: 3, size: 5 },
+        { x: '75%', y: '75%', delay: 2, size: 7 },
+      ].map((star, i) => (
+        <motion.div
+          key={i}
+          className="absolute pointer-events-none"
+          style={{ left: star.x, top: star.y }}
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: star.delay }}
+        >
+          <svg width={star.size * 2} height={star.size * 2} viewBox="0 0 12 12" className="text-parchment">
+            <polygon 
+              points="6,0 7,4.5 12,4.5 8,7.5 9.5,12 6,9 2.5,12 4,7.5 0,4.5 5,4.5" 
+              fill="currentColor"
+              opacity="0.6"
+            />
+          </svg>
+        </motion.div>
+      ))}
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 pt-20 text-center">

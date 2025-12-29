@@ -32,6 +32,16 @@ export function Heritage() {
         opacity={0.08} 
       />
       
+      {/* Paper texture overlay */}
+      <div className="absolute inset-0 z-[1] paper-texture opacity-30" />
+      
+      {/* Decorative vignette */}
+      <div className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 50%, hsla(28, 35%, 12%, 0.08) 100%)'
+        }}
+      />
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image with Parallax */}
