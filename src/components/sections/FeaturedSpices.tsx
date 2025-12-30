@@ -10,6 +10,7 @@ import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
 import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
+import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
 import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
@@ -17,6 +18,7 @@ import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
+import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 import antiqueMap from '@/assets/antique-map.jpg';
 
@@ -118,6 +120,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'mediterranean',
   },
+  {
+    name: 'The Atlantic Provenance',
+    origin: 'Multi-Origin',
+    region: 'Atlantic Triangle',
+    tradeLot: 'CONSORTIUM № 008',
+    weight: '2.5 oz / 70g',
+    description: 'Mexico to Caribbean to West Africa—the triangular crossing where fire became jerk, pepper pot, and piri piri.',
+    price: '$24',
+    image: atlanticProvenanceImg,
+    isConsortium: true,
+    consortiumId: 'atlantic',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -129,6 +143,7 @@ export function FeaturedSpices() {
   const [andesModalOpen, setAndesModalOpen] = useState(false);
   const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
   const [mediterraneanModalOpen, setMediterraneanModalOpen] = useState(false);
+  const [atlanticModalOpen, setAtlanticModalOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -159,6 +174,9 @@ export function FeaturedSpices() {
         break;
       case 'mediterranean':
         setMediterraneanModalOpen(true);
+        break;
+      case 'atlantic':
+        setAtlanticModalOpen(true);
         break;
     }
   };
@@ -403,6 +421,10 @@ export function FeaturedSpices() {
       <PhoenicianLegacyModal 
         open={mediterraneanModalOpen} 
         onOpenChange={setMediterraneanModalOpen} 
+      />
+      <AtlanticProvenanceModal 
+        open={atlanticModalOpen} 
+        onOpenChange={setAtlanticModalOpen} 
       />
     </section>
   );
