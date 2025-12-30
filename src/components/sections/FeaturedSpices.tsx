@@ -11,6 +11,7 @@ import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
 import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
 import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
+import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
 import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
@@ -19,6 +20,7 @@ import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
+import manilaGalleonImg from '@/assets/consortium/manila-galleon.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 import antiqueMap from '@/assets/antique-map.jpg';
 
@@ -132,6 +134,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'atlantic',
   },
+  {
+    name: 'The Manila Galleon',
+    origin: 'Multi-Origin',
+    region: 'Trans-Pacific Route',
+    tradeLot: 'CONSORTIUM № 009',
+    weight: '3 oz / 85g',
+    description: 'Across the Pacific—from Acapulco to Manila to Asia. The longest trade route in history carried fire that transformed a continent.',
+    price: '$44',
+    image: manilaGalleonImg,
+    isConsortium: true,
+    consortiumId: 'manila',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -144,6 +158,7 @@ export function FeaturedSpices() {
   const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
   const [mediterraneanModalOpen, setMediterraneanModalOpen] = useState(false);
   const [atlanticModalOpen, setAtlanticModalOpen] = useState(false);
+  const [manilaModalOpen, setManilaModalOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -177,6 +192,9 @@ export function FeaturedSpices() {
         break;
       case 'atlantic':
         setAtlanticModalOpen(true);
+        break;
+      case 'manila':
+        setManilaModalOpen(true);
         break;
     }
   };
@@ -425,6 +443,10 @@ export function FeaturedSpices() {
       <AtlanticProvenanceModal 
         open={atlanticModalOpen} 
         onOpenChange={setAtlanticModalOpen} 
+      />
+      <ManilaGalleonModal 
+        open={manilaModalOpen} 
+        onOpenChange={setManilaModalOpen} 
       />
     </section>
   );
