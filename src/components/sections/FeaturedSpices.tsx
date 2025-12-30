@@ -307,7 +307,7 @@ export function FeaturedSpices() {
                 </div>
 
                 {/* Merchant Label Content */}
-                <div className="p-4 bg-parchment-dark/50">
+                <div className="p-4 bg-parchment-dark">
                   {/* Decorative line */}
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex-1 h-px bg-ink/20" />
