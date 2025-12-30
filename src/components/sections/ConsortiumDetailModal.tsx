@@ -176,9 +176,9 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                   {pairings.map((pairing) => (
                     <div 
                       key={pairing}
-                      className="flex items-start gap-2 p-3 bg-parchment-dark/30 rounded border border-ink/10"
+                      className="flex items-center gap-2 p-3 bg-parchment-dark/30 rounded border border-ink/10"
                     >
-                      <span className="text-primary mt-0.5">•</span>
+                      <span className="text-primary">•</span>
                       <span className="font-body text-sm text-muted-foreground">{pairing}</span>
                     </div>
                   ))}
