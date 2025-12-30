@@ -97,36 +97,6 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    Some peppers traveled by camel. Others, by sail.
-                  </p>
-                  <p>
-                    When Portuguese traders brought capsicum to Asia in the 16th century, they sparked 
-                    a culinary revolution that unfolded along two distinct paths. The overland <span className="font-semibold text-ink">Silk Road</span> carried 
-                    peppers from Mediterranean ports through Aleppo and Anatolia, while the maritime <span className="font-semibold text-ink">Jade Passage</span> 
-                    delivered them through India and Southeast Asia to the eastern shores.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">The Silk & Jade Passage</span> honors both journeys. 
-                    From the Levantine crossroads where caravans rested, to the volcanic valleys of Assam where 
-                    maritime routes reached their most extreme expression—each pepper marks a waypoint in the 
-                    eastward migration of heat.
-                  </p>
-                  <p>
-                    By silk or by jade, the fire found its way east—and there it stayed.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -162,6 +132,36 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    Some peppers traveled by camel. Others, by sail.
+                  </p>
+                  <p>
+                    When Portuguese traders brought capsicum to Asia in the 16th century, they sparked 
+                    a culinary revolution that unfolded along two distinct paths. The overland <span className="font-semibold text-ink">Silk Road</span> carried 
+                    peppers from Mediterranean ports through Aleppo and Anatolia, while the maritime <span className="font-semibold text-ink">Jade Passage</span> 
+                    delivered them through India and Southeast Asia to the eastern shores.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">The Silk & Jade Passage</span> honors both journeys. 
+                    From the Levantine crossroads where caravans rested, to the volcanic valleys of Assam where 
+                    maritime routes reached their most extreme expression—each pepper marks a waypoint in the 
+                    eastward migration of heat.
+                  </p>
+                  <p>
+                    By silk or by jade, the fire found its way east—and there it stayed.
+                  </p>
                 </div>
               </section>
 

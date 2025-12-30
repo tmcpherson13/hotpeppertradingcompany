@@ -97,36 +97,6 @@ export function SoulsOfTheAmericasModal({ open, onOpenChange }: SoulsOfTheAmeric
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    The ancestors knew. The gods demanded fire.
-                  </p>
-                  <p>
-                    Before Columbus ever dreamed of spice, the peoples of Mesoamerica had cultivated 
-                    chilies for five thousand years. Hot Pepper Trading Company assembled this consortium 
-                    as a homecoming—a return to the birthplace of capsicum where every pepper tells a story 
-                    of empire, trade, and transformation.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Souls of the Americas</span> spans from 
-                    the ancient markets of Tenochtitlan to the sun-drenched islands of the Caribbean. 
-                    Each cultivar was selected for its place in the ancestral lineage—curated by historical 
-                    context rather than commercial convenience.
-                  </p>
-                  <p>
-                    This is where it all began. A collection presented with the gravity it deserves.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -162,6 +132,36 @@ export function SoulsOfTheAmericasModal({ open, onOpenChange }: SoulsOfTheAmeric
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    The ancestors knew. The gods demanded fire.
+                  </p>
+                  <p>
+                    Before Columbus ever dreamed of spice, the peoples of Mesoamerica had cultivated 
+                    chilies for five thousand years. Hot Pepper Trading Company assembled this consortium 
+                    as a homecoming—a return to the birthplace of capsicum where every pepper tells a story 
+                    of empire, trade, and transformation.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">Souls of the Americas</span> spans from 
+                    the ancient markets of Tenochtitlan to the sun-drenched islands of the Caribbean. 
+                    Each cultivar was selected for its place in the ancestral lineage—curated by historical 
+                    context rather than commercial convenience.
+                  </p>
+                  <p>
+                    This is where it all began. A collection presented with the gravity it deserves.
+                  </p>
                 </div>
               </section>
 

@@ -97,36 +97,6 @@ export function InspirationsOfIndiaModal({ open, onOpenChange }: InspirationsOfI
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    Listen. The monsoon drums against clay tiles.
-                  </p>
-                  <p>
-                    In the crimson valleys of Kashmir, merchants have measured saffron by the gram and chilies 
-                    by the handful since before the Mughals crossed the passes. Hot Pepper Trading Company 
-                    assembled this consortium as an odyssey through the subcontinent—from the misty highlands 
-                    where color is currency to the volcanic northeast where heat defies comprehension.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Inspirations of India</span> traces the ancient 
-                    spice routes that made kingdoms rich and cuisines immortal. Each pepper was selected for 
-                    its role in the chromatic spectrum—curated not as inventory, but as a deliberate progression 
-                    from color to aroma to fire.
-                  </p>
-                  <p>
-                    This is a release assembled with restraint, honoring centuries of cultivation and trade.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -162,6 +132,36 @@ export function InspirationsOfIndiaModal({ open, onOpenChange }: InspirationsOfI
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    Listen. The monsoon drums against clay tiles.
+                  </p>
+                  <p>
+                    In the crimson valleys of Kashmir, merchants have measured saffron by the gram and chilies 
+                    by the handful since before the Mughals crossed the passes. Hot Pepper Trading Company 
+                    assembled this consortium as an odyssey through the subcontinent—from the misty highlands 
+                    where color is currency to the volcanic northeast where heat defies comprehension.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">Inspirations of India</span> traces the ancient 
+                    spice routes that made kingdoms rich and cuisines immortal. Each pepper was selected for 
+                    its role in the chromatic spectrum—curated not as inventory, but as a deliberate progression 
+                    from color to aroma to fire.
+                  </p>
+                  <p>
+                    This is a release assembled with restraint, honoring centuries of cultivation and trade.
+                  </p>
                 </div>
               </section>
 
