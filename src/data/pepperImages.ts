@@ -43,6 +43,7 @@ import rocotoImg from '@/assets/peppers/rocoto.jpg';
 import guajilloImg from '@/assets/peppers/guajillo.jpg';
 import pasillaImg from '@/assets/peppers/pasilla.jpg';
 import chipotleImg from '@/assets/peppers/chipotle.jpg';
+import chipotleMoritaImg from '@/assets/peppers/chipotle-morita.jpg';
 import newMexicoChileImg from '@/assets/peppers/new-mexico-chile.jpg';
 import ajiPancaImg from '@/assets/peppers/aji-panca.jpg';
 import ajiMirasolImg from '@/assets/peppers/aji-mirasol.jpg';
@@ -205,6 +206,7 @@ export const pepperImageMap: Record<string, string> = {
   'guajillo': guajilloImg,
   'pasilla': pasillaImg,
   'chipotle': chipotleImg,
+  'chipotle-morita': chipotleMoritaImg,
   'new-mexico-chile': newMexicoChileImg,
   'aji-panca': ajiPancaImg,
   'aji-mirasol': ajiMirasolImg,
