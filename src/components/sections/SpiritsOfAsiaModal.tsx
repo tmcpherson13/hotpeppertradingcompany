@@ -18,50 +18,50 @@ interface SpiritsOfAsiaModalProps {
 const pepperProfiles = [
   {
     name: 'Gochugaru',
-    origin: 'Korea (Asian Trade Routes)',
+    origin: 'Korea (Eastern Terminus)',
     heat: 'Mild (4,000–8,000 SHU)',
     flavor: 'Sweet, smoky, with subtle fruit notes and a gentle warmth.',
-    role: 'The Soul—the essential Korean pepper that defines kimchi and gochujang.',
+    role: 'The Convergence—where overland caravans and maritime traders both arrived, transforming a New World fruit into the soul of Korean cuisine.',
   },
   {
-    name: 'Thai Bird\'s Eye',
-    origin: 'Thailand (Southeast Asian Routes)',
+    name: 'Urfa Biber',
+    origin: 'Turkey (Anatolian Passage)',
+    heat: 'Medium (30,000–50,000 SHU)',
+    flavor: 'Smoky, raisin-like sweetness with earthy, coffee undertones.',
+    role: 'The Memory—slow-dried in Anatolia, carrying the last warmth of the Silk Road before the eastern mountains.',
+  },
+  {
+    name: 'Aleppo',
+    origin: 'Syria (The Crossroads)',
+    heat: 'Mild-Medium (10,000–25,000 SHU)',
+    flavor: 'Fruity, sun-dried tomato notes with moderate, oily heat.',
+    role: 'The Crossroads—the caravanserai where overland traders rested before the final passage east.',
+  },
+  {
+    name: "Thai Bird's Eye",
+    origin: 'Thailand (Maritime Southeast Asia)',
     heat: 'Hot (50,000–100,000 SHU)',
     flavor: 'Sharp, bright, peppery with an immediate, clean heat.',
-    role: 'The Spark—the defining fire of Southeast Asian curries and stir-fries.',
+    role: 'The Spark—arriving by sea, it became the defining fire of Southeast Asian woks.',
   },
   {
-    name: 'Afterglow',
-    origin: 'China (Asian Spice Routes)',
-    heat: 'Medium (5,000–10,000 SHU)',
-    flavor: 'Warm, aromatic, with lingering complexity.',
-    role: 'The Bridge—connecting mild and hot with its persistent, warming presence.',
-  },
-  {
-    name: 'Siling Labuyo',
-    origin: 'Philippines (Maritime Southeast Asia)',
-    heat: 'Very Hot (80,000–100,000 SHU)',
-    flavor: 'Sharp, citrusy, with an intense bite that fades quickly.',
-    role: 'The Wild Card—the untamed Philippine pepper that adds unpredictable fire.',
-  },
-  {
-    name: 'Tien Tsin',
-    origin: 'China (Silk Road)',
-    heat: 'Hot (50,000–75,000 SHU)',
-    flavor: 'Sharp, clean heat with a slightly smoky finish.',
-    role: 'The Classic—the iconic Chinese dried chili essential to Sichuan cuisine.',
+    name: 'Ghost',
+    origin: 'India (Assam Valley)',
+    heat: 'Superhot (855,000–1,041,427 SHU)',
+    flavor: 'Fruity, slightly sweet, with a slow-building volcanic intensity.',
+    role: "The Legend—from Assam's remote valleys, the pepper that proved maritime routes reached the wildest extremes.",
   },
 ];
 
 const pairings = [
-  'Korean kimchi and banchan',
-  'Thai green or red curry',
-  'Sichuan mapo tofu',
-  'Filipino adobo with vinegar',
+  'Turkish lahmacun with Urfa Biber',
+  'Aleppo-rubbed lamb kebabs',
+  'Thai basil stir-fry (pad krapao)',
+  'Korean kimchi and gochujang',
+  'Indian ghost pepper curry',
+  'Levantine muhammara',
   'Korean fried chicken',
-  'Pad Thai or pad krapao',
-  'Chinese kung pao chicken',
-  'Japanese tantanmen ramen',
+  'Thai green or red curry',
 ];
 
 export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalProps) {
@@ -86,11 +86,11 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Spirits of Asia
+                    The Silk & Jade Passage
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  From the Silk Road to the Spice Islands
+                  Where the Caravans Met the Sea
                 </p>
               </div>
             </div>
@@ -105,22 +105,22 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    The caravans moved slowly. The ships sailed faster.
+                    Some peppers traveled by camel. Others, by sail.
                   </p>
                   <p>
                     When Portuguese traders brought capsicum to Asia in the 16th century, they sparked 
-                    a culinary revolution. Hot Pepper Trading Company assembled this consortium as a 
-                    testament to how a New World fruit became the heart of a continent's cuisine in 
-                    just four centuries.
+                    a culinary revolution that unfolded along two distinct paths. The overland <span className="font-semibold text-ink">Silk Road</span> carried 
+                    peppers from Mediterranean ports through Aleppo and Anatolia, while the maritime <span className="font-semibold text-ink">Jade Passage</span> 
+                    delivered them through India and Southeast Asia to the eastern shores.
                   </p>
                   <p>
-                    <span className="font-semibold text-ink">Spirits of Asia</span> traces the routes 
-                    from Korean kimchi pots to Thai street woks. Each pepper was selected for its role 
-                    in the regional tradition—curated not as a sampling, but as a deliberate study of 
-                    adaptation and mastery.
+                    <span className="font-semibold text-ink">The Silk & Jade Passage</span> honors both journeys. 
+                    From the Levantine crossroads where caravans rested, to the volcanic valleys of Assam where 
+                    maritime routes reached their most extreme expression—each pepper marks a waypoint in the 
+                    eastward migration of heat.
                   </p>
                   <p>
-                    This is a release honoring heat perfected through generations.
+                    By silk or by jade, the fire found its way east—and there it stayed.
                   </p>
                 </div>
               </section>
@@ -191,11 +191,10 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
               {/* Closing Statement */}
               <section className="text-center py-4">
                 <blockquote className="font-body text-lg text-ink/80 italic max-w-2xl mx-auto leading-relaxed">
-                  "From fermented clay pots to blazing woks—this is the fire that crossed oceans 
-                  and became the soul of a continent."
+                  "By silk or by jade, the fire found its way east—and there it stayed."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 004 • Limited Production • Pan-Asian
+                  Consortium № 004 • Limited Production • Silk Road & Maritime Routes
                 </p>
               </section>
 
@@ -211,7 +210,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">Harmonious</span>
+                  <span className="font-display text-ink">4,000–1,041,427 SHU</span>
                 </div>
               </div>
             </div>
