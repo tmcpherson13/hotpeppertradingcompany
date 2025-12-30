@@ -86,7 +86,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    The Silk & Jade Passage
+                    The Silk & Jade Passages
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
@@ -154,7 +154,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                     delivered them through India and Southeast Asia to the eastern shores.
                   </p>
                   <p>
-                    <span className="font-semibold text-ink">The Silk & Jade Passage</span> honors both journeys. 
+                    <span className="font-semibold text-ink">The Silk & Jade Passages</span> honors both journeys.
                     From the Levantine crossroads where caravans rested, to the volcanic valleys of Assam where 
                     maritime routes reached their most extreme expression—each pepper marks a waypoint in the 
                     eastward migration of heat.

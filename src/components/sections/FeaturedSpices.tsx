@@ -69,7 +69,7 @@ const spices: Spice[] = [
     consortiumId: 'americas',
   },
   {
-    name: 'The Silk & Jade Passage',
+    name: 'The Silk & Jade Passages',
     origin: 'Multi-Origin',
     region: 'Silk Road & Maritime Routes',
     tradeLot: 'CONSORTIUM № 593',
