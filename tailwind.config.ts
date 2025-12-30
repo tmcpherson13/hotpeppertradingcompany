@@ -76,14 +76,19 @@ export default {
           DEFAULT: "hsl(var(--sienna))",
           light: "hsl(var(--sienna-light))",
         },
-        ink: "hsl(var(--ink-brown))",
-        parchment: {
-          DEFAULT: "hsl(var(--parchment))",
-          dark: "hsl(var(--parchment-dark))",
+        ink: {
+          DEFAULT: "hsl(var(--ink-brown) / <alpha-value>)",
+          brown: "hsl(var(--ink-brown) / <alpha-value>)",
+          light: "hsl(var(--ink-light) / <alpha-value>)",
         },
-        tyrian: "hsl(var(--tyrian))",
-        gold: "hsl(var(--gold-accent))",
-        "pepper-red": "hsl(var(--pepper-red))",
+        parchment: {
+          DEFAULT: "hsl(var(--parchment) / <alpha-value>)",
+          dark: "hsl(var(--parchment-dark) / <alpha-value>)",
+          cream: "hsl(var(--parchment-cream) / <alpha-value>)",
+        },
+        tyrian: "hsl(var(--tyrian) / <alpha-value>)",
+        gold: "hsl(var(--gold-accent) / <alpha-value>)",
+        "pepper-red": "hsl(var(--pepper-red) / <alpha-value>)",
       },
       borderRadius: {
         lg: "var(--radius)",
