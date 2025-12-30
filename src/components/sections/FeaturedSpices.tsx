@@ -7,7 +7,7 @@ import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailMod
 import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIndiaModal';
 import { SoulsOfTheAmericasModal } from '@/components/sections/SoulsOfTheAmericasModal';
 import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
-import { VoicesOfTheAndesModal } from '@/components/sections/VoicesOfTheAndesModal';
+import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
@@ -81,12 +81,12 @@ const spices: Spice[] = [
     consortiumId: 'asia',
   },
   {
-    name: 'Voices of the Andes',
+    name: 'The Andean Diaspora',
     origin: 'Multi-Origin',
-    region: 'Andean Origin',
+    region: 'Global Migration',
     tradeLot: 'CONSORTIUM № 164',
     weight: '3 oz / 85g',
-    description: 'From mountain terraces to coastal markets—the fire that fueled empires and still burns in every ceviche today.',
+    description: 'Two cultivars, two directions—from the Andes to Aleppo and Korea, this is the story of peppers that traveled and those that stayed.',
     price: '$42',
     image: voicesOfTheAndesImg,
     isConsortium: true,
@@ -374,7 +374,7 @@ export function FeaturedSpices() {
         open={asiaModalOpen} 
         onOpenChange={setAsiaModalOpen} 
       />
-      <VoicesOfTheAndesModal 
+      <AndeanDiasporaModal 
         open={andesModalOpen} 
         onOpenChange={setAndesModalOpen} 
       />

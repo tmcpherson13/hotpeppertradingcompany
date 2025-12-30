@@ -10,61 +10,66 @@ import { Badge } from '@/components/ui/badge';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 
-interface VoicesOfTheAndesModalProps {
+interface AndeanDiasporaModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 const pepperProfiles = [
   {
-    name: 'Aji Amarillo',
-    origin: 'Peru (Andean Highlands)',
-    heat: 'Hot (30,000–50,000 SHU)',
-    flavor: 'Fruity, tropical, bright with subtle berry notes.',
-    role: 'The Heart—the golden soul of Peruvian cuisine for over 5,000 years.',
-  },
-  {
     name: 'Aji Limon',
-    origin: 'Peru (Andean Trade Routes)',
+    origin: 'Peru (Andean Highlands)',
     heat: 'Medium (15,000–30,000 SHU)',
-    flavor: 'Citrusy, bright, with unmistakable lemon-like zest.',
-    role: 'The Brightness—adding vibrant citrus notes that dance on the palate.',
+    flavor: 'Bright citrus, unmistakable lemon zest, clean heat.',
+    role: 'The Anchor — the baccatum that starts our journey in the Peruvian highlands.',
   },
   {
-    name: 'Rocoto',
-    origin: 'Peru/Bolivia (High Andes)',
-    heat: 'Very Hot (50,000–250,000 SHU)',
-    flavor: 'Apple-like crunch with a fierce, lingering heat.',
-    role: 'The Surprise—the only Capsicum pubescens, thriving in cold mountain air.',
+    name: 'Aji Amarillo',
+    origin: 'Peru (Andean Trade Routes)',
+    heat: 'Hot (30,000–50,000 SHU)',
+    flavor: 'Fruity, tropical, golden with subtle berry notes.',
+    role: 'The Heart — the golden soul of Peruvian cuisine for over 5,000 years.',
   },
   {
-    name: 'Aji Panca',
-    origin: 'Peru (Coastal Valleys)',
-    heat: 'Mild (500–1,500 SHU)',
-    flavor: 'Deep, berry-like, with hints of dried fruit and subtle smokiness.',
-    role: 'The Depth—providing rich, complex undertones without overwhelming heat.',
-  },
-  {
-    name: 'Devil\'s Breath',
+    name: "Devil's Breath",
     origin: 'Ecuador (Northern Andes)',
-    heat: 'Very Hot (150,000–200,000 SHU)',
-    flavor: 'Intense, fruity, with floral notes and a delayed inferno.',
-    role: 'The Peak—Ecuador\'s volcanic contribution that crowns the consortium.',
+    heat: 'Very Hot (186,000 SHU)',
+    flavor: 'Intense, fruity, floral with delayed inferno.',
+    role: "The Peak — Ecuador's chinense that stayed home and climbed the heat ladder.",
+  },
+  {
+    name: 'Aleppo',
+    origin: 'Syria (Levant)',
+    heat: 'Mild (10,000 SHU)',
+    flavor: 'Fruity, oily, sun-dried with cumin-like undertones.',
+    role: 'The Westward Turn — where annuum met the Levantine sun and found new character.',
+  },
+  {
+    name: 'Gochugaru',
+    origin: 'Korea (East Asia)',
+    heat: 'Mild (1,500–6,000 SHU)',
+    flavor: 'Sweet, smoky, mild with lingering warmth.',
+    role: 'The Eastward Reach — annuum at the terminus of the Silk Road, backbone of kimchi.',
   },
 ];
 
 const pairings = [
+  // Andean
   'Traditional Peruvian ceviche',
-  'Aji de gallina with rice',
-  'Causa rellena (potato terrine)',
-  'Lomo saltado (stir-fried beef)',
-  'Rocoto relleno (stuffed peppers)',
-  'Ecuadorian encebollado',
-  'Anticuchos (grilled beef heart)',
+  'Aji de gallina',
   'Papa a la huancaína',
+  // Levantine
+  'Muhammara (walnut-pepper dip)',
+  'Fattoush with Aleppo finish',
+  'Grilled lamb with Aleppo',
+  // Korean
+  'Traditional kimchi',
+  'Gochujang preparations',
+  // Fusion
+  'Cross-cultural hot sauce crafting',
 ];
 
-export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesModalProps) {
+export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30">
@@ -74,7 +79,7 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
                 src={voicesOfTheAndesImg}
-                alt="Voices of the Andes Pepper Consortium"
+                alt="The Andean Diaspora Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
@@ -86,11 +91,11 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Voices of the Andes
+                    The Andean Diaspora
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  From Mountain Terraces to Coastal Markets
+                  Two Cultivars, Two Directions
                 </p>
               </div>
             </div>
@@ -105,21 +110,27 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    The mountains whisper. The peppers remember.
+                    The annuum that left the mountains did not return unchanged.
                   </p>
                   <p>
-                    High above the clouds, where the Inca once built their terraces into impossible 
-                    slopes, the aji has flourished for millennia. Hot Pepper Trading Company assembled 
-                    this consortium as an excavation of flavor—a journey to the birthplace of the 
-                    baccatum species where peppers grow in colors the conquistadors never imagined.
+                    Long before the galleons, the Andes blazed. Three cultivars of Capsicum — annuum, 
+                    baccatum, and chinense — arose in the mountain valleys of Peru and Ecuador. What 
+                    happened next would reshape cuisines from Seoul to Aleppo.
                   </p>
                   <p>
-                    <span className="font-semibold text-ink">Voices of the Andes</span> gathers the 
-                    treasures of Peru, Bolivia, and Ecuador. Each cultivar was selected for its place 
-                    in the Andean lineage—curated by altitude and heritage rather than mere availability.
+                    Some peppers stayed. The baccatum cultivars — Aji Limon and Aji Amarillo — remained 
+                    in Peru, their bright, fruity heat unchanged for five millennia. The chinense climbed 
+                    higher, becoming Ecuador's Devil's Breath. But the annuum departed. Portuguese traders 
+                    carried it westward to the Levant, where centuries of sun transformed it into the 
+                    fruity complexity of Aleppo. Other ships carried it eastward — to India, to China, 
+                    and finally to Korea, where it arrived via Japanese invasions in the 1590s and became 
+                    the sweet-smoky soul of kimchi.
                   </p>
                   <p>
-                    This is a release presenting fire from the roof of the world, assembled with intent.
+                    <span className="font-semibold text-ink">Hot Pepper Trading Company</span> assembled 
+                    this consortium as a chronicle of migration and transformation. From the roof of the 
+                    world to the Silk Road's terminus, from the Andes to Anatolia to Asia — this is the 
+                    story of peppers that traveled, and those that stayed behind to burn brighter.
                   </p>
                 </div>
               </section>
@@ -190,11 +201,11 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
               {/* Closing Statement */}
               <section className="text-center py-4">
                 <blockquote className="font-body text-lg text-ink/80 italic max-w-2xl mx-auto leading-relaxed">
-                  "From the terraces of Machu Picchu to the markets of Lima—this is the fire that 
-                  fueled empires and still burns in every ceviche today."
+                  "In Aleppo, centuries of Levantine sun transformed it — tempered its heat, deepened 
+                  its fruit. What returns to the Americas is not what left. This is the nature of diaspora."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 005 • Limited Production • Andean Origin
+                  Consortium № 005 • Limited Production • Global Migration
                 </p>
               </section>
 
@@ -210,7 +221,7 @@ export function VoicesOfTheAndesModal({ open, onOpenChange }: VoicesOfTheAndesMo
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">Altitude</span>
+                  <span className="font-display text-ink">Diaspora</span>
                 </div>
               </div>
             </div>
