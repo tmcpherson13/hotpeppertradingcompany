@@ -102,41 +102,6 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    The annuum that left the mountains did not return unchanged.
-                  </p>
-                  <p>
-                    Long before the galleons, the Andes blazed. Three cultivars of Capsicum — annuum, 
-                    baccatum, and chinense — arose in the mountain valleys of Peru and Ecuador. What 
-                    happened next would reshape cuisines from Seoul to Aleppo.
-                  </p>
-                  <p>
-                    Some peppers stayed. The baccatum cultivars — Aji Limon and Aji Amarillo — remained 
-                    in Peru, their bright, fruity heat unchanged for five millennia. The chinense climbed 
-                    higher, becoming Ecuador's Devil's Breath. But the annuum departed. Portuguese traders 
-                    carried it westward to the Levant, where centuries of sun transformed it into the 
-                    fruity complexity of Aleppo. Other ships carried it eastward — to India, to China, 
-                    and finally to Korea, where it arrived via Japanese invasions in the 1590s and became 
-                    the sweet-smoky soul of kimchi.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Hot Pepper Trading Company</span> assembled 
-                    this consortium as a chronicle of migration and transformation. From the roof of the 
-                    world to the Silk Road's terminus, from the Andes to Anatolia to Asia — this is the 
-                    story of peppers that traveled, and those that stayed behind to burn brighter.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -172,6 +137,41 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    The annuum that left the mountains did not return unchanged.
+                  </p>
+                  <p>
+                    Long before the galleons, the Andes blazed. Three cultivars of Capsicum — annuum, 
+                    baccatum, and chinense — arose in the mountain valleys of Peru and Ecuador. What 
+                    happened next would reshape cuisines from Seoul to Aleppo.
+                  </p>
+                  <p>
+                    Some peppers stayed. The baccatum cultivars — Aji Limon and Aji Amarillo — remained 
+                    in Peru, their bright, fruity heat unchanged for five millennia. The chinense climbed 
+                    higher, becoming Ecuador's Devil's Breath. But the annuum departed. Portuguese traders 
+                    carried it westward to the Levant, where centuries of sun transformed it into the 
+                    fruity complexity of Aleppo. Other ships carried it eastward — to India, to China, 
+                    and finally to Korea, where it arrived via Japanese invasions in the 1590s and became 
+                    the sweet-smoky soul of kimchi.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">Hot Pepper Trading Company</span> assembled 
+                    this consortium as a chronicle of migration and transformation. From the roof of the 
+                    world to the Silk Road's terminus, from the Andes to Anatolia to Asia — this is the 
+                    story of peppers that traveled, and those that stayed behind to burn brighter.
+                  </p>
                 </div>
               </section>
 

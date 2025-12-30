@@ -97,36 +97,6 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    From turquoise waters to volcanic peaks.
-                  </p>
-                  <p>
-                    The Caribbean archipelago, scattered like emeralds across azure waters, became the crucible 
-                    where African, Indigenous, European, and Asian food traditions collided. Hot Pepper Trading 
-                    Company assembled this consortium to honor that convergence—a collection curated by island 
-                    route rather than commercial expedience.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Rhythms of the Caribbean</span> traces the peppers from 
-                    the jerk pits of Jamaica to the pepperpots of Guyana. Each cultivar was selected for its role 
-                    in the island narrative—carrying the rhythm of steel drums, the memory of sugar plantations, 
-                    and the defiant spirit of peoples who transformed ingredients of survival into cuisines of celebration.
-                  </p>
-                  <p>
-                    This is a release presenting resilience made edible, assembled with deliberate care.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -162,6 +132,36 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    From turquoise waters to volcanic peaks.
+                  </p>
+                  <p>
+                    The Caribbean archipelago, scattered like emeralds across azure waters, became the crucible 
+                    where African, Indigenous, European, and Asian food traditions collided. Hot Pepper Trading 
+                    Company assembled this consortium to honor that convergence—a collection curated by island 
+                    route rather than commercial expedience.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">Rhythms of the Caribbean</span> traces the peppers from 
+                    the jerk pits of Jamaica to the pepperpots of Guyana. Each cultivar was selected for its role 
+                    in the island narrative—carrying the rhythm of steel drums, the memory of sugar plantations, 
+                    and the defiant spirit of peoples who transformed ingredients of survival into cuisines of celebration.
+                  </p>
+                  <p>
+                    This is a release presenting resilience made edible, assembled with deliberate care.
+                  </p>
                 </div>
               </section>
 

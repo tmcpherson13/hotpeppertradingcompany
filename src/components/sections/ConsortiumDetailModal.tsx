@@ -97,35 +97,6 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
 
             {/* Content */}
             <div className="p-6 md:p-8 space-y-8">
-              {/* The Story */}
-              <section>
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
-                </div>
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
-                  <p className="italic text-ink/80">
-                    Close your eyes. Breathe.
-                  </p>
-                  <p>
-                    Feel the sun on ancient soil. The hum of distant markets. The sizzle of meat on open flame. 
-                    Hot Pepper Trading Company assembled this consortium as a passage through time—across deserts 
-                    and oceans, woven from the hands of growers, traders, and cooks who understood one truth: heat is memory.
-                  </p>
-                  <p>
-                    <span className="font-semibold text-ink">Echoes of Africa</span> traces the routes that peppers 
-                    traveled from Africa's coasts to the Caribbean, from the Levant to the New World. Each pepper 
-                    was selected with intent—not for volume, but for its role in the layered narrative of flavor 
-                    and provenance.
-                  </p>
-                  <p>
-                    This is more than a collection. It is a conversation between continents, curated by route and lineage.
-                  </p>
-                </div>
-              </section>
-
-              <Separator className="bg-ink/20" />
-
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -161,6 +132,35 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator className="bg-ink/20" />
+
+              {/* The Story */}
+              <section>
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-xl text-ink uppercase tracking-wide">The Story</h3>
+                </div>
+                <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
+                  <p className="italic text-ink/80">
+                    Close your eyes. Breathe.
+                  </p>
+                  <p>
+                    Feel the sun on ancient soil. The hum of distant markets. The sizzle of meat on open flame. 
+                    Hot Pepper Trading Company assembled this consortium as a passage through time—across deserts 
+                    and oceans, woven from the hands of growers, traders, and cooks who understood one truth: heat is memory.
+                  </p>
+                  <p>
+                    <span className="font-semibold text-ink">Echoes of Africa</span> traces the routes that peppers 
+                    traveled from Africa's coasts to the Caribbean, from the Levant to the New World. Each pepper 
+                    was selected with intent—not for volume, but for its role in the layered narrative of flavor 
+                    and provenance.
+                  </p>
+                  <p>
+                    This is more than a collection. It is a conversation between continents, curated by route and lineage.
+                  </p>
                 </div>
               </section>
 
