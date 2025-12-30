@@ -27,7 +27,7 @@ const pepperProfiles = [
     name: 'Urfa Biber',
     origin: 'Turkey (Anatolian Passage)',
     heat: 'Medium (30,000–50,000 SHU)',
-    flavor: 'Smoky, raisin-like sweetness with earthy, coffee undertones.',
+    flavor: 'Smoky, dried-currant sweetness with earthy, coffee undertones.',
     role: 'The Memory—slow-dried in Anatolia, carrying the last warmth of the Silk Road before the eastern mountains.',
   },
   {
