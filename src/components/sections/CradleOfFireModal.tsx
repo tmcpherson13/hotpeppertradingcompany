@@ -31,11 +31,11 @@ const pepperProfiles = [
     role: 'The Foundation — the dried poblano that defines Mexican mole.',
   },
   {
-    name: 'Guajillo',
-    origin: 'Zacatecas, Mexico',
-    heat: 'Mild-Medium (2,500–5,000 SHU)',
-    flavor: 'Tangy, berry-like, with green tea undertones.',
-    role: 'The Backbone — the workhorse of Mexican salsas and adobos.',
+    name: 'Chipotle Morita',
+    origin: 'Chihuahua, Mexico',
+    heat: 'Medium (2,500–8,000 SHU)',
+    flavor: 'Smoky, sweet, with dried fruit and chocolate undertones.',
+    role: 'The Smoke — the shorter-smoked jalapeño that defines adobo depth.',
   },
   {
     name: 'Serrano',
@@ -161,8 +161,8 @@ export function CradleOfFireModal({ open, onOpenChange }: CradleOfFireModalProps
                     diversity that now spans the globe.
                   </p>
                   <p>
-                    The dried ancho became the soul of mole. The guajillo gave body to every 
-                    salsa roja. The serrano brought everyday heat to the streets and markets. 
+                    The dried ancho became the soul of mole. The chipotle morita brought smoke 
+                    and sweetness to adobo. The serrano brought everyday heat to the streets and markets. 
                     And in the humid jungles of the Yucatán, the habanero evolved separately — 
                     a chinense cultivar that climbed to extraordinary heights of heat while 
                     retaining tropical, floral complexity.
