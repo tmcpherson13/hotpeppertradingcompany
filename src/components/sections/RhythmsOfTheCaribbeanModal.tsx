@@ -45,11 +45,11 @@ const pepperProfiles = [
     role: 'The soul—the secret weapon of Guyanese pepperpot and South American Caribbean kitchens.',
   },
   {
-    name: 'Congo Pepper',
-    origin: 'Trinidad (Caribbean Route)',
-    heat: 'Extreme (300,000–500,000 SHU)',
-    flavor: 'Initial fruity sweetness followed by devastating, beautiful heat.',
-    role: 'The legend—named for the strength of enslaved Africans, carrying centuries of history.',
+    name: 'Trinidad Scorpion',
+    origin: 'Trinidad & Tobago (Caribbean Route)',
+    heat: 'Super Hot (1,200,000–2,000,000 SHU)',
+    flavor: 'Fruity and floral opening that gives way to devastating, world-record heat.',
+    role: 'The crescendo—Trinidad\'s volcanic soil yielded a pepper so fierce it once held the world record.',
   },
 ];
 
