@@ -78,7 +78,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
                 Consortium № 010
               </Badge>
               <h2 className="font-blackpearl text-3xl md:text-4xl text-parchment mb-2">
-                The Old Natchez Trace
+                Old Natchez Trace
               </h2>
               <p className="text-parchment/80 font-heading text-sm uppercase tracking-wider">
                 From Gulf Port to Highland Trail
