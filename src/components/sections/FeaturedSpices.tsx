@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
-import { InspirationsOfIndiaModal } from '@/components/sections/InspirationsOfIndiaModal';
-import { SoulsOfTheAmericasModal } from '@/components/sections/SoulsOfTheAmericasModal';
 import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
@@ -14,8 +12,6 @@ import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanc
 import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
-import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
-import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
 import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
@@ -51,30 +47,6 @@ const spices: Spice[] = [
     image: echoesOfAfricaImg,
     isConsortium: true,
     consortiumId: 'africa',
-  },
-  {
-    name: 'Inspirations of India',
-    origin: 'Multi-Origin',
-    region: 'Indian Subcontinent',
-    tradeLot: 'CONSORTIUM № 738',
-    weight: '3 oz / 85g',
-    description: 'A chromatic journey from Kashmir\'s crimson valleys to Assam\'s volcanic fire—color, aroma, and relentless heat.',
-    price: '$38',
-    image: inspirationsOfIndiaImg,
-    isConsortium: true,
-    consortiumId: 'india',
-  },
-  {
-    name: 'Souls of the Americas',
-    origin: 'Multi-Origin',
-    region: 'Pan-American',
-    tradeLot: 'CONSORTIUM № 256',
-    weight: '3 oz / 85g',
-    description: 'From Aztec temples to Caribbean shores—the ancestral fire that launched a thousand ships and changed cuisine forever.',
-    price: '$40',
-    image: soulsOfTheAmericasImg,
-    isConsortium: true,
-    consortiumId: 'americas',
   },
   {
     name: 'Silk & Jade Passages',
@@ -165,8 +137,6 @@ const spices: Spice[] = [
 export function FeaturedSpices() {
   const sectionRef = useRef<HTMLElement>(null);
   const [africaModalOpen, setAfricaModalOpen] = useState(false);
-  const [indiaModalOpen, setIndiaModalOpen] = useState(false);
-  const [americasModalOpen, setAmericasModalOpen] = useState(false);
   const [asiaModalOpen, setAsiaModalOpen] = useState(false);
   const [andesModalOpen, setAndesModalOpen] = useState(false);
   const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
@@ -186,12 +156,6 @@ export function FeaturedSpices() {
     switch (consortiumId) {
       case 'africa':
         setAfricaModalOpen(true);
-        break;
-      case 'india':
-        setIndiaModalOpen(true);
-        break;
-      case 'americas':
-        setAmericasModalOpen(true);
         break;
       case 'asia':
         setAsiaModalOpen(true);
@@ -434,15 +398,7 @@ export function FeaturedSpices() {
         open={africaModalOpen} 
         onOpenChange={setAfricaModalOpen} 
       />
-      <InspirationsOfIndiaModal 
-        open={indiaModalOpen} 
-        onOpenChange={setIndiaModalOpen} 
-      />
-      <SoulsOfTheAmericasModal 
-        open={americasModalOpen} 
-        onOpenChange={setAmericasModalOpen} 
-      />
-      <SpiritsOfAsiaModal 
+      <SpiritsOfAsiaModal
         open={asiaModalOpen} 
         onOpenChange={setAsiaModalOpen} 
       />
