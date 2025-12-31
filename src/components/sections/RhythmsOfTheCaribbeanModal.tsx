@@ -82,7 +82,7 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 847
+                  Pepper Consortium № 004
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
@@ -195,7 +195,7 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
                   celebrated in every bite that carries the rhythm of the islands."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 847 • Limited Production • Multi-Origin
+                  Consortium № 004 • Limited Production • Multi-Origin
                 </p>
               </section>
 

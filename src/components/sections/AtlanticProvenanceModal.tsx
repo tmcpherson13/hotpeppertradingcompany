@@ -72,7 +72,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
             <div className="absolute bottom-4 left-6 right-6">
               <Badge className="mb-2 bg-primary/90 text-primary-foreground border-none">
-                № 007 · Atlantic Triangle
+                № 006 · Atlantic Triangle
               </Badge>
               <h2 className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide drop-shadow-lg">
                 Atlantic Provenance
