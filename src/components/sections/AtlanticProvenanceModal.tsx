@@ -75,7 +75,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
                 № 007 · Atlantic Triangle
               </Badge>
               <h2 className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide drop-shadow-lg">
-                The Atlantic Provenance
+                Atlantic Provenance
               </h2>
               <p className="text-parchment/80 text-sm mt-1 font-body italic">
                 Mexico → Caribbean → West Africa

@@ -77,7 +77,7 @@ const spices: Spice[] = [
     consortiumId: 'americas',
   },
   {
-    name: 'The Silk & Jade Passages',
+    name: 'Silk & Jade Passages',
     origin: 'Multi-Origin',
     region: 'Silk Road & Maritime Routes',
     tradeLot: 'CONSORTIUM № 593',
@@ -89,7 +89,7 @@ const spices: Spice[] = [
     consortiumId: 'asia',
   },
   {
-    name: 'The Andean Diaspora',
+    name: 'Andean Diaspora',
     origin: 'Multi-Origin',
     region: 'Global Migration',
     tradeLot: 'CONSORTIUM № 164',
@@ -113,7 +113,7 @@ const spices: Spice[] = [
     consortiumId: 'caribbean',
   },
   {
-    name: 'The Phoenician Legacy',
+    name: 'Phoenician Legacy',
     origin: 'Multi-Origin',
     region: 'Mediterranean Basin',
     tradeLot: 'CONSORTIUM № 007',
@@ -125,7 +125,7 @@ const spices: Spice[] = [
     consortiumId: 'mediterranean',
   },
   {
-    name: 'The Atlantic Provenance',
+    name: 'Atlantic Provenance',
     origin: 'Multi-Origin',
     region: 'Atlantic Triangle',
     tradeLot: 'CONSORTIUM № 008',
@@ -137,7 +137,7 @@ const spices: Spice[] = [
     consortiumId: 'atlantic',
   },
   {
-    name: 'The Manila Galleon',
+    name: 'Manila Galleon',
     origin: 'Multi-Origin',
     region: 'Trans-Pacific Route',
     tradeLot: 'CONSORTIUM № 009',
@@ -149,7 +149,7 @@ const spices: Spice[] = [
     consortiumId: 'manila',
   },
   {
-    name: 'The Old Natchez Trace',
+    name: 'Old Natchez Trace',
     origin: 'Multi-Origin',
     region: 'Gulf to Highlands',
     tradeLot: 'CONSORTIUM № 010',

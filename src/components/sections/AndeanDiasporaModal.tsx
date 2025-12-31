@@ -91,7 +91,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    The Andean Diaspora
+                    Andean Diaspora
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
