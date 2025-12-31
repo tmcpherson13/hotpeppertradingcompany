@@ -82,7 +82,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 007
+                  Pepper Consortium № 005
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
@@ -195,7 +195,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
                   "The routes change. The fire endures."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 007 • Limited Production • Mediterranean Basin
+                  Consortium № 005 • Limited Production • Mediterranean Basin
                 </p>
               </section>
 

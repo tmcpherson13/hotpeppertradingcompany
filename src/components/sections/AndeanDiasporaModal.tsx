@@ -87,7 +87,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 005
+                  Pepper Consortium № 003
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
@@ -205,7 +205,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
                   its fruit. What returns to the Americas is not what left. This is the nature of diaspora."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 005 • Limited Production • Global Migration
+                  Consortium № 003 • Limited Production • Global Migration
                 </p>
               </section>
 
