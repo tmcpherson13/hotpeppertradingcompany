@@ -12,6 +12,7 @@ import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanc
 import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
 import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
+import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
@@ -21,6 +22,7 @@ import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
 import manilaGalleonImg from '@/assets/consortium/manila-galleon.jpg';
 import oldNatchezTraceImg from '@/assets/consortium/old-natchez-trace.jpg';
 import cradleOfFireImg from '@/assets/consortium/cradle-of-fire.jpg';
+import southernCrucibleImg from '@/assets/consortium/southern-crucible.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 import antiqueMap from '@/assets/antique-map.jpg';
 
@@ -146,6 +148,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'mesoamerica',
   },
+  {
+    name: 'Southern Crucible',
+    origin: 'Multi-Origin',
+    region: 'Pan-South America',
+    tradeLot: 'CONSORTIUM № 010',
+    weight: '3 oz / 85g',
+    description: 'From Amazon to Andes—the continent that gave fire to the world. Every pepper traces its lineage here.',
+    price: '$48',
+    image: southernCrucibleImg,
+    isConsortium: true,
+    consortiumId: 'southamerica',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -159,7 +173,7 @@ export function FeaturedSpices() {
   const [manilaModalOpen, setManilaModalOpen] = useState(false);
   const [natchezModalOpen, setNatchezModalOpen] = useState(false);
   const [mesoamericaModalOpen, setMesoamericaModalOpen] = useState(false);
-
+  const [southamericaModalOpen, setSouthamericaModalOpen] = useState(false);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -195,6 +209,9 @@ export function FeaturedSpices() {
         break;
       case 'mesoamerica':
         setMesoamericaModalOpen(true);
+        break;
+      case 'southamerica':
+        setSouthamericaModalOpen(true);
         break;
     }
   };
@@ -447,6 +464,10 @@ export function FeaturedSpices() {
       <CradleOfFireModal 
         open={mesoamericaModalOpen} 
         onOpenChange={setMesoamericaModalOpen} 
+      />
+      <SouthernCrucibleModal 
+        open={southamericaModalOpen} 
+        onOpenChange={setSouthamericaModalOpen} 
       />
     </section>
   );
