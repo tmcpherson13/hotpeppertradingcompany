@@ -11,6 +11,7 @@ import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCa
 import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
 import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
+import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
@@ -19,6 +20,7 @@ import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
 import manilaGalleonImg from '@/assets/consortium/manila-galleon.jpg';
 import oldNatchezTraceImg from '@/assets/consortium/old-natchez-trace.jpg';
+import cradleOfFireImg from '@/assets/consortium/cradle-of-fire.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 import antiqueMap from '@/assets/antique-map.jpg';
 
@@ -132,6 +134,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'natchez',
   },
+  {
+    name: 'Cradle of Fire',
+    origin: 'Multi-Origin',
+    region: 'Mesoamerica',
+    tradeLot: 'CONSORTIUM № 009',
+    weight: '3 oz / 85g',
+    description: 'Where it all began—from wild chiltepin to cultivated diversity, the full arc of Mexican pepper heritage.',
+    price: '$36',
+    image: cradleOfFireImg,
+    isConsortium: true,
+    consortiumId: 'mesoamerica',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -144,6 +158,7 @@ export function FeaturedSpices() {
   const [atlanticModalOpen, setAtlanticModalOpen] = useState(false);
   const [manilaModalOpen, setManilaModalOpen] = useState(false);
   const [natchezModalOpen, setNatchezModalOpen] = useState(false);
+  const [mesoamericaModalOpen, setMesoamericaModalOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -177,6 +192,9 @@ export function FeaturedSpices() {
         break;
       case 'natchez':
         setNatchezModalOpen(true);
+        break;
+      case 'mesoamerica':
+        setMesoamericaModalOpen(true);
         break;
     }
   };
@@ -425,6 +443,10 @@ export function FeaturedSpices() {
       <OldNatchezTraceModal 
         open={natchezModalOpen} 
         onOpenChange={setNatchezModalOpen} 
+      />
+      <CradleOfFireModal 
+        open={mesoamericaModalOpen} 
+        onOpenChange={setMesoamericaModalOpen} 
       />
     </section>
   );
