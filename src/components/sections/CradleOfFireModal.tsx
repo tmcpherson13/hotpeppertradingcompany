@@ -56,18 +56,18 @@ const pepperProfiles = [
 const pairings = [
   // Traditional Mexican
   'Mole negro oaxaqueño',
-  'Salsa macha',
-  'Adobo and marinades',
+  'Adobo de chipotle',
+  'Tinga de pollo',
   'Chiles rellenos',
-  // Street Food
+  // Street Food & Grilled
   'Tacos al pastor',
-  'Elote with chile',
-  'Carne asada',
+  'Barbacoa and smoked meats',
+  'Carne asada with salsa morita',
   // Yucatecan
   'Cochinita pibil',
   'Xcatic and habanero salsas',
   // Modern Applications
-  'Craft hot sauce blending',
+  'Smoked chili chocolate desserts',
 ];
 
 export function CradleOfFireModal({ open, onOpenChange }: CradleOfFireModalProps) {
