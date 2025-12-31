@@ -4,9 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Flame, MapPin, Utensils, BookOpen, Ship } from "lucide-react";
 import { LogoDivider } from "@/components/ui/LogoDivider";
-import southernTableImg from "@/assets/consortium/southern-table.jpg";
+import oldNatchezTraceImg from "@/assets/consortium/old-natchez-trace.jpg";
 
-interface SouthernTableModalProps {
+interface OldNatchezTraceModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -15,52 +15,52 @@ const pepperProfiles = [
   {
     name: "Tabasco",
     origin: "Louisiana, USA",
-    heat: "2,500–5,000 SHU",
+    heat: "30,000–50,000 SHU",
     flavor: "Vinegary, bright, tangy",
-    role: "The Foundation — Louisiana's gift to the world, fermented on Avery Island since 1868"
+    role: "The Bayou Foundation — born in Avery Island marshlands, aged in oak barrels since 1868"
   },
   {
-    name: "Cayenne",
-    origin: "French Guiana → Louisiana",
-    heat: "30,000–50,000 SHU",
-    flavor: "Clean heat, earthy, slightly fruity",
-    role: "The Workhorse — the backbone of Cajun and Creole cooking"
+    name: "Scotch Bonnet",
+    origin: "Caribbean → Gulf Coast",
+    heat: "100,000–350,000 SHU",
+    flavor: "Fruity, tropical, intensely hot",
+    role: "The Port of Entry — arrived via Southern ports with Caribbean trade"
   },
   {
     name: "Datil",
     origin: "St. Augustine, Florida",
     heat: "100,000–300,000 SHU",
     flavor: "Sweet, fruity, tropical",
-    role: "The Colonial Heirloom — Spanish Minorcan heritage in America's oldest city"
+    role: "The Spanish Colonial Legacy — Minorcan settlers' gift to America's oldest city"
   },
   {
     name: "Hatch Green Chili",
     origin: "New Mexico, USA",
     heat: "1,000–8,000 SHU",
     flavor: "Earthy, roasted, smoky-sweet",
-    role: "The Borderland — high desert terroir from the Rio Grande valley"
+    role: "The Borderland Crossing — Southwestern influence along the trail's western reach"
   },
   {
-    name: "Ghost",
-    origin: "Texas (via India)",
-    heat: "855,000–1,041,427 SHU",
-    flavor: "Slow-building, fruity, overwhelming",
-    role: "The Modern Legend — adopted by Texas hot sauce culture as the ultimate challenge"
+    name: "Red Jalapeño",
+    origin: "Mexico → Texas",
+    heat: "2,500–8,000 SHU",
+    flavor: "Bright, grassy, moderate heat",
+    role: "The Trail's Companion — workhorse of Southern kitchens from Texas to Tennessee"
   }
 ];
 
 const pairings = [
-  "Louisiana Gumbo & Jambalaya",
-  "Texas Brisket & Smoked Ribs",
-  "Florida Datil Pepper Sauce",
-  "New Mexican Green Chile Stew",
-  "Cajun Blackened Redfish",
-  "Low Country Shrimp Boil",
+  "Cajun Jambalaya & Gumbo",
+  "Mississippi Delta Hot Tamales",
   "Nashville Hot Chicken",
-  "Texas Chili con Carne"
+  "New Orleans Remoulade & Po'boys",
+  "Appalachian Chow-Chow & Pickled Peppers",
+  "Low Country Shrimp Boil",
+  "Texas Chili con Carne",
+  "Florida Datil Pepper Sauce"
 ];
 
-export function SouthernTableModal({ open, onOpenChange }: SouthernTableModalProps) {
+export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden">
@@ -68,8 +68,8 @@ export function SouthernTableModal({ open, onOpenChange }: SouthernTableModalPro
           {/* Hero Image */}
           <div className="relative h-64 md:h-80 overflow-hidden">
             <img 
-              src={southernTableImg} 
-              alt="The Southern Table - American South pepper heritage"
+              src={oldNatchezTraceImg} 
+              alt="The Old Natchez Trace - America's earliest inland trade corridor"
               className="w-full h-full object-cover sepia-[0.15]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent" />
@@ -78,10 +78,10 @@ export function SouthernTableModal({ open, onOpenChange }: SouthernTableModalPro
                 Consortium № 010
               </Badge>
               <h2 className="font-blackpearl text-3xl md:text-4xl text-parchment mb-2">
-                The Southern Table
+                The Old Natchez Trace
               </h2>
               <p className="text-parchment/80 font-heading text-sm uppercase tracking-wider">
-                From Bayou to Borderland
+                From Gulf Port to Highland Trail
               </p>
             </div>
           </div>
@@ -134,30 +134,33 @@ export function SouthernTableModal({ open, onOpenChange }: SouthernTableModalPro
               </div>
               <div className="prose prose-sm max-w-none">
                 <p className="font-body text-muted-foreground leading-relaxed mb-4">
-                  The American South is not one cuisine but many—a patchwork of traditions stitched 
-                  together by heat and memory. From the bayous of Louisiana where Tabasco peppers 
-                  age in oak barrels on Avery Island, to the high desert valleys of New Mexico 
-                  where Hatch chilies roast over open flame each autumn, this is a story of 
-                  adaptation and fierce regional pride.
+                  The Old Natchez Trace was America's earliest inland trade corridor—a 440-mile 
+                  path carved first by bison, then by Native Americans, and finally by the 
+                  "Kaintuck" boatmen who floated goods down the Mississippi and walked home 
+                  through wilderness. From the bustling port of Natchez to the frontier settlement 
+                  of Nashville, this was the highway of a young nation.
                 </p>
                 <p className="font-body text-muted-foreground leading-relaxed mb-4">
-                  The peppers of the Southern Table arrived by different paths. Tabasco came from 
-                  Mexico, possibly via New Orleans, and became synonymous with Louisiana itself. 
-                  Cayenne, named for a river in French Guiana, became the workhorse of Creole 
-                  and Cajun kitchens—the invisible fire in every étouffée and blackened fish. 
-                  The Datil pepper, brought to St. Augustine by Minorcan colonists in the 1700s, 
-                  carries Spanish colonial heritage in every fruity, devastating bite.
+                  The peppers of the Old Natchez Trace arrived by water and dispersed by land. 
+                  Tabasco came upriver from Louisiana's coastal marshes, where it had been 
+                  fermenting in oak barrels on Avery Island since the Civil War. Scotch Bonnets 
+                  arrived in the holds of Caribbean trading vessels, their tropical fire finding 
+                  new expression in Gulf Coast kitchens. The Datil pepper, that mysterious 
+                  Minorcan heirloom, traveled from St. Augustine with settlers seeking new 
+                  frontiers.
                 </p>
                 <p className="font-body text-muted-foreground leading-relaxed mb-4">
-                  Hatch represents the borderland—the meeting of Indigenous, Spanish, and Mexican 
-                  traditions in New Mexico's Rio Grande valley. And the Ghost pepper, though born 
-                  in India, found its American home in Texas hot sauce culture, where extremity 
-                  is a point of pride and suffering is a badge of honor.
+                  From the borderlands came Hatch—roasted over open flame in New Mexico's 
+                  Rio Grande valley—and the Red Jalapeño, the dependable companion that 
+                  followed settlers from Texas through Tennessee. Along the Trace, French, 
+                  Spanish, and Native American foodways converged, creating the foundations 
+                  of what we now call Southern cuisine.
                 </p>
                 <p className="font-body text-muted-foreground leading-relaxed">
-                  Hot Pepper Trading Company assembled this consortium to honor the fire that 
-                  built Southern cuisine—from Creole elegance to Texas swagger, from Florida's 
-                  Spanish roots to New Mexico's desert terroir.
+                  Hot Pepper Trading Company assembled this consortium to honor the fire 
+                  that traveled the Old Natchez Trace—from Creole elegance in New Orleans 
+                  to the fiery resilience of Appalachian preserves, from Mississippi Delta 
+                  tamales to Nashville's legendary hot chicken.
                 </p>
               </div>
             </div>
@@ -187,14 +190,14 @@ export function SouthernTableModal({ open, onOpenChange }: SouthernTableModalPro
             {/* Trade Details */}
             <div className="text-center">
               <p className="font-body text-sm text-muted-foreground italic mb-4">
-                "Where fire meets hospitality—the heat that built a cuisine."
+                "Where the river met the trail—fire that traveled by flatboat and footpath."
               </p>
               <div className="flex items-center justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground font-heading">
                 <span>3 oz / 85g</span>
                 <span className="text-primary">•</span>
                 <span className="text-primary font-semibold">$38</span>
                 <span className="text-primary">•</span>
-                <span>1,000–1,041,427 SHU</span>
+                <span>1,000–350,000 SHU</span>
               </div>
             </div>
           </div>
