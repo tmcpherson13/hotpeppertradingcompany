@@ -12,6 +12,7 @@ import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyMod
 import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
 import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
 import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
+import { SouthernTableModal } from '@/components/sections/SouthernTableModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import inspirationsOfIndiaImg from '@/assets/consortium/inspirations-of-india.jpg';
 import soulsOfTheAmericasImg from '@/assets/consortium/souls-of-the-americas.jpg';
@@ -21,6 +22,7 @@ import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbe
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
 import manilaGalleonImg from '@/assets/consortium/manila-galleon.jpg';
+import southernTableImg from '@/assets/consortium/southern-table.jpg';
 import logoDark from '@/assets/logo-dark.svg';
 import antiqueMap from '@/assets/antique-map.jpg';
 
@@ -146,6 +148,18 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'manila',
   },
+  {
+    name: 'The Southern Table',
+    origin: 'Multi-Origin',
+    region: 'American South',
+    tradeLot: 'CONSORTIUM № 010',
+    weight: '3 oz / 85g',
+    description: 'From bayou to borderland—Louisiana Creole, Florida colonial, Texas swagger, and New Mexico terroir in five cultivars.',
+    price: '$38',
+    image: southernTableImg,
+    isConsortium: true,
+    consortiumId: 'southern',
+  },
 ];
 
 export function FeaturedSpices() {
@@ -159,6 +173,7 @@ export function FeaturedSpices() {
   const [mediterraneanModalOpen, setMediterraneanModalOpen] = useState(false);
   const [atlanticModalOpen, setAtlanticModalOpen] = useState(false);
   const [manilaModalOpen, setManilaModalOpen] = useState(false);
+  const [southernModalOpen, setSouthernModalOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -195,6 +210,9 @@ export function FeaturedSpices() {
         break;
       case 'manila':
         setManilaModalOpen(true);
+        break;
+      case 'southern':
+        setSouthernModalOpen(true);
         break;
     }
   };
@@ -447,6 +465,10 @@ export function FeaturedSpices() {
       <ManilaGalleonModal 
         open={manilaModalOpen} 
         onOpenChange={setManilaModalOpen} 
+      />
+      <SouthernTableModal 
+        open={southernModalOpen} 
+        onOpenChange={setSouthernModalOpen} 
       />
     </section>
   );
