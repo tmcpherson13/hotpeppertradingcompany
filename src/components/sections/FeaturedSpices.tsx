@@ -7,7 +7,7 @@ import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailMod
 import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
-import { RhythmsOfTheCaribbeanModal } from '@/components/sections/RhythmsOfTheCaribbeanModal';
+import { LetterOfMarqueModal } from '@/components/sections/LetterOfMarqueModal';
 import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
 import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
@@ -77,12 +77,12 @@ const spices: Spice[] = [
     consortiumId: 'andes',
   },
   {
-    name: 'Rhythms of the Caribbean',
+    name: 'Letter of Marque',
     origin: 'Multi-Origin',
     region: 'Caribbean Archipelago',
     tradeLot: 'CONSORTIUM № 004',
     weight: '3 oz / 85g',
-    description: 'From turquoise waters to volcanic peaks—island fire that carries the spirit of resistance, resilience, and celebration.',
+    description: 'Sanctioned fire from the Golden Age of Piracy—island heat that traveled under privateer sail from Kingston to Nassau.',
     price: '$38',
     image: rhythmsOfTheCaribbeanImg,
     isConsortium: true,
@@ -441,7 +441,7 @@ export function FeaturedSpices() {
         open={andesModalOpen} 
         onOpenChange={setAndesModalOpen} 
       />
-      <RhythmsOfTheCaribbeanModal 
+      <LetterOfMarqueModal 
         open={caribbeanModalOpen} 
         onOpenChange={setCaribbeanModalOpen} 
       />

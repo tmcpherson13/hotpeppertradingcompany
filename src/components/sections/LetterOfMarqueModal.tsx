@@ -8,9 +8,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
+import letterOfMarqueImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
 
-interface RhythmsOfTheCaribbeanModalProps {
+interface LetterOfMarqueModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -64,7 +64,7 @@ const pairings = [
   'Rum-infused tropical cocktails',
 ];
 
-export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheCaribbeanModalProps) {
+export function LetterOfMarqueModal({ open, onOpenChange }: LetterOfMarqueModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30">
@@ -73,8 +73,8 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
-                src={rhythmsOfTheCaribbeanImg}
-                alt="Rhythms of the Caribbean Pepper Consortium"
+                src={letterOfMarqueImg}
+                alt="Letter of Marque Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
@@ -86,11 +86,11 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Rhythms of the Caribbean
+                    Letter of Marque
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  Island Fire That Carries the Spirit of Resistance & Celebration
+                  Sanctioned Fire from the Golden Age of Piracy
                 </p>
               </div>
             </div>
@@ -145,22 +145,23 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    From turquoise waters to volcanic peaks.
+                    Privateering under the colors of crown and commerce.
                   </p>
                   <p>
-                    The Caribbean archipelago, scattered like emeralds across azure waters, became the crucible 
-                    where African, Indigenous, European, and Asian food traditions collided. Hot Pepper Trading 
-                    Company assembled this consortium to honor that convergence—a collection curated by island 
-                    route rather than commercial expedience.
+                    The Caribbean archipelago, scattered like emeralds across azure waters, became the proving ground
+                    where privateers carried more than just cargo—they carried fire. Hot Pepper Trading Company 
+                    assembled this consortium to honor that era of sanctioned seafaring, when a letter of marque
+                    transformed a merchant vessel into an instrument of licensed plunder.
                   </p>
                   <p>
-                    <span className="font-semibold text-ink">Rhythms of the Caribbean</span> traces the peppers from 
-                    the jerk pits of Jamaica to the pepperpots of Guyana. Each cultivar was selected for its role 
-                    in the island narrative—carrying the rhythm of steel drums, the memory of sugar plantations, 
-                    and the defiant spirit of peoples who transformed ingredients of survival into cuisines of celebration.
+                    <span className="font-semibold text-ink">Letter of Marque</span> traces the peppers from 
+                    the jerk pits of Jamaica to Port Royal's taverns, from Nassau's pirate republic to the 
+                    pepperpots of the Spanish Main. Each cultivar was selected for its role in the island 
+                    narrative—carrying the heat of cannon smoke, the memory of rum-soaked shores, and the 
+                    defiant spirit of those who sailed under the black flag.
                   </p>
                   <p>
-                    This is a release presenting resilience made edible, assembled with deliberate care.
+                    This is fire with a license—assembled with the same deliberate care as a captain provisioning for a long voyage.
                   </p>
                 </div>
               </section>
@@ -191,8 +192,8 @@ export function RhythmsOfTheCaribbeanModal({ open, onOpenChange }: RhythmsOfTheC
               {/* Closing Statement */}
               <section className="text-center py-4">
                 <blockquote className="font-body text-lg text-ink/80 italic max-w-2xl mx-auto leading-relaxed">
-                  "This is the fire of resilience—born from struggle, refined by time, and 
-                  celebrated in every bite that carries the rhythm of the islands."
+                  "This is the fire of the privateer—sanctioned by crown, refined by voyage, and 
+                  celebrated in every bite that carries the spirit of the Golden Age."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
                   Consortium № 004 • Limited Production • Multi-Origin
