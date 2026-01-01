@@ -82,7 +82,7 @@ export function LetterOfMarqueModal({ open, onOpenChange }: LetterOfMarqueModalP
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 005
+                  Pepper Consortium № 006
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
