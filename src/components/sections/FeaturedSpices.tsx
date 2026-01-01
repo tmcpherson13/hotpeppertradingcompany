@@ -88,7 +88,7 @@ const spices: Spice[] = [
     region: 'Pan-African Routes',
     tradeLot: 'CONSORTIUM № 004',
     weight: '3 oz / 85g',
-    description: 'A layered symphony of heat from Aleppo to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
+    description: 'A layered symphony of heat from Urfa Biber to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
     price: '$36',
     image: echoesOfAfricaImg,
     isConsortium: true,
