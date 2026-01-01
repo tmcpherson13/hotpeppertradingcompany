@@ -1,19 +1,19 @@
 # Memory: features/consortium/ordering-lock
 Updated: 2026-01-01
 
-## Ordering Constraint
+## Ordering Constraint - LOCKED
 
-The consortium card order in FeaturedSpices.tsx is LOCKED to the current chronological sequence:
+The consortium card order in FeaturedSpices.tsx is LOCKED to this chronological sequence:
 
-1. Echoes of Africa (№ 001)
-2. Silk & Jade Passages (№ 002)
-3. Andean Diaspora (№ 003)
-4. Phoenician Legacy (№ 004)
-5. Atlantic Provenance (№ 005)
-6. Letter of Marque (№ 006)
-7. Manila Galleon (№ 007)
-8. Old Natchez Trace (№ 008)
-9. Cradle of Fire (№ 009)
-10. Southern Crucible (№ 010)
+1. Cradle of Fire (№ 001) - MESOAMERICA
+2. Southern Crucible (№ 002) - SOUTH AMERICA
+3. Andean Diaspora (№ 003) - WESTERN SOUTH AMERICA
+4. Echoes of Africa (№ 004) - WEST AFRICAN COAST
+5. Phoenician Legacy (№ 005) - MEDITERRANEAN
+6. Silk & Jade Passages (№ 006) - SILK ROAD & ASIAN SEAS
+7. Atlantic Provenance (№ 007) - ATLANTIC TRIANGLE
+8. Letter of Marque (№ 008) - CARIBBEAN
+9. Manila Galleon (№ 009) - MARITIME SOUTHEAST ASIA
+10. Old Natchez Trace (№ 010) - AMERICAN SOUTH
 
-**Do not reorder or renumber these consortiums unless the user explicitly requests it.**
+**DO NOT REORDER OR RENUMBER these consortiums unless the user explicitly requests it.**

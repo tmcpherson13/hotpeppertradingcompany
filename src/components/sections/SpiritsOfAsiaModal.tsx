@@ -82,7 +82,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 002
+                  Pepper Consortium № 006
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
@@ -194,7 +194,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                   "By silk or by jade, the fire found its way east—and there it stayed."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 002 • Limited Production • Silk Road & Maritime Routes
+                  Consortium № 006 • Limited Production • Silk Road & Maritime Routes
                 </p>
               </section>
 
