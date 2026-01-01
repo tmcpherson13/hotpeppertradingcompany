@@ -320,11 +320,11 @@ export function FeaturedSpices() {
                 
                 {/* Image with sepia overlay */}
                 <div className="relative">
-                  <div className={`aspect-[4/3] overflow-hidden ${spice.flipImage ? 'scale-x-[-1]' : ''}`}>
+                  <div className="aspect-[4/3] overflow-hidden">
                     <img
                       src={spice.image}
                       alt={`${spice.name} from ${spice.origin}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15]"
+                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15] ${spice.flipImage ? 'scale-x-[-1] group-hover:scale-x-[-1.05]' : ''}`}
                     />
                   </div>
                   
