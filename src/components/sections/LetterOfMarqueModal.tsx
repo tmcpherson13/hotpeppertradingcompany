@@ -75,7 +75,7 @@ export function LetterOfMarqueModal({ open, onOpenChange }: LetterOfMarqueModalP
               <img
                 src={letterOfMarqueImg}
                 alt="Letter of Marque Pepper Consortium"
-                className="w-full h-full object-cover sepia-[0.15]"
+                className="w-full h-full object-cover sepia-[0.15] scale-x-[-1]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               

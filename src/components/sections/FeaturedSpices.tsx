@@ -16,7 +16,7 @@ import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleMod
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
 import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
-import rhythmsOfTheCaribbeanImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
+import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
 import manilaGalleonImg from '@/assets/consortium/manila-galleon.jpg';
@@ -38,6 +38,7 @@ interface Spice {
   isConsortium?: boolean;
   consortiumId?: string;
   regionLabel?: string;
+  flipImage?: boolean;
 }
 
 const spices: Spice[] = [
@@ -103,7 +104,8 @@ const spices: Spice[] = [
     weight: '3 oz / 85g',
     description: 'Sanctioned fire from the Golden Age of Piracy—island heat that traveled under privateer sail from Kingston to Nassau.',
     price: '$38',
-    image: rhythmsOfTheCaribbeanImg,
+    image: letterOfMarqueImg,
+    flipImage: true,
     isConsortium: true,
     consortiumId: 'caribbean',
     regionLabel: 'CARIBBEAN',
@@ -325,7 +327,7 @@ export function FeaturedSpices() {
                     <img
                       src={spice.image}
                       alt={`${spice.name} from ${spice.origin}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15]"
+                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15] ${spice.flipImage ? 'scale-x-[-1]' : ''}`}
                     />
                   </div>
                   
