@@ -54,7 +54,7 @@ const spices: Spice[] = [
     image: cradleOfFireImg,
     isConsortium: true,
     consortiumId: 'mesoamerica',
-    regionLabel: 'MESOAMERICA',
+    regionLabel: 'MEXICO & CENTRAL AMERICA',
   },
   {
     name: 'Southern Crucible',
@@ -83,7 +83,7 @@ const spices: Spice[] = [
     regionLabel: 'WESTERN SOUTH AMERICA',
   },
   {
-    name: 'Echoes of Africa',
+    name: 'Embers of Africa',
     origin: 'Multi-Origin',
     region: 'Pan-African Routes',
     tradeLot: 'CONSORTIUM № 004',
