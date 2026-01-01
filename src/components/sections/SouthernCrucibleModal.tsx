@@ -87,7 +87,7 @@ export function SouthernCrucibleModal({ open, onOpenChange }: SouthernCrucibleMo
               {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
-                  Pepper Consortium № 010
+                  Pepper Consortium № 002
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
@@ -206,7 +206,7 @@ export function SouthernCrucibleModal({ open, onOpenChange }: SouthernCrucibleMo
                   Calabria is a descendant of South American soil."
                 </blockquote>
                 <p className="mt-4 text-xs uppercase tracking-[0.2em] text-muted-foreground font-heading">
-                  Consortium № 010 • Limited Production • Pan-South American Heritage
+                  Consortium № 002 • Limited Production • Pan-South American Heritage
                 </p>
               </section>
 

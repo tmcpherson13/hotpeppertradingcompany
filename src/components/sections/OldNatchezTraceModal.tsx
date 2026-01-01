@@ -75,7 +75,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6">
               <Badge className="mb-2 bg-primary/90 text-primary-foreground text-xs uppercase tracking-wider">
-                Consortium № 008
+                Consortium № 010
               </Badge>
               <h2 className="font-blackpearl text-3xl md:text-4xl text-parchment mb-2">
                 Old Natchez Trace
