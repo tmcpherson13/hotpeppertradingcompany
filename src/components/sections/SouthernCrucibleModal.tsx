@@ -17,25 +17,25 @@ interface SouthernCrucibleModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Biquinho',
-    origin: 'Minas Gerais, Brazil',
-    heat: 'Mild (500–1,000 SHU)',
-    flavor: 'Sweet, tangy, with notes of tomato and mild fruit.',
-    role: 'The Anchor — Brazil\'s "little beak" pepper, beloved for its sweetness.',
+    name: 'Aji Limon',
+    origin: 'Peru',
+    heat: 'Moderate (30,000–50,000 SHU)',
+    flavor: 'Bright citrus, lemon zest, clean fruity heat.',
+    role: 'The Anchor — Peru\'s lemon drop, where citrus meets fire.',
   },
   {
-    name: 'Aji Charapita',
-    origin: 'Peruvian Amazon',
-    heat: 'Hot (30,000–100,000 SHU)',
-    flavor: 'Citrusy, fruity, with intense tropical aromatics.',
-    role: 'The Wild Fire — the tiny Amazonian pearl worth its weight in gold.',
+    name: 'Aji Amarillo',
+    origin: 'Peru',
+    heat: 'Moderate (30,000–50,000 SHU)',
+    flavor: 'Fruity, slightly tropical, with a warm, lingering heat.',
+    role: 'The Golden Standard — the soul of Peruvian cuisine.',
   },
   {
-    name: 'Malagueta',
-    origin: 'Bahia, Brazil',
-    heat: 'Hot (60,000–100,000 SHU)',
-    flavor: 'Sharp, grassy, with bright acidic heat.',
-    role: 'The Soul of Brazil — the pepper that defines feijoada and acarajé.',
+    name: 'Wiri Wiri',
+    origin: 'Guyana & Suriname',
+    heat: 'Hot (100,000–350,000 SHU)',
+    flavor: 'Intense, fruity, with tropical sweetness and searing heat.',
+    role: 'The Wild Card — Amazonian fire from the Guyanese frontier.',
   },
   {
     name: 'Aji Panca',
@@ -155,22 +155,22 @@ export function SouthernCrucibleModal({ open, onOpenChange }: SouthernCrucibleMo
                   <p>
                     Long before peppers traveled the globe, they evolved in the forests, mountains, 
                     and river valleys of South America. From the steaming jungles of the Amazon basin 
-                    to the sun-baked coasts of Peru, from the volcanic soils of Brazil to the 
-                    frost-touched highlands of Bolivia—Capsicum diversified into five distinct species, 
-                    each adapted to a unique ecological niche.
+                    to the sun-baked coasts of Peru, from the wild Guyanese interior to the 
+                    frost-touched highlands of Bolivia—Capsicum diversified into forms as varied 
+                    as the continent itself.
                   </p>
                   <p>
-                    The tiny Aji Charapita, no bigger than a pea, commands prices rivaling saffron 
-                    in the markets of Lima. The biquinho, shaped like a little beak, brings sweetness 
-                    without fire to Brazilian appetizers. The malagueta gives feijoada its soul. 
+                    The aji limon brings bright citrus fire to ceviche. The aji amarillo, Peru's 
+                    golden pepper, defines the nation's cuisine from aji de gallina to causa. 
+                    The wiri wiri, small and fierce, carries the heat of the Guyanese frontier. 
                     The sun-dried aji panca colors Peruvian cuisine burgundy-red. And high in the 
                     Andes, where other peppers cannot survive, the rocoto thrives in the cold, 
                     its black seeds a mark of the pubescens species found nowhere else.
                   </p>
                   <p>
                     <span className="font-semibold text-ink">Hot Pepper Trading Company</span> assembled 
-                    this consortium to honor the source. From Amazon to Andes, from Brazil to Bolivia, 
-                    these five cultivars represent the full geographic and genetic diversity of the 
+                    this consortium to honor the source. From Amazon to Andes, from Peru to Guyana, 
+                    these five cultivars represent the geographic and genetic diversity of the 
                     continent that gave fire to the world.
                   </p>
                 </div>
@@ -222,7 +222,7 @@ export function SouthernCrucibleModal({ open, onOpenChange }: SouthernCrucibleMo
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">Origin</span>
+                  <span className="font-display text-ink">500–350,000 SHU</span>
                 </div>
               </div>
             </div>
