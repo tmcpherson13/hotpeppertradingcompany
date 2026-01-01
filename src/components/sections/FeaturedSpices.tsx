@@ -52,7 +52,7 @@ const spices: Spice[] = [
     image: echoesOfAfricaImg,
     isConsortium: true,
     consortiumId: 'africa',
-    regionLabel: 'AFRICA',
+    regionLabel: 'WEST AFRICAN COAST',
   },
   {
     name: 'Silk & Jade Passages',
