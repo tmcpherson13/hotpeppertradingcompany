@@ -1,4 +1,4 @@
-# Echoes of Africa (№ 004)
+# Embers of Africa (№ 004)
 
 **Region:** West African Coast  
 **Modal File:** `ConsortiumDetailModal.tsx`  

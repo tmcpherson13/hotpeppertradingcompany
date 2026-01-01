@@ -86,7 +86,7 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Echoes of Africa
+                    Embers of Africa
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
@@ -153,7 +153,7 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                     and oceans, woven from the hands of growers, traders, and cooks who understood one truth: heat is memory.
                   </p>
                   <p>
-                    <span className="font-semibold text-ink">Echoes of Africa</span> traces the routes that peppers 
+                    <span className="font-semibold text-ink">Embers of Africa</span> traces the routes that peppers 
                     traveled from Africa's coasts to the Caribbean, from the Levant to the New World. Each pepper 
                     was selected with intent—not for volume, but for its role in the layered narrative of flavor 
                     and provenance.
