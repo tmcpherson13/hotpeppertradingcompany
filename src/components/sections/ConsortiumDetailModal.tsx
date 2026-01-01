@@ -17,32 +17,32 @@ interface ConsortiumDetailModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Aleppo Pepper',
-    origin: 'Syria (Levant Route)',
-    heat: 'Mild-Medium (10,000 SHU)',
-    flavor: 'Fruity, slightly salty, with a slow-building warmth. Adds depth without overpowering.',
-    role: 'Anchor — this pepper provides a soft, fruity warmth that opens the blend gently.',
-  },
-  {
-    name: 'Wiri Wiri',
-    origin: 'Guyana (Atlantic Route)',
-    heat: 'Medium-Hot (100,000–350,000 SHU)',
-    flavor: 'Sharp, citrus-forward, tangy. Distinctive fruity sting.',
-    role: 'Bridge — its citrus bite lifts the blend with a bright, unexpected jolt.',
-  },
-  {
     name: 'Peri Peri',
     origin: 'Mozambique / Angola (Indian Ocean Route)',
     heat: 'Medium-Hot (50,000–175,000 SHU)',
     flavor: 'Smoky, zesty, herbaceous. A favorite in grilled meats and marinades.',
-    role: 'Body — brings smoky complexity and a lingering, warm finish.',
+    role: 'Anchor — brings smoky complexity and sets the foundation for the blend.',
+  },
+  {
+    name: 'Urfa Biber',
+    origin: 'Turkey (Levant Route)',
+    heat: 'Medium (10,000–30,000 SHU)',
+    flavor: 'Smoky, raisin-like, with earthy depth and mild heat.',
+    role: 'Bridge — sun-dried Turkish pepper, adding dark fruit and smoky mystery.',
   },
   {
     name: 'Scotch Bonnet',
     origin: 'Caribbean / West Africa (Transatlantic Route)',
     heat: 'Hot (100,000–350,000 SHU)',
     flavor: 'Sweet, tropical, slightly floral. A defining flavor of Caribbean cuisine.',
-    role: 'Vanguard — its tropical sweetness creates an unmistakable island pulse in every bite.',
+    role: 'Body — its tropical sweetness creates an unmistakable island pulse.',
+  },
+  {
+    name: 'Wiri Wiri',
+    origin: 'Guyana (Atlantic Route)',
+    heat: 'Hot (100,000–350,000 SHU)',
+    flavor: 'Sharp, citrus-forward, tangy. Distinctive fruity sting.',
+    role: 'Vanguard — its citrus bite lifts the blend with bright, unexpected fire.',
   },
   {
     name: 'Trinidad Scorpion',
@@ -210,7 +210,7 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">Layered</span>
+                  <span className="font-display text-ink">10,000–2,000,000 SHU</span>
                 </div>
               </div>
             </div>
