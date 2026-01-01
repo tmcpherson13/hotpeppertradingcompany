@@ -17,11 +17,11 @@ interface ManilaGalleonModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Hatch Green Chili',
-    origin: 'New Mexico (The Anchor)',
-    heat: 'Mild-Medium (1,000–8,000 SHU)',
-    flavor: 'Earthy, slightly sweet with roasted green pepper notes and a clean, lingering heat.',
-    role: 'The Anchor—from the high desert valleys of New Mexico, where Spanish colonizers first cultivated peppers brought from Mexico.',
+    name: 'Ancho',
+    origin: 'Mexico (The Anchor)',
+    heat: 'Mild (1,000–2,000 SHU)',
+    flavor: 'Deep, sweet, raisin-like with subtle coffee and chocolate notes.',
+    role: 'The Anchor—the dried poblano that Spanish galleons carried from Acapulco, the starting point of the trans-Pacific crossing.',
   },
   {
     name: 'Aji Amarillo',
