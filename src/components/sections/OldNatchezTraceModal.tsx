@@ -20,18 +20,11 @@ const pepperProfiles = [
     role: "The Bayou Foundation — born in Avery Island marshlands, aged in oak barrels since 1868"
   },
   {
-    name: "Scotch Bonnet",
-    origin: "Caribbean → Gulf Coast",
-    heat: "100,000–350,000 SHU",
-    flavor: "Fruity, tropical, intensely hot",
-    role: "The Port of Entry — arrived via Southern ports with Caribbean trade"
-  },
-  {
-    name: "Datil",
-    origin: "St. Augustine, Florida",
-    heat: "100,000–300,000 SHU",
-    flavor: "Sweet, fruity, tropical",
-    role: "The Spanish Colonial Legacy — Minorcan settlers' gift to America's oldest city"
+    name: "Pequin",
+    origin: "Mexico → Texas",
+    heat: "40,000–60,000 SHU",
+    flavor: "Citrusy, nutty, smoky with sharp heat",
+    role: "The Wild Native — tiny wild chiles gathered along the borderlands, prized by frontier settlers"
   },
   {
     name: "Hatch Green Chili",
@@ -46,6 +39,13 @@ const pepperProfiles = [
     heat: "2,500–8,000 SHU",
     flavor: "Bright, grassy, moderate heat",
     role: "The Trail's Companion — workhorse of Southern kitchens from Texas to Tennessee"
+  },
+  {
+    name: "Datil",
+    origin: "St. Augustine, Florida",
+    heat: "100,000–300,000 SHU",
+    flavor: "Sweet, fruity, tropical",
+    role: "The Spanish Colonial Legacy — Minorcan settlers' gift to America's oldest city"
   }
 ];
 
@@ -143,9 +143,9 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
                 <p className="font-body text-muted-foreground leading-relaxed mb-4">
                   The peppers of the Old Natchez Trace arrived by water and dispersed by land. 
                   Tabasco came upriver from Louisiana's coastal marshes, where it had been 
-                  fermenting in oak barrels on Avery Island since the Civil War. Scotch Bonnets 
-                  arrived in the holds of Caribbean trading vessels, their tropical fire finding 
-                  new expression in Gulf Coast kitchens. The Datil pepper, that mysterious 
+                  fermenting in oak barrels on Avery Island since the Civil War. The tiny Pequin 
+                  chiles grew wild along the borderlands, gathered by frontier settlers who 
+                  prized their sharp, citrusy heat. The Datil pepper, that mysterious 
                   Minorcan heirloom, traveled from St. Augustine with settlers seeking new 
                   frontiers.
                 </p>
@@ -197,7 +197,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
                 <span className="text-primary">•</span>
                 <span className="text-primary font-semibold">$38</span>
                 <span className="text-primary">•</span>
-                <span>1,000–350,000 SHU</span>
+                <span>1,000–300,000 SHU</span>
               </div>
             </div>
           </div>
