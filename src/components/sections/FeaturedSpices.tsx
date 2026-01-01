@@ -15,7 +15,7 @@ import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
 import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
 import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
-import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
+import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImg from '@/assets/consortium/atlantic-provenance.jpg';
@@ -42,32 +42,32 @@ interface Spice {
 }
 
 const spices: Spice[] = [
-  // Origins - Pre-Columbian
+  // Historical Order: Chronological by trade route establishment
   {
-    name: 'Cradle of Fire',
+    name: 'Echoes of Africa',
     origin: 'Multi-Origin',
-    region: 'Mesoamerica',
+    region: 'Pan-African Routes',
     tradeLot: 'CONSORTIUM № 001',
     weight: '3 oz / 85g',
-    description: 'Where it all began—from wild chiltepin to cultivated diversity, the full arc of Mexican pepper heritage.',
+    description: 'A layered symphony of heat from Aleppo to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
     price: '$36',
-    image: cradleOfFireImg,
+    image: echoesOfAfricaImg,
     isConsortium: true,
-    consortiumId: 'mesoamerica',
-    regionLabel: 'MESOAMERICA',
+    consortiumId: 'africa',
+    regionLabel: 'WEST AFRICAN COAST',
   },
   {
-    name: 'Southern Crucible',
+    name: 'Silk & Jade Passages',
     origin: 'Multi-Origin',
-    region: 'Pan-South America',
+    region: 'Silk Road & Maritime Routes',
     tradeLot: 'CONSORTIUM № 002',
     weight: '3 oz / 85g',
-    description: 'From Amazon to Andes—the continent that gave fire to the world. Every pepper traces its lineage here.',
-    price: '$48',
-    image: southernCrucibleImg,
+    description: 'Where the caravans met the sea—overland through Aleppo and Anatolia, by sail through India and Southeast Asia.',
+    price: '$35',
+    image: spiritsOfAsiaImg,
     isConsortium: true,
-    consortiumId: 'southamerica',
-    regionLabel: 'SOUTH AMERICA',
+    consortiumId: 'asia',
+    regionLabel: 'SILK ROAD & ASIAN SEAS',
   },
   {
     name: 'Andean Diaspora',
@@ -77,24 +77,23 @@ const spices: Spice[] = [
     weight: '3 oz / 85g',
     description: 'Two cultivars, two directions—from the Andes to Aleppo and Korea, this is the story of peppers that traveled and those that stayed.',
     price: '$42',
-    image: voicesOfTheAndesImg,
+    image: andeanDiasporaImg,
     isConsortium: true,
     consortiumId: 'andes',
     regionLabel: 'WESTERN SOUTH AMERICA',
   },
-  // Early Colonial Spread - 1493+
   {
-    name: 'Atlantic Provenance',
+    name: 'Phoenician Legacy',
     origin: 'Multi-Origin',
-    region: 'Atlantic Triangle',
+    region: 'Mediterranean Basin',
     tradeLot: 'CONSORTIUM № 004',
-    weight: '2.5 oz / 70g',
-    description: 'Mexico to Caribbean to West Africa—the triangular crossing where fire became jerk, pepper pot, and piri piri.',
-    price: '$24',
-    image: atlanticProvenanceImg,
+    weight: '3 oz / 85g',
+    description: 'Ancient routes, Mediterranean fire—from Aleppo to Calabria, the peppers that traveled the paths first carved by Phoenician traders.',
+    price: '$36',
+    image: phoenicianLegacyImg,
     isConsortium: true,
-    consortiumId: 'atlantic',
-    regionLabel: 'ATLANTIC TRIANGLE',
+    consortiumId: 'mediterranean',
+    regionLabel: 'MEDITERRANEAN',
   },
   {
     name: 'Letter of Marque',
@@ -111,37 +110,23 @@ const spices: Spice[] = [
     regionLabel: 'CARIBBEAN',
   },
   {
-    name: 'Echoes of Africa',
+    name: 'Atlantic Provenance',
     origin: 'Multi-Origin',
-    region: 'Pan-African Routes',
+    region: 'Atlantic Triangle',
     tradeLot: 'CONSORTIUM № 006',
-    weight: '3 oz / 85g',
-    description: 'A layered symphony of heat from Aleppo to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
-    price: '$36',
-    image: echoesOfAfricaImg,
+    weight: '2.5 oz / 70g',
+    description: 'Mexico to Caribbean to West Africa—the triangular crossing where fire became jerk, pepper pot, and piri piri.',
+    price: '$24',
+    image: atlanticProvenanceImg,
     isConsortium: true,
-    consortiumId: 'africa',
-    regionLabel: 'WEST AFRICAN COAST',
-  },
-  // Mediterranean & Asian Expansion - 1500s
-  {
-    name: 'Phoenician Legacy',
-    origin: 'Multi-Origin',
-    region: 'Mediterranean Basin',
-    tradeLot: 'CONSORTIUM № 007',
-    weight: '3 oz / 85g',
-    description: 'Ancient routes, Mediterranean fire—from Aleppo to Calabria, the peppers that traveled the paths first carved by Phoenician traders.',
-    price: '$36',
-    image: phoenicianLegacyImg,
-    isConsortium: true,
-    consortiumId: 'mediterranean',
-    regionLabel: 'MEDITERRANEAN',
+    consortiumId: 'atlantic',
+    regionLabel: 'ATLANTIC TRIANGLE',
   },
   {
     name: 'Manila Galleon',
     origin: 'Multi-Origin',
     region: 'Trans-Pacific Route',
-    tradeLot: 'CONSORTIUM № 008',
+    tradeLot: 'CONSORTIUM № 007',
     weight: '3 oz / 85g',
     description: 'Across the Pacific—from Acapulco to Manila to Asia. The longest trade route in history carried fire that transformed a continent.',
     price: '$44',
@@ -151,24 +136,10 @@ const spices: Spice[] = [
     regionLabel: 'MARITIME SOUTHEAST ASIA',
   },
   {
-    name: 'Silk & Jade Passages',
-    origin: 'Multi-Origin',
-    region: 'Silk Road & Maritime Routes',
-    tradeLot: 'CONSORTIUM № 009',
-    weight: '3 oz / 85g',
-    description: 'Where the caravans met the sea—overland through Aleppo and Anatolia, by sail through India and Southeast Asia.',
-    price: '$35',
-    image: spiritsOfAsiaImg,
-    isConsortium: true,
-    consortiumId: 'asia',
-    regionLabel: 'SILK ROAD & ASIAN SEAS',
-  },
-  // Later American Development - 1700s+
-  {
     name: 'Old Natchez Trace',
     origin: 'Multi-Origin',
     region: 'Gulf to Highlands',
-    tradeLot: 'CONSORTIUM № 010',
+    tradeLot: 'CONSORTIUM № 008',
     weight: '3 oz / 85g',
     description: 'From Gulf port to highland trail—the fire that traveled America\'s earliest inland trade corridor by flatboat and footpath.',
     price: '$38',
@@ -176,6 +147,32 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'natchez',
     regionLabel: 'AMERICAN SOUTH',
+  },
+  {
+    name: 'Cradle of Fire',
+    origin: 'Multi-Origin',
+    region: 'Mesoamerica',
+    tradeLot: 'CONSORTIUM № 009',
+    weight: '3 oz / 85g',
+    description: 'Where it all began—from wild chiltepin to cultivated diversity, the full arc of Mexican pepper heritage.',
+    price: '$36',
+    image: cradleOfFireImg,
+    isConsortium: true,
+    consortiumId: 'mesoamerica',
+    regionLabel: 'MESOAMERICA',
+  },
+  {
+    name: 'Southern Crucible',
+    origin: 'Multi-Origin',
+    region: 'Pan-South America',
+    tradeLot: 'CONSORTIUM № 010',
+    weight: '3 oz / 85g',
+    description: 'From Amazon to Andes—the continent that gave fire to the world. Every pepper traces its lineage here.',
+    price: '$48',
+    image: southernCrucibleImg,
+    isConsortium: true,
+    consortiumId: 'southamerica',
+    regionLabel: 'SOUTH AMERICA',
   },
 ];
 
@@ -323,11 +320,11 @@ export function FeaturedSpices() {
                 
                 {/* Image with sepia overlay */}
                 <div className="relative">
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <div className={`aspect-[4/3] overflow-hidden ${spice.flipImage ? 'scale-x-[-1]' : ''}`}>
                     <img
                       src={spice.image}
                       alt={`${spice.name} from ${spice.origin}`}
-                      className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15] ${spice.flipImage ? 'scale-x-[-1]' : ''}`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15]"
                     />
                   </div>
                   
