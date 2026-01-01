@@ -13,8 +13,8 @@ Updated: 2026-01-01
 | 006 | Silk & Jade Passages | SILK ROAD & ASIAN SEAS | SpiritsOfAsiaModal.tsx | 4,000–1,041,427 SHU | Gochugaru (Convergence), Urfa Biber, Aleppo, Thai Bird's Eye, Ghost |
 | 007 | Atlantic Provenance | ATLANTIC TRIANGLE | AtlanticProvenanceModal.tsx | 1,000–350,000 SHU | Ancho (Anchor), De Árbol, Datil, Scotch Bonnet, Wiri Wiri |
 | 008 | Letter of Marque | CARIBBEAN | LetterOfMarqueModal.tsx | 100,000–2,000,000 SHU | Scotch Bonnet, Caribbean Red Habanero, Datil, Wiri Wiri, Trinidad Scorpion |
-| 009 | Manila Galleon | MARITIME SOUTHEAST ASIA | ManilaGalleonModal.tsx | 1,000–1,041,000 SHU | Hatch Green Chili (Anchor), Aji Amarillo, Thai Bird's Eye, Gochugaru, Ghost |
-| 010 | Old Natchez Trace | AMERICAN SOUTH | OldNatchezTraceModal.tsx | 1,000–350,000 SHU | Tabasco (Anchor), Scotch Bonnet, Datil, Hatch Green Chili, Red Jalapeño |
+| 009 | Manila Galleon | MARITIME SOUTHEAST ASIA | ManilaGalleonModal.tsx | 1,000–1,041,000 SHU | Ancho (Anchor), Aji Amarillo, Thai Bird's Eye, Gochugaru, Ghost |
+| 010 | Old Natchez Trace | AMERICAN SOUTH | OldNatchezTraceModal.tsx | 1,000–300,000 SHU | Tabasco (Anchor), Pequin, Hatch Green Chili, Red Jalapeño, Datil |
 
 ## Notes
 - All consortiums feature 5 cultivars
