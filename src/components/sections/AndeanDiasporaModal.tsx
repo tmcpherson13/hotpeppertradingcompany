@@ -17,39 +17,39 @@ interface AndeanDiasporaModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Aji Limon',
-    origin: 'Peru (Andean Highlands)',
-    heat: 'Medium (15,000–30,000 SHU)',
-    flavor: 'Bright citrus, unmistakable lemon zest, clean heat.',
-    role: 'Anchor — the baccatum that starts our journey in the Peruvian highlands.',
-  },
-  {
     name: 'Aji Amarillo',
     origin: 'Peru (Andean Trade Routes)',
     heat: 'Hot (30,000–50,000 SHU)',
     flavor: 'Fruity, tropical, golden with subtle berry notes.',
-    role: 'Bridge — the golden soul of Peruvian cuisine for over 5,000 years.',
-  },
-  {
-    name: "Devil's Breath",
-    origin: 'Ecuador (Northern Andes)',
-    heat: 'Very Hot (186,000 SHU)',
-    flavor: 'Intense, fruity, floral with delayed inferno.',
-    role: "Body — Ecuador's chinense that stayed home and climbed the heat ladder.",
-  },
-  {
-    name: 'Aleppo',
-    origin: 'Syria (Levant)',
-    heat: 'Mild (10,000 SHU)',
-    flavor: 'Fruity, oily, sun-dried with cumin-like undertones.',
-    role: 'Vanguard — where annuum met the Levantine sun and found new character.',
+    role: 'Anchor — the golden soul of Peruvian cuisine for over 5,000 years, where our diaspora begins.',
   },
   {
     name: 'Gochugaru',
     origin: 'Korea (East Asia)',
     heat: 'Mild (1,500–6,000 SHU)',
     flavor: 'Sweet, smoky, mild with lingering warmth.',
-    role: 'Flagship — annuum at the terminus of the Silk Road, backbone of kimchi.',
+    role: 'Bridge — annuum at the Silk Road\'s terminus, the sweet-smoky backbone of kimchi.',
+  },
+  {
+    name: 'Aleppo',
+    origin: 'Syria (Levant)',
+    heat: 'Mild (10,000 SHU)',
+    flavor: 'Fruity, oily, sun-dried with cumin-like undertones.',
+    role: 'Body — where annuum met the Levantine sun and found new character.',
+  },
+  {
+    name: 'Aji Limon',
+    origin: 'Peru (Andean Highlands)',
+    heat: 'Medium (15,000–30,000 SHU)',
+    flavor: 'Bright citrus, unmistakable lemon zest, clean heat.',
+    role: 'Vanguard — the baccatum that stayed home in the Peruvian highlands, unchanged and bright.',
+  },
+  {
+    name: "Devil's Breath",
+    origin: 'Ecuador (Northern Andes)',
+    heat: 'Very Hot (186,000 SHU)',
+    flavor: 'Intense, fruity, floral with delayed inferno.',
+    role: "Flagship — Ecuador's chinense that climbed the heat ladder to 186,000 SHU.",
   },
 ];
 
@@ -220,8 +220,8 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
                   <span className="font-display text-primary text-lg">$42</span>
                 </div>
                 <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">Diaspora</span>
+                <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
+                  <span className="font-display text-ink">1,500–186,000 SHU</span>
                 </div>
               </div>
             </div>
