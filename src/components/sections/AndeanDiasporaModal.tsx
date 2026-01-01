@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import voicesOfTheAndesImg from '@/assets/consortium/voices-of-the-andes.jpg';
+import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 
 interface AndeanDiasporaModalProps {
   open: boolean;
@@ -78,7 +78,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
-                src={voicesOfTheAndesImg}
+                src={andeanDiasporaImg}
                 alt="The Andean Diaspora Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
