@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import letterOfMarqueImg from '@/assets/consortium/rhythms-of-the-caribbean.jpg';
+import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
 
 interface LetterOfMarqueModalProps {
   open: boolean;
