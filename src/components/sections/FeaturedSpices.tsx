@@ -37,6 +37,7 @@ interface Spice {
   image: string;
   isConsortium?: boolean;
   consortiumId?: string;
+  regionLabel?: string;
 }
 
 const spices: Spice[] = [
@@ -51,6 +52,7 @@ const spices: Spice[] = [
     image: echoesOfAfricaImg,
     isConsortium: true,
     consortiumId: 'africa',
+    regionLabel: 'AFRICA',
   },
   {
     name: 'Silk & Jade Passages',
@@ -63,6 +65,7 @@ const spices: Spice[] = [
     image: spiritsOfAsiaImg,
     isConsortium: true,
     consortiumId: 'asia',
+    regionLabel: 'SILK ROAD & ASIAN SEAS',
   },
   {
     name: 'Andean Diaspora',
@@ -75,6 +78,7 @@ const spices: Spice[] = [
     image: voicesOfTheAndesImg,
     isConsortium: true,
     consortiumId: 'andes',
+    regionLabel: 'WESTERN SOUTH AMERICA',
   },
   {
     name: 'Letter of Marque',
@@ -87,6 +91,7 @@ const spices: Spice[] = [
     image: rhythmsOfTheCaribbeanImg,
     isConsortium: true,
     consortiumId: 'caribbean',
+    regionLabel: 'CARIBBEAN',
   },
   {
     name: 'Phoenician Legacy',
@@ -99,6 +104,7 @@ const spices: Spice[] = [
     image: phoenicianLegacyImg,
     isConsortium: true,
     consortiumId: 'mediterranean',
+    regionLabel: 'MEDITERRANEAN',
   },
   {
     name: 'Atlantic Provenance',
@@ -111,6 +117,7 @@ const spices: Spice[] = [
     image: atlanticProvenanceImg,
     isConsortium: true,
     consortiumId: 'atlantic',
+    regionLabel: 'ATLANTIC TRIANGLE',
   },
   {
     name: 'Manila Galleon',
@@ -123,6 +130,7 @@ const spices: Spice[] = [
     image: manilaGalleonImg,
     isConsortium: true,
     consortiumId: 'manila',
+    regionLabel: 'MARITIME SOUTHEAST ASIA',
   },
   {
     name: 'Old Natchez Trace',
@@ -135,6 +143,7 @@ const spices: Spice[] = [
     image: oldNatchezTraceImg,
     isConsortium: true,
     consortiumId: 'natchez',
+    regionLabel: 'AMERICAN SOUTH',
   },
   {
     name: 'Cradle of Fire',
@@ -147,6 +156,7 @@ const spices: Spice[] = [
     image: cradleOfFireImg,
     isConsortium: true,
     consortiumId: 'mesoamerica',
+    regionLabel: 'MESOAMERICA',
   },
   {
     name: 'Southern Crucible',
@@ -159,6 +169,7 @@ const spices: Spice[] = [
     image: southernCrucibleImg,
     isConsortium: true,
     consortiumId: 'southamerica',
+    regionLabel: 'SOUTH AMERICA',
   },
 ];
 
@@ -346,12 +357,9 @@ export function FeaturedSpices() {
                   {/* Decorative line */}
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex-1 h-px bg-ink/20" />
-                    <img 
-                      src={logoDark} 
-                      alt="" 
-                      className="h-4 w-auto transition-transform duration-300 hover:scale-110" 
-                      aria-hidden="true" 
-                    />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-heading">
+                      {spice.regionLabel}
+                    </span>
                     <div className="flex-1 h-px bg-ink/20" />
                   </div>
                   
