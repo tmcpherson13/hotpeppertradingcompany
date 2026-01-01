@@ -16,35 +16,35 @@ const pepperProfiles = [
     origin: "Mexico",
     heat: "1,000–2,000 SHU",
     flavor: "Dried fruit, tobacco, mild chocolate",
-    role: "The Anchor — the foundation of mole and the baseline of this crossing"
+    role: "Anchor — the foundation of mole and the baseline of this crossing"
   },
   {
     name: "De Árbol",
     origin: "Mexico",
     heat: "15,000–30,000 SHU",
     flavor: "Bright, nutty, grassy heat",
-    role: "The Accelerant — adding sharp, clean fire to salsas and table sauces"
+    role: "Bridge — adding sharp, clean fire to salsas and table sauces"
   },
   {
     name: "Datil",
     origin: "St. Augustine, Florida / Caribbean",
     heat: "100,000–300,000 SHU",
     flavor: "Sweet, fruity, tropical burn",
-    role: "The Caribbean Gateway — Spanish colonial introduction with African roots"
+    role: "Body — Spanish colonial introduction with African roots"
   },
   {
     name: "Scotch Bonnet",
     origin: "Jamaica & Caribbean",
     heat: "100,000–350,000 SHU",
     flavor: "Fruity, floral, intensely aromatic",
-    role: "The Island Heart — defining Caribbean cuisine from jerk to pepper sauces"
+    role: "Vanguard — defining Caribbean cuisine from jerk to pepper sauces"
   },
   {
     name: "Wiri Wiri",
     origin: "Guyana / West Africa",
     heat: "100,000–350,000 SHU",
     flavor: "Fruity, sharp, lingering heat",
-    role: "The African Arrival — completing the triangle where peppers became piri piri"
+    role: "Flagship — completing the triangle where peppers became piri piri"
   }
 ];
 

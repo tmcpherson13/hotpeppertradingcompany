@@ -17,35 +17,35 @@ const pepperProfiles = [
     origin: "Louisiana, USA",
     heat: "30,000–50,000 SHU",
     flavor: "Vinegary, bright, tangy",
-    role: "The Bayou Foundation — born in Avery Island marshlands, aged in oak barrels since 1868"
+    role: "Anchor — born in Avery Island marshlands, aged in oak barrels since 1868"
   },
   {
     name: "Pequin",
     origin: "Mexico → Texas",
     heat: "40,000–60,000 SHU",
     flavor: "Citrusy, nutty, smoky with sharp heat",
-    role: "The Wild Native — tiny wild chiles gathered along the borderlands, prized by frontier settlers"
+    role: "Bridge — tiny wild chiles gathered along the borderlands, prized by frontier settlers"
   },
   {
     name: "Hatch Green Chili",
     origin: "New Mexico, USA",
     heat: "1,000–8,000 SHU",
     flavor: "Earthy, roasted, smoky-sweet",
-    role: "The Borderland Crossing — Southwestern influence along the trail's western reach"
+    role: "Body — Southwestern influence along the trail's western reach"
   },
   {
     name: "Red Jalapeño",
     origin: "Mexico → Texas",
     heat: "2,500–8,000 SHU",
     flavor: "Bright, grassy, moderate heat",
-    role: "The Trail's Companion — workhorse of Southern kitchens from Texas to Tennessee"
+    role: "Vanguard — workhorse of Southern kitchens from Texas to Tennessee"
   },
   {
     name: "Datil",
     origin: "St. Augustine, Florida",
     heat: "100,000–300,000 SHU",
     flavor: "Sweet, fruity, tropical",
-    role: "The Spanish Colonial Legacy — Minorcan settlers' gift to America's oldest city"
+    role: "Flagship — Minorcan settlers' gift to America's oldest city"
   }
 ];
 
