@@ -58,7 +58,7 @@ export function useGallerySync(pepperId: string): GallerySyncResult {
   const fetchSavedOrder = useCallback(async () => {
     if (!user) {
       // Fall back to localStorage for guests
-      const localKey = `gallery-order-${pepperId}`;
+      const localKey = `pepper-gallery-order-${pepperId}`;
       const localOrder = localStorage.getItem(localKey);
       if (localOrder) {
         try {
@@ -91,11 +91,15 @@ export function useGallerySync(pepperId: string): GallerySyncResult {
 
   // Save gallery order
   const saveOrder = useCallback(async (imageIds: string[]) => {
+    // Always save to localStorage so PepperLedger can read it immediately
+    const localKey = `pepper-gallery-order-${pepperId}`;
+    localStorage.setItem(localKey, JSON.stringify(imageIds));
+    setSavedOrder(imageIds);
+    
+    // Dispatch a custom event so other components can react to order changes
+    window.dispatchEvent(new CustomEvent('gallery-order-changed', { detail: { pepperId, imageIds } }));
+    
     if (!user) {
-      // Save to localStorage for guests
-      const localKey = `gallery-order-${pepperId}`;
-      localStorage.setItem(localKey, JSON.stringify(imageIds));
-      setSavedOrder(imageIds);
       return;
     }
 
@@ -116,10 +120,7 @@ export function useGallerySync(pepperId: string): GallerySyncResult {
 
       if (error) {
         console.error('Error saving gallery order:', error);
-        return;
       }
-
-      setSavedOrder(imageIds);
     } catch (err) {
       console.error('Error in saveOrder:', err);
     }

@@ -181,6 +181,19 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             </>
           )}
           
+          {/* Delete button on main image */}
+          {canDeleteImage(currentImage) && (
+            <button
+              onClick={() => handleDeleteImage(currentImage)}
+              disabled={deletingId === currentImage.id}
+              className="absolute top-1 right-1 w-5 h-5 bg-red-600/90 hover:bg-red-700 
+                text-white flex items-center justify-center opacity-0 group-hover:opacity-100 
+                transition-opacity text-xs font-bold"
+              aria-label="Delete image"
+            >
+              {deletingId === currentImage.id ? '…' : '×'}
+            </button>
+          )}
         </div>
       </div>
 
