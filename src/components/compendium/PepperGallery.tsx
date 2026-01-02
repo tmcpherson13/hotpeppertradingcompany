@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { PepperImage } from '@/data/peppers';
 import { ImageAttribution } from './ImageAttribution';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -105,13 +105,29 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   const currentImage = orderedGallery[currentIndex];
   const hasMultiple = orderedGallery.length > 1;
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? orderedGallery.length - 1 : prev - 1));
-  };
+  }, [orderedGallery.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev === orderedGallery.length - 1 ? 0 : prev + 1));
-  };
+  }, [orderedGallery.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goToNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goToPrevious, goToNext]);
 
   // Drag and drop handlers
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -232,33 +248,44 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
       </div>
 
       {/* Thumbnail Strip - Draggable */}
-      <div className="flex justify-center gap-2 flex-wrap">
+      <div className="flex justify-center gap-2 flex-wrap relative">
         {orderedGallery.map((img, idx) => (
-          <button
-            key={img.id}
-            draggable
-            onDragStart={(e) => handleDragStart(e, idx)}
-            onDragEnd={handleDragEnd}
-            onDragEnter={(e) => handleDragEnter(e, idx)}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, idx)}
-            onClick={() => setCurrentIndex(idx)}
-            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group
-              ${!isDragging ? 'hover:scale-[5] hover:z-50' : ''}
-              ${idx === currentIndex 
-                ? 'border-tyrian bg-tyrian/10' 
-                : 'border-ink/20 hover:border-ink/40'
-              }
-              ${draggedIndex === idx ? 'opacity-50 scale-95' : ''}
-              ${dragOverIndex === idx ? 'border-tyrian border-dashed scale-105' : ''}
-            `}
-          >
-            <img 
-              src={img.url} 
-              alt={`${pepperName} thumbnail ${idx + 1}`}
-              className="w-full h-full object-cover pointer-events-none"
-            />
+          <div key={img.id} className="relative group">
+            <button
+              draggable
+              onDragStart={(e) => handleDragStart(e, idx)}
+              onDragEnd={handleDragEnd}
+              onDragEnter={(e) => handleDragEnter(e, idx)}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, idx)}
+              onClick={() => setCurrentIndex(idx)}
+              className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing
+                ${idx === currentIndex 
+                  ? 'border-tyrian bg-tyrian/10' 
+                  : 'border-ink/20 hover:border-ink/40'
+                }
+                ${draggedIndex === idx ? 'opacity-50 scale-95' : ''}
+                ${dragOverIndex === idx ? 'border-tyrian border-dashed scale-105' : ''}
+              `}
+            >
+              <img 
+                src={img.url} 
+                alt={`${pepperName} thumbnail ${idx + 1}`}
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </button>
+            {/* Hover preview - positioned above and to the left */}
+            {!isDragging && (
+              <div className="absolute bottom-full left-0 mb-2 w-48 h-48 border-2 border-ink/30 bg-parchment shadow-lg 
+                opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                <img 
+                  src={img.url} 
+                  alt={`${pepperName} preview`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             {/* Delete button */}
             <DeleteImageButton
               disabled={!canDeleteImage(img)}
@@ -272,7 +299,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
               onDelete={() => handleDeleteImage(img)}
               isDeleting={deletingId === img.id}
             />
-          </button>
+          </div>
         ))}
         
         {/* Upload button for authenticated users */}
