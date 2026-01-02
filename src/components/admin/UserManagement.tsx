@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, ShieldOff, User, UserPlus, UserMinus, RefreshCw, Copy, Check } from 'lucide-react';
+import { Shield, User, UserPlus, UserMinus, RefreshCw, Copy, Check } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface UserData {
@@ -109,43 +109,6 @@ export function UserManagement() {
     fetchUsers();
   }, []);
 
-  const toggleRole = async (userId: string, currentRole: 'admin' | 'user') => {
-    try {
-      const newRole = currentRole === 'admin' ? 'user' : 'admin';
-      
-      const { error } = await supabase
-        .from('user_roles')
-        .update({ role: newRole })
-        .eq('user_id', userId);
-
-      if (error) throw error;
-
-      // Log audit
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await supabase.from('admin_audit_log').insert({
-          performed_by: user.id,
-          action: currentRole === 'admin' ? 'role_demoted' : 'role_promoted',
-          target_type: 'user',
-          target_id: userId,
-        });
-      }
-
-      toast({
-        title: 'Role Updated',
-        description: `User ${currentRole === 'admin' ? 'demoted to user' : 'promoted to admin'}`,
-      });
-
-      fetchUsers();
-    } catch (error) {
-      console.error('Error updating role:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update user role',
-        variant: 'destructive',
-      });
-    }
-  };
 
   const toggleDeactivation = async (userId: string, isDeactivated: boolean) => {
     try {
@@ -437,25 +400,6 @@ export function UserManagement() {
               {format(new Date(user.created_at), 'MMM d, yyyy')}
             </div>
             <div className="col-span-3 flex gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => toggleRole(user.id, user.role)}
-                className="border-ink/20 hover:bg-parchment-dark/50 text-xs"
-                disabled={user.isDeactivated}
-              >
-                {user.role === 'admin' ? (
-                  <>
-                    <ShieldOff className="w-3 h-3 mr-1" />
-                    Demote
-                  </>
-                ) : (
-                  <>
-                    <Shield className="w-3 h-3 mr-1" />
-                    Promote
-                  </>
-                )}
-              </Button>
               <Button
                 variant="outline"
                 size="sm"
