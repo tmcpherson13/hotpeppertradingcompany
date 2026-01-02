@@ -19,6 +19,7 @@ const authSchema = z.object({
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -26,7 +27,7 @@ export default function Auth() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; displayName?: string }>({});
   
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -52,6 +53,36 @@ export default function Auth() {
         setErrors(fieldErrors);
       }
       return false;
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      setErrors({ email: 'Please enter your email address' });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const { error } = await resetPassword(email);
+      if (error) {
+        toast({
+          title: 'Reset Failed',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Check Your Email',
+          description: 'A password reset link has been sent to your email address.',
+        });
+        setIsForgotPassword(false);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -126,12 +157,14 @@ export default function Auth() {
           <div className="text-center mb-8">
             <img src={logoDark} alt="" className="h-16 w-auto mx-auto mb-4 opacity-80" />
             <h1 className="font-display text-2xl uppercase tracking-[0.15em] text-ink">
-              {isLogin ? 'Registry Access' : 'Join the Registry'}
+              {isForgotPassword ? 'Reset Password' : isLogin ? 'Registry Access' : 'Join the Registry'}
             </h1>
             <p className="font-body text-sm text-ink/60 mt-2">
-              {isLogin 
-                ? 'Enter your credentials to access your collection'
-                : 'Create an account to contribute to the compendium'
+              {isForgotPassword
+                ? 'Enter your email to receive a password reset link'
+                : isLogin 
+                  ? 'Enter your credentials to access your collection'
+                  : 'Create an account to contribute to the compendium'
               }
             </p>
           </div>
@@ -147,108 +180,163 @@ export default function Auth() {
             </div>
 
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
+            {isForgotPassword ? (
+              <form onSubmit={handleForgotPassword} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="displayName" className="font-heading text-xs uppercase tracking-wider text-ink/70">
-                    Display Name (optional)
+                  <Label htmlFor="email" className="font-heading text-xs uppercase tracking-wider text-ink/70">
+                    Email Address
                   </Label>
                   <Input
-                    id="displayName"
-                    type="text"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Your name"
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="merchant@example.com"
+                    required
                     className="bg-parchment border-ink/30 focus:border-tyrian"
                   />
-                  {errors.displayName && (
-                    <p className="text-xs text-red-600">{errors.displayName}</p>
+                  {errors.email && (
+                    <p className="text-xs text-red-600">{errors.email}</p>
                   )}
                 </div>
-              )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="font-heading text-xs uppercase tracking-wider text-ink/70">
-                  Email Address
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="merchant@example.com"
-                  required
-                  className="bg-parchment border-ink/30 focus:border-tyrian"
-                />
-                {errors.email && (
-                  <p className="text-xs text-red-600">{errors.email}</p>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-tyrian hover:bg-tyrian/90 text-parchment font-heading uppercase tracking-wider"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                </Button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsForgotPassword(false);
+                    setErrors({});
+                  }}
+                  className="w-full font-heading text-sm uppercase tracking-wider text-ink/60 hover:text-ink mt-2"
+                >
+                  Back to Login
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {!isLogin && (
+                  <div className="space-y-2">
+                    <Label htmlFor="displayName" className="font-heading text-xs uppercase tracking-wider text-ink/70">
+                      Display Name (optional)
+                    </Label>
+                    <Input
+                      id="displayName"
+                      type="text"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      placeholder="Your name"
+                      className="bg-parchment border-ink/30 focus:border-tyrian"
+                    />
+                    {errors.displayName && (
+                      <p className="text-xs text-red-600">{errors.displayName}</p>
+                    )}
+                  </div>
                 )}
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="font-heading text-xs uppercase tracking-wider text-ink/70">
-                  Password
-                </Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="bg-parchment border-ink/30 focus:border-tyrian"
-                />
-                {errors.password && (
-                  <p className="text-xs text-red-600">{errors.password}</p>
-                )}
-              </div>
-
-              {/* Remember me checkbox - only show on login */}
-              {isLogin && (
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="rememberMe"
-                    checked={rememberMe}
-                    onCheckedChange={(checked) => setRememberMe(checked === true)}
-                    className="border-ink/40 data-[state=checked]:bg-tyrian data-[state=checked]:border-tyrian"
-                  />
-                  <Label 
-                    htmlFor="rememberMe" 
-                    className="font-body text-sm text-ink/70 cursor-pointer"
-                  >
-                    Remember me
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="font-heading text-xs uppercase tracking-wider text-ink/70">
+                    Email Address
                   </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="merchant@example.com"
+                    required
+                    className="bg-parchment border-ink/30 focus:border-tyrian"
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-600">{errors.email}</p>
+                  )}
                 </div>
-              )}
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-tyrian hover:bg-tyrian/90 text-parchment font-heading uppercase tracking-wider"
-              >
-                {isSubmitting 
-                  ? 'Processing...' 
-                  : isLogin ? 'Enter the Registry' : 'Create Account'
-                }
-              </Button>
-            </form>
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="font-heading text-xs uppercase tracking-wider text-ink/70">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="bg-parchment border-ink/30 focus:border-tyrian"
+                  />
+                  {errors.password && (
+                    <p className="text-xs text-red-600">{errors.password}</p>
+                  )}
+                </div>
 
-            {/* Toggle login/signup */}
-            <div className="mt-6 pt-4 border-t border-ink/15 text-center">
-              <p className="font-body text-sm text-ink/60">
-                {isLogin ? "Don't have an account?" : 'Already registered?'}
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setErrors({});
-                }}
-                className="font-heading text-sm uppercase tracking-wider text-tyrian hover:text-tyrian/80 mt-1"
-              >
-                {isLogin ? 'Create Account' : 'Log In'}
-              </button>
-            </div>
+                {/* Remember me and forgot password - only show on login */}
+                {isLogin && (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="rememberMe"
+                        checked={rememberMe}
+                        onCheckedChange={(checked) => setRememberMe(checked === true)}
+                        className="border-ink/40 data-[state=checked]:bg-tyrian data-[state=checked]:border-tyrian"
+                      />
+                      <Label 
+                        htmlFor="rememberMe" 
+                        className="font-body text-sm text-ink/70 cursor-pointer"
+                      >
+                        Remember me
+                      </Label>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsForgotPassword(true);
+                        setErrors({});
+                      }}
+                      className="font-body text-sm text-tyrian hover:text-tyrian/80"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-tyrian hover:bg-tyrian/90 text-parchment font-heading uppercase tracking-wider"
+                >
+                  {isSubmitting 
+                    ? 'Processing...' 
+                    : isLogin ? 'Enter the Registry' : 'Create Account'
+                  }
+                </Button>
+              </form>
+            )}
+
+            {/* Toggle login/signup - hide when in forgot password mode */}
+            {!isForgotPassword && (
+              <div className="mt-6 pt-4 border-t border-ink/15 text-center">
+                <p className="font-body text-sm text-ink/60">
+                  {isLogin ? "Don't have an account?" : 'Already registered?'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                    setErrors({});
+                  }}
+                  className="font-heading text-sm uppercase tracking-wider text-tyrian hover:text-tyrian/80 mt-1"
+                >
+                  {isLogin ? 'Create Account' : 'Log In'}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Additional info */}
