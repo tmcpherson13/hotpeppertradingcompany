@@ -74,7 +74,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
                 src={spiritsOfAsiaImg}
-                alt="Spirits of Asia Pepper Consortium"
+                alt="Silk & Jade Passages Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
