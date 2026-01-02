@@ -19,6 +19,8 @@ export interface EnrichmentQueueEntry {
   reviewed_at: string | null;
   created_at: string;
   created_by: string | null;
+  confidence_score: number | null;
+  auto_approved: boolean | null;
 }
 
 export interface UsePepperEnrichmentResult {
