@@ -35,7 +35,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-tyrian border-b border-tyrian-dark/30">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -43,7 +43,7 @@ export function Header() {
             <img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
-              className="h-14 w-auto mix-blend-multiply"
+              className="h-14 w-auto brightness-0 invert"
             />
           </Link>
 
@@ -55,7 +55,7 @@ export function Header() {
                   key={link.name}
                   to={link.href}
                   onClick={() => window.scrollTo(0, 0)}
-                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
+                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors duration-300"
                 >
                   {link.name}
                 </Link>
@@ -64,7 +64,7 @@ export function Header() {
                   key={link.name}
                   href={isHomePage ? link.href : '/' + link.href}
                   onClick={(e) => handleAnchorClick(e, link.href)}
-                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors duration-300"
+                  className="font-heading text-base font-bold uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors duration-300"
                 >
                   {link.name}
                 </a>
@@ -74,12 +74,12 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button className="hidden md:flex text-muted-foreground hover:text-primary transition-colors">
+            <button className="hidden md:flex text-parchment/70 hover:text-gold transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <button className="relative text-muted-foreground hover:text-primary transition-colors">
+            <button className="relative text-parchment/70 hover:text-gold transition-colors">
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-ink text-[10px] font-bold flex items-center justify-center">
                 0
               </span>
             </button>
@@ -87,20 +87,28 @@ export function Header() {
           {/* Auth button */}
           {!isLoading && (
             user ? (
-              <div className="hidden md:flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-3">
                 {isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-tyrian hover:text-tyrian/80 border border-tyrian/30 rounded-md hover:border-tyrian/50 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gold hover:text-gold/80 border border-gold/40 rounded-md hover:border-gold/60 transition-colors"
                     title="Admin Panel"
                   >
                     <Shield className="w-4 h-4" />
                     <span>Admin</span>
                   </Link>
                 )}
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
+                  title="Your Profile"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Profile</span>
+                </Link>
                 <button
                   onClick={() => signOut()}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-primary border border-border rounded-md hover:border-primary transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
                   title="Sign out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -110,7 +118,7 @@ export function Header() {
             ) : (
               <Link
                 to="/auth"
-                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-primary border border-border rounded-md hover:border-primary transition-colors"
+                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
                 title="Sign in"
               >
                 <User className="w-4 h-4" />
@@ -120,7 +128,7 @@ export function Header() {
           )}
             
             <button
-              className="md:hidden text-foreground"
+              className="md:hidden text-parchment"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -136,7 +144,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-card border-b border-border overflow-hidden"
+            className="md:hidden bg-tyrian border-b border-tyrian-dark/30 overflow-hidden"
           >
             <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -148,7 +156,7 @@ export function Header() {
                       window.scrollTo(0, 0);
                       setIsOpen(false);
                     }}
-                    className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
+                    className="font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
                   >
                     {link.name}
                   </Link>
@@ -160,7 +168,7 @@ export function Header() {
                       handleAnchorClick(e, link.href);
                       setIsOpen(false);
                     }}
-                    className="font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 border-b border-border"
+                    className="font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
                   >
                     {link.name}
                   </a>
@@ -175,18 +183,26 @@ export function Header() {
                       <Link
                         to="/admin"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-tyrian hover:text-tyrian/80 transition-colors py-2 border-b border-border"
+                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-gold hover:text-gold/80 transition-colors py-2 border-b border-parchment/20"
                       >
                         <Shield className="w-5 h-5" />
                         Admin Panel
                       </Link>
                     )}
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
+                    >
+                      <User className="w-5 h-5" />
+                      Profile
+                    </Link>
                     <button
                       onClick={() => {
                         signOut();
                         setIsOpen(false);
                       }}
-                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 text-left"
+                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 text-left"
                     >
                       <LogOut className="w-5 h-5" />
                       Sign Out
@@ -196,7 +212,7 @@ export function Header() {
                   <Link
                     to="/auth"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2"
+                    className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2"
                   >
                     <User className="w-5 h-5" />
                     Sign In
