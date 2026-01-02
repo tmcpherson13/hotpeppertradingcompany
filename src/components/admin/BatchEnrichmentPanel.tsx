@@ -39,6 +39,9 @@ export function BatchEnrichmentPanel({ selectedPeppers, onComplete }: BatchEnric
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
+  const [generateImages, setGenerateImages] = useState(() => {
+    return localStorage.getItem('enrichment_image_generation') === 'true';
+  });
   const isPausedRef = useRef(false);
   const { toast } = useToast();
 
@@ -144,8 +147,8 @@ export function BatchEnrichmentPanel({ selectedPeppers, onComplete }: BatchEnric
       ));
 
       try {
-        // Research phase
-        const researchSuccess = await triggerResearch(item.pepper.id, item.pepper.name);
+        // Research phase - include wikimedia for images
+        const researchSuccess = await triggerResearch(item.pepper.id, item.pepper.name, ['firecrawl', 'perplexity', 'wikimedia']);
         
         if (!researchSuccess) {
           setItems(prev => prev.map((it, idx) => 
@@ -160,8 +163,8 @@ export function BatchEnrichmentPanel({ selectedPeppers, onComplete }: BatchEnric
         ));
         setBatchStatus('synthesizing');
 
-        // Synthesis phase
-        const synthesisSuccess = await synthesize(item.pepper.id, item.pepper.name);
+        // Synthesis phase - pass image generation flag
+        const synthesisSuccess = await synthesize(item.pepper.id, item.pepper.name, generateImages);
 
         if (!synthesisSuccess) {
           setItems(prev => prev.map((it, idx) => 

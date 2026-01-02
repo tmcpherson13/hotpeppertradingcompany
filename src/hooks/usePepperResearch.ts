@@ -5,13 +5,21 @@ import { useToast } from '@/hooks/use-toast';
 export interface ResearchRecord {
   id: string;
   pepper_id: string;
-  source_type: 'firecrawl' | 'perplexity';
+  source_type: 'firecrawl' | 'perplexity' | 'wikimedia_images';
   query: string;
   raw_content: string | null;
   urls: string[];
   metadata: Record<string, unknown>;
   created_at: string;
   created_by: string | null;
+}
+
+export interface WikimediaImage {
+  url: string;
+  sourceUrl: string;
+  license: string;
+  author: string;
+  title: string;
 }
 
 export interface UsePepperResearchResult {
@@ -57,7 +65,7 @@ export function usePepperResearch(): UsePepperResearchResult {
   const triggerResearch = useCallback(async (
     pepperId: string,
     pepperName: string,
-    sources: string[] = ['firecrawl', 'perplexity']
+    sources: string[] = ['firecrawl', 'perplexity', 'wikimedia']
   ): Promise<boolean> => {
     setIsResearching(true);
     try {

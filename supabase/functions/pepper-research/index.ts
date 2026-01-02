@@ -37,6 +37,7 @@ serve(async (req) => {
     console.log(`Starting research for pepper: ${pepperName} (${pepperId})`);
 
     const researchResults: any[] = [];
+    const imageResults: any[] = [];
     const searchQuery = `${pepperName} pepper culinary uses history origin flavor profile heat level`;
 
     // Firecrawl research
@@ -170,13 +171,97 @@ serve(async (req) => {
       }
     }
 
-    console.log(`Research complete. ${researchResults.length} sources processed.`);
+    // Wikimedia Commons image search for reference images
+    if (sources.includes('wikimedia')) {
+      try {
+        console.log('Searching Wikimedia Commons for reference images...');
+        const wikiSearchTerms = [
+          `${pepperName} pepper`,
+          `${pepperName} chili`,
+          `Capsicum ${pepperName}`,
+        ];
+
+        for (const searchTerm of wikiSearchTerms) {
+          const wikiUrl = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&srnamespace=6&srlimit=5&format=json&origin=*`;
+          
+          const wikiResponse = await fetch(wikiUrl);
+          if (!wikiResponse.ok) continue;
+
+          const wikiData = await wikiResponse.json();
+          const searchResults = wikiData.query?.search || [];
+
+          for (const result of searchResults) {
+            const title = result.title;
+            // Get image info
+            const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|extmetadata|user&format=json&origin=*`;
+            
+            const infoResponse = await fetch(infoUrl);
+            if (!infoResponse.ok) continue;
+
+            const infoData = await infoResponse.json();
+            const pages = infoData.query?.pages || {};
+            const pageData = Object.values(pages)[0] as any;
+            const imageInfo = pageData?.imageinfo?.[0];
+
+            if (imageInfo?.url) {
+              const extmeta = imageInfo.extmetadata || {};
+              const license = extmeta.LicenseShortName?.value || 'Unknown';
+              const author = extmeta.Artist?.value?.replace(/<[^>]+>/g, '') || imageInfo.user || 'Unknown';
+
+              // Only include CC-licensed images
+              if (license.toLowerCase().includes('cc') || license.toLowerCase().includes('public domain')) {
+                imageResults.push({
+                  url: imageInfo.url,
+                  sourceUrl: `https://commons.wikimedia.org/wiki/${encodeURIComponent(title)}`,
+                  license,
+                  author,
+                  title: title.replace('File:', ''),
+                });
+              }
+            }
+          }
+
+          // Limit total results
+          if (imageResults.length >= 5) break;
+        }
+
+        console.log(`Found ${imageResults.length} Wikimedia images`);
+
+        // Store image search results
+        if (imageResults.length > 0) {
+          const { data: researchRecord, error: insertError } = await supabase
+            .from('pepper_research')
+            .insert({
+              pepper_id: pepperId,
+              source_type: 'wikimedia_images',
+              query: `${pepperName} pepper images`,
+              raw_content: JSON.stringify(imageResults),
+              urls: imageResults.map(i => i.sourceUrl),
+              metadata: { image_count: imageResults.length, images: imageResults },
+              created_by: userId,
+            })
+            .select()
+            .single();
+
+          if (insertError) {
+            console.error('Error storing Wikimedia research:', insertError);
+          } else {
+            researchResults.push(researchRecord);
+          }
+        }
+      } catch (err) {
+        console.error('Wikimedia error:', err);
+      }
+    }
+
+    console.log(`Research complete. ${researchResults.length} sources processed, ${imageResults.length} images found.`);
 
     return new Response(
       JSON.stringify({
         success: true,
         data: researchResults,
-        message: `Research gathered from ${researchResults.length} source(s)`,
+        images: imageResults,
+        message: `Research gathered from ${researchResults.length} source(s), ${imageResults.length} images found`,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

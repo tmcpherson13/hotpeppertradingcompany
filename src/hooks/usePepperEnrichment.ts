@@ -28,7 +28,7 @@ export interface UsePepperEnrichmentResult {
   isApplying: boolean;
   fetchQueue: (status?: string) => Promise<void>;
   fetchPepperQueue: (pepperId: string) => Promise<EnrichmentQueueEntry | null>;
-  synthesize: (pepperId: string, pepperName: string) => Promise<boolean>;
+  synthesize: (pepperId: string, pepperName: string, generateImages?: boolean, jobId?: string | null) => Promise<boolean>;
   approve: (queueId: string, edits?: Partial<EnrichmentQueueEntry>, reviewNotes?: string) => Promise<boolean>;
   reject: (queueId: string, reviewNotes?: string) => Promise<boolean>;
 }
@@ -90,7 +90,12 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
     }
   }, []);
 
-  const synthesize = useCallback(async (pepperId: string, pepperName: string): Promise<boolean> => {
+  const synthesize = useCallback(async (
+    pepperId: string, 
+    pepperName: string,
+    generateImages: boolean = false,
+    jobId: string | null = null
+  ): Promise<boolean> => {
     setIsSynthesizing(true);
     try {
       const { data: session } = await supabase.auth.getSession();
@@ -103,7 +108,7 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session?.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
-          body: JSON.stringify({ pepperId, pepperName }),
+          body: JSON.stringify({ pepperId, pepperName, generateImages, jobId }),
         }
       );
 
