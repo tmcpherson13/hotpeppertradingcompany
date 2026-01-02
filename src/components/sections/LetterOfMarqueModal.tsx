@@ -42,7 +42,7 @@ const pepperProfiles = [
     origin: 'Central Africa (African Route)',
     heat: 'Extra Hot (125,000–400,000 SHU)',
     flavor: 'Intense citrus and habanero-like fruitiness with searing, persistent heat.',
-    role: 'Vanguard — African fire that crossed the Atlantic on slave ships and merchant vessels.',
+    role: 'Vanguard — African fire that crossed the Atlantic on merchant vessels and trade routes.',
   },
   {
     name: 'Trinidad Scorpion',
