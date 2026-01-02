@@ -181,11 +181,6 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             </>
           )}
           
-          {/* Image Type Badge */}
-          <div className="absolute top-3 left-3 px-2 py-0.5 bg-parchment/90 
-            border border-ink/20 text-[9px] font-heading uppercase tracking-wider text-ink">
-            {currentImage.type === 'user-upload' ? 'contributed' : currentImage.type}
-          </div>
         </div>
       </div>
 
