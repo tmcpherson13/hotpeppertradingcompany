@@ -96,6 +96,13 @@ import charapitaImg from '@/assets/peppers/charapita.jpg';
 import ajiPancaImg from '@/assets/peppers/aji-panca.jpg';
 import rocotoImg from '@/assets/peppers/rocoto.jpg';
 
+// Scotch Bonnet variants
+import scotchBonnetRedImg from '@/assets/peppers/scotch-bonnet-red.jpg';
+import scotchBonnetYellowImg from '@/assets/peppers/scotch-bonnet-yellow.jpg';
+
+// Orange Habanero
+import orangeHabaneroImg from '@/assets/peppers/orange-habanero.jpg';
+
 // Helper function to generate slug from name
 function generateId(name: string): string {
   return name.toLowerCase()
@@ -463,6 +470,50 @@ const rawPeppers: Pepper[] = [
     imageUrl: scotchBonnetImg,
   },
   {
+    id: 'scotch-bonnet-red',
+    name: 'Scotch Bonnet - Red',
+    alternateNames: ['Red Scotch Bonnet', 'Jamaican Red Scotch Bonnet'],
+    scientificName: 'Capsicum chinense',
+    species: 'chinense',
+    origin: 'Jamaica',
+    region: 'Americas',
+    scovilleMin: 100000,
+    scovilleMax: 350000,
+    heatLevel: 'Very Hot',
+    flavorNotes: ['Fruity', 'Tropical', 'Sweet', 'Floral'],
+    aromaNotes: ['Fruity', 'Sweet', 'Tropical'],
+    description: 'The classic red variety of Jamaica\'s iconic jerk pepper, featuring the distinctive tam-shaped pod with vibrant crimson coloring. Delivers the signature fruity sweetness that defines Caribbean cuisine.',
+    historicalNotes: 'The red Scotch Bonnet is the quintessential Caribbean pepper, its crimson color symbolizing the fiery heart of island cooking. Named for its resemblance to a Scottish tam o\'shanter hat, this cultivar became inseparable from Jamaican identity after Spanish colonizers introduced chinense peppers from South America. The Maroons—escaped enslaved Africans who fled to the Jamaican mountains—incorporated it into their revolutionary jerk cooking technique.',
+    tradeRoute: 'Caribbean Trade Routes',
+    tradeRouteTags: ['Caribbean', 'Atlantic', 'Jamaica'],
+    yearIntroduced: -4000,
+    culinaryUses: ['Jerk seasoning', 'Hot sauces', 'Pepper pot', 'Rice and peas', 'Escovitch fish'],
+    inStock: true,
+    imageUrl: scotchBonnetRedImg,
+  },
+  {
+    id: 'scotch-bonnet-yellow',
+    name: 'Scotch Bonnet - Yellow',
+    alternateNames: ['Yellow Scotch Bonnet', 'Jamaican Yellow Scotch Bonnet'],
+    scientificName: 'Capsicum chinense',
+    species: 'chinense',
+    origin: 'Jamaica',
+    region: 'Americas',
+    scovilleMin: 100000,
+    scovilleMax: 350000,
+    heatLevel: 'Very Hot',
+    flavorNotes: ['Fruity', 'Tropical', 'Citrusy', 'Bright'],
+    aromaNotes: ['Citrus', 'Tropical', 'Sweet'],
+    description: 'A sunshine-yellow variant of the Caribbean\'s signature pepper, prized for its slightly brighter, more citrus-forward flavor compared to its red sibling. The golden pods bring visual warmth to any dish.',
+    historicalNotes: 'The yellow Scotch Bonnet developed alongside its red counterpart in the Caribbean, with some island communities preferring its slightly brighter, more citrus-forward profile. In Barbados and Trinidad, the yellow variety is particularly prized for pepper sauces, where its golden color creates an appetizing appearance while delivering the same fruity heat.',
+    tradeRoute: 'Caribbean Trade Routes',
+    tradeRouteTags: ['Caribbean', 'Atlantic', 'Jamaica', 'Barbados'],
+    yearIntroduced: -4000,
+    culinaryUses: ['Pepper sauces', 'Hot sauces', 'Curries', 'Soups', 'Marinades'],
+    inStock: true,
+    imageUrl: scotchBonnetYellowImg,
+  },
+  {
     id: 'thai',
     name: 'Thai',
     scientificName: 'Capsicum annuum',
@@ -626,7 +677,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Atlantic', 'West Africa', 'Europe'],
     yearIntroduced: 1500,
     culinaryUses: ['Powders', 'Sauces', 'Seasoning'],
-    inStock: false,
+    inStock: true,
     imageLicense: 'To-be-verified',
   },
   {
@@ -925,7 +976,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Caribbean', 'Atlantic'],
     yearIntroduced: -4000,
     culinaryUses: ['Salsas', 'Sauces'],
-    inStock: false,
+    inStock: true,
     imageLicense: 'To-be-verified',
   },
   {
@@ -968,7 +1019,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Andes', 'Peru', 'Bolivia', 'Pre-Columbian', 'South America'],
     yearIntroduced: -5000,
     culinaryUses: ['Rocoto Relleno', 'Salsas', 'Sauces', 'Ceviches', 'Stuffed preparations'],
-    inStock: false,
+    inStock: true,
     imageUrl: rocotoImg,
   },
   {
@@ -990,7 +1041,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Spanish Atlantic'],
     yearIntroduced: -4000,
     culinaryUses: ['Moles', 'Sauces'],
-    inStock: false,
+    inStock: true,
     imageLicense: 'To-be-verified',
   },
   {
@@ -1099,7 +1150,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Andes', 'Peru', 'South America', 'Pre-Columbian'],
     yearIntroduced: -3000,
     culinaryUses: ['Aji panca paste', 'Anticuchos', 'Adobo', 'Stews', 'Marinades'],
-    inStock: false,
+    inStock: true,
     imageUrl: ajiPancaImg,
   },
   {
@@ -1187,7 +1238,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Amazon', 'Peru', 'South America', 'Pre-Columbian'],
     yearIntroduced: -3000,
     culinaryUses: ['Finishing chile', 'Ceviches', 'Tiraditos', 'Gourmet sauces', 'Infused oils'],
-    inStock: false,
+    inStock: true,
     imageUrl: charapitaImg,
   },
   {
@@ -1423,7 +1474,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Spanish Atlantic'],
     yearIntroduced: -4000,
     culinaryUses: ['Salsas', 'Soups'],
-    inStock: false,
+    inStock: true,
     imageLicense: 'To-be-verified',
   },
   {
@@ -2007,8 +2058,8 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Caribbean'],
     yearIntroduced: -4000,
     culinaryUses: ['Sauces'],
-    inStock: false,
-    imageLicense: 'To-be-verified',
+    inStock: true,
+    imageUrl: orangeHabaneroImg,
   },
   {
     id: 'peach-habanero',
@@ -2528,7 +2579,7 @@ const rawPeppers: Pepper[] = [
     tradeRouteTags: ['Portuguese', 'African', 'Colonial'],
     yearIntroduced: 1500,
     culinaryUses: ['Hot sauces', 'Caribbean cuisine', 'African stews'],
-    inStock: false,
+    inStock: true,
     imageUrl: fataliiImg,
   },
   {
