@@ -7,6 +7,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Compendium from "./pages/Compendium";
 import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+import { AdminRoute } from "./components/auth/AdminRoute";
 import PreColumbianOrigins from "./pages/history/PreColumbianOrigins";
 import ColumbianExchange from "./pages/history/ColumbianExchange";
 import GlobalIntegration from "./pages/history/GlobalIntegration";
@@ -25,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/compendium" element={<Compendium />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
             <Route path="/history/columbian-exchange" element={<ColumbianExchange />} />
             <Route path="/history/global-integration" element={<GlobalIntegration />} />
