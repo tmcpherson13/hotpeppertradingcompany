@@ -106,7 +106,3 @@ export default function Admin() {
     </div>
   );
 }
-      <Footer />
-    </div>
-  );
-}
