@@ -233,7 +233,7 @@ serve(async (req) => {
             .from('pepper_research')
             .insert({
               pepper_id: pepperId,
-              source_type: 'wikimedia_images',
+              source_type: 'wikimedia',
               query: `${pepperName} pepper images`,
               raw_content: JSON.stringify(imageResults),
               urls: imageResults.map(i => i.sourceUrl),
