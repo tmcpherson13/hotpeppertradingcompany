@@ -42,54 +42,54 @@ export default function Admin() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full bg-tyrian/90 border border-tyrian-dark p-1 mb-6 grid grid-cols-7">
+            <TabsList className="w-full bg-tyrian/90 border border-tyrian-dark p-1 mb-6 flex flex-wrap">
               <TabsTrigger
                 value="enrichment"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <BookOpen className="w-4 h-4" />
+                <BookOpen className="w-4 h-4 shrink-0" />
                 Content Enrichment
               </TabsTrigger>
               <TabsTrigger
                 value="progress"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <Activity className="w-4 h-4" />
+                <Activity className="w-4 h-4 shrink-0" />
                 Progress
               </TabsTrigger>
               <TabsTrigger
                 value="images"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <Image className="w-4 h-4" />
+                <Image className="w-4 h-4 shrink-0" />
                 Images
               </TabsTrigger>
               <TabsTrigger
                 value="image-proposals"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <ImagePlus className="w-4 h-4" />
+                <ImagePlus className="w-4 h-4 shrink-0" />
                 Image Proposals
               </TabsTrigger>
               <TabsTrigger
                 value="audit-log"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <FileText className="w-4 h-4" />
+                <FileText className="w-4 h-4 shrink-0" />
                 Audit Log
               </TabsTrigger>
               <TabsTrigger
                 value="users"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <Users className="w-4 h-4" />
+                <Users className="w-4 h-4 shrink-0" />
                 Users
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
-                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
-                <User className="w-4 h-4" />
+                <User className="w-4 h-4 shrink-0" />
                 Profile
               </TabsTrigger>
             </TabsList>
