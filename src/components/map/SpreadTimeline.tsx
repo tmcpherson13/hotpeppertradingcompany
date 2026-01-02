@@ -451,9 +451,9 @@ export function SpreadTimeline({
         </div>
 
         {/* Speed Control */}
-        <div className="flex items-center gap-3 mt-3 px-2">
-          <Gauge className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-[50px] font-bold text-muted-foreground w-20">Fast</span>
+        <div className="flex items-center gap-3 mt-3 px-4 py-2 bg-muted/30 rounded border border-border/50">
+          <Gauge className="w-4 h-4 text-gold" />
+          <span className="text-xs font-display uppercase tracking-wide text-foreground/80 w-10">Fast</span>
           <Slider
             value={[animationSpeed]}
             onValueChange={(value) => setAnimationSpeed(value[0])}
@@ -462,7 +462,7 @@ export function SpreadTimeline({
             step={500}
             className="flex-1"
           />
-          <span className="text-[10px] font-body text-muted-foreground w-8">Slow</span>
+          <span className="text-xs font-display uppercase tracking-wide text-foreground/80 w-10 text-right">Slow</span>
         </div>
       </div>
     </div>
