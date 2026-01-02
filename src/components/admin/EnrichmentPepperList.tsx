@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square, Package } from 'lucide-react';
+import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square, Package, Camera, CameraOff } from 'lucide-react';
 
 interface EnrichmentPepperListProps {
   onSelectPepper: (pepper: Pepper) => void;
@@ -17,6 +17,7 @@ interface EnrichmentPepperListProps {
 }
 
 export type EnrichmentStatus = 'none' | 'researched' | 'pending' | 'enriched';
+export type ImageStatus = 'no_images' | 'has_proposals' | 'has_images';
 
 export function EnrichmentPepperList({ 
   onSelectPepper, 
@@ -26,8 +27,10 @@ export function EnrichmentPepperList({
 }: EnrichmentPepperListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [pepperStatuses, setPepperStatuses] = useState<Map<string, EnrichmentStatus>>(new Map());
+  const [imageStatuses, setImageStatuses] = useState<Map<string, ImageStatus>>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showNeedsImages, setShowNeedsImages] = useState(false);
 
   const inStockPeppers = peppers.filter(p => p.inStock);
   const inStockCount = inStockPeppers.length;
@@ -50,7 +53,13 @@ export function EnrichmentPepperList({
         .from('pepper_research')
         .select('pepper_id');
 
+      // Fetch image proposals
+      const { data: imageProposals } = await supabase
+        .from('pepper_image_proposals')
+        .select('pepper_id, status');
+
       const statusMap = new Map<string, EnrichmentStatus>();
+      const imageMap = new Map<string, ImageStatus>();
 
       // Mark enriched peppers
       overrides?.forEach((o: any) => {
@@ -73,7 +82,18 @@ export function EnrichmentPepperList({
         }
       });
 
+      // Build image status map
+      imageProposals?.forEach((ip: any) => {
+        const currentStatus = imageMap.get(ip.pepper_id);
+        if (ip.status === 'approved') {
+          imageMap.set(ip.pepper_id, 'has_images');
+        } else if (ip.status === 'pending' && currentStatus !== 'has_images') {
+          imageMap.set(ip.pepper_id, 'has_proposals');
+        }
+      });
+
       setPepperStatuses(statusMap);
+      setImageStatuses(imageMap);
     } catch (err) {
       console.error('Error fetching pepper statuses:', err);
     } finally {
@@ -85,10 +105,28 @@ export function EnrichmentPepperList({
     fetchStatuses();
   }, [fetchStatuses]);
 
-  const filteredPeppers = peppers.filter(pepper =>
-    pepper.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    pepper.origin.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPeppers = peppers.filter(pepper => {
+    const matchesSearch = pepper.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pepper.origin.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    if (showNeedsImages) {
+      // Show only enriched peppers without approved images
+      const enrichmentStatus = pepperStatuses.get(pepper.id) || 'none';
+      const imageStatus = imageStatuses.get(pepper.id);
+      return matchesSearch && 
+        (enrichmentStatus === 'enriched' || enrichmentStatus === 'pending') && 
+        imageStatus !== 'has_images';
+    }
+    
+    return matchesSearch;
+  });
+
+  const needsImagesCount = peppers.filter(p => {
+    const enrichmentStatus = pepperStatuses.get(p.id) || 'none';
+    const imageStatus = imageStatuses.get(p.id);
+    return (enrichmentStatus === 'enriched' || enrichmentStatus === 'pending') && 
+      imageStatus !== 'has_images';
+  }).length;
 
   const handleToggleSelect = useCallback((pepper: Pepper) => {
     setSelectedIds(prev => {
@@ -111,7 +149,6 @@ export function EnrichmentPepperList({
   const handleSelectAll = useCallback(() => {
     const unselectedFiltered = filteredPeppers.filter(p => !selectedIds.has(p.id));
     if (unselectedFiltered.length > 0) {
-      // Select all filtered
       setSelectedIds(prev => {
         const next = new Set(prev);
         filteredPeppers.forEach(p => next.add(p.id));
@@ -122,7 +159,6 @@ export function EnrichmentPepperList({
         return next;
       });
     } else {
-      // Deselect all filtered
       setSelectedIds(prev => {
         const next = new Set(prev);
         filteredPeppers.forEach(p => next.delete(p.id));
@@ -163,6 +199,25 @@ export function EnrichmentPepperList({
     });
   }, [filteredPeppers, pepperStatuses, onSelectionChange]);
 
+  const handleSelectNeedsImages = useCallback(() => {
+    const peppersNeedingImages = filteredPeppers.filter(p => {
+      const enrichmentStatus = pepperStatuses.get(p.id) || 'none';
+      const imageStatus = imageStatuses.get(p.id);
+      return (enrichmentStatus === 'enriched' || enrichmentStatus === 'pending') && 
+        imageStatus !== 'has_images';
+    });
+    
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      peppersNeedingImages.forEach(p => next.add(p.id));
+      if (onSelectionChange) {
+        const selectedPeppers = peppers.filter(p => next.has(p.id));
+        onSelectionChange(selectedPeppers);
+      }
+      return next;
+    });
+  }, [filteredPeppers, pepperStatuses, imageStatuses, onSelectionChange]);
+
   const handleClearSelection = useCallback(() => {
     setSelectedIds(new Set());
     if (onSelectionChange) {
@@ -180,6 +235,17 @@ export function EnrichmentPepperList({
         return <AlertCircle className="w-4 h-4 text-blue-600" />;
       default:
         return <Circle className="w-4 h-4 text-ink/30" />;
+    }
+  };
+
+  const getImageIcon = (imageStatus: ImageStatus | undefined) => {
+    switch (imageStatus) {
+      case 'has_images':
+        return <Camera className="w-3 h-3 text-green-600" />;
+      case 'has_proposals':
+        return <Camera className="w-3 h-3 text-amber-600" />;
+      default:
+        return <CameraOff className="w-3 h-3 text-ink/30" />;
     }
   };
 
@@ -210,6 +276,19 @@ export function EnrichmentPepperList({
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9 bg-parchment border-ink/20 text-sm"
           />
+        </div>
+        
+        {/* Needs Images Filter Toggle */}
+        <div className="flex items-center gap-2 mt-3">
+          <Button
+            variant={showNeedsImages ? "default" : "outline"}
+            size="sm"
+            onClick={() => setShowNeedsImages(!showNeedsImages)}
+            className="text-xs h-7"
+          >
+            <CameraOff className="w-3 h-3 mr-1" />
+            Needs Images ({needsImagesCount})
+          </Button>
         </div>
         
         {batchMode && (
@@ -248,6 +327,15 @@ export function EnrichmentPepperList({
               className="text-xs h-7"
             >
               Unenriched
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSelectNeedsImages}
+              className="text-xs h-7 text-orange-600 hover:text-orange-700"
+            >
+              <CameraOff className="w-3 h-3 mr-1" />
+              No Images
             </Button>
             {selectedIds.size > 0 && (
               <>
@@ -290,6 +378,7 @@ export function EnrichmentPepperList({
           ) : (
             filteredPeppers.map((pepper) => {
               const status = pepperStatuses.get(pepper.id) || 'none';
+              const imgStatus = imageStatuses.get(pepper.id);
               const isSelected = pepper.id === selectedPepperId;
               const isChecked = selectedIds.has(pepper.id);
 
@@ -320,6 +409,7 @@ export function EnrichmentPepperList({
                           <span className="font-heading text-sm text-ink truncate">
                             {pepper.name}
                           </span>
+                          {getImageIcon(imgStatus)}
                           {pepper.inStock && (
                             <Badge variant="outline" className="bg-indigo-50 text-indigo-600 border-indigo-200 text-[10px] px-1">
                               In Stock
