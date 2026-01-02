@@ -76,6 +76,26 @@ export function ImageModeration() {
 
   useEffect(() => {
     fetchImages();
+
+    // Realtime subscription for live updates
+    const channel = supabase
+      .channel('admin-image-moderation')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_uploaded_images',
+        },
+        () => {
+          fetchImages();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const deleteImage = async (image: UploadedImage) => {
