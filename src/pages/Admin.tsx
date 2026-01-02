@@ -8,8 +8,9 @@ import { ProfileSettings } from '@/components/admin/ProfileSettings';
 import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
 import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
 import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
+import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen, Activity, ImagePlus } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText } from 'lucide-react';
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('users');
@@ -82,6 +83,13 @@ export default function Admin() {
                 Image Proposals
               </TabsTrigger>
               <TabsTrigger
+                value="audit-log"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <FileText className="w-4 h-4" />
+                Audit Log
+              </TabsTrigger>
+              <TabsTrigger
                 value="profile"
                 className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
               >
@@ -135,6 +143,15 @@ export default function Admin() {
                   Pending Image Proposals
                 </h2>
                 <ImageProposalReview />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="audit-log" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Admin Audit Log
+                </h2>
+                <AdminAuditLog />
               </div>
             </TabsContent>
 

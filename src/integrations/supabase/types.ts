@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          performed_by: string
+          target_id: string | null
+          target_type: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          performed_by: string
+          target_id?: string | null
+          target_type: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          performed_by?: string
+          target_id?: string | null
+          target_type?: string
+        }
+        Relationships: []
+      }
+      deactivated_accounts: {
+        Row: {
+          deactivated_at: string
+          deactivated_by: string
+          id: string
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          deactivated_at?: string
+          deactivated_by: string
+          id?: string
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          deactivated_at?: string
+          deactivated_by?: string
+          id?: string
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       enrichment_jobs: {
         Row: {
           completed_items: number
@@ -128,6 +182,27 @@ export type Database = {
           id?: string
           image_id?: string
           pepper_id?: string
+        }
+        Relationships: []
+      }
+      pending_password_changes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          user_id?: string
         }
         Relationships: []
       }
