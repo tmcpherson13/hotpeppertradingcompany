@@ -163,7 +163,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     <div className="space-y-2">
       {/* Main Image Display */}
       <div className="relative flex justify-center">
-        <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 relative group">
+        <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 relative group hover:scale-110 transition-transform duration-200 z-10">
           <img 
             src={currentImage.url} 
             alt={`${pepperName} - ${currentImage.type}`}
@@ -219,7 +219,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, idx)}
             onClick={() => setCurrentIndex(idx)}
-            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group
+            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group hover:scale-125 hover:z-20
               ${idx === currentIndex 
                 ? 'border-tyrian bg-tyrian/10' 
                 : 'border-ink/20 hover:border-ink/40'
