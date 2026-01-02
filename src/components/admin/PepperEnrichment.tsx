@@ -1,18 +1,20 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Pepper } from '@/data/pepperTypes';
 import { usePepperEnrichment, EnrichmentQueueEntry } from '@/hooks/usePepperEnrichment';
+import { supabase } from '@/integrations/supabase/client';
 import { EnrichmentPepperList } from './EnrichmentPepperList';
 import { EnrichmentSettings } from './EnrichmentSettings';
 import { ResearchPanel } from './ResearchPanel';
 import { BatchEnrichmentPanel } from './BatchEnrichmentPanel';
 import { EnrichmentReviewModal } from './EnrichmentReviewModal';
 import { EnrichmentStats } from './EnrichmentStats';
+import { PendingReviewQueue } from './PendingReviewQueue';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Eye, Layers, Circle, Settings, ChevronDown } from 'lucide-react';
+import { Eye, Layers, Circle, Settings, ChevronDown, ClipboardCheck } from 'lucide-react';
 
 export function PepperEnrichment() {
   const [selectedPepper, setSelectedPepper] = useState<Pepper | null>(null);
@@ -20,10 +22,26 @@ export function PepperEnrichment() {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [currentQueueEntry, setCurrentQueueEntry] = useState<EnrichmentQueueEntry | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [activeTab, setActiveTab] = useState<'single' | 'batch'>('single');
+  const [activeTab, setActiveTab] = useState<'single' | 'batch' | 'pending'>('single');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
 
   const { fetchPepperQueue } = usePepperEnrichment();
+
+  // Fetch pending count
+  useEffect(() => {
+    const fetchPendingCount = async () => {
+      const { count, error } = await supabase
+        .from('pepper_enrichment_queue')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+      
+      if (!error && count !== null) {
+        setPendingCount(count);
+      }
+    };
+    fetchPendingCount();
+  }, [refreshKey]);
 
   const handleSelectPepper = useCallback((pepper: Pepper) => {
     setSelectedPepper(pepper);
@@ -92,7 +110,7 @@ export function PepperEnrichment() {
       <Separator />
 
       {/* Mode Tabs */}
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'single' | 'batch')}>
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'single' | 'batch' | 'pending')}>
         <TabsList className="bg-parchment-dark/30 border border-ink/20">
           <TabsTrigger value="single" className="flex items-center gap-2 text-xs">
             <Circle className="w-4 h-4" />
@@ -104,6 +122,15 @@ export function PepperEnrichment() {
             {selectedPeppers.length > 0 && (
               <Badge variant="secondary" className="ml-1 text-xs">
                 {selectedPeppers.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="pending" className="flex items-center gap-2 text-xs">
+            <ClipboardCheck className="w-4 h-4" />
+            Pending Review
+            {pendingCount > 0 && (
+              <Badge variant="destructive" className="ml-1 text-xs">
+                {pendingCount}
               </Badge>
             )}
           </TabsTrigger>
@@ -198,6 +225,23 @@ export function PepperEnrichment() {
                   onComplete={handleBatchComplete}
                 />
               </div>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Pending Review Mode */}
+        <TabsContent value="pending" className="mt-4">
+          <div className="border border-ink/10 rounded-lg overflow-hidden bg-parchment min-h-[500px]">
+            <div className="p-3 border-b border-ink/10 bg-parchment-dark/20">
+              <h3 className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                Pending Enrichment Review
+              </h3>
+            </div>
+            <div className="h-[450px]">
+              <PendingReviewQueue
+                refreshKey={refreshKey}
+                onReviewComplete={() => setRefreshKey(k => k + 1)}
+              />
             </div>
           </div>
         </TabsContent>
