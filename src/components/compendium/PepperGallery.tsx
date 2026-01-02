@@ -163,7 +163,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     <div className="space-y-2">
       {/* Main Image Display */}
       <div className="relative flex justify-center">
-        <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 relative group hover:scale-110 transition-transform duration-200 z-10">
+        <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 relative group hover:scale-[5] hover:z-50 transition-transform duration-200 origin-center z-10">
           <img 
             src={currentImage.url} 
             alt={`${pepperName} - ${currentImage.type}`}
@@ -196,13 +196,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             </>
           )}
           
-          {/* Delete button */}
-          <DeleteImageButton
-            disabled={!canDeleteImage(currentImage)}
-            title={!canDeleteImage(currentImage) ? 'Only contributed uploads can be deleted' : 'Delete image'}
-            onDelete={() => handleDeleteImage(currentImage)}
-            isDeleting={deletingId === currentImage.id}
-          />
+           {/* Delete button */}
+           <DeleteImageButton
+             disabled={!canDeleteImage(currentImage)}
+             title={!canDeleteImage(currentImage) ? 'Archival images are locked; only uploaded photos can be deleted' : 'Delete uploaded photo'}
+             onDelete={() => handleDeleteImage(currentImage)}
+             isDeleting={deletingId === currentImage.id}
+           />
         </div>
       </div>
 
@@ -219,7 +219,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, idx)}
             onClick={() => setCurrentIndex(idx)}
-            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group hover:scale-125 hover:z-20
+            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group hover:scale-[5] hover:z-50
               ${idx === currentIndex 
                 ? 'border-tyrian bg-tyrian/10' 
                 : 'border-ink/20 hover:border-ink/40'
@@ -236,7 +236,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             {/* Delete button */}
             <DeleteImageButton
               disabled={!canDeleteImage(img)}
-              title={!canDeleteImage(img) ? 'Only contributed uploads can be deleted' : 'Delete image'}
+              title={!canDeleteImage(img) ? 'Archival images are locked; only uploaded photos can be deleted' : 'Delete uploaded photo'}
               onDelete={() => handleDeleteImage(img)}
               isDeleting={deletingId === img.id}
             />

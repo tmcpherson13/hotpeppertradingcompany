@@ -124,7 +124,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
             <div className={`border-b border-[#5a4a3a]/15 bg-[#e8dcc4]/40 ${showThumbnail ? 'flex items-center gap-3 p-3' : 'px-4 pt-4 pb-3'}`}>
               {/* Thumbnail - only on first card for review */}
               {showThumbnail && (
-                <div className="flex-shrink-0 w-20 h-20 rounded overflow-hidden border border-[#5a4a3a]/20 bg-[#f5efe6] hover:scale-150 hover:z-30 transition-transform duration-200 relative">
+                <div className="flex-shrink-0 w-20 h-20 rounded overflow-hidden border border-[#5a4a3a]/20 bg-[#f5efe6] hover:scale-[5] hover:z-50 transition-transform duration-200 relative origin-center">
                   <img 
                     src={pepperImage} 
                     alt={pepper.name}
