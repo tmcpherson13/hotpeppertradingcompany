@@ -1,14 +1,16 @@
-import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies } from '@/data/peppers';
+import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies, PepperImage } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
+import { applyGalleryOrder } from '@/utils/galleryOrder';
 import logoDark from '@/assets/logo-dark.svg';
 
-// Helper to get primary image from gallery or legacy sources
+// Helper to get primary image from gallery or legacy sources, respecting saved order
 const getPrimaryImage = (pepper: Pepper): string | undefined => {
   // First check gallery
   if (pepper.gallery && pepper.gallery.length > 0) {
-    const primary = pepper.gallery.find(img => img.isPrimary) || pepper.gallery[0];
-    return primary.url;
+    // Apply saved order and get first image
+    const orderedGallery = applyGalleryOrder(pepper.id, pepper.gallery);
+    return orderedGallery[0]?.url;
   }
   // Fallback to legacy imageUrl
   if (pepper.imageUrl) return pepper.imageUrl;

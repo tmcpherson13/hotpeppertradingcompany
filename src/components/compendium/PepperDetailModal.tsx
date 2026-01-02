@@ -3,27 +3,33 @@ import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/pepper
 import { Flame, MapPin, Package } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
+import { applyGalleryOrder } from '@/utils/galleryOrder';
 import logoDark from '@/assets/logo-dark.svg';
 
-// Helper to get gallery from pepper (with legacy fallback)
+// Helper to get gallery from pepper (with legacy fallback) and apply saved order
 const getGalleryFromPepper = (pepper: Pepper): PepperImage[] => {
+  let gallery: PepperImage[] = [];
+  
   if (pepper.gallery && pepper.gallery.length > 0) {
-    return pepper.gallery;
+    gallery = pepper.gallery;
+  } else {
+    // Fallback to legacy imageUrl or pepperImages
+    const legacyUrl = pepper.imageUrl || getPepperImage(pepper.id);
+    if (legacyUrl) {
+      gallery = [{
+        id: `${pepper.id}-primary`,
+        url: legacyUrl,
+        type: 'illustration',
+        isPrimary: true,
+        source: pepper.imageLicense ? 'wikimedia' : 'ai-generated',
+        license: pepper.imageLicense,
+        author: pepper.attributionText?.replace('Photo by ', '').split(',')[0],
+      }];
+    }
   }
-  // Fallback to legacy imageUrl or pepperImages
-  const legacyUrl = pepper.imageUrl || getPepperImage(pepper.id);
-  if (legacyUrl) {
-    return [{
-      id: `${pepper.id}-primary`,
-      url: legacyUrl,
-      type: 'illustration',
-      isPrimary: true,
-      source: pepper.imageLicense ? 'wikimedia' : 'ai-generated',
-      license: pepper.imageLicense,
-      author: pepper.attributionText?.replace('Photo by ', '').split(',')[0],
-    }];
-  }
-  return [];
+  
+  // Apply saved gallery order
+  return applyGalleryOrder(pepper.id, gallery);
 };
 
 interface PepperDetailModalProps {
@@ -345,7 +351,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           {(() => {
             const gallery = getGalleryFromPepper(pepper);
             return gallery.length > 0 ? (
-              <PepperGallery gallery={gallery} pepperName={pepper.name} />
+              <PepperGallery gallery={gallery} pepperName={pepper.name} pepperId={pepper.id} />
             ) : null;
           })()}
 
