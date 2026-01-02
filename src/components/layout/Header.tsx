@@ -84,37 +84,40 @@ export function Header() {
               </span>
             </button>
             
-            {/* Auth button */}
-            {!isLoading && (
-              user ? (
-                <div className="hidden md:flex items-center gap-3">
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      className="flex items-center gap-1 text-tyrian hover:text-tyrian/80 transition-colors"
-                      title="Admin Panel"
-                    >
-                      <Shield className="w-5 h-5" />
-                    </Link>
-                  )}
-                  <button
-                    onClick={() => signOut()}
-                    className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                    title="Sign out"
+          {/* Auth button */}
+          {!isLoading && (
+            user ? (
+              <div className="hidden md:flex items-center gap-4">
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-tyrian hover:text-tyrian/80 border border-tyrian/30 rounded-md hover:border-tyrian/50 transition-colors"
+                    title="Admin Panel"
                   >
-                    <LogOut className="w-5 h-5" />
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  to="/auth"
-                  className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                  title="Sign in"
+                    <Shield className="w-4 h-4" />
+                    <span>Admin</span>
+                  </Link>
+                )}
+                <button
+                  onClick={() => signOut()}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-primary border border-border rounded-md hover:border-primary transition-colors"
+                  title="Sign out"
                 >
-                  <User className="w-5 h-5" />
-                </Link>
-              )
-            )}
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/auth"
+                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-primary border border-border rounded-md hover:border-primary transition-colors"
+                title="Sign in"
+              >
+                <User className="w-4 h-4" />
+                <span>Sign In</span>
+              </Link>
+            )
+          )}
             
             <button
               className="md:hidden text-foreground"
@@ -163,6 +166,43 @@ export function Header() {
                   </a>
                 )
               ))}
+              
+              {/* Mobile Auth Actions */}
+              {!isLoading && (
+                user ? (
+                  <>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-tyrian hover:text-tyrian/80 transition-colors py-2 border-b border-border"
+                      >
+                        <Shield className="w-5 h-5" />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsOpen(false);
+                      }}
+                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2 text-left"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/auth"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-foreground hover:text-primary transition-colors py-2"
+                  >
+                    <User className="w-5 h-5" />
+                    Sign In
+                  </Link>
+                )
+              )}
             </nav>
           </motion.div>
         )}
