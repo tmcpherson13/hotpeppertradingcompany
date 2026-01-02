@@ -10,7 +10,7 @@ export type Species = DomesticatedSpecies | AncestralSpecies;
 export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
 
 export type ImageSource = 'ai-generated' | 'wikimedia' | 'user-contributed' | 'stock';
-export type ImageType = 'illustration' | 'photo' | 'dried' | 'plant';
+export type ImageType = 'illustration' | 'photo' | 'dried' | 'plant' | 'user-upload';
 
 export interface PepperImage {
   id: string;

@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { PepperImage } from '@/data/peppers';
 import { ImageAttribution } from './ImageAttribution';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { getSavedGalleryOrder, saveGalleryOrder, applyGalleryOrder } from '@/utils/galleryOrder';
+import { useGallerySync, mergeGalleryWithUploads, PepperImageWithMeta } from '@/hooks/useGallerySync';
+import { useImageUpload } from '@/hooks/useImageUpload';
+import { useAuth } from '@/contexts/AuthContext';
+import { ImageUploadZone, DeleteImageButton } from './ImageUploadZone';
 
 interface PepperGalleryProps {
   gallery: PepperImage[];
@@ -11,18 +14,59 @@ interface PepperGalleryProps {
 }
 
 export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryProps) {
-  const [orderedGallery, setOrderedGallery] = useState<PepperImage[]>([]);
+  const [orderedGallery, setOrderedGallery] = useState<PepperImageWithMeta[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const dragCounter = useRef(0);
   
-  // Initialize gallery with saved order
+  const { user, isAdmin } = useAuth();
+  const { uploadedImages, savedOrder, isLoading, refreshUploads, saveOrder } = useGallerySync(pepperId);
+  const { deleteImage } = useImageUpload(pepperId);
+  
+  // Merge static gallery with uploaded images and apply saved order
   useEffect(() => {
-    if (gallery.length === 0) return;
-    const ordered = applyGalleryOrder(pepperId, gallery);
-    setOrderedGallery(ordered);
-  }, [gallery, pepperId]);
+    if (gallery.length === 0 && uploadedImages.length === 0) return;
+    const merged = mergeGalleryWithUploads(gallery, uploadedImages, savedOrder);
+    setOrderedGallery(merged);
+    
+    // Reset current index if it's out of bounds
+    if (currentIndex >= merged.length) {
+      setCurrentIndex(Math.max(0, merged.length - 1));
+    }
+  }, [gallery, uploadedImages, savedOrder]);
+
+  const handleUploadComplete = () => {
+    refreshUploads();
+  };
+
+  const handleDeleteImage = async (img: PepperImageWithMeta) => {
+    if (!img._uploadMetadata) return;
+    
+    setDeletingId(img.id);
+    const success = await deleteImage(img.id, img._uploadMetadata.storagePath);
+    setDeletingId(null);
+    
+    if (success) {
+      refreshUploads();
+    }
+  };
+
+  // Can user delete this image?
+  const canDeleteImage = (img: PepperImageWithMeta): boolean => {
+    if (!user || !img._uploadMetadata) return false;
+    // User can delete their own uploads, or admin can delete any
+    return img._uploadMetadata.userId === user.id || isAdmin;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center">
+        <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 animate-pulse" />
+      </div>
+    );
+  }
 
   if (orderedGallery.length === 0) return null;
   
@@ -83,7 +127,10 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     newGallery.splice(dropIndex, 0, draggedItem);
     
     setOrderedGallery(newGallery);
-    saveGalleryOrder(pepperId, newGallery.map(img => img.id));
+    
+    // Save order to Supabase (or localStorage for guests)
+    const newOrder = newGallery.map(img => img.id);
+    saveOrder(newOrder);
     
     // Adjust current index if needed
     if (currentIndex === draggedIndex) {
@@ -137,48 +184,64 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
           {/* Image Type Badge */}
           <div className="absolute top-3 left-3 px-2 py-0.5 bg-parchment/90 
             border border-ink/20 text-[9px] font-heading uppercase tracking-wider text-ink">
-            {currentImage.type}
+            {currentImage.type === 'user-upload' ? 'contributed' : currentImage.type}
           </div>
         </div>
       </div>
 
       {/* Thumbnail Strip - Draggable */}
-      {hasMultiple && (
-        <div className="flex justify-center gap-2">
-          {orderedGallery.map((img, idx) => (
-            <button
-              key={img.id}
-              draggable
-              onDragStart={(e) => handleDragStart(e, idx)}
-              onDragEnd={handleDragEnd}
-              onDragEnter={(e) => handleDragEnter(e, idx)}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, idx)}
-              onClick={() => setCurrentIndex(idx)}
-              className={`w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing
-                ${idx === currentIndex 
-                  ? 'border-tyrian bg-tyrian/10' 
-                  : 'border-ink/20 hover:border-ink/40'
-                }
-                ${draggedIndex === idx ? 'opacity-50 scale-95' : ''}
-                ${dragOverIndex === idx ? 'border-tyrian border-dashed scale-105' : ''}
-              `}
-            >
-              <img 
-                src={img.url} 
-                alt={`${pepperName} thumbnail ${idx + 1}`}
-                className="w-full h-full object-cover pointer-events-none"
+      <div className="flex justify-center gap-2 flex-wrap">
+        {orderedGallery.map((img, idx) => (
+          <button
+            key={img.id}
+            draggable
+            onDragStart={(e) => handleDragStart(e, idx)}
+            onDragEnd={handleDragEnd}
+            onDragEnter={(e) => handleDragEnter(e, idx)}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, idx)}
+            onClick={() => setCurrentIndex(idx)}
+            className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing group
+              ${idx === currentIndex 
+                ? 'border-tyrian bg-tyrian/10' 
+                : 'border-ink/20 hover:border-ink/40'
+              }
+              ${draggedIndex === idx ? 'opacity-50 scale-95' : ''}
+              ${dragOverIndex === idx ? 'border-tyrian border-dashed scale-105' : ''}
+            `}
+          >
+            <img 
+              src={img.url} 
+              alt={`${pepperName} thumbnail ${idx + 1}`}
+              className="w-full h-full object-cover pointer-events-none"
+            />
+            {/* Delete button for user uploads */}
+            {canDeleteImage(img) && (
+              <DeleteImageButton 
+                onDelete={() => handleDeleteImage(img)}
+                isDeleting={deletingId === img.id}
               />
-            </button>
-          ))}
-        </div>
-      )}
+            )}
+          </button>
+        ))}
+        
+        {/* Upload button for authenticated users */}
+        {user && (
+          <ImageUploadZone 
+            pepperId={pepperId} 
+            onUploadComplete={handleUploadComplete} 
+          />
+        )}
+      </div>
 
       {/* Hint text for reordering */}
-      {hasMultiple && (
+      {(hasMultiple || user) && (
         <p className="text-center text-[10px] text-ink/50 italic">
-          Drag thumbnails to reorder • leftmost becomes primary
+          {user 
+            ? 'Drag to reorder • Click + to upload • Changes sync across devices'
+            : 'Drag thumbnails to reorder • leftmost becomes primary'
+          }
         </p>
       )}
 
