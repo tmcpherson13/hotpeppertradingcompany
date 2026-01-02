@@ -33,10 +33,10 @@ const pepperProfiles = [
     role: "Body — Spanish colonial introduction with African roots"
   },
   {
-    name: "Scotch Bonnet",
+    name: "Red Scotch Bonnet",
     origin: "Jamaica & Caribbean",
     heat: "100,000–350,000 SHU",
-    flavor: "Fruity, floral, intensely aromatic",
+    flavor: "Fruity, floral, intensely aromatic with classic Caribbean fire",
     role: "Vanguard — defining Caribbean cuisine from jerk to pepper sauces"
   },
   {
