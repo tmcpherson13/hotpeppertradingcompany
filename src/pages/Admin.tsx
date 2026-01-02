@@ -42,52 +42,52 @@ export default function Admin() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="bg-parchment-dark/30 border border-ink/20 p-1 mb-6">
+            <TabsList className="w-full bg-tyrian/90 border border-tyrian-dark p-1 mb-6 grid grid-cols-7">
               <TabsTrigger
                 value="enrichment"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <BookOpen className="w-4 h-4" />
                 Content Enrichment
               </TabsTrigger>
               <TabsTrigger
                 value="progress"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <Activity className="w-4 h-4" />
                 Progress
               </TabsTrigger>
               <TabsTrigger
                 value="images"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <Image className="w-4 h-4" />
                 Images
               </TabsTrigger>
               <TabsTrigger
                 value="image-proposals"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <ImagePlus className="w-4 h-4" />
                 Image Proposals
               </TabsTrigger>
               <TabsTrigger
                 value="audit-log"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <FileText className="w-4 h-4" />
                 Audit Log
               </TabsTrigger>
               <TabsTrigger
                 value="users"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <Users className="w-4 h-4" />
                 Users
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+                className="flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-sm py-3"
               >
                 <User className="w-4 h-4" />
                 Profile
