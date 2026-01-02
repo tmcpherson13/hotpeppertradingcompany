@@ -57,6 +57,31 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     }
   }, [gallery, uploadedImages, savedOrder, hiddenIds]);
 
+  const goToPrevious = useCallback(() => {
+    setCurrentIndex((prev) => (prev === 0 ? Math.max(orderedGallery.length - 1, 0) : prev - 1));
+  }, [orderedGallery.length]);
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (orderedGallery.length === 0 ? 0 : (prev === orderedGallery.length - 1 ? 0 : prev + 1)));
+  }, [orderedGallery.length]);
+
+  // Keyboard navigation - must be before early returns
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (orderedGallery.length === 0) return;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goToNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goToPrevious, goToNext, orderedGallery.length]);
+
   const handleUploadComplete = () => {
     refreshUploads();
   };
@@ -104,30 +129,6 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   
   const currentImage = orderedGallery[currentIndex];
   const hasMultiple = orderedGallery.length > 1;
-
-  const goToPrevious = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? orderedGallery.length - 1 : prev - 1));
-  }, [orderedGallery.length]);
-
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev === orderedGallery.length - 1 ? 0 : prev + 1));
-  }, [orderedGallery.length]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        goToPrevious();
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        goToNext();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToPrevious, goToNext]);
 
   // Drag and drop handlers
   const handleDragStart = (e: React.DragEvent, index: number) => {
