@@ -142,11 +142,12 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
                   mysterious origins brought to St. Augustine, possibly by Minorcan settlers with African connections.
                 </p>
                 <p>
-                  In Jamaica and across the islands, the Scotch Bonnet emerged as the defining heat of Caribbean 
-                  cuisine—fruity, floral, and ferocious. Its aromatic intensity became inseparable from jerk 
-                  seasoning and the pepper sauces that grace every island table. The crossing concludes in Guyana 
-                  and West Africa with the Wiri Wiri, a small berry-shaped pepper that completed the triangular 
-                  exchange, eventually evolving into the Piri Piri that would define Portuguese African cooking.
+                  From the Caribbean, peppers traveled onward to Guyana and the West African coast. The Wiri Wiri, 
+                  a small berry-shaped pepper, emerged in this triangular exchange—eventually evolving into the 
+                  Piri Piri that would define Portuguese African cooking. The crossing concludes with the 
+                  Red Scotch Bonnet, the defining heat of Caribbean cuisine—fruity, floral, and ferocious. Its 
+                  aromatic intensity became inseparable from jerk seasoning and the pepper sauces that grace 
+                  every island table, standing as the flagship of this Atlantic journey.
                 </p>
                 <p>
                   The Hot Pepper Trading Company assembled this consortium to honor the Atlantic crossing—not as 
