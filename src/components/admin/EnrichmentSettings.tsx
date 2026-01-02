@@ -1,0 +1,320 @@
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Loader2, Zap, Calendar, Play, RefreshCw } from 'lucide-react';
+
+interface EnrichmentSettingsData {
+  id: string;
+  auto_approve_enabled: boolean;
+  auto_approve_threshold: number;
+  schedule_enabled: boolean;
+  schedule_frequency: string;
+  schedule_next_run: string | null;
+  last_run_at: string | null;
+  last_run_count: number;
+}
+
+interface EnrichmentSettingsProps {
+  onSettingsChange?: () => void;
+}
+
+export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps) {
+  const [settings, setSettings] = useState<EnrichmentSettingsData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isRunningNow, setIsRunningNow] = useState(false);
+  const { toast } = useToast();
+
+  const fetchSettings = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('enrichment_settings')
+        .select('*')
+        .limit(1)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+
+      if (data) {
+        setSettings(data as unknown as EnrichmentSettingsData);
+      }
+    } catch (err) {
+      console.error('Error fetching enrichment settings:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  const updateSettings = useCallback(async (updates: Partial<EnrichmentSettingsData>) => {
+    if (!settings) return;
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('enrichment_settings')
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', settings.id);
+
+      if (error) throw error;
+
+      setSettings(prev => prev ? { ...prev, ...updates } : null);
+      onSettingsChange?.();
+
+      toast({
+        title: 'Settings Updated',
+        description: 'Enrichment settings have been saved',
+      });
+    } catch (err) {
+      console.error('Error updating settings:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to update settings',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [settings, toast, onSettingsChange]);
+
+  const handleRunNow = useCallback(async () => {
+    setIsRunningNow(true);
+    try {
+      const { data: session } = await supabase.auth.getSession();
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pepper-scheduled-enrichment`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ force: true }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to run scheduled enrichment');
+      }
+
+      toast({
+        title: 'Enrichment Started',
+        description: result.message,
+      });
+
+      // Refresh settings to get updated last_run info
+      await fetchSettings();
+      onSettingsChange?.();
+
+    } catch (err) {
+      console.error('Error running scheduled enrichment:', err);
+      toast({
+        title: 'Error',
+        description: err instanceof Error ? err.message : 'Failed to run enrichment',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsRunningNow(false);
+    }
+  }, [toast, fetchSettings, onSettingsChange]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!settings) {
+    return (
+      <div className="text-center p-8 text-ink/50">
+        No settings configured
+      </div>
+    );
+  }
+
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return 'Never';
+    return new Date(dateStr).toLocaleString();
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Auto-Approval Settings */}
+      <Card className="bg-parchment border-ink/10">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-heading">
+            <Zap className="w-4 h-4 text-amber-600" />
+            Auto-Approval
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="auto-approve" className="text-sm font-medium">
+                Enable Auto-Approval
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                Automatically approve high-confidence enrichments
+              </p>
+            </div>
+            <Switch
+              id="auto-approve"
+              checked={settings.auto_approve_enabled}
+              onCheckedChange={(checked) => 
+                updateSettings({ auto_approve_enabled: checked })
+              }
+              disabled={isSaving}
+            />
+          </div>
+
+          {settings.auto_approve_enabled && (
+            <>
+              <Separator />
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm">Confidence Threshold</Label>
+                  <Badge variant="outline" className="text-xs">
+                    {settings.auto_approve_threshold}%
+                  </Badge>
+                </div>
+                <Slider
+                  value={[settings.auto_approve_threshold]}
+                  onValueCommit={([value]) => 
+                    updateSettings({ auto_approve_threshold: value })
+                  }
+                  min={60}
+                  max={95}
+                  step={5}
+                  className="py-2"
+                  disabled={isSaving}
+                />
+                <p className="text-xs text-ink/50">
+                  Higher thresholds require more research sources and complete content
+                </p>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Schedule Settings */}
+      <Card className="bg-parchment border-ink/10">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-heading">
+            <Calendar className="w-4 h-4 text-blue-600" />
+            Scheduled Enrichment
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="schedule-enable" className="text-sm font-medium">
+                Enable Scheduled Runs
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                Automatically enrich peppers on a schedule
+              </p>
+            </div>
+            <Switch
+              id="schedule-enable"
+              checked={settings.schedule_enabled}
+              onCheckedChange={(checked) => 
+                updateSettings({ schedule_enabled: checked })
+              }
+              disabled={isSaving}
+            />
+          </div>
+
+          {settings.schedule_enabled && (
+            <>
+              <Separator />
+              <div className="space-y-3">
+                <Label className="text-sm">Frequency</Label>
+                <Select
+                  value={settings.schedule_frequency}
+                  onValueChange={(value) => 
+                    updateSettings({ schedule_frequency: value })
+                  }
+                  disabled={isSaving}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="daily">Daily</SelectItem>
+                    <SelectItem value="weekly">Weekly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="text-xs">
+                  <p className="text-ink/50">Next Run</p>
+                  <p className="font-medium text-ink mt-0.5">
+                    {formatDate(settings.schedule_next_run)}
+                  </p>
+                </div>
+                <div className="text-xs">
+                  <p className="text-ink/50">Last Run</p>
+                  <p className="font-medium text-ink mt-0.5">
+                    {formatDate(settings.last_run_at)}
+                    {settings.last_run_count > 0 && (
+                      <span className="text-ink/50 ml-1">
+                        ({settings.last_run_count} processed)
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+
+          <Separator />
+
+          <Button
+            onClick={handleRunNow}
+            variant="outline"
+            size="sm"
+            className="w-full"
+            disabled={isRunningNow}
+          >
+            {isRunningNow ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Running...
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4 mr-2" />
+                Run Enrichment Now
+              </>
+            )}
+          </Button>
+          <p className="text-xs text-ink/50 text-center">
+            Processes up to 5 peppers per run (in-stock prioritized)
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

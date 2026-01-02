@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      enrichment_settings: {
+        Row: {
+          auto_approve_enabled: boolean
+          auto_approve_threshold: number
+          id: string
+          last_run_at: string | null
+          last_run_count: number | null
+          schedule_enabled: boolean
+          schedule_frequency: string
+          schedule_next_run: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          auto_approve_enabled?: boolean
+          auto_approve_threshold?: number
+          id?: string
+          last_run_at?: string | null
+          last_run_count?: number | null
+          schedule_enabled?: boolean
+          schedule_frequency?: string
+          schedule_next_run?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          auto_approve_enabled?: boolean
+          auto_approve_threshold?: number
+          id?: string
+          last_run_at?: string | null
+          last_run_count?: number | null
+          schedule_enabled?: boolean
+          schedule_frequency?: string
+          schedule_next_run?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       hidden_gallery_images: {
         Row: {
           hidden_at: string
@@ -40,6 +79,8 @@ export type Database = {
       }
       pepper_enrichment_queue: {
         Row: {
+          auto_approved: boolean | null
+          confidence_score: number | null
           created_at: string
           created_by: string | null
           id: string
@@ -58,6 +99,8 @@ export type Database = {
           status: string
         }
         Insert: {
+          auto_approved?: boolean | null
+          confidence_score?: number | null
           created_at?: string
           created_by?: string | null
           id?: string
@@ -76,6 +119,8 @@ export type Database = {
           status?: string
         }
         Update: {
+          auto_approved?: boolean | null
+          confidence_score?: number | null
           created_at?: string
           created_by?: string | null
           id?: string

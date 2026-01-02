@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square } from 'lucide-react';
+import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square, Package } from 'lucide-react';
 
 interface EnrichmentPepperListProps {
   onSelectPepper: (pepper: Pepper) => void;
@@ -28,6 +28,9 @@ export function EnrichmentPepperList({
   const [pepperStatuses, setPepperStatuses] = useState<Map<string, EnrichmentStatus>>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  const inStockPeppers = peppers.filter(p => p.inStock);
+  const inStockCount = inStockPeppers.length;
 
   const fetchStatuses = useCallback(async () => {
     try {
@@ -132,6 +135,18 @@ export function EnrichmentPepperList({
     }
   }, [filteredPeppers, selectedIds, onSelectionChange]);
 
+  const handleSelectInStock = useCallback(() => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      inStockPeppers.forEach(p => next.add(p.id));
+      if (onSelectionChange) {
+        const selectedPeppers = peppers.filter(p => next.has(p.id));
+        onSelectionChange(selectedPeppers);
+      }
+      return next;
+    });
+  }, [inStockPeppers, onSelectionChange]);
+
   const handleSelectByStatus = useCallback((status: EnrichmentStatus) => {
     const peppersWithStatus = filteredPeppers.filter(p => 
       (pepperStatuses.get(p.id) || 'none') === status
@@ -147,6 +162,13 @@ export function EnrichmentPepperList({
       return next;
     });
   }, [filteredPeppers, pepperStatuses, onSelectionChange]);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+    if (onSelectionChange) {
+      onSelectionChange([]);
+    }
+  }, [onSelectionChange]);
 
   const getStatusIcon = (status: EnrichmentStatus) => {
     switch (status) {
@@ -191,7 +213,7 @@ export function EnrichmentPepperList({
         </div>
         
         {batchMode && (
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex flex-wrap items-center gap-2 mt-3">
             <Button
               variant="ghost"
               size="sm"
@@ -213,15 +235,34 @@ export function EnrichmentPepperList({
             <Button
               variant="ghost"
               size="sm"
+              onClick={handleSelectInStock}
+              className="text-xs h-7 text-indigo-600 hover:text-indigo-700"
+            >
+              <Package className="w-3 h-3 mr-1" />
+              In Stock ({inStockCount})
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => handleSelectByStatus('none')}
               className="text-xs h-7"
             >
-              Select Unenriched
+              Unenriched
             </Button>
             {selectedIds.size > 0 && (
-              <Badge variant="secondary" className="text-xs">
-                {selectedIds.size} selected
-              </Badge>
+              <>
+                <Badge variant="secondary" className="text-xs">
+                  {selectedIds.size} selected
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearSelection}
+                  className="text-xs h-7 text-red-600 hover:text-red-700"
+                >
+                  Clear
+                </Button>
+              </>
             )}
           </div>
         )}
@@ -279,6 +320,11 @@ export function EnrichmentPepperList({
                           <span className="font-heading text-sm text-ink truncate">
                             {pepper.name}
                           </span>
+                          {pepper.inStock && (
+                            <Badge variant="outline" className="bg-indigo-50 text-indigo-600 border-indigo-200 text-[10px] px-1">
+                              In Stock
+                            </Badge>
+                          )}
                           {getStatusBadge(status)}
                         </div>
                         <div className="text-xs text-ink/50 mt-0.5 truncate">

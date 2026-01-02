@@ -29,6 +29,42 @@ Based on the research provided, synthesize comprehensive content for this pepper
 
 Be specific, accurate, and evocative. Draw from the provided research but synthesize it into the merchant-house voice.`;
 
+// Calculate confidence score based on research quality and content completeness
+function calculateConfidenceScore(
+  researchData: any[],
+  parsedContent: any
+): number {
+  let score = 0;
+
+  // Source count scoring (max 30 points)
+  const sourceCount = researchData.length;
+  if (sourceCount >= 4) score += 30;
+  else if (sourceCount >= 3) score += 25;
+  else if (sourceCount >= 2) score += 15;
+  else if (sourceCount >= 1) score += 5;
+
+  // Content completeness scoring (max 30 points)
+  const fields = ['description', 'historical_notes', 'flavor_notes', 'aroma_notes', 'culinary_uses', 'trade_route'];
+  const populatedFields = fields.filter(f => parsedContent[f] && parsedContent[f].trim().length > 0);
+  score += Math.round((populatedFields.length / fields.length) * 30);
+
+  // Source quality scoring (max 20 points) - check for academic/authoritative domains
+  const qualityDomains = ['.edu', '.gov', '.org', 'wikipedia', 'britannica', 'smithsonian', 'university'];
+  const allUrls = researchData.flatMap(r => r.urls || []).join(' ').toLowerCase();
+  const qualityMatches = qualityDomains.filter(domain => allUrls.includes(domain)).length;
+  score += Math.min(qualityMatches * 5, 20);
+
+  // Word count adequacy scoring (max 20 points)
+  const contentText = fields.map(f => parsedContent[f] || '').join(' ');
+  const wordCount = contentText.split(/\s+/).length;
+  if (wordCount >= 200) score += 20;
+  else if (wordCount >= 150) score += 15;
+  else if (wordCount >= 100) score += 10;
+  else if (wordCount >= 50) score += 5;
+
+  return Math.min(score, 100);
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -171,6 +207,23 @@ serve(async (req) => {
       );
     }
 
+    // Calculate confidence score
+    const confidenceScore = calculateConfidenceScore(researchData, parsedContent);
+    console.log(`Confidence score: ${confidenceScore}`);
+
+    // Check auto-approval settings
+    const { data: settings } = await supabase
+      .from('enrichment_settings')
+      .select('*')
+      .limit(1)
+      .single();
+
+    const autoApproveEnabled = settings?.auto_approve_enabled || false;
+    const autoApproveThreshold = settings?.auto_approve_threshold || 85;
+    const shouldAutoApprove = autoApproveEnabled && confidenceScore >= autoApproveThreshold;
+
+    console.log(`Auto-approve: ${autoApproveEnabled}, threshold: ${autoApproveThreshold}, will auto-approve: ${shouldAutoApprove}`);
+
     // Store in enrichment queue
     const researchIds = researchData.map(r => r.id);
     const { data: queueEntry, error: insertError } = await supabase
@@ -185,8 +238,12 @@ serve(async (req) => {
         proposed_trade_route: parsedContent.trade_route,
         source_citations: parsedContent.source_citations || allUrls,
         research_ids: researchIds,
-        status: 'pending',
+        status: shouldAutoApprove ? 'approved' : 'pending',
+        confidence_score: confidenceScore,
+        auto_approved: shouldAutoApprove,
         created_by: userId,
+        reviewed_by: shouldAutoApprove ? userId : null,
+        reviewed_at: shouldAutoApprove ? new Date().toISOString() : null,
       })
       .select()
       .single();
@@ -199,13 +256,66 @@ serve(async (req) => {
       );
     }
 
+    // If auto-approved, also apply the enrichment to pepper_overrides
+    if (shouldAutoApprove && queueEntry) {
+      console.log('Auto-approving high-confidence enrichment...');
+
+      // Check if override already exists
+      const { data: existingOverride } = await supabase
+        .from('pepper_overrides')
+        .select('id, enrichment_version')
+        .eq('pepper_id', pepperId)
+        .single();
+
+      if (existingOverride) {
+        // Update existing override
+        await supabase
+          .from('pepper_overrides')
+          .update({
+            description: parsedContent.description,
+            historical_notes: parsedContent.historical_notes,
+            flavor_notes: parsedContent.flavor_notes,
+            aroma_notes: parsedContent.aroma_notes,
+            culinary_uses: parsedContent.culinary_uses,
+            trade_route: parsedContent.trade_route,
+            source_citations: parsedContent.source_citations || allUrls,
+            enrichment_version: (existingOverride.enrichment_version || 0) + 1,
+            updated_by: userId,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existingOverride.id);
+      } else {
+        // Create new override
+        await supabase
+          .from('pepper_overrides')
+          .insert({
+            pepper_id: pepperId,
+            description: parsedContent.description,
+            historical_notes: parsedContent.historical_notes,
+            flavor_notes: parsedContent.flavor_notes,
+            aroma_notes: parsedContent.aroma_notes,
+            culinary_uses: parsedContent.culinary_uses,
+            trade_route: parsedContent.trade_route,
+            source_citations: parsedContent.source_citations || allUrls,
+            enrichment_version: 1,
+            updated_by: userId,
+          });
+      }
+
+      console.log('Auto-approval applied successfully');
+    }
+
     console.log('Synthesis stored in enrichment queue');
 
     return new Response(
       JSON.stringify({
         success: true,
         data: queueEntry,
-        message: 'Content synthesized and queued for review',
+        confidenceScore,
+        autoApproved: shouldAutoApprove,
+        message: shouldAutoApprove 
+          ? `Content auto-approved with ${confidenceScore}% confidence` 
+          : 'Content synthesized and queued for review',
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
