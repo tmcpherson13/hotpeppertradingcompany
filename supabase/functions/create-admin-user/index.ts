@@ -45,14 +45,17 @@ serve(async (req) => {
   try {
     // Verify the caller is an admin
     const authHeader = req.headers.get("Authorization");
+    console.log("Auth header present:", !!authHeader);
+    
     if (!authHeader) {
+      console.log("No auth header provided");
       return new Response(
         JSON.stringify({ error: "Unauthorized" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Create a client with the user's token to verify admin status
+    // Create a client with the user's token to get user info
     const userClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
@@ -60,22 +63,35 @@ serve(async (req) => {
     );
 
     const { data: { user: callerUser }, error: authError } = await userClient.auth.getUser();
+    console.log("Auth result:", { userId: callerUser?.id, error: authError?.message });
+    
     if (authError || !callerUser) {
+      console.log("Auth failed:", authError?.message);
       return new Response(
         JSON.stringify({ error: "Unauthorized" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Check if caller is admin
-    const { data: roleData, error: roleError } = await userClient
+    // Use service role client to check admin status (bypasses RLS)
+    const adminClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
+    // Check if caller is admin using service role client
+    const { data: roleData, error: roleError } = await adminClient
       .from("user_roles")
       .select("role")
       .eq("user_id", callerUser.id)
       .eq("role", "admin")
       .maybeSingle();
 
+    console.log("Role check:", { roleData, roleError: roleError?.message });
+
     if (roleError || !roleData) {
+      console.log("Admin check failed:", roleError?.message || "No admin role found");
       return new Response(
         JSON.stringify({ error: "Forbidden: Admin access required" }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -95,12 +111,7 @@ serve(async (req) => {
     // Generate a secure temporary password
     const temporaryPassword = generateSecurePassword(16);
 
-    // Create admin client with service role
-    const adminClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      { auth: { autoRefreshToken: false, persistSession: false } }
-    );
+    // adminClient already created above for role check
 
     // Create the new user
     const { data: newUserData, error: createError } = await adminClient.auth.admin.createUser({
