@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingCart, Search, User, LogOut, Shield } from 'lucide-react';
+import { Menu, X, ShoppingCart, Search, LogOut, Shield } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import logoDark from '@/assets/logo-dark.svg';
@@ -84,48 +84,28 @@ export function Header() {
               </span>
             </button>
             
-          {/* Auth button */}
-          {!isLoading && (
-            user ? (
-              <div className="hidden md:flex items-center gap-3">
-                {isAdmin ? (
-                  <Link
-                    to="/admin"
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gold hover:text-gold/80 border border-gold/40 rounded-md hover:border-gold/60 transition-colors"
-                    title="Admin Panel"
-                  >
-                    <Shield className="w-4 h-4" />
-                    <span>Admin</span>
-                  </Link>
-                ) : (
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
-                    title="Your Profile"
-                  >
-                    <User className="w-4 h-4" />
-                    <span>Profile</span>
-                  </Link>
-                )}
-                <button
-                  onClick={() => signOut()}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
-                  title="Sign out"
+          {/* Auth buttons - Admin only (no public sign-in) */}
+          {!isLoading && user && (
+            <div className="hidden md:flex items-center gap-3">
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gold hover:text-gold/80 border border-gold/40 rounded-md hover:border-gold/60 transition-colors"
+                  title="Admin Panel"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/auth"
-                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
-                title="Sign in"
+                  <Shield className="w-4 h-4" />
+                  <span>Admin</span>
+                </Link>
+              )}
+              <button
+                onClick={() => signOut()}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
+                title="Sign out"
               >
-                <User className="w-4 h-4" />
-                <span>Sign In</span>
-              </Link>
-            )
+                <LogOut className="w-4 h-4" />
+                <span>Sign Out</span>
+              </button>
+            </div>
           )}
             
             <button
@@ -176,50 +156,30 @@ export function Header() {
                 )
               ))}
               
-              {/* Mobile Auth Actions */}
-              {!isLoading && (
-                user ? (
-                  <>
-                    {isAdmin ? (
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-gold hover:text-gold/80 transition-colors py-2 border-b border-parchment/20"
-                      >
-                        <Shield className="w-5 h-5" />
-                        Admin Panel
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/profile"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
-                      >
-                        <User className="w-5 h-5" />
-                        Profile
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => {
-                        signOut();
-                        setIsOpen(false);
-                      }}
-                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 text-left"
+              {/* Mobile Auth Actions - Admin only (no public sign-in) */}
+              {!isLoading && user && (
+                <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-gold hover:text-gold/80 transition-colors py-2 border-b border-parchment/20"
                     >
-                      <LogOut className="w-5 h-5" />
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2"
+                      <Shield className="w-5 h-5" />
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsOpen(false);
+                    }}
+                    className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 text-left"
                   >
-                    <User className="w-5 h-5" />
-                    Sign In
-                  </Link>
-                )
+                    <LogOut className="w-5 h-5" />
+                    Sign Out
+                  </button>
+                </>
               )}
             </nav>
           </motion.div>

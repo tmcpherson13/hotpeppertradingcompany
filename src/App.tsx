@@ -6,8 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Compendium from "./pages/Compendium";
-import Auth from "./pages/Auth";
-import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import { AdminRoute } from "./components/auth/AdminRoute";
 import PreColumbianOrigins from "./pages/history/PreColumbianOrigins";
@@ -27,8 +25,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/compendium" element={<Compendium />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
             <Route path="/history/columbian-exchange" element={<ColumbianExchange />} />
