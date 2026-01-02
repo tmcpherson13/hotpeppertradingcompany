@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.pepper-apply-enrichment]
 verify_jwt = false
+
+[functions.pepper-scheduled-enrichment]
+verify_jwt = false

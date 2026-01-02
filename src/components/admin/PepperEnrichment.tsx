@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Pepper } from '@/data/pepperTypes';
 import { usePepperEnrichment, EnrichmentQueueEntry } from '@/hooks/usePepperEnrichment';
 import { EnrichmentPepperList } from './EnrichmentPepperList';
+import { EnrichmentSettings } from './EnrichmentSettings';
 import { ResearchPanel } from './ResearchPanel';
 import { BatchEnrichmentPanel } from './BatchEnrichmentPanel';
 import { EnrichmentReviewModal } from './EnrichmentReviewModal';
@@ -10,7 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, Layers, Circle } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Eye, Layers, Circle, Settings, ChevronDown } from 'lucide-react';
 
 export function PepperEnrichment() {
   const [selectedPepper, setSelectedPepper] = useState<Pepper | null>(null);
@@ -19,6 +21,7 @@ export function PepperEnrichment() {
   const [currentQueueEntry, setCurrentQueueEntry] = useState<EnrichmentQueueEntry | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeTab, setActiveTab] = useState<'single' | 'batch'>('single');
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { fetchPepperQueue } = usePepperEnrichment();
 
@@ -61,10 +64,30 @@ export function PepperEnrichment() {
     setSelectedPeppers([]);
   }, []);
 
+  const handleSettingsChange = useCallback(() => {
+    setRefreshKey(k => k + 1);
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Stats Overview */}
-      <EnrichmentStats key={`stats-${refreshKey}`} />
+      <EnrichmentStats key={`stats-${refreshKey}`} refreshKey={refreshKey} />
+
+      {/* Settings Collapsible */}
+      <Collapsible open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <CollapsibleTrigger asChild>
+          <Button variant="outline" className="w-full justify-between" size="sm">
+            <span className="flex items-center gap-2">
+              <Settings className="w-4 h-4" />
+              Enrichment Settings
+            </span>
+            <ChevronDown className={`w-4 h-4 transition-transform ${settingsOpen ? 'rotate-180' : ''}`} />
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="pt-4">
+          <EnrichmentSettings onSettingsChange={handleSettingsChange} />
+        </CollapsibleContent>
+      </Collapsible>
 
       <Separator />
 

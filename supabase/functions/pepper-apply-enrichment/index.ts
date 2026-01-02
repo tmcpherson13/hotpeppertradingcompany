@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { queueId, action, reviewNotes, edits } = await req.json();
+    const { queueId, action, reviewNotes, edits, autoApproved } = await req.json();
 
     if (!queueId || !action) {
       return new Response(
@@ -48,7 +48,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing ${action} for queue entry: ${queueId}`);
+    console.log(`Processing ${action} for queue entry: ${queueId}${autoApproved ? ' (auto-approved)' : ''}`);
 
     // Fetch the queue entry
     const { data: queueEntry, error: fetchError } = await supabase
@@ -173,9 +173,10 @@ serve(async (req) => {
       .from('pepper_enrichment_queue')
       .update({
         status: 'approved',
-        review_notes: reviewNotes || null,
+        review_notes: autoApproved ? 'Auto-approved based on confidence threshold' : (reviewNotes || null),
         reviewed_by: userId,
         reviewed_at: new Date().toISOString(),
+        auto_approved: autoApproved || false,
       })
       .eq('id', queueId);
 
@@ -183,13 +184,14 @@ serve(async (req) => {
       console.error('Error updating queue entry:', updateQueueError);
     }
 
-    console.log('Enrichment applied successfully');
+    console.log(`Enrichment ${autoApproved ? 'auto-' : ''}approved and applied successfully`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Enrichment approved and applied',
+        message: autoApproved ? 'Enrichment auto-approved and applied' : 'Enrichment approved and applied',
         pepperId: queueEntry.pepper_id,
+        autoApproved: autoApproved || false,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
