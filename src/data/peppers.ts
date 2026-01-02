@@ -26,6 +26,8 @@ import { deduplicatePeppers } from '@/utils/pepperDuplicates';
 import aleppoImg from '@/assets/peppers/aleppo.jpg';
 import afterglowImg from '@/assets/peppers/afterglow.jpg';
 import ajiAmarilloImg from '@/assets/peppers/aji-amarillo.jpg';
+import ajiAmarilloFruits2Img from '@/assets/peppers/aji-amarillo-fruits-2.jpg';
+import ajiAmarillo2Img from '@/assets/peppers/aji-amarillo-2.jpg';
 import ajiLimonImg from '@/assets/peppers/aji-limon.jpg';
 import anchoImg from '@/assets/peppers/ancho.jpg';
 import calabrianImg from '@/assets/peppers/calabrian.jpg';
@@ -202,6 +204,22 @@ const rawPeppers: Pepper[] = [
         license: 'CC BY-SA 4.0',
         author: 'Frozenmadness',
         sourceUrl: 'https://commons.wikimedia.org/wiki/File:Aji_amarillo_fruits.jpg',
+      },
+      {
+        id: 'aji-amarillo-fruits-2',
+        url: ajiAmarilloFruits2Img,
+        type: 'photo',
+        isPrimary: false,
+        source: 'user-contributed',
+        license: 'Pending',
+      },
+      {
+        id: 'aji-amarillo-2',
+        url: ajiAmarillo2Img,
+        type: 'photo',
+        isPrimary: false,
+        source: 'user-contributed',
+        license: 'Pending',
       },
     ],
   },
