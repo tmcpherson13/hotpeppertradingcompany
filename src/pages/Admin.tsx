@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText } from 'lucide-react';
 
 export default function Admin() {
-  const [activeTab, setActiveTab] = useState('users');
+  const [activeTab, setActiveTab] = useState('enrichment');
   const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
 
   const handleDashboardNavigate = useCallback((target: 'pending' | 'auto-approved' | 'completed') => {
@@ -48,20 +48,6 @@ export default function Admin() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="bg-parchment-dark/30 border border-ink/20 p-1 mb-6">
               <TabsTrigger
-                value="users"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
-              >
-                <Users className="w-4 h-4" />
-                Users
-              </TabsTrigger>
-              <TabsTrigger
-                value="images"
-                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
-              >
-                <Image className="w-4 h-4" />
-                Images
-              </TabsTrigger>
-              <TabsTrigger
                 value="enrichment"
                 className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
               >
@@ -76,6 +62,13 @@ export default function Admin() {
                 Progress
               </TabsTrigger>
               <TabsTrigger
+                value="images"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <Image className="w-4 h-4" />
+                Images
+              </TabsTrigger>
+              <TabsTrigger
                 value="image-proposals"
                 className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
               >
@@ -88,6 +81,13 @@ export default function Admin() {
               >
                 <FileText className="w-4 h-4" />
                 Audit Log
+              </TabsTrigger>
+              <TabsTrigger
+                value="users"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <Users className="w-4 h-4" />
+                Users
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
