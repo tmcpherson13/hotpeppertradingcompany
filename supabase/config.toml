@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.pepper-scheduled-enrichment]
 verify_jwt = false
+
+[functions.pepper-image-generate]
+verify_jwt = false

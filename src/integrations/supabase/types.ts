@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      enrichment_jobs: {
+        Row: {
+          completed_items: number
+          created_at: string
+          created_by: string | null
+          current_pepper_id: string | null
+          current_pepper_name: string | null
+          current_step: string | null
+          error_log: Json | null
+          estimated_completion: string | null
+          id: string
+          job_type: string
+          settings: Json | null
+          started_at: string | null
+          status: string
+          total_items: number
+          updated_at: string
+        }
+        Insert: {
+          completed_items?: number
+          created_at?: string
+          created_by?: string | null
+          current_pepper_id?: string | null
+          current_pepper_name?: string | null
+          current_step?: string | null
+          error_log?: Json | null
+          estimated_completion?: string | null
+          id?: string
+          job_type?: string
+          settings?: Json | null
+          started_at?: string | null
+          status?: string
+          total_items?: number
+          updated_at?: string
+        }
+        Update: {
+          completed_items?: number
+          created_at?: string
+          created_by?: string | null
+          current_pepper_id?: string | null
+          current_pepper_name?: string | null
+          current_step?: string | null
+          error_log?: Json | null
+          estimated_completion?: string | null
+          id?: string
+          job_type?: string
+          settings?: Json | null
+          started_at?: string | null
+          status?: string
+          total_items?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       enrichment_settings: {
         Row: {
           auto_approve_enabled: boolean
@@ -139,6 +193,68 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      pepper_image_proposals: {
+        Row: {
+          author: string | null
+          confidence_score: number | null
+          created_at: string
+          enrichment_job_id: string | null
+          id: string
+          image_url: string | null
+          license: string | null
+          pepper_id: string
+          prompt_used: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source_type: string
+          source_url: string | null
+          status: string
+          storage_path: string | null
+        }
+        Insert: {
+          author?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          enrichment_job_id?: string | null
+          id?: string
+          image_url?: string | null
+          license?: string | null
+          pepper_id: string
+          prompt_used?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_type: string
+          source_url?: string | null
+          status?: string
+          storage_path?: string | null
+        }
+        Update: {
+          author?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          enrichment_job_id?: string | null
+          id?: string
+          image_url?: string | null
+          license?: string | null
+          pepper_id?: string
+          prompt_used?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_type?: string
+          source_url?: string | null
+          status?: string
+          storage_path?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_enrichment_job"
+            columns: ["enrichment_job_id"]
+            isOneToOne: false
+            referencedRelation: "enrichment_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pepper_overrides: {
         Row: {
