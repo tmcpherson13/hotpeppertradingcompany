@@ -33,18 +33,18 @@ const pepperProfiles = [
     role: "Body — Spanish colonial introduction with African roots"
   },
   {
-    name: "Red Scotch Bonnet",
-    origin: "Jamaica & Caribbean",
-    heat: "100,000–350,000 SHU",
-    flavor: "Fruity, floral, intensely aromatic with classic Caribbean fire",
-    role: "Vanguard — defining Caribbean cuisine from jerk to pepper sauces"
-  },
-  {
     name: "Wiri Wiri",
     origin: "Guyana / West Africa",
     heat: "100,000–350,000 SHU",
     flavor: "Fruity, sharp, lingering heat",
-    role: "Flagship — completing the triangle where peppers became piri piri"
+    role: "Vanguard — completing the triangle where peppers became piri piri"
+  },
+  {
+    name: "Red Scotch Bonnet",
+    origin: "Jamaica & Caribbean",
+    heat: "100,000–350,000 SHU",
+    flavor: "Fruity, floral, intensely aromatic with classic Caribbean fire",
+    role: "Flagship — defining Caribbean cuisine from jerk to pepper sauces"
   }
 ];
 
