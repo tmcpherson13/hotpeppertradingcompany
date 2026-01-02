@@ -1,9 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/peppers';
-import { Flame, MapPin, Package } from 'lucide-react';
+import { Flame, MapPin, Package, Pencil, Check, X } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import logoDark from '@/assets/logo-dark.svg';
 
 // Helper to get gallery from pepper (with legacy fallback) and apply saved order
@@ -291,11 +294,124 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepper
   return scored.slice(0, 3);
 };
 
+// Editable text field component for admins
+interface EditableFieldProps {
+  value: string;
+  onSave: (value: string) => Promise<void>;
+  isAdmin: boolean;
+  multiline?: boolean;
+  className?: string;
+}
+
+function EditableField({ value, onSave, isAdmin, multiline = false, className = '' }: EditableFieldProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(value);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setEditValue(value);
+  }, [value]);
+
+  const handleSave = async () => {
+    if (editValue === value) {
+      setIsEditing(false);
+      return;
+    }
+    setIsSaving(true);
+    await onSave(editValue);
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditValue(value);
+    setIsEditing(false);
+  };
+
+  if (!isAdmin) {
+    return multiline ? (
+      <p className={className}>{value}</p>
+    ) : (
+      <span className={className}>{value}</span>
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <div className="relative">
+        {multiline ? (
+          <textarea
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            className={`w-full p-2 border border-tyrian/50 bg-parchment font-body text-sm leading-relaxed text-[#3a2a1a] resize-y min-h-[80px] focus:outline-none focus:ring-2 focus:ring-tyrian/30 ${className}`}
+            disabled={isSaving}
+            autoFocus
+          />
+        ) : (
+          <input
+            type="text"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            className={`w-full p-1 border border-tyrian/50 bg-parchment font-body text-sm text-[#3a2a1a] focus:outline-none focus:ring-2 focus:ring-tyrian/30 ${className}`}
+            disabled={isSaving}
+            autoFocus
+          />
+        )}
+        <div className="absolute -top-2 -right-2 flex gap-1">
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="w-6 h-6 bg-[#2d5a3d] text-white flex items-center justify-center hover:bg-[#3a7a4d] transition-colors disabled:opacity-50"
+            title="Save"
+          >
+            <Check className="w-3 h-3" />
+          </button>
+          <button
+            onClick={handleCancel}
+            disabled={isSaving}
+            className="w-6 h-6 bg-[#8b2942] text-white flex items-center justify-center hover:bg-[#a33955] transition-colors"
+            title="Cancel"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative inline">
+      {multiline ? (
+        <p className={className}>{value}</p>
+      ) : (
+        <span className={className}>{value}</span>
+      )}
+      <button
+        onClick={() => setIsEditing(true)}
+        className="absolute -top-1 -right-6 opacity-0 group-hover:opacity-100 transition-opacity w-5 h-5 bg-tyrian/80 text-white flex items-center justify-center hover:bg-tyrian"
+        title="Edit"
+      >
+        <Pencil className="w-3 h-3" />
+      </button>
+    </div>
+  );
+}
+
 export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }: PepperDetailModalProps) {
+  const { isAdmin } = useAuth();
+  const { getOverride, saveOverride } = usePepperOverrides();
+  
   if (!pepper) return null;
 
+  const override = getOverride(pepper.id);
+  
+  // Use override values if they exist, otherwise fall back to static data
+  const displayDescription = override?.description ?? pepper.description;
+  const displayHistoricalNotes = override?.historical_notes ?? pepper.historicalNotes;
+  const displayTradeRoute = override?.trade_route ?? pepper.tradeRoute;
+
   const relatedPeppers = findRelatedPeppers(pepper, peppers);
-  const tradeRouteSummary = generateTradeRouteSummary(pepper.tradeRouteTags || [], pepper.tradeRoute);
+  const tradeRouteSummary = generateTradeRouteSummary(pepper.tradeRouteTags || [], displayTradeRoute);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -381,10 +497,16 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           </div>
 
           {/* Description */}
-          <div>
-            <p className="font-body text-sm leading-relaxed text-[#3a2a1a]">
-              {pepper.description}
-            </p>
+          <div className="relative">
+            <EditableField
+              value={displayDescription}
+              onSave={async (value) => {
+                await saveOverride(pepper.id, { description: value });
+              }}
+              isAdmin={isAdmin}
+              multiline
+              className="font-body text-sm leading-relaxed text-[#3a2a1a]"
+            />
           </div>
 
           {/* Flavor & Aroma Section */}
@@ -478,14 +600,22 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper }
           )}
 
           {/* Origin & History Section */}
-          {pepper.historicalNotes && (
+          {(displayHistoricalNotes || isAdmin) && (
             <div className="border-t border-[#5a4a3a]/15 pt-4">
               <h4 className="font-heading text-xs uppercase tracking-wider text-[#5a4a3a]/60 mb-2">
                 Origin & History
               </h4>
-              <p className="font-body text-sm leading-relaxed text-[#3a2a1a]">
-                {pepper.historicalNotes}
-              </p>
+              <div className="relative">
+                <EditableField
+                  value={displayHistoricalNotes || (isAdmin ? 'Click to add historical notes...' : '')}
+                  onSave={async (value) => {
+                    await saveOverride(pepper.id, { historical_notes: value });
+                  }}
+                  isAdmin={isAdmin}
+                  multiline
+                  className="font-body text-sm leading-relaxed text-[#3a2a1a]"
+                />
+              </div>
             </div>
           )}
 

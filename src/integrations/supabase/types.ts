@@ -38,6 +38,36 @@ export type Database = {
         }
         Relationships: []
       }
+      pepper_overrides: {
+        Row: {
+          description: string | null
+          historical_notes: string | null
+          id: string
+          pepper_id: string
+          trade_route: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          description?: string | null
+          historical_notes?: string | null
+          id?: string
+          pepper_id: string
+          trade_route?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          description?: string | null
+          historical_notes?: string | null
+          id?: string
+          pepper_id?: string
+          trade_route?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
