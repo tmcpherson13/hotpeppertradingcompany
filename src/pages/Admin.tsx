@@ -35,7 +35,7 @@ export default function Admin() {
               Administration
             </h1>
             <p className="font-body text-ink/60 mt-2">
-              Manage users, moderate content, and view statistics
+              Enhance content, view statistics, and manage users
             </p>
           </div>
 
