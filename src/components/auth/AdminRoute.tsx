@@ -7,9 +7,10 @@ interface AdminRouteProps {
 }
 
 export function AdminRoute({ children }: AdminRouteProps) {
-  const { user, isLoading, isAdmin } = useAuth();
+  const { user, isLoading, isAdmin, isAdminLoading } = useAuth();
 
-  if (isLoading) {
+  // Wait for both session AND admin status to load before making redirect decisions
+  if (isLoading || isAdminLoading) {
     return (
       <div className="min-h-screen bg-parchment flex items-center justify-center">
         <div className="text-ink/60 font-body">Loading...</div>

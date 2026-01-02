@@ -5,8 +5,10 @@ import { UserManagement } from '@/components/admin/UserManagement';
 import { ImageModeration } from '@/components/admin/ImageModeration';
 import { ProfileSettings } from '@/components/admin/ProfileSettings';
 import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
+import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
+import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus } from 'lucide-react';
 
 export default function Admin() {
   return (
@@ -55,6 +57,20 @@ export default function Admin() {
                 Content Enrichment
               </TabsTrigger>
               <TabsTrigger
+                value="progress"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <Activity className="w-4 h-4" />
+                Progress
+              </TabsTrigger>
+              <TabsTrigger
+                value="image-proposals"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <ImagePlus className="w-4 h-4" />
+                Image Proposals
+              </TabsTrigger>
+              <TabsTrigger
                 value="profile"
                 className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
               >
@@ -87,6 +103,24 @@ export default function Admin() {
                   Pepper Content Enrichment
                 </h2>
                 <PepperEnrichment />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="progress" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Enrichment Progress
+                </h2>
+                <EnrichmentDashboard />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="image-proposals" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Pending Image Proposals
+                </h2>
+                <ImageProposalReview />
               </div>
             </TabsContent>
 
