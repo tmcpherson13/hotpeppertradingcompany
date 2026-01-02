@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AdminLoginForm } from '@/components/admin/AdminLoginForm';
+import { ForcePasswordChange } from '@/components/auth/ForcePasswordChange';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ShieldX, LogOut } from 'lucide-react';
@@ -11,7 +12,7 @@ interface AdminRouteProps {
 }
 
 export function AdminRoute({ children }: AdminRouteProps) {
-  const { user, isLoading, isAdmin, isAdminLoading, signOut } = useAuth();
+  const { user, isLoading, isAdmin, isAdminLoading, mustChangePassword, clearPasswordChangeRequirement, signOut } = useAuth();
 
   // Wait for both session AND admin status to load before making decisions
   if (isLoading || isAdminLoading) {
@@ -54,6 +55,11 @@ export function AdminRoute({ children }: AdminRouteProps) {
         <Footer />
       </>
     );
+  }
+
+  // Admin must change password
+  if (mustChangePassword) {
+    return <ForcePasswordChange onPasswordChanged={clearPasswordChangeRequirement} />;
   }
 
   return <>{children}</>;

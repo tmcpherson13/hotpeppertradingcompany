@@ -10,6 +10,9 @@ interface AuthContextType {
   isLoading: boolean;
   isAdmin: boolean;
   isAdminLoading: boolean;
+  isDeactivated: boolean;
+  mustChangePassword: boolean;
+  clearPasswordChangeRequirement: () => void;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, displayName?: string, rememberMe?: boolean) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -24,31 +27,62 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminLoading, setIsAdminLoading] = useState(true);
+  const [isDeactivated, setIsDeactivated] = useState(false);
+  const [mustChangePassword, setMustChangePassword] = useState(false);
 
-  // Check admin status
-  const checkAdminStatus = async (userId: string) => {
+  // Check admin status, deactivation, and password change requirement
+  const checkUserStatus = async (userId: string) => {
     setIsAdminLoading(true);
     try {
-      const { data, error } = await supabase
+      // Check admin role
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
         .eq('role', 'admin')
         .maybeSingle();
       
-      if (error) {
-        console.error('Error checking admin status:', error);
+      if (roleError) {
+        console.error('Error checking admin status:', roleError);
         setIsAdmin(false);
+      } else {
+        setIsAdmin(!!roleData);
+      }
+
+      // Check if deactivated
+      const { data: deactivatedData } = await supabase
+        .from('deactivated_accounts')
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (deactivatedData) {
+        setIsDeactivated(true);
+        // Sign out deactivated users
+        await supabase.auth.signOut();
         return;
       }
       
-      setIsAdmin(!!data);
+      setIsDeactivated(false);
+
+      // Check if password change required
+      const { data: pendingData } = await supabase
+        .from('pending_password_changes')
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      setMustChangePassword(!!pendingData);
     } catch (err) {
-      console.error('Error in checkAdminStatus:', err);
+      console.error('Error in checkUserStatus:', err);
       setIsAdmin(false);
     } finally {
       setIsAdminLoading(false);
     }
+  };
+
+  const clearPasswordChangeRequirement = () => {
+    setMustChangePassword(false);
   };
 
   useEffect(() => {
@@ -59,14 +93,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setIsLoading(false);
 
-        // Defer admin check to avoid deadlock
+        // Defer user status check to avoid deadlock
         if (session?.user) {
           setTimeout(() => {
-            checkAdminStatus(session.user.id);
+            checkUserStatus(session.user.id);
           }, 0);
         } else {
           setIsAdmin(false);
           setIsAdminLoading(false);
+          setIsDeactivated(false);
+          setMustChangePassword(false);
         }
       }
     );
@@ -95,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
 
       if (session?.user) {
-        checkAdminStatus(session.user.id);
+        checkUserStatus(session.user.id);
       }
     });
 
@@ -158,7 +194,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, isLoading, isAdmin, isAdminLoading, signIn, signUp, signOut, resetPassword }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isLoading, 
+      isAdmin, 
+      isAdminLoading, 
+      isDeactivated,
+      mustChangePassword,
+      clearPasswordChangeRequirement,
+      signIn, 
+      signUp, 
+      signOut, 
+      resetPassword 
+    }}>
       {children}
     </AuthContext.Provider>
   );

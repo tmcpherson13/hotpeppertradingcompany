@@ -4,17 +4,21 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PasswordStrengthMeter } from '@/components/ui/PasswordStrengthMeter';
+import { isPasswordValid } from '@/utils/passwordStrength';
 import { useToast } from '@/hooks/use-toast';
+import { Eye, EyeOff } from 'lucide-react';
 import { z } from 'zod';
 
 const displayNameSchema = z.string().trim().max(100, { message: 'Display name must be less than 100 characters' });
-const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters' }).max(128);
 
 export function ProfileSettings() {
   const [displayName, setDisplayName] = useState('');
   const [originalDisplayName, setOriginalDisplayName] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [errors, setErrors] = useState<{ displayName?: string; password?: string; confirm?: string }>({});
@@ -88,13 +92,9 @@ export function ProfileSettings() {
     e.preventDefault();
     setErrors({});
     
-    try {
-      passwordSchema.parse(newPassword);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setErrors({ password: err.errors[0]?.message });
-        return;
-      }
+    if (!isPasswordValid(newPassword)) {
+      setErrors({ password: 'Password must meet all requirements' });
+      return;
     }
 
     if (newPassword !== confirmPassword) {
@@ -199,14 +199,24 @@ export function ProfileSettings() {
             <Label htmlFor="newPassword" className="font-heading text-xs uppercase tracking-wider text-ink/70">
               New Password
             </Label>
-            <Input
-              id="newPassword"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="••••••••"
-              className="bg-parchment border-ink/30 focus:border-tyrian"
-            />
+            <div className="relative">
+              <Input
+                id="newPassword"
+                type={showNewPassword ? 'text' : 'password'}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+                className="bg-parchment border-ink/30 focus:border-tyrian pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink/40 hover:text-ink/70"
+              >
+                {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            <PasswordStrengthMeter password={newPassword} />
             {errors.password && (
               <p className="text-xs text-red-600">{errors.password}</p>
             )}
@@ -216,14 +226,23 @@ export function ProfileSettings() {
             <Label htmlFor="confirmPassword" className="font-heading text-xs uppercase tracking-wider text-ink/70">
               Confirm New Password
             </Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
-              className="bg-parchment border-ink/30 focus:border-tyrian"
-            />
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                className="bg-parchment border-ink/30 focus:border-tyrian pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink/40 hover:text-ink/70"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
             {errors.confirm && (
               <p className="text-xs text-red-600">{errors.confirm}</p>
             )}
@@ -231,7 +250,7 @@ export function ProfileSettings() {
 
           <Button
             type="submit"
-            disabled={isUpdatingPassword || !newPassword || !confirmPassword}
+            disabled={isUpdatingPassword || !newPassword || !confirmPassword || !isPasswordValid(newPassword)}
             className="w-full bg-tyrian hover:bg-tyrian/90 text-parchment font-heading uppercase tracking-wider"
           >
             {isUpdatingPassword ? 'Updating...' : 'Change Password'}
