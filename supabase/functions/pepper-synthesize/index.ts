@@ -71,7 +71,7 @@ serve(async (req) => {
   }
 
   try {
-    const { pepperId, pepperName } = await req.json();
+    const { pepperId, pepperName, generateImages = false, jobId = null } = await req.json();
 
     if (!pepperId || !pepperName) {
       return new Response(
@@ -307,12 +307,43 @@ serve(async (req) => {
 
     console.log('Synthesis stored in enrichment queue');
 
+    // Trigger image generation if enabled
+    let imageGenTriggered = false;
+    if (generateImages) {
+      try {
+        console.log('Triggering image generation...');
+        const imageGenResponse = await fetch(`${supabaseUrl}/functions/v1/pepper-image-generate`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            pepperId,
+            pepperName,
+            jobId,
+            styles: ['ai-botanical', 'ai-photo-plant', 'ai-photo-individual'],
+          }),
+        });
+
+        if (imageGenResponse.ok) {
+          imageGenTriggered = true;
+          console.log('Image generation triggered successfully');
+        } else {
+          console.error('Image generation failed:', await imageGenResponse.text());
+        }
+      } catch (imgErr) {
+        console.error('Error triggering image generation:', imgErr);
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
         data: queueEntry,
         confidenceScore,
         autoApproved: shouldAutoApprove,
+        imageGenTriggered,
         message: shouldAutoApprove 
           ? `Content auto-approved with ${confidenceScore}% confidence` 
           : 'Content synthesized and queued for review',

@@ -9,7 +9,7 @@ import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Loader2, Zap, Calendar, Play, RefreshCw } from 'lucide-react';
+import { Loader2, Zap, Calendar, Play, Image } from 'lucide-react';
 
 interface EnrichmentSettingsData {
   id: string;
@@ -20,6 +20,7 @@ interface EnrichmentSettingsData {
   schedule_next_run: string | null;
   last_run_at: string | null;
   last_run_count: number;
+  image_generation_enabled?: boolean;
 }
 
 interface EnrichmentSettingsProps {
@@ -31,6 +32,7 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isRunningNow, setIsRunningNow] = useState(false);
+  const [localImageGen, setLocalImageGen] = useState(false);
   const { toast } = useToast();
 
   const fetchSettings = useCallback(async () => {
@@ -45,6 +47,9 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
 
       if (data) {
         setSettings(data as unknown as EnrichmentSettingsData);
+        // Load image generation toggle from localStorage (not in DB yet)
+        const savedImageGen = localStorage.getItem('enrichment_image_generation');
+        setLocalImageGen(savedImageGen === 'true');
       }
     } catch (err) {
       console.error('Error fetching enrichment settings:', err);
@@ -213,6 +218,43 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
               </div>
             </>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Image Generation Settings */}
+      <Card className="bg-parchment border-ink/10">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-heading">
+            <Image className="w-4 h-4 text-green-600" />
+            AI Image Generation
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="image-gen" className="text-sm font-medium">
+                Generate Images During Enrichment
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                Creates 3 AI images per pepper: botanical illustration, plant photo, individual pepper
+              </p>
+            </div>
+            <Switch
+              id="image-gen"
+              checked={localImageGen}
+              onCheckedChange={(checked) => {
+                setLocalImageGen(checked);
+                localStorage.setItem('enrichment_image_generation', String(checked));
+                toast({
+                  title: 'Settings Updated',
+                  description: checked ? 'Image generation enabled' : 'Image generation disabled',
+                });
+              }}
+            />
+          </div>
+          <p className="text-xs text-ink/50">
+            Images will be watermarked and require admin approval before appearing in the compendium
+          </p>
         </CardContent>
       </Card>
 
