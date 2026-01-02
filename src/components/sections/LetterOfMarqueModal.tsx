@@ -17,10 +17,10 @@ interface LetterOfMarqueModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Scotch Bonnet',
+    name: 'Orange Scotch Bonnet',
     origin: 'Jamaica (Caribbean Route)',
     heat: 'Hot (100,000–350,000 SHU)',
-    flavor: 'Fruity, floral heat that defines jerk seasoning and pepper sauces from Kingston to Port-au-Prince.',
+    flavor: 'Brilliant sunset-hued pods with fruity, tropical heat that defines jerk seasoning and pepper sauces from Kingston to Port-au-Prince.',
     role: 'Anchor — the heartbeat of Caribbean cuisine, pulsing through every island dish.',
   },
   {
