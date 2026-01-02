@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { AdminStats } from '@/components/admin/AdminStats';
+
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ImageModeration } from '@/components/admin/ImageModeration';
 import { ProfileSettings } from '@/components/admin/ProfileSettings';
@@ -39,10 +39,6 @@ export default function Admin() {
             </p>
           </div>
 
-          {/* Stats Overview */}
-          <div className="mb-8">
-            <AdminStats />
-          </div>
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
