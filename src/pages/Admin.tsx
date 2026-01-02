@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AdminStats } from '@/components/admin/AdminStats';
@@ -11,6 +12,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Image, User, BookOpen, Activity, ImagePlus } from 'lucide-react';
 
 export default function Admin() {
+  const [activeTab, setActiveTab] = useState('users');
+  const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
+
+  const handleDashboardNavigate = useCallback((target: 'pending' | 'auto-approved' | 'completed') => {
+    if (target === 'pending' || target === 'auto-approved') {
+      setEnrichmentInitialView(target === 'auto-approved' ? 'auto-approved' : 'pending');
+      setActiveTab('enrichment');
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-parchment flex flex-col">
       <Header />
@@ -33,7 +44,7 @@ export default function Admin() {
           </div>
 
           {/* Tabs */}
-          <Tabs defaultValue="users" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="bg-parchment-dark/30 border border-ink/20 p-1 mb-6">
               <TabsTrigger
                 value="users"
@@ -102,7 +113,10 @@ export default function Admin() {
                 <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
                   Pepper Content Enrichment
                 </h2>
-                <PepperEnrichment />
+                <PepperEnrichment 
+                  initialView={enrichmentInitialView} 
+                  onViewReset={() => setEnrichmentInitialView(undefined)} 
+                />
               </div>
             </TabsContent>
 
@@ -111,7 +125,7 @@ export default function Admin() {
                 <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
                   Enrichment Progress
                 </h2>
-                <EnrichmentDashboard />
+                <EnrichmentDashboard onNavigate={handleDashboardNavigate} />
               </div>
             </TabsContent>
 

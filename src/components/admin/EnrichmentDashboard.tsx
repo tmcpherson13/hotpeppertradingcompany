@@ -32,6 +32,7 @@ interface EnrichmentJob {
 
 interface EnrichmentDashboardProps {
   onRefresh?: () => void;
+  onNavigate?: (target: 'pending' | 'auto-approved' | 'completed') => void;
 }
 
 const STEP_ICONS: Record<string, any> = {
@@ -44,7 +45,7 @@ const STEP_ICONS: Record<string, any> = {
 
 const STEP_ORDER = ['research', 'synthesis', 'image-analysis', 'image-generation', 'watermarking'];
 
-export function EnrichmentDashboard({ onRefresh }: EnrichmentDashboardProps) {
+export function EnrichmentDashboard({ onRefresh, onNavigate }: EnrichmentDashboardProps) {
   const [activeJob, setActiveJob] = useState<EnrichmentJob | null>(null);
   const [recentJobs, setRecentJobs] = useState<EnrichmentJob[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -389,25 +390,50 @@ export function EnrichmentDashboard({ onRefresh }: EnrichmentDashboardProps) {
 
       {/* Statistics */}
       <div className="grid grid-cols-4 gap-3">
-        <Card className="bg-green-50 border-green-200">
+        <Card 
+          className="bg-green-50 border-green-200 cursor-pointer hover:scale-102 hover:shadow-md transition-all"
+          onClick={() => {
+            toast({
+              title: 'Completed Items',
+              description: 'Approved enrichments are now live in the Compendium',
+            });
+          }}
+        >
           <CardContent className="p-3 text-center">
             <p className="text-2xl font-bold text-green-700">{stats.completed}</p>
             <p className="text-xs text-green-600">Completed</p>
           </CardContent>
         </Card>
-        <Card className="bg-amber-50 border-amber-200">
+        <Card 
+          className="bg-amber-50 border-amber-200 cursor-pointer hover:scale-102 hover:shadow-md transition-all"
+          onClick={() => onNavigate?.('pending')}
+        >
           <CardContent className="p-3 text-center">
             <p className="text-2xl font-bold text-amber-700">{stats.pending}</p>
             <p className="text-xs text-amber-600">Pending Review</p>
           </CardContent>
         </Card>
-        <Card className="bg-blue-50 border-blue-200">
+        <Card 
+          className="bg-blue-50 border-blue-200 cursor-pointer hover:scale-102 hover:shadow-md transition-all"
+          onClick={() => onNavigate?.('auto-approved')}
+        >
           <CardContent className="p-3 text-center">
             <p className="text-2xl font-bold text-blue-700">{stats.autoApproved}</p>
             <p className="text-xs text-blue-600">Auto-Approved</p>
           </CardContent>
         </Card>
-        <Card className="bg-red-50 border-red-200">
+        <Card 
+          className="bg-red-50 border-red-200 cursor-pointer hover:scale-102 hover:shadow-md transition-all"
+          onClick={() => {
+            if (activeJob?.error_log?.length > 0) {
+              toast({
+                title: `${stats.errors} Errors`,
+                description: 'Check the error log in the active job above',
+                variant: 'destructive',
+              });
+            }
+          }}
+        >
           <CardContent className="p-3 text-center">
             <p className="text-2xl font-bold text-red-700">{stats.errors}</p>
             <p className="text-xs text-red-600">Errors</p>
