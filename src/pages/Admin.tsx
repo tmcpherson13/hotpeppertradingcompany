@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ImageModeration } from '@/components/admin/ImageModeration';
+import { ProfileSettings } from '@/components/admin/ProfileSettings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, Users, Image } from 'lucide-react';
+import { Users, Image, User } from 'lucide-react';
 
 export default function Admin() {
   return (
@@ -46,6 +46,13 @@ export default function Admin() {
                 <Image className="w-4 h-4" />
                 Images
               </TabsTrigger>
+              <TabsTrigger
+                value="profile"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <User className="w-4 h-4" />
+                Profile
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="users" className="mt-0">
@@ -63,6 +70,15 @@ export default function Admin() {
                   Image Moderation
                 </h2>
                 <ImageModeration />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="profile" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Your Profile
+                </h2>
+                <ProfileSettings />
               </div>
             </TabsContent>
           </Tabs>
