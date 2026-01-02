@@ -6,8 +6,59 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Logo watermark as base64 (will be fetched from storage or embedded)
+// Watermark configuration
 const WATERMARK_OPACITY = 0.20; // 20% opacity for subtle watermark
+
+// Function to apply watermark using image editing AI
+async function applyWatermark(
+  lovableKey: string,
+  imageBase64: string,
+  pepperName: string
+): Promise<string> {
+  try {
+    const watermarkPrompt = `Add a subtle, semi-transparent watermark logo in the bottom-right corner of this image. The watermark should be:
+- A simple vintage-style text mark reading "HPTC" (Hot Pepper Trading Company initials)
+- Positioned in the bottom-right corner with small margin
+- Very subtle at about 15-20% opacity
+- In a muted sepia or parchment color that complements the image
+- Small enough to not distract from the main subject
+- Professional and elegant, like a publisher's mark
+Do NOT change the main image content, only add this small corner watermark.`;
+
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${lovableKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash-image-preview',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: watermarkPrompt },
+            { type: 'image_url', image_url: { url: imageBase64 } }
+          ]
+        }],
+        modalities: ['image', 'text'],
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const watermarkedImage = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      if (watermarkedImage) {
+        return watermarkedImage;
+      }
+    }
+    
+    console.log('Watermarking failed, using original image');
+    return imageBase64;
+  } catch (err) {
+    console.error('Watermark error:', err);
+    return imageBase64;
+  }
+}
 
 const VISION_ANALYSIS_PROMPT = `You are a botanical expert analyzing reference images of pepper varieties. Examine the provided image(s) and extract detailed visual characteristics:
 
@@ -259,13 +310,14 @@ serve(async (req) => {
         await updateJobProgress('watermarking');
         console.log(`Applying watermark to ${type} image...`);
 
-        // For now, we'll store the raw image and note that watermarking should be applied client-side
-        // A more robust solution would use a dedicated image processing library
+        // Apply watermark using image editing
+        const watermarkedImage = await applyWatermark(lovableKey, generatedImage, pepperName);
+        
         const timestamp = Date.now();
         const storagePath = `generated/${pepperId}/${type}-${timestamp}.png`;
 
         // Convert base64 to blob and upload
-        const base64Data = generatedImage.replace(/^data:image\/\w+;base64,/, '');
+        const base64Data = watermarkedImage.replace(/^data:image\/\w+;base64,/, '');
         const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 
         const { error: uploadError } = await supabase.storage
