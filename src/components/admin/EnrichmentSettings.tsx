@@ -245,6 +245,12 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
               onCheckedChange={(checked) => {
                 setLocalImageGen(checked);
                 localStorage.setItem('enrichment_image_generation', String(checked));
+                
+                // Dispatch custom event for same-tab listeners
+                window.dispatchEvent(new CustomEvent('enrichment-settings-changed', {
+                  detail: { imageGeneration: checked }
+                }));
+                
                 toast({
                   title: 'Settings Updated',
                   description: checked ? 'Image generation enabled' : 'Image generation disabled',

@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Play, CheckCircle, XCircle, AlertCircle, Pause, Zap, Clock } from 'lucide-react';
+import { Loader2, Play, CheckCircle, XCircle, AlertCircle, Pause, Zap, Clock, Image } from 'lucide-react';
 
 interface BatchEnrichmentPanelProps {
   selectedPeppers: Pepper[];
@@ -55,6 +55,28 @@ export function BatchEnrichmentPanel({ selectedPeppers, onComplete }: BatchEnric
   const completedCount = items.filter(i => i.status === 'complete' || i.status === 'auto_approved').length;
   const autoApprovedCount = items.filter(i => i.status === 'auto_approved').length;
   const errorCount = items.filter(i => i.status === 'error').length;
+
+  // Listen for image generation setting changes (same-tab custom event)
+  useEffect(() => {
+    const handleSettingsChange = (e: CustomEvent<{ imageGeneration: boolean }>) => {
+      setGenerateImages(e.detail.imageGeneration);
+    };
+    
+    window.addEventListener('enrichment-settings-changed', handleSettingsChange as EventListener);
+    return () => window.removeEventListener('enrichment-settings-changed', handleSettingsChange as EventListener);
+  }, []);
+
+  // Listen for localStorage changes (cross-tab)
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'enrichment_image_generation') {
+        setGenerateImages(e.newValue === 'true');
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Cooldown timer
   useEffect(() => {
@@ -301,12 +323,20 @@ export function BatchEnrichmentPanel({ selectedPeppers, onComplete }: BatchEnric
               </p>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {batchStatus === 'idle' && (
-              <Button onClick={() => startBatch(0)} size="sm">
-                <Play className="w-4 h-4 mr-2" />
-                Start Batch
-              </Button>
+              <>
+                {generateImages && (
+                  <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                    <Image className="w-3 h-3 mr-1" />
+                    Images On
+                  </Badge>
+                )}
+                <Button onClick={() => startBatch(0)} size="sm">
+                  <Play className="w-4 h-4 mr-2" />
+                  Start Batch
+                </Button>
+              </>
             )}
             {(batchStatus === 'researching' || batchStatus === 'synthesizing') && (
               <Button onClick={pauseBatch} variant="outline" size="sm">
