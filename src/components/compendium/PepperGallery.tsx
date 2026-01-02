@@ -20,6 +20,8 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [keyboardDragIndex, setKeyboardDragIndex] = useState<number | null>(null);
+  const [preKeyboardDragOrder, setPreKeyboardDragOrder] = useState<PepperImageWithMeta[] | null>(null);
   const dragCounter = useRef(0);
   
   const { user, isAdmin } = useAuth();
@@ -65,10 +67,79 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     setCurrentIndex((prev) => (orderedGallery.length === 0 ? 0 : (prev === orderedGallery.length - 1 ? 0 : prev + 1)));
   }, [orderedGallery.length]);
 
-  // Keyboard navigation - must be before early returns
+  // Keyboard drag mode: move image in gallery order
+  const moveImageInOrder = useCallback((fromIndex: number, direction: 'left' | 'right') => {
+    const toIndex = direction === 'left' 
+      ? Math.max(0, fromIndex - 1)
+      : Math.min(orderedGallery.length - 1, fromIndex + 1);
+    
+    if (toIndex === fromIndex) return;
+
+    const newGallery = [...orderedGallery];
+    const [item] = newGallery.splice(fromIndex, 1);
+    newGallery.splice(toIndex, 0, item);
+    
+    setOrderedGallery(newGallery);
+    setKeyboardDragIndex(toIndex);
+    setCurrentIndex(toIndex);
+  }, [orderedGallery]);
+
+  const confirmKeyboardDrag = useCallback(() => {
+    if (keyboardDragIndex === null) return;
+    
+    // Save the new order
+    const newOrder = orderedGallery.map(img => img.id);
+    saveOrder(newOrder);
+    
+    setKeyboardDragIndex(null);
+    setPreKeyboardDragOrder(null);
+  }, [keyboardDragIndex, orderedGallery, saveOrder]);
+
+  const cancelKeyboardDrag = useCallback(() => {
+    if (preKeyboardDragOrder) {
+      setOrderedGallery(preKeyboardDragOrder);
+    }
+    setKeyboardDragIndex(null);
+    setPreKeyboardDragOrder(null);
+  }, [preKeyboardDragOrder]);
+
+  // Handle keyboard events on thumbnails
+  const handleThumbnailKeyDown = useCallback((e: React.KeyboardEvent, idx: number) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      
+      if (keyboardDragIndex === null) {
+        // Enter drag mode
+        setKeyboardDragIndex(idx);
+        setPreKeyboardDragOrder([...orderedGallery]);
+        setCurrentIndex(idx);
+      } else if (keyboardDragIndex === idx) {
+        // Confirm drop
+        confirmKeyboardDrag();
+      }
+    } else if (keyboardDragIndex !== null) {
+      // In keyboard drag mode - arrow keys move the image
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        e.stopPropagation();
+        moveImageInOrder(keyboardDragIndex, 'left');
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        e.stopPropagation();
+        moveImageInOrder(keyboardDragIndex, 'right');
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        cancelKeyboardDrag();
+      }
+    }
+  }, [keyboardDragIndex, orderedGallery, moveImageInOrder, confirmKeyboardDrag, cancelKeyboardDrag]);
+
+  // Global keyboard navigation (only when NOT in keyboard drag mode)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (orderedGallery.length === 0) return;
+      // Don't handle global arrows if in keyboard drag mode (handled by thumbnail)
+      if (keyboardDragIndex !== null) return;
       
       const currentImage = orderedGallery[currentIndex];
       
@@ -84,12 +155,15 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
           e.preventDefault();
           handleDeleteImage(currentImage);
         }
+      } else if (e.key === 'Escape' && keyboardDragIndex !== null) {
+        e.preventDefault();
+        cancelKeyboardDrag();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToPrevious, goToNext, orderedGallery, currentIndex]);
+  }, [goToPrevious, goToNext, orderedGallery, currentIndex, keyboardDragIndex, cancelKeyboardDrag]);
 
   const handleUploadComplete = () => {
     refreshUploads();
@@ -262,23 +336,36 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
         {orderedGallery.map((img, idx) => (
           <div key={img.id} className="relative group">
             <button
-              draggable
+              draggable={keyboardDragIndex === null}
               onDragStart={(e) => handleDragStart(e, idx)}
               onDragEnd={handleDragEnd}
               onDragEnter={(e) => handleDragEnter(e, idx)}
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, idx)}
-              onClick={() => setCurrentIndex(idx)}
-              className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing
+              onClick={() => {
+                if (keyboardDragIndex === null) {
+                  setCurrentIndex(idx);
+                } else if (keyboardDragIndex === idx) {
+                  confirmKeyboardDrag();
+                }
+              }}
+              onKeyDown={(e) => handleThumbnailKeyDown(e, idx)}
+              className={`relative w-12 h-12 border-2 p-0.5 transition-all 
                 focus-visible:ring-2 focus-visible:ring-tyrian focus-visible:ring-offset-1 focus-visible:outline-none
+                ${keyboardDragIndex === null ? 'cursor-grab active:cursor-grabbing' : ''}
                 ${idx === currentIndex 
                   ? 'border-tyrian bg-tyrian/10' 
                   : 'border-ink/20 hover:border-ink/40'
                 }
                 ${draggedIndex === idx ? 'opacity-50 scale-95' : ''}
                 ${dragOverIndex === idx ? 'border-tyrian border-dashed scale-105' : ''}
+                ${keyboardDragIndex === idx ? 'ring-2 ring-tyrian ring-offset-2 scale-95 opacity-75 animate-pulse' : ''}
+                ${keyboardDragIndex !== null && keyboardDragIndex !== idx ? 'border-dashed' : ''}
               `}
+              aria-label={keyboardDragIndex === idx 
+                ? `Moving ${pepperName} thumbnail. Use arrows to reposition, Enter to drop, Escape to cancel`
+                : `${pepperName} thumbnail ${idx + 1}. Press Enter to pick up and reorder`}
             >
               <img 
                 src={img.url} 
@@ -325,9 +412,11 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
       {/* Hint text for reordering */}
       {(hasMultiple || user) && (
         <p className="text-center text-[10px] text-ink/50 italic">
-          {user 
-            ? 'Drag to reorder • Click + to upload • Changes sync across devices'
-            : 'Drag thumbnails to reorder • leftmost becomes primary'
+          {keyboardDragIndex !== null
+            ? '← → to move • Enter to drop • Escape to cancel'
+            : user 
+              ? 'Drag or Tab+Enter to reorder • Click + to upload'
+              : 'Drag or Tab+Enter to reorder • leftmost becomes primary'
           }
         </p>
       )}
