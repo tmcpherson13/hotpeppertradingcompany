@@ -38,33 +38,141 @@ export type Database = {
         }
         Relationships: []
       }
+      pepper_enrichment_queue: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          pepper_id: string
+          proposed_aroma_notes: string | null
+          proposed_culinary_uses: string | null
+          proposed_description: string | null
+          proposed_flavor_notes: string | null
+          proposed_historical_notes: string | null
+          proposed_trade_route: string | null
+          research_ids: string[] | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source_citations: Json | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          pepper_id: string
+          proposed_aroma_notes?: string | null
+          proposed_culinary_uses?: string | null
+          proposed_description?: string | null
+          proposed_flavor_notes?: string | null
+          proposed_historical_notes?: string | null
+          proposed_trade_route?: string | null
+          research_ids?: string[] | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_citations?: Json | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          pepper_id?: string
+          proposed_aroma_notes?: string | null
+          proposed_culinary_uses?: string | null
+          proposed_description?: string | null
+          proposed_flavor_notes?: string | null
+          proposed_historical_notes?: string | null
+          proposed_trade_route?: string | null
+          research_ids?: string[] | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_citations?: Json | null
+          status?: string
+        }
+        Relationships: []
+      }
       pepper_overrides: {
         Row: {
+          aroma_notes: string | null
+          culinary_uses: string | null
           description: string | null
+          enrichment_version: number | null
+          flavor_notes: string | null
           historical_notes: string | null
           id: string
           pepper_id: string
+          source_citations: Json | null
           trade_route: string | null
           updated_at: string | null
           updated_by: string | null
         }
         Insert: {
+          aroma_notes?: string | null
+          culinary_uses?: string | null
           description?: string | null
+          enrichment_version?: number | null
+          flavor_notes?: string | null
           historical_notes?: string | null
           id?: string
           pepper_id: string
+          source_citations?: Json | null
           trade_route?: string | null
           updated_at?: string | null
           updated_by?: string | null
         }
         Update: {
+          aroma_notes?: string | null
+          culinary_uses?: string | null
           description?: string | null
+          enrichment_version?: number | null
+          flavor_notes?: string | null
           historical_notes?: string | null
           id?: string
           pepper_id?: string
+          source_citations?: Json | null
           trade_route?: string | null
           updated_at?: string | null
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      pepper_research: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          metadata: Json | null
+          pepper_id: string
+          query: string
+          raw_content: string | null
+          source_type: string
+          urls: Json | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          metadata?: Json | null
+          pepper_id: string
+          query: string
+          raw_content?: string | null
+          source_type: string
+          urls?: Json | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          metadata?: Json | null
+          pepper_id?: string
+          query?: string
+          raw_content?: string | null
+          source_type?: string
+          urls?: Json | null
         }
         Relationships: []
       }

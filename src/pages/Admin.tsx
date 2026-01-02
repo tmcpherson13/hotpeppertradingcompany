@@ -4,8 +4,9 @@ import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ImageModeration } from '@/components/admin/ImageModeration';
 import { ProfileSettings } from '@/components/admin/ProfileSettings';
+import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User } from 'lucide-react';
+import { Users, Image, User, BookOpen } from 'lucide-react';
 
 export default function Admin() {
   return (
@@ -47,6 +48,13 @@ export default function Admin() {
                 Images
               </TabsTrigger>
               <TabsTrigger
+                value="enrichment"
+                className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
+              >
+                <BookOpen className="w-4 h-4" />
+                Content Enrichment
+              </TabsTrigger>
+              <TabsTrigger
                 value="profile"
                 className="flex items-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink font-heading uppercase tracking-wider text-xs"
               >
@@ -73,6 +81,15 @@ export default function Admin() {
               </div>
             </TabsContent>
 
+            <TabsContent value="enrichment" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Pepper Content Enrichment
+                </h2>
+                <PepperEnrichment />
+              </div>
+            </TabsContent>
+
             <TabsContent value="profile" className="mt-0">
               <div className="bg-parchment-dark/20 border border-ink/20 p-4">
                 <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
@@ -85,6 +102,10 @@ export default function Admin() {
         </div>
       </main>
 
+      <Footer />
+    </div>
+  );
+}
       <Footer />
     </div>
   );
