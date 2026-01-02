@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingCart, Search, User, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingCart, Search, User, LogOut, Shield } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import logoDark from '@/assets/logo-dark.svg';
@@ -17,7 +17,7 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut, isLoading } = useAuth();
+  const { user, signOut, isLoading, isAdmin } = useAuth();
   const isHomePage = location.pathname === '/';
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -87,13 +87,24 @@ export function Header() {
             {/* Auth button */}
             {!isLoading && (
               user ? (
-                <button
-                  onClick={() => signOut()}
-                  className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                  title="Sign out"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
+                <div className="hidden md:flex items-center gap-3">
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="flex items-center gap-1 text-tyrian hover:text-tyrian/80 transition-colors"
+                      title="Admin Panel"
+                    >
+                      <Shield className="w-5 h-5" />
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                    title="Sign out"
+                  >
+                    <LogOut className="w-5 h-5" />
+                  </button>
+                </div>
               ) : (
                 <Link
                   to="/auth"
