@@ -28,9 +28,24 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   // Merge static gallery with uploaded images and apply saved order
   useEffect(() => {
     if (gallery.length === 0 && uploadedImages.length === 0) return;
+
     const merged = mergeGalleryWithUploads(gallery, uploadedImages, savedOrder);
     setOrderedGallery(merged);
-    
+
+    // Keep Compendium thumbnails in sync by persisting the current primary URL
+    try {
+      const key = `pepper-primary-image-${pepperId}`;
+      const primaryUrl = merged[0]?.url;
+      if (primaryUrl) {
+        localStorage.setItem(key, primaryUrl);
+      } else {
+        localStorage.removeItem(key);
+      }
+      window.dispatchEvent(new CustomEvent('pepper-thumbnail-changed', { detail: { pepperId } }));
+    } catch {
+      // ignore storage errors
+    }
+
     // Reset current index if it's out of bounds
     if (currentIndex >= merged.length) {
       setCurrentIndex(Math.max(0, merged.length - 1));
@@ -181,19 +196,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             </>
           )}
           
-          {/* Delete button on main image */}
-          {canDeleteImage(currentImage) && (
-            <button
-              onClick={() => handleDeleteImage(currentImage)}
-              disabled={deletingId === currentImage.id}
-              className="absolute top-1 right-1 w-5 h-5 bg-red-600/90 hover:bg-red-700 
-                text-white flex items-center justify-center opacity-0 group-hover:opacity-100 
-                transition-opacity text-xs font-bold"
-              aria-label="Delete image"
-            >
-              {deletingId === currentImage.id ? '…' : '×'}
-            </button>
-          )}
+          {/* Delete button */}
+          <DeleteImageButton
+            disabled={!canDeleteImage(currentImage)}
+            title={!canDeleteImage(currentImage) ? 'Only contributed uploads can be deleted' : 'Delete image'}
+            onDelete={() => handleDeleteImage(currentImage)}
+            isDeleting={deletingId === currentImage.id}
+          />
         </div>
       </div>
 
@@ -224,13 +233,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
               alt={`${pepperName} thumbnail ${idx + 1}`}
               className="w-full h-full object-cover pointer-events-none"
             />
-            {/* Delete button for user uploads */}
-            {canDeleteImage(img) && (
-              <DeleteImageButton 
-                onDelete={() => handleDeleteImage(img)}
-                isDeleting={deletingId === img.id}
-              />
-            )}
+            {/* Delete button */}
+            <DeleteImageButton
+              disabled={!canDeleteImage(img)}
+              title={!canDeleteImage(img) ? 'Only contributed uploads can be deleted' : 'Delete image'}
+              onDelete={() => handleDeleteImage(img)}
+              isDeleting={deletingId === img.id}
+            />
           </button>
         ))}
         

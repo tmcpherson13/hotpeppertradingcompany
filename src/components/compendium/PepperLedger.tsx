@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies, PepperImage } from '@/data/peppers';
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
@@ -6,6 +7,14 @@ import logoDark from '@/assets/logo-dark.svg';
 
 // Helper to get primary image from gallery or legacy sources, respecting saved order
 const getPrimaryImage = (pepper: Pepper): string | undefined => {
+  // Prefer the user's current primary image (includes uploads) if available
+  try {
+    const override = localStorage.getItem(`pepper-primary-image-${pepper.id}`);
+    if (override) return override;
+  } catch {
+    // ignore
+  }
+
   // First check gallery
   if (pepper.gallery && pepper.gallery.length > 0) {
     // Apply saved order and get first image
@@ -48,6 +57,19 @@ const formatScoville = (min: number, max: number) => {
 
 
 export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
+  const [, forceRender] = useState(0);
+
+  useEffect(() => {
+    const handler = () => forceRender((v) => v + 1);
+    window.addEventListener('pepper-thumbnail-changed', handler);
+    window.addEventListener('gallery-order-changed', handler);
+
+    return () => {
+      window.removeEventListener('pepper-thumbnail-changed', handler);
+      window.removeEventListener('gallery-order-changed', handler);
+    };
+  }, []);
+
   if (peppers.length === 0) {
     return (
       <div className="text-center py-16 bg-[#f5efe6] border border-[#5a4a3a]/20">
