@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Pepper } from '@/data/pepperTypes';
 import { usePepperResearch, ResearchRecord } from '@/hooks/usePepperResearch';
 import { usePepperEnrichment } from '@/hooks/usePepperEnrichment';
+import { useImageGeneration } from '@/hooks/useImageGeneration';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Search, Sparkles, ExternalLink, RefreshCw } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Loader2, Sparkles, ExternalLink, ChevronDown, Image, CheckCircle } from 'lucide-react';
+
+type EnrichmentStep = 'idle' | 'researching' | 'synthesizing' | 'complete' | 'error';
 
 interface ResearchPanelProps {
   pepper: Pepper;
@@ -23,26 +27,91 @@ export function ResearchPanel({ pepper, onSynthesisComplete }: ResearchPanelProp
   } = usePepperResearch();
 
   const { isSynthesizing, synthesize } = usePepperEnrichment();
+  const { isGenerating, generateImages } = useImageGeneration();
 
-  const [hasLoadedResearch, setHasLoadedResearch] = useState(false);
+  const [enrichmentStep, setEnrichmentStep] = useState<EnrichmentStep>('idle');
+  const [isResearchOpen, setIsResearchOpen] = useState(false);
+  const [generateImagesFlag, setGenerateImagesFlag] = useState(() => {
+    return localStorage.getItem('enrichment_image_generation') === 'true';
+  });
 
-  const handleLoadResearch = async () => {
-    await fetchResearch(pepper.id);
-    setHasLoadedResearch(true);
-  };
+  // Load research on pepper change
+  useEffect(() => {
+    fetchResearch(pepper.id);
+  }, [pepper.id, fetchResearch]);
 
-  const handleTriggerResearch = async () => {
-    const success = await triggerResearch(pepper.id, pepper.name);
-    if (success) {
-      setHasLoadedResearch(true);
-    }
-  };
+  // Listen for image generation setting changes
+  useEffect(() => {
+    const handleSettingsChange = (e: CustomEvent<{ imageGeneration: boolean }>) => {
+      setGenerateImagesFlag(e.detail.imageGeneration);
+    };
+    
+    window.addEventListener('enrichment-settings-changed', handleSettingsChange as EventListener);
+    return () => window.removeEventListener('enrichment-settings-changed', handleSettingsChange as EventListener);
+  }, []);
 
-  const handleSynthesize = async () => {
-    const success = await synthesize(pepper.id, pepper.name);
-    if (success) {
+  // Listen for localStorage changes (cross-tab)
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'enrichment_image_generation') {
+        setGenerateImagesFlag(e.newValue === 'true');
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const handleEnrichPepper = useCallback(async () => {
+    setEnrichmentStep('researching');
+
+    try {
+      // Step 1: Trigger research (Firecrawl + Perplexity + Wikimedia)
+      const researchSuccess = await triggerResearch(
+        pepper.id, 
+        pepper.name, 
+        ['firecrawl', 'perplexity', 'wikimedia']
+      );
+
+      if (!researchSuccess) {
+        setEnrichmentStep('error');
+        return;
+      }
+
+      // Step 2: Automatically synthesize
+      setEnrichmentStep('synthesizing');
+      const synthesisSuccess = await synthesize(
+        pepper.id, 
+        pepper.name, 
+        generateImagesFlag
+      );
+
+      if (!synthesisSuccess) {
+        setEnrichmentStep('error');
+        return;
+      }
+
+      setEnrichmentStep('complete');
       onSynthesisComplete();
+    } catch (err) {
+      console.error('Enrichment error:', err);
+      setEnrichmentStep('error');
     }
+  }, [pepper.id, pepper.name, triggerResearch, synthesize, generateImagesFlag, onSynthesisComplete]);
+
+  const handleGenerateImages = useCallback(async () => {
+    await generateImages(pepper.id, pepper.name);
+  }, [pepper.id, pepper.name, generateImages]);
+
+  const isProcessing = enrichmentStep === 'researching' || enrichmentStep === 'synthesizing' || isResearching || isSynthesizing;
+
+  const getStatusMessage = () => {
+    if (isResearching || enrichmentStep === 'researching') return 'Researching sources...';
+    if (isSynthesizing || enrichmentStep === 'synthesizing') return 'Synthesizing with AI...';
+    if (enrichmentStep === 'complete') return 'Enrichment complete';
+    if (enrichmentStep === 'error') return 'An error occurred';
+    if (research.length > 0) return `${research.length} research source${research.length !== 1 ? 's' : ''} available`;
+    return 'Ready to enrich';
   };
 
   return (
@@ -64,86 +133,91 @@ export function ResearchPanel({ pepper, onSynthesisComplete }: ResearchPanelProp
       </div>
 
       {/* Actions */}
-      <div className="p-4 border-b border-ink/10 space-y-2">
+      <div className="p-4 border-b border-ink/10 space-y-3">
+        {/* Primary action buttons */}
         <div className="flex gap-2">
           <Button
-            onClick={handleTriggerResearch}
-            disabled={isResearching}
+            onClick={handleEnrichPepper}
+            disabled={isProcessing || isGenerating}
             className="flex-1"
-            variant="outline"
           >
-            {isResearching ? (
+            {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Researching...
+                {enrichmentStep === 'researching' ? 'Researching...' : 'Synthesizing...'}
               </>
-            ) : (
+            ) : enrichmentStep === 'complete' ? (
               <>
-                <Search className="w-4 h-4 mr-2" />
-                Research Web
-              </>
-            )}
-          </Button>
-          {hasLoadedResearch && (
-            <Button
-              onClick={handleLoadResearch}
-              disabled={isLoading}
-              variant="ghost"
-              size="icon"
-            >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </Button>
-          )}
-        </div>
-
-        {!hasLoadedResearch && (
-          <Button
-            onClick={handleLoadResearch}
-            disabled={isLoading}
-            variant="ghost"
-            className="w-full text-sm"
-          >
-            {isLoading ? 'Loading...' : 'Load Existing Research'}
-          </Button>
-        )}
-
-        {research.length > 0 && (
-          <Button
-            onClick={handleSynthesize}
-            disabled={isSynthesizing}
-            className="w-full"
-          >
-            {isSynthesizing ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Synthesizing...
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Re-Enrich
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 mr-2" />
-                Synthesize with AI
+                Enrich Pepper
               </>
             )}
           </Button>
+          <Button
+            onClick={handleGenerateImages}
+            disabled={isProcessing || isGenerating}
+            variant="outline"
+          >
+            {isGenerating ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Image className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+
+        {/* Status indicator */}
+        <div className={`text-xs flex items-center gap-2 ${
+          enrichmentStep === 'error' ? 'text-red-600' :
+          enrichmentStep === 'complete' ? 'text-green-600' :
+          'text-ink/60'
+        }`}>
+          {isProcessing && <Loader2 className="w-3 h-3 animate-spin" />}
+          {enrichmentStep === 'complete' && <CheckCircle className="w-3 h-3" />}
+          {getStatusMessage()}
+        </div>
+
+        {/* Image generation badge */}
+        {generateImagesFlag && (
+          <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+            <Image className="w-3 h-3 mr-1" />
+            AI Images enabled
+          </Badge>
         )}
       </div>
 
-      {/* Research Results */}
+      {/* Collapsible Research Data */}
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
-          {!hasLoadedResearch ? (
-            <p className="text-sm text-ink/50 text-center py-8">
-              Click "Load Existing Research" or "Research Web" to begin
-            </p>
-          ) : research.length === 0 ? (
-            <p className="text-sm text-ink/50 text-center py-8">
-              No research data available. Click "Research Web" to gather information.
-            </p>
-          ) : (
-            research.map((record) => (
-              <ResearchCard key={record.id} record={record} />
-            ))
-          )}
+        <div className="p-4">
+          <Collapsible open={isResearchOpen} onOpenChange={setIsResearchOpen}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-2 hover:bg-parchment-dark/20 rounded transition-colors">
+              <span className="text-sm font-medium text-ink/70">
+                View Research Data ({research.length} source{research.length !== 1 ? 's' : ''})
+              </span>
+              <ChevronDown className={`w-4 h-4 text-ink/40 transition-transform ${isResearchOpen ? 'rotate-180' : ''}`} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-3 mt-2">
+              {isLoading ? (
+                <div className="text-center py-4 text-ink/50 text-sm">
+                  <Loader2 className="w-4 h-4 animate-spin mx-auto mb-2" />
+                  Loading research...
+                </div>
+              ) : research.length === 0 ? (
+                <p className="text-sm text-ink/50 text-center py-4">
+                  No research data yet. Click "Enrich Pepper" to gather information.
+                </p>
+              ) : (
+                research.map((record) => (
+                  <ResearchCard key={record.id} record={record} />
+                ))
+              )}
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </ScrollArea>
     </div>
@@ -166,10 +240,13 @@ function ResearchCard({ record }: { record: ResearchRecord }) {
               className={`text-xs ${
                 record.source_type === 'perplexity'
                   ? 'bg-purple-50 text-purple-700 border-purple-200'
+                  : record.source_type === 'wikimedia_images'
+                  ? 'bg-green-50 text-green-700 border-green-200'
                   : 'bg-orange-50 text-orange-700 border-orange-200'
               }`}
             >
-              {record.source_type === 'perplexity' ? 'Perplexity AI' : 'Firecrawl'}
+              {record.source_type === 'perplexity' ? 'Perplexity AI' : 
+               record.source_type === 'wikimedia_images' ? 'Wikimedia' : 'Firecrawl'}
             </Badge>
             <span className="text-xs text-ink/50">
               {new Date(record.created_at).toLocaleDateString()}
