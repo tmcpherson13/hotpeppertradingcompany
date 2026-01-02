@@ -69,18 +69,27 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (orderedGallery.length === 0) return;
+      
+      const currentImage = orderedGallery[currentIndex];
+      
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         goToPrevious();
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         goToNext();
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        // Only handle delete if user can delete the current image
+        if (currentImage && canDeleteImage(currentImage)) {
+          e.preventDefault();
+          handleDeleteImage(currentImage);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToPrevious, goToNext, orderedGallery.length]);
+  }, [goToPrevious, goToNext, orderedGallery, currentIndex]);
 
   const handleUploadComplete = () => {
     refreshUploads();
@@ -262,6 +271,7 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
               onDrop={(e) => handleDrop(e, idx)}
               onClick={() => setCurrentIndex(idx)}
               className={`relative w-12 h-12 border-2 p-0.5 transition-all cursor-grab active:cursor-grabbing
+                focus-visible:ring-2 focus-visible:ring-tyrian focus-visible:ring-offset-1 focus-visible:outline-none
                 ${idx === currentIndex 
                   ? 'border-tyrian bg-tyrian/10' 
                   : 'border-ink/20 hover:border-ink/40'
