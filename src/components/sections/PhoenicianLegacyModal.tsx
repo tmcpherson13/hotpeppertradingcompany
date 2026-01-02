@@ -45,11 +45,11 @@ const pepperProfiles = [
     role: 'Vanguard — Portuguese navigators carried peppers from the New World around the Cape, fusing Mediterranean and African traditions.',
   },
   {
-    name: 'Fresno',
-    origin: 'California (The New World Echo)',
-    heat: 'Mild-Medium (2,500–10,000 SHU)',
-    flavor: 'Bright, fruity, slightly smoky with sweet red pepper notes.',
-    role: 'Flagship — Spanish missions carried Mediterranean pepper traditions to California, where the Fresno emerged as their modern heir.',
+    name: 'Cayenne',
+    origin: 'French Guiana via Europe (The Atlantic Bridge)',
+    heat: 'Hot (30,000–50,000 SHU)',
+    flavor: 'Clean, pungent heat with subtle fruity undertones and sharp, direct character.',
+    role: 'Flagship — Named for the port of Cayenne, this pepper became the workhorse of European spice cabinets, ground and traded across Mediterranean ports by the 16th century.',
   },
 ];
 
@@ -58,7 +58,7 @@ const pairings = [
   'Calabrian \'nduja on crusty bread',
   'Urfa Biber on lahmacun or eggs',
   'Peri peri grilled prawns',
-  'Fresno pepper relish on grilled fish',
+  'Cayenne-dusted grilled fish with lemon',
   'Mediterranean shakshuka',
   'Calabrian pasta alla diavola',
   'Levantine muhammara',
@@ -158,7 +158,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
                     The Aleppo pepper still sun-dries where ancient caravans once paused. Calabrian chilies 
                     flourish where Phoenician colonies once traded. Urfa Biber cures in the same Anatolian sun 
                     that warmed merchants crossing between East and West. Even the Portuguese peri peri and 
-                    California's Fresno trace their lineage through Mediterranean hands.
+                    the cayenne that European traders distributed across Mediterranean ports trace their lineage through these ancient networks.
                   </p>
                   <p>
                     The routes change. The fire endures.
@@ -211,7 +211,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">2,500–175,000 SHU</span>
+                  <span className="font-display text-ink">7,000–175,000 SHU</span>
                 </div>
               </div>
             </div>
