@@ -2,13 +2,15 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+const SESSION_PERSIST_KEY = 'hptc-remember-session';
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isAdmin: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string, displayName?: string) => Promise<{ error: Error | null }>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, displayName?: string, rememberMe?: boolean) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -64,6 +66,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      // Check if this is a session that should not persist
+      const shouldPersist = sessionStorage.getItem(SESSION_PERSIST_KEY);
+      
+      if (session && shouldPersist === null) {
+        // Session exists but no persist flag in sessionStorage
+        // This means browser was closed and reopened without "remember me"
+        // Check localStorage for the remember preference
+        const remembered = localStorage.getItem(SESSION_PERSIST_KEY);
+        if (remembered === 'false') {
+          // User chose not to be remembered, sign them out
+          supabase.auth.signOut();
+          localStorage.removeItem(SESSION_PERSIST_KEY);
+          setIsLoading(false);
+          return;
+        }
+      }
+      
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -76,15 +95,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, rememberMe: boolean = true) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    
+    if (!error) {
+      // Store the remember preference
+      localStorage.setItem(SESSION_PERSIST_KEY, rememberMe ? 'true' : 'false');
+      sessionStorage.setItem(SESSION_PERSIST_KEY, 'active');
+    }
+    
     return { error: error as Error | null };
   };
 
-  const signUp = async (email: string, password: string, displayName?: string) => {
+  const signUp = async (email: string, password: string, displayName?: string, rememberMe: boolean = true) => {
     const redirectUrl = `${window.location.origin}/`;
     
     const { error } = await supabase.auth.signUp({
@@ -97,12 +123,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       },
     });
+    
+    if (!error) {
+      // Store the remember preference
+      localStorage.setItem(SESSION_PERSIST_KEY, rememberMe ? 'true' : 'false');
+      sessionStorage.setItem(SESSION_PERSIST_KEY, 'active');
+    }
+    
     return { error: error as Error | null };
   };
 
   const signOut = async () => {
     await supabase.auth.signOut();
     setIsAdmin(false);
+    localStorage.removeItem(SESSION_PERSIST_KEY);
+    sessionStorage.removeItem(SESSION_PERSIST_KEY);
   };
 
   return (

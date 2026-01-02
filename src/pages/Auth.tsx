@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -21,6 +22,7 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; displayName?: string }>({});
   
@@ -62,7 +64,7 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(email, password, rememberMe);
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
             toast({
@@ -85,7 +87,7 @@ export default function Auth() {
           navigate('/compendium');
         }
       } else {
-        const { error } = await signUp(email, password, displayName);
+        const { error } = await signUp(email, password, displayName, rememberMe);
         if (error) {
           if (error.message.includes('User already registered')) {
             toast({
@@ -200,6 +202,24 @@ export default function Auth() {
                   <p className="text-xs text-red-600">{errors.password}</p>
                 )}
               </div>
+
+              {/* Remember me checkbox - only show on login */}
+              {isLogin && (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="rememberMe"
+                    checked={rememberMe}
+                    onCheckedChange={(checked) => setRememberMe(checked === true)}
+                    className="border-ink/40 data-[state=checked]:bg-tyrian data-[state=checked]:border-tyrian"
+                  />
+                  <Label 
+                    htmlFor="rememberMe" 
+                    className="font-body text-sm text-ink/70 cursor-pointer"
+                  >
+                    Remember me
+                  </Label>
+                </div>
+              )}
 
               <Button
                 type="submit"
