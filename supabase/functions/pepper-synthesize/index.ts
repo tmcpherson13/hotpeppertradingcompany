@@ -312,6 +312,28 @@ serve(async (req) => {
     if (generateImages) {
       try {
         console.log('Triggering image generation...');
+        
+        // Fetch Wikimedia reference images from research
+        let referenceImageUrls: string[] = [];
+        try {
+          const { data: wikimediaResearch } = await supabase
+            .from('pepper_research')
+            .select('metadata')
+            .eq('pepper_id', pepperId)
+            .eq('source_type', 'wikimedia')
+            .maybeSingle();
+
+          if (wikimediaResearch?.metadata?.images) {
+            referenceImageUrls = (wikimediaResearch.metadata.images as any[])
+              .map((img: any) => img.url)
+              .filter(Boolean)
+              .slice(0, 5); // Limit to 5 reference images
+          }
+          console.log(`Found ${referenceImageUrls.length} reference images for vision analysis`);
+        } catch (refErr) {
+          console.error('Error fetching reference images:', refErr);
+        }
+        
         const imageGenResponse = await fetch(`${supabaseUrl}/functions/v1/pepper-image-generate`, {
           method: 'POST',
           headers: {
@@ -322,6 +344,7 @@ serve(async (req) => {
             pepperId,
             pepperName,
             jobId,
+            referenceImageUrls,
             styles: ['ai-botanical', 'ai-photo-plant', 'ai-photo-individual'],
           }),
         });
