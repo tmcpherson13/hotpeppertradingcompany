@@ -14,6 +14,7 @@ Write in a refined, historical tone that:
 - Provides rich cultural and geographic context
 - Is factual but narrative-driven
 - Avoids marketing-speak or modern commercial language
+- Use "cuisine" instead of "gastronomy" (e.g., "Peruvian cuisine" not "Peruvian gastronomy")
 
 Based on the research provided, synthesize comprehensive content for this pepper variety. Return a JSON object with exactly these fields:
 
