@@ -182,11 +182,23 @@ export function UserManagement() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
+      if (!session?.access_token) {
+        toast({
+          title: 'Session Expired',
+          description: 'Please sign in again to continue.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      
       const response = await supabase.functions.invoke('create-admin-user', {
         body: {
           email: newEmail,
           displayName: newDisplayName,
           sendWelcomeEmail,
+        },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
         },
       });
 

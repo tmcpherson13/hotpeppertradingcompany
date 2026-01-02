@@ -55,14 +55,26 @@ serve(async (req) => {
       );
     }
 
-    // Create a client with the user's token to get user info
+    // Extract the JWT token from the Authorization header
+    const token = authHeader.replace(/^Bearer\s+/i, "");
+    console.log("Token length:", token.length);
+
+    if (!token || token.length < 50) {
+      console.log("Invalid or missing token");
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Create a client to verify the user's token
     const userClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-      { global: { headers: { Authorization: authHeader } } }
+      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    const { data: { user: callerUser }, error: authError } = await userClient.auth.getUser();
+    // Pass the token explicitly to getUser()
+    const { data: { user: callerUser }, error: authError } = await userClient.auth.getUser(token);
     console.log("Auth result:", { userId: callerUser?.id, error: authError?.message });
     
     if (authError || !callerUser) {
