@@ -88,7 +88,7 @@ export function Header() {
           {!isLoading && (
             user ? (
               <div className="hidden md:flex items-center gap-3">
-                {isAdmin && (
+                {isAdmin ? (
                   <Link
                     to="/admin"
                     className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gold hover:text-gold/80 border border-gold/40 rounded-md hover:border-gold/60 transition-colors"
@@ -97,15 +97,16 @@ export function Header() {
                     <Shield className="w-4 h-4" />
                     <span>Admin</span>
                   </Link>
+                ) : (
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
+                    title="Your Profile"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>Profile</span>
+                  </Link>
                 )}
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
-                  title="Your Profile"
-                >
-                  <User className="w-4 h-4" />
-                  <span>Profile</span>
-                </Link>
                 <button
                   onClick={() => signOut()}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-parchment/80 hover:text-gold border border-parchment/30 rounded-md hover:border-gold/50 transition-colors"
@@ -179,7 +180,7 @@ export function Header() {
               {!isLoading && (
                 user ? (
                   <>
-                    {isAdmin && (
+                    {isAdmin ? (
                       <Link
                         to="/admin"
                         onClick={() => setIsOpen(false)}
@@ -188,15 +189,16 @@ export function Header() {
                         <Shield className="w-5 h-5" />
                         Admin Panel
                       </Link>
+                    ) : (
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
+                      >
+                        <User className="w-5 h-5" />
+                        Profile
+                      </Link>
                     )}
-                    <Link
-                      to="/profile"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2 font-heading text-lg uppercase tracking-[0.15em] text-parchment/90 hover:text-gold transition-colors py-2 border-b border-parchment/20"
-                    >
-                      <User className="w-5 h-5" />
-                      Profile
-                    </Link>
                     <button
                       onClick={() => {
                         signOut();
