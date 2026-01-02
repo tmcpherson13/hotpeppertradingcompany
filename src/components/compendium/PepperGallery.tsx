@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGallerySync, mergeGalleryWithUploads, PepperImageWithMeta } from '@/hooks/useGallerySync';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useAuth } from '@/contexts/AuthContext';
+import { useHiddenImages } from '@/hooks/useHiddenImages';
 import { ImageUploadZone, DeleteImageButton } from './ImageUploadZone';
 
 interface PepperGalleryProps {
@@ -24,12 +25,16 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   const { user, isAdmin } = useAuth();
   const { uploadedImages, savedOrder, isLoading, refreshUploads, saveOrder } = useGallerySync(pepperId);
   const { deleteImage } = useImageUpload(pepperId);
+  const { hiddenIds, hideImage, isLoading: hiddenLoading } = useHiddenImages(pepperId);
   
-  // Merge static gallery with uploaded images and apply saved order
+  // Merge static gallery with uploaded images, filter hidden, and apply saved order
   useEffect(() => {
     if (gallery.length === 0 && uploadedImages.length === 0) return;
 
-    const merged = mergeGalleryWithUploads(gallery, uploadedImages, savedOrder);
+    // Filter out hidden images from static gallery
+    const visibleGallery = gallery.filter((img) => !hiddenIds.has(img.id));
+    
+    const merged = mergeGalleryWithUploads(visibleGallery, uploadedImages, savedOrder);
     setOrderedGallery(merged);
 
     // Keep Compendium thumbnails in sync by persisting the current primary URL
@@ -50,32 +55,44 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     if (currentIndex >= merged.length) {
       setCurrentIndex(Math.max(0, merged.length - 1));
     }
-  }, [gallery, uploadedImages, savedOrder]);
+  }, [gallery, uploadedImages, savedOrder, hiddenIds]);
 
   const handleUploadComplete = () => {
     refreshUploads();
   };
 
   const handleDeleteImage = async (img: PepperImageWithMeta) => {
-    if (!img._uploadMetadata) return;
-    
     setDeletingId(img.id);
-    const success = await deleteImage(img.id, img._uploadMetadata.storagePath);
-    setDeletingId(null);
     
-    if (success) {
-      refreshUploads();
+    // If it's a user upload, delete from storage
+    if (img._uploadMetadata) {
+      const success = await deleteImage(img.id, img._uploadMetadata.storagePath);
+      setDeletingId(null);
+      if (success) {
+        refreshUploads();
+      }
+    } else if (isAdmin) {
+      // Static/AI image - hide it instead
+      const success = await hideImage(img.id);
+      setDeletingId(null);
+      if (success && currentIndex >= orderedGallery.length - 1) {
+        setCurrentIndex(Math.max(0, currentIndex - 1));
+      }
+    } else {
+      setDeletingId(null);
     }
   };
 
-  // Can user delete this image?
+  // Can user delete/hide this image?
   const canDeleteImage = (img: PepperImageWithMeta): boolean => {
-    if (!user || !img._uploadMetadata) return false;
-    // User can delete their own uploads, or admin can delete any
-    return img._uploadMetadata.userId === user.id || isAdmin;
+    if (!user) return false;
+    // Admin can delete/hide any image
+    if (isAdmin) return true;
+    // Regular user can only delete their own uploads
+    return !!img._uploadMetadata && img._uploadMetadata.userId === user.id;
   };
 
-  if (isLoading) {
+  if (isLoading || hiddenLoading) {
     return (
       <div className="flex justify-center">
         <div className="w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 animate-pulse" />
@@ -199,7 +216,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
            {/* Delete button */}
            <DeleteImageButton
              disabled={!canDeleteImage(currentImage)}
-             title={!canDeleteImage(currentImage) ? 'Archival images are locked; only uploaded photos can be deleted' : 'Delete uploaded photo'}
+             title={
+               !canDeleteImage(currentImage)
+                 ? 'Sign in as admin to hide archival images'
+                 : currentImage._uploadMetadata
+                   ? 'Delete uploaded photo'
+                   : 'Hide archival image (admin)'
+             }
              onDelete={() => handleDeleteImage(currentImage)}
              isDeleting={deletingId === currentImage.id}
            />
@@ -236,7 +259,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             {/* Delete button */}
             <DeleteImageButton
               disabled={!canDeleteImage(img)}
-              title={!canDeleteImage(img) ? 'Archival images are locked; only uploaded photos can be deleted' : 'Delete uploaded photo'}
+              title={
+                !canDeleteImage(img)
+                  ? 'Sign in as admin to hide archival images'
+                  : img._uploadMetadata
+                    ? 'Delete uploaded photo'
+                    : 'Hide archival image (admin)'
+              }
               onDelete={() => handleDeleteImage(img)}
               isDeleting={deletingId === img.id}
             />
