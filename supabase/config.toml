@@ -1,1 +1,10 @@
 project_id = "irvgpvjdnatvogmsxszr"
+
+[functions.pepper-research]
+verify_jwt = false
+
+[functions.pepper-synthesize]
+verify_jwt = false
+
+[functions.pepper-apply-enrichment]
+verify_jwt = false
