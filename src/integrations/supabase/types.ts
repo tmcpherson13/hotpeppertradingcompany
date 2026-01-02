@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      hidden_gallery_images: {
+        Row: {
+          hidden_at: string
+          hidden_by: string
+          id: string
+          image_id: string
+          pepper_id: string
+        }
+        Insert: {
+          hidden_at?: string
+          hidden_by: string
+          id?: string
+          image_id: string
+          pepper_id: string
+        }
+        Update: {
+          hidden_at?: string
+          hidden_by?: string
+          id?: string
+          image_id?: string
+          pepper_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
