@@ -9,7 +9,7 @@ interface ImageAttributionProps {
 export function ImageAttribution({ image, className = '' }: ImageAttributionProps) {
   if (image.source === 'ai-generated') {
     return (
-      <span className={`font-body text-[9px] text-[#5a4a3a]/40 ${className}`}>
+      <span className={`font-body text-[9px] text-ink/40 ${className}`}>
         AI-generated illustration
       </span>
     );
@@ -19,15 +19,18 @@ export function ImageAttribution({ image, className = '' }: ImageAttributionProp
   
   if (!hasAttribution) {
     return (
-      <span className={`font-body text-[9px] text-[#5a4a3a]/40 ${className}`}>
+      <span className={`font-body text-[9px] text-ink/40 ${className}`}>
         Image source pending
       </span>
     );
   }
 
+  // Determine attribution prefix based on image type
+  const attributionPrefix = image.type === 'illustration' ? 'Illustration by' : 'Photo by';
+
   return (
-    <span className={`font-body text-[9px] text-[#5a4a3a]/40 ${className}`}>
-      {image.author && `Photo by ${image.author}`}
+    <span className={`font-body text-[9px] text-ink/40 ${className}`}>
+      {image.author && `${attributionPrefix} ${image.author}`}
       {image.author && image.license && ' · '}
       {image.license}
       {image.sourceUrl && (
@@ -35,7 +38,7 @@ export function ImageAttribution({ image, className = '' }: ImageAttributionProp
           href={image.sourceUrl} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-0.5 ml-1 hover:text-[#8b2942] transition-colors"
+          className="inline-flex items-center gap-0.5 ml-1 hover:text-tyrian transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           <ExternalLink className="w-2.5 h-2.5" />
