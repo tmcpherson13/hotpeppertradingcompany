@@ -10,6 +10,12 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import {
   Table,
   TableBody,
@@ -25,12 +31,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Eye, RefreshCw, Flame, Calendar, Sparkles, CheckCheck, XCircle, ArrowUpDown, Loader2 } from 'lucide-react';
+import { Eye, RefreshCw, Flame, Calendar, Sparkles, CheckCheck, XCircle, ArrowUpDown, Loader2, Filter, BookOpen, Utensils } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface PendingReviewQueueProps {
   onReviewComplete: () => void;
   refreshKey: number;
+  initialFilter?: 'all' | 'auto-approved';
 }
 
 interface PendingEntry extends EnrichmentQueueEntry {
@@ -38,8 +45,9 @@ interface PendingEntry extends EnrichmentQueueEntry {
 }
 
 type SortOption = 'newest' | 'oldest' | 'confidence-high' | 'confidence-low' | 'heat-high' | 'heat-low';
+type ConfidenceFilter = 'all' | 'high' | 'medium' | 'low';
 
-export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingReviewQueueProps) {
+export function PendingReviewQueue({ onReviewComplete, refreshKey, initialFilter }: PendingReviewQueueProps) {
   const [entries, setEntries] = useState<PendingEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<PendingEntry | null>(null);
@@ -47,6 +55,7 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isBulkProcessing, setIsBulkProcessing] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('confidence-high');
+  const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>('all');
   
   const { approve, reject } = usePepperEnrichment();
   const { toast } = useToast();
@@ -81,8 +90,27 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
     fetchPendingEntries();
   }, [fetchPendingEntries, refreshKey]);
 
+  // Filter by confidence
+  const filteredEntries = entries.filter((entry) => {
+    const score = entry.confidence_score ?? 0;
+    switch (confidenceFilter) {
+      case 'high': return score >= 85;
+      case 'medium': return score >= 70 && score < 85;
+      case 'low': return score < 70;
+      default: return true;
+    }
+  });
+
+  // Get counts for filter badges
+  const filterCounts = {
+    all: entries.length,
+    high: entries.filter(e => (e.confidence_score ?? 0) >= 85).length,
+    medium: entries.filter(e => (e.confidence_score ?? 0) >= 70 && (e.confidence_score ?? 0) < 85).length,
+    low: entries.filter(e => (e.confidence_score ?? 0) < 70).length,
+  };
+
   // Sort entries
-  const sortedEntries = [...entries].sort((a, b) => {
+  const sortedEntries = [...filteredEntries].sort((a, b) => {
     switch (sortBy) {
       case 'newest':
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -100,6 +128,12 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
         return 0;
     }
   });
+
+  // Truncate text helper
+  const truncateText = (text: string | null | undefined, maxLength: number) => {
+    if (!text) return null;
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  };
 
   const handleReview = (entry: PendingEntry) => {
     setSelectedEntry(entry);
@@ -123,10 +157,10 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.size === entries.length) {
+    if (selectedIds.size === filteredEntries.length) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(entries.map(e => e.id)));
+      setSelectedIds(new Set(filteredEntries.map(e => e.id)));
     }
   };
 
@@ -227,78 +261,100 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header with bulk actions */}
-      <div className="p-3 border-b border-ink/10 bg-parchment-dark/10 flex items-center justify-between gap-2 flex-wrap">
+      {/* Header with filters and bulk actions */}
+      <div className="p-3 border-b border-ink/10 bg-parchment-dark/10 space-y-2">
+        {/* Confidence Filters */}
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="text-xs">
-            {entries.length} pending
-          </Badge>
-          {selectedIds.size > 0 && (
-            <Badge variant="outline" className="text-xs">
-              {selectedIds.size} selected
-            </Badge>
-          )}
+          <Filter className="w-3 h-3 text-ink/50" />
+          <ToggleGroup type="single" value={confidenceFilter} onValueChange={(v) => v && setConfidenceFilter(v as ConfidenceFilter)} className="gap-1">
+            <ToggleGroupItem value="all" size="sm" className="h-6 px-2 text-xs data-[state=on]:bg-ink/10">
+              All <Badge variant="secondary" className="ml-1 text-[10px] px-1">{filterCounts.all}</Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="high" size="sm" className="h-6 px-2 text-xs data-[state=on]:bg-green-100 data-[state=on]:text-green-700">
+              High <Badge className="ml-1 text-[10px] px-1 bg-green-600">{filterCounts.high}</Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="medium" size="sm" className="h-6 px-2 text-xs data-[state=on]:bg-amber-100 data-[state=on]:text-amber-700">
+              Medium <Badge className="ml-1 text-[10px] px-1 bg-amber-500">{filterCounts.medium}</Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="low" size="sm" className="h-6 px-2 text-xs data-[state=on]:bg-red-100 data-[state=on]:text-red-700">
+              Low <Badge className="ml-1 text-[10px] px-1 bg-red-500">{filterCounts.low}</Badge>
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
-        
-        <div className="flex items-center gap-2">
-          {/* Sort dropdown */}
-          <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
-            <SelectTrigger className="h-7 w-[140px] text-xs">
-              <ArrowUpDown className="w-3 h-3 mr-1" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="confidence-high">Confidence ↓</SelectItem>
-              <SelectItem value="confidence-low">Confidence ↑</SelectItem>
-              <SelectItem value="newest">Newest first</SelectItem>
-              <SelectItem value="oldest">Oldest first</SelectItem>
-              <SelectItem value="heat-high">Hottest first</SelectItem>
-              <SelectItem value="heat-low">Mildest first</SelectItem>
-            </SelectContent>
-          </Select>
 
-          {/* Bulk actions */}
-          {selectedIds.size > 0 && (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleBulkApprove}
-                disabled={isBulkProcessing}
-                className="h-7 text-xs text-green-700 border-green-300 hover:bg-green-50"
-              >
-                {isBulkProcessing ? (
-                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                ) : (
-                  <CheckCheck className="w-3 h-3 mr-1" />
-                )}
-                Approve ({selectedIds.size})
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleBulkReject}
-                disabled={isBulkProcessing}
-                className="h-7 text-xs text-red-700 border-red-300 hover:bg-red-50"
-              >
-                {isBulkProcessing ? (
-                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                ) : (
-                  <XCircle className="w-3 h-3 mr-1" />
-                )}
-                Reject
-              </Button>
-            </>
-          )}
+        {/* Actions row */}
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              {filteredEntries.length} showing
+            </Badge>
+            {selectedIds.size > 0 && (
+              <Badge variant="outline" className="text-xs">
+                {selectedIds.size} selected
+              </Badge>
+            )}
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {/* Sort dropdown */}
+            <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+              <SelectTrigger className="h-7 w-[140px] text-xs">
+                <ArrowUpDown className="w-3 h-3 mr-1" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="confidence-high">Confidence ↓</SelectItem>
+                <SelectItem value="confidence-low">Confidence ↑</SelectItem>
+                <SelectItem value="newest">Newest first</SelectItem>
+                <SelectItem value="oldest">Oldest first</SelectItem>
+                <SelectItem value="heat-high">Hottest first</SelectItem>
+                <SelectItem value="heat-low">Mildest first</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={fetchPendingEntries}
-            className="h-7"
-          >
-            <RefreshCw className="w-3 h-3" />
-          </Button>
+            {/* Bulk actions */}
+            {selectedIds.size > 0 && (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkApprove}
+                  disabled={isBulkProcessing}
+                  className="h-7 text-xs text-green-700 border-green-300 hover:bg-green-50"
+                >
+                  {isBulkProcessing ? (
+                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                  ) : (
+                    <CheckCheck className="w-3 h-3 mr-1" />
+                  )}
+                  Approve ({selectedIds.size})
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkReject}
+                  disabled={isBulkProcessing}
+                  className="h-7 text-xs text-red-700 border-red-300 hover:bg-red-50"
+                >
+                  {isBulkProcessing ? (
+                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                  ) : (
+                    <XCircle className="w-3 h-3 mr-1" />
+                  )}
+                  Reject
+                </Button>
+              </>
+            )}
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={fetchPendingEntries}
+              className="h-7"
+            >
+              <RefreshCw className="w-3 h-3" />
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -308,7 +364,7 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
             <TableRow className="hover:bg-transparent">
               <TableHead className="w-10">
                 <Checkbox
-                  checked={selectedIds.size === entries.length && entries.length > 0}
+                  checked={selectedIds.size === filteredEntries.length && filteredEntries.length > 0}
                   onCheckedChange={toggleSelectAll}
                 />
               </TableHead>
@@ -332,14 +388,67 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey }: PendingRevi
                   />
                 </TableCell>
                 <TableCell className="font-medium">
-                  <div className="flex flex-col">
-                    <span className="text-sm">
-                      {entry.pepper?.name || entry.pepper_id}
-                    </span>
-                    {entry.pepper?.origin && (
-                      <span className="text-xs text-ink/50">{entry.pepper.origin}</span>
-                    )}
-                  </div>
+                  <HoverCard openDelay={300} closeDelay={100}>
+                    <HoverCardTrigger asChild>
+                      <div className="flex flex-col cursor-help">
+                        <span className="text-sm hover:text-primary transition-colors">
+                          {entry.pepper?.name || entry.pepper_id}
+                        </span>
+                        {entry.pepper?.origin && (
+                          <span className="text-xs text-ink/50">{entry.pepper.origin}</span>
+                        )}
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="right" align="start" className="w-80 bg-parchment border-ink/20 shadow-lg">
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-heading font-semibold text-sm">{entry.pepper?.name}</h4>
+                          {getConfidenceBadge(entry.confidence_score)}
+                        </div>
+                        
+                        {entry.proposed_description && (
+                          <div className="space-y-1">
+                            <p className="text-xs font-medium text-ink/70 flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" /> Description
+                            </p>
+                            <p className="text-xs text-ink/80 leading-relaxed">
+                              {truncateText(entry.proposed_description, 200)}
+                            </p>
+                          </div>
+                        )}
+                        
+                        {entry.proposed_historical_notes && (
+                          <div className="space-y-1">
+                            <p className="text-xs font-medium text-ink/70">Historical Notes</p>
+                            <p className="text-xs text-ink/80 leading-relaxed">
+                              {truncateText(entry.proposed_historical_notes, 150)}
+                            </p>
+                          </div>
+                        )}
+                        
+                        {(entry.proposed_flavor_notes || entry.proposed_culinary_uses) && (
+                          <div className="flex gap-4 text-xs">
+                            {entry.proposed_flavor_notes && (
+                              <div>
+                                <span className="font-medium text-ink/70">Flavor:</span>
+                                <span className="ml-1 text-ink/80">{truncateText(entry.proposed_flavor_notes, 50)}</span>
+                              </div>
+                            )}
+                            {entry.proposed_culinary_uses && (
+                              <div className="flex items-center gap-1">
+                                <Utensils className="w-3 h-3 text-ink/50" />
+                                <span className="text-ink/80">{truncateText(entry.proposed_culinary_uses, 50)}</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        
+                        <p className="text-[10px] text-ink/50 italic pt-1 border-t border-ink/10">
+                          Click "Review" to see full details
+                        </p>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </TableCell>
                 <TableCell>
                   {entry.pepper && (

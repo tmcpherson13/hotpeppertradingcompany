@@ -16,7 +16,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Eye, Layers, Circle, Settings, ChevronDown, ClipboardCheck } from 'lucide-react';
 
-export function PepperEnrichment() {
+interface PepperEnrichmentProps {
+  initialView?: 'pending' | 'auto-approved';
+  onViewReset?: () => void;
+}
+
+export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentProps) {
   const [selectedPepper, setSelectedPepper] = useState<Pepper | null>(null);
   const [selectedPeppers, setSelectedPeppers] = useState<Pepper[]>([]);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -25,6 +30,16 @@ export function PepperEnrichment() {
   const [activeTab, setActiveTab] = useState<'single' | 'batch' | 'pending'>('single');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
+  const [pendingFilter, setPendingFilter] = useState<'all' | 'auto-approved'>('all');
+
+  // Handle navigation from dashboard
+  useEffect(() => {
+    if (initialView) {
+      setActiveTab('pending');
+      setPendingFilter(initialView === 'auto-approved' ? 'auto-approved' : 'all');
+      onViewReset?.();
+    }
+  }, [initialView, onViewReset]);
 
   const { fetchPepperQueue } = usePepperEnrichment();
 
