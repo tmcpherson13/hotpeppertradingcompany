@@ -159,6 +159,9 @@ import blackPearlImg from '@/assets/peppers/black-pearl.jpg';
 import chiltepinImg from '@/assets/peppers/chiltepin.jpg';
 import ajiLargoImg from '@/assets/peppers/aji-largo.jpg';
 import ajiLimonYellowImg from '@/assets/peppers/aji-limon-yellow.jpg';
+import orangeHabaneroImg from '@/assets/peppers/orange-habanero.jpg';
+import scotchBonnetRedImg from '@/assets/peppers/scotch-bonnet-red.jpg';
+import scotchBonnetYellowImg from '@/assets/peppers/scotch-bonnet-yellow.jpg';
 
 export const pepperImageMap: Record<string, string> = {
   // Original 80 peppers
@@ -322,6 +325,9 @@ export const pepperImageMap: Record<string, string> = {
   'chiltepin': chiltepinImg,
   'aji-largo': ajiLargoImg,
   'aji-limon-yellow': ajiLimonYellowImg,
+  'orange-habanero': orangeHabaneroImg,
+  'scotch-bonnet-red': scotchBonnetRedImg,
+  'scotch-bonnet-yellow': scotchBonnetYellowImg,
 };
 
 export function getPepperImage(pepperId: string): string | undefined {
