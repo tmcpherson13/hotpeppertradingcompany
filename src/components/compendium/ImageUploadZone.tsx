@@ -145,29 +145,40 @@ export function ImageUploadZone({ pepperId, onUploadComplete }: ImageUploadZoneP
   );
 }
 
-// Delete confirmation button for thumbnails
+// Delete confirmation button for thumbnails / gallery
 interface DeleteImageButtonProps {
-  onDelete: () => void;
+  onDelete?: () => void;
   isDeleting?: boolean;
+  disabled?: boolean;
+  title?: string;
 }
 
-export function DeleteImageButton({ onDelete, isDeleting }: DeleteImageButtonProps) {
+export function DeleteImageButton({
+  onDelete,
+  isDeleting,
+  disabled = false,
+  title,
+}: DeleteImageButtonProps) {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  if (showConfirm) {
+  const isDisabled = disabled || !onDelete;
+
+  if (showConfirm && !isDisabled) {
     return (
       <div className="absolute inset-0 bg-ink/80 flex items-center justify-center gap-1">
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
           }}
           disabled={isDeleting}
-          className="px-2 py-1 bg-red-600 text-parchment text-[8px] font-heading uppercase"
+          className="px-2 py-1 bg-destructive text-destructive-foreground text-[8px] font-heading uppercase disabled:opacity-60"
         >
           {isDeleting ? '...' : 'Yes'}
         </button>
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             setShowConfirm(false);
@@ -182,12 +193,18 @@ export function DeleteImageButton({ onDelete, isDeleting }: DeleteImageButtonPro
 
   return (
     <button
+      type="button"
+      title={title}
+      aria-label="Delete image"
       onClick={(e) => {
         e.stopPropagation();
+        if (isDisabled) return;
         setShowConfirm(true);
       }}
-      className="absolute top-0.5 right-0.5 w-4 h-4 bg-ink/70 text-parchment 
-        flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+      className={
+        "absolute top-0.5 right-0.5 w-4 h-4 bg-ink/70 text-parchment flex items-center justify-center transition-colors " +
+        (isDisabled ? "opacity-60 cursor-not-allowed" : "opacity-100 hover:bg-ink/80")
+      }
     >
       <X className="w-3 h-3" />
     </button>
