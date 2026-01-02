@@ -43,7 +43,7 @@ export function Header() {
             <img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
-              className="h-14 w-auto brightness-0 invert"
+              className="h-[4.67rem] w-auto brightness-0 invert"
             />
           </Link>
 
