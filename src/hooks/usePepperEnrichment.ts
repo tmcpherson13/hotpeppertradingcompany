@@ -31,7 +31,7 @@ export interface UsePepperEnrichmentResult {
   fetchQueue: (status?: string) => Promise<void>;
   fetchPepperQueue: (pepperId: string) => Promise<EnrichmentQueueEntry | null>;
   synthesize: (pepperId: string, pepperName: string, generateImages?: boolean, jobId?: string | null) => Promise<boolean>;
-  approve: (queueId: string, edits?: Partial<EnrichmentQueueEntry>, reviewNotes?: string) => Promise<boolean>;
+  approve: (queueId: string, edits?: Partial<EnrichmentQueueEntry>, reviewNotes?: string, excludedFields?: string[]) => Promise<boolean>;
   reject: (queueId: string, reviewNotes?: string) => Promise<boolean>;
 }
 
@@ -142,7 +142,8 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
   const approve = useCallback(async (
     queueId: string,
     edits?: Partial<EnrichmentQueueEntry>,
-    reviewNotes?: string
+    reviewNotes?: string,
+    excludedFields?: string[]
   ): Promise<boolean> => {
     setIsApplying(true);
     try {
@@ -156,7 +157,7 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session?.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
-          body: JSON.stringify({ queueId, action: 'approve', edits, reviewNotes }),
+          body: JSON.stringify({ queueId, action: 'approve', edits, reviewNotes, excludedFields }),
         }
       );
 

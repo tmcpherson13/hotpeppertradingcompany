@@ -19,7 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Loader2, Check, ExternalLink, Edit2, Image as ImageIcon, 
-  ZoomIn, Flower2, Camera, RefreshCw 
+  ZoomIn, Flower2, Camera, RefreshCw, X, CheckCircle2, XCircle
 } from 'lucide-react';
 
 interface EnrichmentReviewModalProps {
@@ -37,6 +37,8 @@ const SOURCE_TYPE_LABELS: Record<string, { label: string; icon: any; color: stri
   'wikimedia': { label: 'Wikimedia', icon: ExternalLink, color: 'bg-purple-100 text-purple-800' },
 };
 
+type FieldApprovalStatus = 'pending' | 'approved' | 'rejected';
+
 export function EnrichmentReviewModal({
   open,
   onOpenChange,
@@ -50,9 +52,9 @@ export function EnrichmentReviewModal({
     proposals: imageProposals, 
     isLoading: imagesLoading, 
     processingId,
+    regeneratingIds,
     fetchProposals,
     approveProposal,
-    rejectProposal,
     approveAll,
     regenerateSingleImage,
   } = useImageProposals();
@@ -64,6 +66,7 @@ export function EnrichmentReviewModal({
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
   const [regeneratingImageId, setRegeneratingImageId] = useState<string | null>(null);
   const [regenerateFeedback, setRegenerateFeedback] = useState('');
+  const [fieldApprovals, setFieldApprovals] = useState<Record<string, FieldApprovalStatus>>({});
 
   const currentOverride = getOverride(pepper.id);
 
@@ -74,6 +77,7 @@ export function EnrichmentReviewModal({
     }
   }, [open, pepper.id, fetchProposals]);
 
+  // Reset field approvals when queue entry changes
   useEffect(() => {
     if (queueEntry) {
       setEditedContent({
@@ -84,31 +88,39 @@ export function EnrichmentReviewModal({
         proposed_culinary_uses: queueEntry.proposed_culinary_uses,
         proposed_trade_route: queueEntry.proposed_trade_route,
       });
+      // Initialize all fields with proposed content as "pending"
+      setFieldApprovals({
+        proposed_description: 'pending',
+        proposed_historical_notes: 'pending',
+        proposed_flavor_notes: 'pending',
+        proposed_aroma_notes: 'pending',
+        proposed_culinary_uses: 'pending',
+        proposed_trade_route: 'pending',
+      });
     }
   }, [queueEntry]);
 
   if (!queueEntry) return null;
 
-  const handleApprove = async () => {
+  const handleFieldApproval = (fieldKey: string, status: FieldApprovalStatus) => {
+    setFieldApprovals(prev => ({
+      ...prev,
+      [fieldKey]: status,
+    }));
+  };
+
+  const handleApproveAllText = async () => {
+    // Get fields that are rejected (to exclude them)
+    const excludedFields = Object.entries(fieldApprovals)
+      .filter(([_, status]) => status === 'rejected')
+      .map(([key]) => key);
+
+    // Use edited content if editing, otherwise use queue entry
     const edits = isEditing ? editedContent : undefined;
-    const success = await approve(queueEntry.id, edits, reviewNotes);
+    const success = await approve(queueEntry.id, edits, reviewNotes, excludedFields);
     if (success) {
       onComplete();
       onOpenChange(false);
-    }
-  };
-
-  const handleReject = async () => {
-    const success = await reject(queueEntry.id, reviewNotes);
-    if (success) {
-      onComplete();
-      onOpenChange(false);
-    }
-  };
-
-  const handleApproveImages = async () => {
-    if (imageProposals.length > 0) {
-      await approveAll(imageProposals);
     }
   };
 
@@ -130,6 +142,17 @@ export function EnrichmentReviewModal({
   ];
 
   const pendingImageCount = imageProposals.length;
+
+  const getFieldStatusStyle = (status: FieldApprovalStatus) => {
+    switch (status) {
+      case 'approved':
+        return 'border-green-400 bg-green-50/50';
+      case 'rejected':
+        return 'border-red-400 bg-red-50/50';
+      default:
+        return 'border-ink/10';
+    }
+  };
 
   return (
     <>
@@ -164,24 +187,64 @@ export function EnrichmentReviewModal({
                   {fields.map(({ key, label, current }) => {
                     const proposed = queueEntry[key as keyof EnrichmentQueueEntry] as string | null;
                     const edited = editedContent[key as keyof typeof editedContent] as string | undefined;
+                    const fieldStatus = fieldApprovals[key] || 'pending';
 
                     return (
-                      <div key={key} className="border border-ink/10 rounded-lg overflow-hidden">
+                      <div 
+                        key={key} 
+                        className={`border-2 rounded-lg overflow-hidden transition-colors ${getFieldStatusStyle(fieldStatus)}`}
+                      >
                         <div className="bg-parchment-dark/20 px-3 py-2 flex items-center justify-between">
-                          <span className="font-heading text-sm uppercase tracking-wider text-ink/70">
-                            {label}
-                          </span>
-                          {proposed && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setIsEditing(!isEditing)}
-                              className="h-6 text-xs"
-                            >
-                              <Edit2 className="w-3 h-3 mr-1" />
-                              {isEditing ? 'Done' : 'Edit'}
-                            </Button>
-                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                              {label}
+                            </span>
+                            {fieldStatus === 'approved' && (
+                              <Badge className="bg-green-100 text-green-700 text-xs">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                Approved
+                              </Badge>
+                            )}
+                            {fieldStatus === 'rejected' && (
+                              <Badge className="bg-red-100 text-red-700 text-xs">
+                                <XCircle className="w-3 h-3 mr-1" />
+                                Rejected
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {proposed && (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleFieldApproval(key, 'approved')}
+                                  className={`h-7 text-xs ${fieldStatus === 'approved' ? 'bg-green-100 text-green-700' : 'hover:bg-green-50 hover:text-green-700'}`}
+                                >
+                                  <Check className="w-3 h-3 mr-1" />
+                                  Approve
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleFieldApproval(key, 'rejected')}
+                                  className={`h-7 text-xs ${fieldStatus === 'rejected' ? 'bg-red-100 text-red-700' : 'hover:bg-red-50 hover:text-red-700'}`}
+                                >
+                                  <X className="w-3 h-3 mr-1" />
+                                  Reject
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setIsEditing(!isEditing)}
+                                  className="h-7 text-xs"
+                                >
+                                  <Edit2 className="w-3 h-3 mr-1" />
+                                  {isEditing ? 'Done' : 'Edit'}
+                                </Button>
+                              </>
+                            )}
+                          </div>
                         </div>
                         <div className="grid grid-cols-2 divide-x divide-ink/10">
                           <div className="p-3">
@@ -190,11 +253,11 @@ export function EnrichmentReviewModal({
                               {current || <span className="italic text-ink/40">Not set</span>}
                             </p>
                           </div>
-                          <div className="p-3 bg-primary/5">
+                          <div className={`p-3 ${fieldStatus === 'rejected' ? 'opacity-50' : 'bg-primary/5'}`}>
                             <Badge variant="outline" className="text-xs mb-2 bg-primary/10 border-primary/30">
                               Proposed
                             </Badge>
-                            {isEditing ? (
+                            {isEditing && fieldStatus !== 'rejected' ? (
                               <Textarea
                                 value={edited || ''}
                                 onChange={(e) => setEditedContent({
@@ -204,7 +267,7 @@ export function EnrichmentReviewModal({
                                 className="text-sm min-h-[80px] bg-parchment"
                               />
                             ) : (
-                              <p className="text-sm text-ink/70">
+                              <p className={`text-sm text-ink/70 ${fieldStatus === 'rejected' ? 'line-through' : ''}`}>
                                 {proposed || <span className="italic text-ink/40">Not generated</span>}
                               </p>
                             )}
@@ -215,6 +278,28 @@ export function EnrichmentReviewModal({
                   })}
                 </div>
               </ScrollArea>
+
+              {/* Approve All Text button at bottom of Side-by-Side tab */}
+              <div className="border-t border-ink/10 p-4 bg-parchment-dark/10">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-ink/60">
+                    {Object.values(fieldApprovals).filter(s => s === 'approved').length} approved, {' '}
+                    {Object.values(fieldApprovals).filter(s => s === 'rejected').length} rejected
+                  </div>
+                  <Button
+                    onClick={handleApproveAllText}
+                    disabled={isApplying}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    {isApplying ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4 mr-2" />
+                    )}
+                    Approve All Text
+                  </Button>
+                </div>
+              </div>
             </TabsContent>
 
             <TabsContent value="images" className="flex-1 overflow-hidden mt-0">
@@ -254,6 +339,7 @@ export function EnrichmentReviewModal({
                             color: 'bg-gray-100 text-gray-800',
                           };
                           const TypeIcon = typeInfo.icon;
+                          const isRegenerating = regeneratingIds.has(proposal.id);
 
                           return (
                             <div
@@ -272,16 +358,23 @@ export function EnrichmentReviewModal({
                                   <img
                                     src={proposal.image_url}
                                     alt={`${pepper.name} - ${typeInfo.label}`}
-                                    className="w-full h-full object-cover"
+                                    className={`w-full h-full object-cover ${isRegenerating ? 'opacity-50' : ''}`}
                                   />
                                 ) : (
                                   <div className="w-full h-full bg-ink/5 flex items-center justify-center">
                                     <ImageIcon className="w-8 h-8 text-ink/20" />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors flex items-center justify-center">
-                                  <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
+                                {isRegenerating && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-ink/30">
+                                    <Loader2 className="w-8 h-8 animate-spin text-white" />
+                                  </div>
+                                )}
+                                {!isRegenerating && (
+                                  <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors flex items-center justify-center">
+                                    <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                  </div>
+                                )}
                               </div>
 
                               {/* Info */}
@@ -306,7 +399,7 @@ export function EnrichmentReviewModal({
                                       size="sm"
                                       className="flex-1"
                                       onClick={() => approveProposal(proposal)}
-                                      disabled={processingId === proposal.id}
+                                      disabled={processingId === proposal.id || isRegenerating}
                                     >
                                       {processingId === proposal.id ? (
                                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -323,7 +416,7 @@ export function EnrichmentReviewModal({
                                       onClick={() => setRegeneratingImageId(
                                         regeneratingImageId === proposal.id ? null : proposal.id
                                       )}
-                                      disabled={processingId === proposal.id}
+                                      disabled={processingId === proposal.id || isRegenerating}
                                       className="border-amber-200 hover:bg-amber-50 text-amber-700"
                                     >
                                       <RefreshCw className="w-4 h-4" />
@@ -356,9 +449,9 @@ export function EnrichmentReviewModal({
                                           size="sm"
                                           className="flex-1 text-xs bg-amber-600 hover:bg-amber-700"
                                           onClick={() => handleRegenerateSingle(proposal)}
-                                          disabled={processingId === proposal.id}
+                                          disabled={isRegenerating}
                                         >
-                                          {processingId === proposal.id ? (
+                                          {isRegenerating ? (
                                             <Loader2 className="w-3 h-3 animate-spin mr-1" />
                                           ) : (
                                             <RefreshCw className="w-3 h-3 mr-1" />
@@ -417,40 +510,6 @@ export function EnrichmentReviewModal({
                 placeholder="Add any notes about this review..."
                 className="mt-1 bg-parchment"
               />
-            </div>
-
-            <div className="flex gap-2 justify-end flex-wrap">
-              {/* Approve Text */}
-              <Button
-                variant="outline"
-                onClick={handleApprove}
-                disabled={isApplying}
-                className="border-green-200 hover:bg-green-50 text-green-700"
-              >
-                {isApplying ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Check className="w-4 h-4 mr-2" />
-                )}
-                Approve Text
-              </Button>
-
-              {/* Approve Images - only show if there are pending images */}
-              {pendingImageCount > 0 && (
-                <Button
-                  variant="outline"
-                  onClick={handleApproveImages}
-                  disabled={!!processingId}
-                  className="border-blue-200 hover:bg-blue-50 text-blue-700"
-                >
-                  {processingId ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <ImageIcon className="w-4 h-4 mr-2" />
-                  )}
-                  Approve Images ({pendingImageCount})
-                </Button>
-              )}
             </div>
           </div>
         </DialogContent>
