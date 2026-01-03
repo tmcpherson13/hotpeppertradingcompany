@@ -417,16 +417,19 @@ export type Database = {
           created_at: string | null
           display_name: string | null
           id: string
+          last_sign_in_at: string | null
         }
         Insert: {
           created_at?: string | null
           display_name?: string | null
           id: string
+          last_sign_in_at?: string | null
         }
         Update: {
           created_at?: string | null
           display_name?: string | null
           id?: string
+          last_sign_in_at?: string | null
         }
         Relationships: []
       }

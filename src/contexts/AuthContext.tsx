@@ -139,15 +139,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string, rememberMe: boolean = true) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     
-    if (!error) {
+    if (!error && data.user) {
       // Store the remember preference
       localStorage.setItem(SESSION_PERSIST_KEY, rememberMe ? 'true' : 'false');
       sessionStorage.setItem(SESSION_PERSIST_KEY, 'active');
+      
+      // Update last_sign_in_at in profiles table
+      await supabase
+        .from('profiles')
+        .update({ last_sign_in_at: new Date().toISOString() })
+        .eq('id', data.user.id);
     }
     
     return { error: error as Error | null };
