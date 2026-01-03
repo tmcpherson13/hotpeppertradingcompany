@@ -150,8 +150,8 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
         e.preventDefault();
         goToNext();
       } else if (e.key === 'Delete' || e.key === 'Backspace') {
-        // Only handle delete if user can delete the current image
-        if (currentImage && canDeleteImage(currentImage)) {
+        // Only handle delete if user is admin
+        if (currentImage && canDeleteImage()) {
           e.preventDefault();
           handleDeleteImage(currentImage);
         }
@@ -191,13 +191,9 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     }
   };
 
-  // Can user delete/hide this image?
-  const canDeleteImage = (img: PepperImageWithMeta): boolean => {
-    if (!user) return false;
-    // Admin can delete/hide any image
-    if (isAdmin) return true;
-    // Regular user can only delete their own uploads
-    return !!img._uploadMetadata && img._uploadMetadata.userId === user.id;
+  // Can user delete/hide this image? Only admins can manage images
+  const canDeleteImage = (): boolean => {
+    return isAdmin;
   };
 
   if (isLoading || hiddenLoading) {
@@ -315,19 +311,15 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
             </>
           )}
           
-           {/* Delete button */}
-           <DeleteImageButton
-             disabled={!canDeleteImage(currentImage)}
-             title={
-               !canDeleteImage(currentImage)
-                 ? 'Sign in as admin to hide archival images'
-                 : currentImage._uploadMetadata
-                   ? 'Delete uploaded photo'
-                   : 'Hide archival image (admin)'
-             }
-             onDelete={() => handleDeleteImage(currentImage)}
-             isDeleting={deletingId === currentImage.id}
-           />
+           {/* Delete button - admin only */}
+           {isAdmin && (
+             <DeleteImageButton
+               disabled={false}
+               title={currentImage._uploadMetadata ? 'Delete uploaded photo' : 'Hide archival image'}
+               onDelete={() => handleDeleteImage(currentImage)}
+               isDeleting={deletingId === currentImage.id}
+             />
+           )}
         </div>
       </div>
 
@@ -384,24 +376,20 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
                 />
               </div>
             )}
-            {/* Delete button */}
-            <DeleteImageButton
-              disabled={!canDeleteImage(img)}
-              title={
-                !canDeleteImage(img)
-                  ? 'Sign in as admin to hide archival images'
-                  : img._uploadMetadata
-                    ? 'Delete uploaded photo'
-                    : 'Hide archival image (admin)'
-              }
-              onDelete={() => handleDeleteImage(img)}
-              isDeleting={deletingId === img.id}
-            />
+            {/* Delete button - admin only */}
+            {isAdmin && (
+              <DeleteImageButton
+                disabled={false}
+                title={img._uploadMetadata ? 'Delete uploaded photo' : 'Hide archival image'}
+                onDelete={() => handleDeleteImage(img)}
+                isDeleting={deletingId === img.id}
+              />
+            )}
           </div>
         ))}
         
-        {/* Upload button for authenticated users */}
-        {user && (
+        {/* Upload button - admin only */}
+        {isAdmin && (
           <ImageUploadZone 
             pepperId={pepperId} 
             onUploadComplete={handleUploadComplete} 
@@ -410,11 +398,11 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
       </div>
 
       {/* Hint text for reordering */}
-      {(hasMultiple || user) && (
+      {(hasMultiple || isAdmin) && (
         <p className="text-center text-[10px] text-ink/50 italic">
           {keyboardDragIndex !== null
             ? '← → to move • Enter to drop • Escape to cancel'
-            : user 
+            : isAdmin 
               ? 'Drag or Tab+Enter to reorder • Click + to upload'
               : 'Drag or Tab+Enter to reorder • leftmost becomes primary'
           }
