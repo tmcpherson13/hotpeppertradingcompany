@@ -92,13 +92,6 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   Where the Caravans Met the Sea
                 </p>
-                
-                {/* Scroll indicator */}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce">
-                  <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-parchment/60">
-                    <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
               </div>
             </div>
 
@@ -219,6 +212,13 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
                   <span className="font-display text-ink">4,000–1,041,427 SHU</span>
                 </div>
+              </div>
+              
+              {/* Scroll indicator - at bottom of card */}
+              <div className="flex justify-center pb-4 animate-bounce">
+                <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-ink/40">
+                  <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
             </div>
           </div>
