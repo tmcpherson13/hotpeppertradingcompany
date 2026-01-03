@@ -316,7 +316,7 @@ export default function TradingPost() {
                   <span className="text-gold font-heading text-sm uppercase tracking-widest">The Cargo</span>
                 </div>
                 <h2 className="font-heading text-3xl md:text-4xl text-parchment mb-4">
-                  Regional Consortiums
+                  Consortium Journeys
                 </h2>
                 <p className="text-parchment/60 leading-relaxed">
                   Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 

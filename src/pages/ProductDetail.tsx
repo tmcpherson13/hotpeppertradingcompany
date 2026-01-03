@@ -240,74 +240,80 @@ export default function ProductDetail() {
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Image Gallery */}
+            {/* Image Gallery with Compass Navigation */}
             <div className="space-y-4">
-              <div className="relative aspect-square bg-parchment/5 border border-tyrian/30 rounded-sm overflow-hidden">
-                {/* Compass Back Navigation */}
-                <CompassBack className="absolute top-4 left-4 z-10" />
-                
-                {images.length > 0 ? (
-                  <img
-                    src={images[currentImageIndex].node.url}
-                    alt={images[currentImageIndex].node.altText || product.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-parchment/30">
-                    No image available
+              {/* Compass positioned outside image on desktop, above on mobile */}
+              <div className="flex items-start gap-4">
+                <CompassBack className="hidden lg:block flex-shrink-0" />
+                <div className="flex-1 space-y-4">
+                  <div className="lg:hidden mb-2">
+                    <CompassBack />
                   </div>
-                )}
-                
-                {/* Navigation arrows */}
-                {images.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink/80 rounded-full flex items-center justify-center text-parchment hover:bg-ink transition-colors"
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={handleNextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink/80 rounded-full flex items-center justify-center text-parchment hover:bg-ink transition-colors"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
-                
-                {/* Product Type Badge */}
-                {isConsortium && (
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1.5 bg-tyrian text-parchment text-xs uppercase tracking-wider font-heading">
-                      Consortium Bundle
-                    </span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Thumbnail strip */}
-              {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {images.map((img, index) => (
-                    <button
-                      key={img.node.id || index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`flex-shrink-0 w-20 h-20 border-2 rounded-sm overflow-hidden transition-all ${
-                        index === currentImageIndex 
-                          ? 'border-gold' 
-                          : 'border-parchment/20 hover:border-parchment/40'
-                      }`}
-                    >
+                  <div className="relative aspect-square bg-parchment/5 border border-tyrian/30 rounded-sm overflow-hidden">
+                    {images.length > 0 ? (
                       <img
-                        src={img.node.url}
-                        alt={img.node.altText || `${product.title} ${index + 1}`}
+                        src={images[currentImageIndex].node.url}
+                        alt={images[currentImageIndex].node.altText || product.title}
                         className="w-full h-full object-cover"
                       />
-                    </button>
-                  ))}
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-parchment/30">
+                        No image available
+                      </div>
+                    )}
+                    
+                    {/* Navigation arrows */}
+                    {images.length > 1 && (
+                      <>
+                        <button
+                          onClick={handlePrevImage}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink/80 rounded-full flex items-center justify-center text-parchment hover:bg-ink transition-colors"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={handleNextImage}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink/80 rounded-full flex items-center justify-center text-parchment hover:bg-ink transition-colors"
+                        >
+                          <ChevronRight className="w-5 h-5" />
+                        </button>
+                      </>
+                    )}
+                    
+                    {/* Product Type Badge */}
+                    {isConsortium && (
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1.5 bg-tyrian text-parchment text-xs uppercase tracking-wider font-heading">
+                          Consortium Bundle
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Thumbnail strip */}
+                  {images.length > 1 && (
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                      {images.map((img, index) => (
+                        <button
+                          key={img.node.id || index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`flex-shrink-0 w-20 h-20 border-2 rounded-sm overflow-hidden transition-all ${
+                            index === currentImageIndex 
+                              ? 'border-gold' 
+                              : 'border-parchment/20 hover:border-parchment/40'
+                          }`}
+                        >
+                          <img
+                            src={img.node.url}
+                            alt={img.node.altText || `${product.title} ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Product Info */}

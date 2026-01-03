@@ -293,7 +293,7 @@ export function FeaturedSpices() {
             Current Consignment
           </h2>
           <p className="text-primary font-heading text-xs uppercase tracking-[0.3em] mb-6">
-            Regional Consortiums
+            Consortium Journeys
           </p>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 

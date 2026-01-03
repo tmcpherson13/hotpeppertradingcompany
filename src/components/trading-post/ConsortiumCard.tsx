@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { HeatBadge, HeatTier } from './HeatBadge';
 
 export interface Consortium {
   name: string;
@@ -14,6 +15,7 @@ export interface Consortium {
   regionLabel: string;
   shopifyHandle: string;
   flipImage?: boolean;
+  heatTier?: HeatTier;
 }
 
 interface ConsortiumCardProps {
@@ -52,10 +54,12 @@ export function ConsortiumCard({
             />
           </div>
           
-          {/* In Stock Badge */}
-          <div className="absolute top-3 left-3 bg-spice-600/90 text-parchment px-2 py-1 rounded">
-            <span className="text-[9px] uppercase tracking-wider font-heading font-semibold">In Stock</span>
-          </div>
+          {/* Heat Badge */}
+          {consortium.heatTier && (
+            <div className="absolute top-3 left-3 bg-ink/80 backdrop-blur-sm px-2 py-1.5 rounded">
+              <HeatBadge tier={consortium.heatTier} />
+            </div>
+          )}
           
           {/* Archival Origin Stamp */}
           <div className="absolute top-3 right-3 w-16 h-16 flex items-center justify-center">
