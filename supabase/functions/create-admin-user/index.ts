@@ -183,6 +183,7 @@ serve(async (req) => {
     // Track email status for response
     let emailSent = false;
     let emailError: string | null = null;
+    let emailFromUsed: string | null = null;
 
     // Send welcome email if requested and RESEND_API_KEY is configured
     if (sendWelcomeEmail) {
@@ -195,38 +196,70 @@ serve(async (req) => {
           
           console.log("Sending welcome email to:", email, "with login URL:", loginUrl);
 
-          const emailResponse = await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${resendApiKey}`,
-            },
-            body: JSON.stringify({
-              from: "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>",
-              to: [email],
-              subject: "Welcome to the Hot Pepper Trading Company Administration",
-              html: `
-                <h1>Welcome, ${displayName}!</h1>
-                <p>You have been granted administrator access to the Hot Pepper Trading Company.</p>
-                <h2>Your Login Credentials</h2>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Temporary Password:</strong> ${temporaryPassword}</p>
-                <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
-                <p><em>You will be required to change your password upon first login.</em></p>
-                <hr>
-                <p>If you have any questions, please contact your administrator.</p>
-                <p>Regards,<br>Hot Pepper Trading Company</p>
-              `,
-            }),
-          });
+          const PRIMARY_FROM = "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>";
+          const FALLBACK_FROM = "Hot Pepper Trading Company <onboarding@resend.dev>";
 
-          if (emailResponse.ok) {
+          const sendWithFrom = async (from: string) => {
+            return await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${resendApiKey}`,
+              },
+              body: JSON.stringify({
+                from,
+                to: [email],
+                subject: "Welcome to the Hot Pepper Trading Company Administration",
+                html: `
+                  <h1>Welcome, ${displayName}!</h1>
+                  <p>You have been granted administrator access to the Hot Pepper Trading Company.</p>
+                  <h2>Your Login Credentials</h2>
+                  <p><strong>Email:</strong> ${email}</p>
+                  <p><strong>Temporary Password:</strong> ${temporaryPassword}</p>
+                  <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+                  <p><em>You will be required to change your password upon first login.</em></p>
+                  <hr>
+                  <p>If you have any questions, please contact your administrator.</p>
+                  <p>Regards,<br>Hot Pepper Trading Company</p>
+                `,
+              }),
+            });
+          };
+
+          // Try primary sender first; if domain isn't verified yet, retry with Resend default sender.
+          const primaryResponse = await sendWithFrom(PRIMARY_FROM);
+
+          if (primaryResponse.ok) {
             emailSent = true;
+            emailFromUsed = PRIMARY_FROM;
             console.log("Welcome email sent successfully to:", email);
           } else {
-            const errorBody = await emailResponse.text();
-            emailError = `Email API error: ${emailResponse.status}`;
-            console.error("Email send failed:", errorBody);
+            const primaryBody = await primaryResponse.text();
+
+            const isDomainUnverified403 =
+              primaryResponse.status === 403 &&
+              primaryBody.toLowerCase().includes("domain") &&
+              primaryBody.toLowerCase().includes("not verified");
+
+            if (isDomainUnverified403) {
+              console.warn(
+                "Primary sender domain not verified yet; retrying with fallback sender."
+              );
+
+              const fallbackResponse = await sendWithFrom(FALLBACK_FROM);
+              if (fallbackResponse.ok) {
+                emailSent = true;
+                emailFromUsed = FALLBACK_FROM;
+                console.log("Welcome email sent via fallback sender to:", email);
+              } else {
+                const fallbackBody = await fallbackResponse.text();
+                emailError = `Email API error: ${fallbackResponse.status}`;
+                console.error("Email send failed (fallback):", fallbackBody);
+              }
+            } else {
+              emailError = `Email API error: ${primaryResponse.status}`;
+              console.error("Email send failed:", primaryBody);
+            }
           }
         } catch (err: any) {
           emailError = err.message || "Failed to send email";
@@ -246,12 +279,13 @@ serve(async (req) => {
         action: "admin_created",
         target_type: "user",
         target_id: newUserId,
-        details: { 
-          email, 
-          display_name: displayName,
-          email_sent: emailSent,
-          email_error: emailError,
-        },
+          details: { 
+            email, 
+            display_name: displayName,
+            email_sent: emailSent,
+            email_error: emailError,
+            email_from: emailFromUsed,
+          },
       });
 
     if (auditError) {
@@ -266,7 +300,12 @@ serve(async (req) => {
         temporaryPassword,
         emailSent,
         emailError,
-        message: emailSent ? "Admin created and welcome email sent" : "Admin created successfully",
+        emailFrom: emailFromUsed,
+        message: emailSent
+          ? (emailFromUsed?.includes("resend.dev")
+              ? "Admin created and welcome email sent (temporary sender)"
+              : "Admin created and welcome email sent")
+          : "Admin created successfully",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
