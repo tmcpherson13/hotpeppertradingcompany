@@ -14,7 +14,7 @@ import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal
 import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
 import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
-import silkJadeConceptA from '@/assets/consortium/silk-jade-passages-concept-a.jpg';
+import silkJadeConceptA from '@/assets/consortium/silk-jade-passages-concept-a-v2.jpg';
 import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
