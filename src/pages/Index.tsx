@@ -3,7 +3,6 @@ import { Hero } from '@/components/sections/Hero';
 import { TradingCompany } from '@/components/sections/TradingCompany';
 import { BrandPhilosophy } from '@/components/sections/BrandPhilosophy';
 import { PepperEducation } from '@/components/sections/PepperEducation';
-import { FeaturedSpices } from '@/components/sections/FeaturedSpices';
 import { Heritage } from '@/components/sections/Heritage';
 import { TradeRoutes } from '@/components/sections/TradeRoutes';
 import { Newsletter } from '@/components/sections/Newsletter';
@@ -17,7 +16,6 @@ const Index = () => {
         <Hero />
         <TradingCompany />
         <BrandPhilosophy />
-        <FeaturedSpices />
         <Heritage />
         <PepperEducation />
         <TradeRoutes />
