@@ -11,10 +11,17 @@ export interface ShopifyProduct {
     id: string;
     title: string;
     description: string;
+    descriptionHtml?: string;
     handle: string;
     productType: string;
+    vendor?: string;
+    tags?: string[];
     priceRange: {
       minVariantPrice: {
+        amount: string;
+        currencyCode: string;
+      };
+      maxVariantPrice?: {
         amount: string;
         currencyCode: string;
       };
@@ -22,6 +29,7 @@ export interface ShopifyProduct {
     images: {
       edges: Array<{
         node: {
+          id?: string;
           url: string;
           altText: string | null;
         };

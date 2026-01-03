@@ -3,6 +3,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Check } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 interface ProductCardProps {
@@ -22,7 +23,10 @@ export function ProductCard({ product }: ProductCardProps) {
   // Get the first available variant
   const defaultVariant = node.variants.edges[0]?.node;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (!defaultVariant) return;
     
     const cartItem: CartItem = {
@@ -45,7 +49,10 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group relative bg-ink/50 border border-tyrian/30 rounded-sm overflow-hidden transition-all duration-300 hover:border-gold/40 hover:shadow-lg hover:shadow-tyrian/20">
+    <Link 
+      to={`/product/${node.handle}`}
+      className="group relative bg-ink/50 border border-tyrian/30 rounded-sm overflow-hidden transition-all duration-300 hover:border-gold/40 hover:shadow-lg hover:shadow-tyrian/20 block"
+    >
       {/* Product Image */}
       <div className="aspect-square overflow-hidden bg-parchment/5">
         {imageUrl ? (
@@ -112,6 +119,6 @@ export function ProductCard({ product }: ProductCardProps) {
           </Button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

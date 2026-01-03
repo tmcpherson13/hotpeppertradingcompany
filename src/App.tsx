@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Compendium from "./pages/Compendium";
 import TradingPost from "./pages/TradingPost";
+import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import { AdminRoute } from "./components/auth/AdminRoute";
 import PreColumbianOrigins from "./pages/history/PreColumbianOrigins";
@@ -26,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/trading-post" element={<TradingPost />} />
+            <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/compendium" element={<Compendium />} />
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
