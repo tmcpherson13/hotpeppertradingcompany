@@ -14,11 +14,10 @@ const footerLinks = {
     { name: 'Capsicum Reference', href: '/compendium', isRoute: true },
     { name: 'Seed Starting Guide', href: '/guides/seed-starting', isRoute: true },
   ],
-  trade: [
+  history: [
     { name: 'Pre-Columbian Origins', href: '/history/pre-columbian-origins', isRoute: true },
     { name: 'Columbian Exchange', href: '/history/columbian-exchange', isRoute: true },
     { name: 'Global Integration', href: '/history/global-integration', isRoute: true },
-    { name: 'Correspondence', href: '/#newsletter', isRoute: false },
   ],
 };
 
@@ -110,29 +109,20 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Trade Links */}
+          {/* History Links */}
           <div>
             <h4 className="font-display text-sm uppercase tracking-[0.15em] text-primary-foreground mb-4">
-              Trade
+              History
             </h4>
             <ul className="space-y-3">
-              {footerLinks.trade.map((link) => (
+              {footerLinks.history.map((link) => (
                 <li key={link.name}>
-                  {link.isRoute ? (
-                    <Link
-                      to={link.href}
-                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  ) : (
-                    <a
-                      href={link.href}
-                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                    >
-                      {link.name}
-                    </a>
-                  )}
+                  <Link
+                    to={link.href}
+                    className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
