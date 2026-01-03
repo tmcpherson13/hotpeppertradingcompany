@@ -19,7 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Loader2, Check, X, ExternalLink, Edit2, Image as ImageIcon, 
-  ZoomIn, Trash2, Flower2, Camera, CheckCheck 
+  ZoomIn, Trash2, Flower2, Camera, RefreshCw 
 } from 'lucide-react';
 
 interface EnrichmentReviewModalProps {
@@ -50,17 +50,21 @@ export function EnrichmentReviewModal({
     proposals: imageProposals, 
     isLoading: imagesLoading, 
     processingId,
+    isRegenerating,
     fetchProposals,
     approveProposal,
     rejectProposal,
     approveAll,
+    regenerateImages,
   } = useImageProposals();
   
   const [reviewNotes, setReviewNotes] = useState('');
+  const [regenerationFeedback, setRegenerationFeedback] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState<Partial<EnrichmentQueueEntry>>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
+  const [showRegenerateInput, setShowRegenerateInput] = useState(false);
 
   const currentOverride = getOverride(pepper.id);
 
@@ -103,19 +107,17 @@ export function EnrichmentReviewModal({
     }
   };
 
-  const handleApproveEverything = async () => {
-    // Approve text content
-    const edits = isEditing ? editedContent : undefined;
-    const textSuccess = await approve(queueEntry.id, edits, reviewNotes);
-    
-    // Approve all images
-    if (textSuccess && imageProposals.length > 0) {
+  const handleApproveImages = async () => {
+    if (imageProposals.length > 0) {
       await approveAll(imageProposals);
     }
-    
-    if (textSuccess) {
-      onComplete();
-      onOpenChange(false);
+  };
+
+  const handleRegenerate = async () => {
+    const success = await regenerateImages(pepper.id, pepper.name, regenerationFeedback);
+    if (success) {
+      setRegenerationFeedback('');
+      setShowRegenerateInput(false);
     }
   };
 
@@ -362,6 +364,7 @@ export function EnrichmentReviewModal({
           <Separator />
 
           <div className="space-y-3 pt-2">
+            {/* Review Notes for text approval */}
             <div>
               <Label htmlFor="review-notes" className="text-sm">Review Notes (optional)</Label>
               <Textarea
@@ -373,7 +376,50 @@ export function EnrichmentReviewModal({
               />
             </div>
 
-            <div className="flex gap-2 justify-end">
+            {/* Regeneration feedback input */}
+            {showRegenerateInput && (
+              <div className="border border-amber-200 bg-amber-50/50 rounded-lg p-3 space-y-2">
+                <Label htmlFor="regenerate-feedback" className="text-sm font-medium text-amber-800">
+                  Image Regeneration Feedback
+                </Label>
+                <Textarea
+                  id="regenerate-feedback"
+                  value={regenerationFeedback}
+                  onChange={(e) => setRegenerationFeedback(e.target.value)}
+                  placeholder="Describe what's wrong with the current images or how they should look instead... (e.g., 'The color should be more orange', 'Show the pepper with its stem', 'More wrinkled texture')"
+                  className="mt-1 bg-parchment min-h-[80px]"
+                />
+                <div className="flex gap-2 justify-end">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setShowRegenerateInput(false);
+                      setRegenerationFeedback('');
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={handleRegenerate}
+                    disabled={isRegenerating}
+                    className="bg-amber-600 hover:bg-amber-700"
+                  >
+                    {isRegenerating ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                    )}
+                    Regenerate Now
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-2 justify-end flex-wrap">
+              {/* Reject text */}
               <Button
                 variant="outline"
                 onClick={handleReject}
@@ -385,12 +431,15 @@ export function EnrichmentReviewModal({
                 ) : (
                   <X className="w-4 h-4 mr-2" />
                 )}
-                Reject
+                Reject Text
               </Button>
+
+              {/* Approve Text */}
               <Button
                 variant="outline"
                 onClick={handleApprove}
                 disabled={isApplying}
+                className="border-green-200 hover:bg-green-50 text-green-700"
               >
                 {isApplying ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -399,20 +448,38 @@ export function EnrichmentReviewModal({
                 )}
                 Approve Text
               </Button>
+
+              {/* Approve Images - only show if there are pending images */}
               {pendingImageCount > 0 && (
                 <Button
-                  onClick={handleApproveEverything}
-                  disabled={isApplying || !!processingId}
-                  className="bg-primary"
+                  variant="outline"
+                  onClick={handleApproveImages}
+                  disabled={!!processingId}
+                  className="border-blue-200 hover:bg-blue-50 text-blue-700"
                 >
-                  {isApplying || processingId ? (
+                  {processingId ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
-                    <CheckCheck className="w-4 h-4 mr-2" />
+                    <ImageIcon className="w-4 h-4 mr-2" />
                   )}
-                  Approve Everything
+                  Approve Images ({pendingImageCount})
                 </Button>
               )}
+
+              {/* Regenerate Images */}
+              <Button
+                variant="outline"
+                onClick={() => setShowRegenerateInput(!showRegenerateInput)}
+                disabled={isRegenerating}
+                className="border-amber-200 hover:bg-amber-50 text-amber-700"
+              >
+                {isRegenerating ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                )}
+                Regenerate Images
+              </Button>
             </div>
           </div>
         </DialogContent>

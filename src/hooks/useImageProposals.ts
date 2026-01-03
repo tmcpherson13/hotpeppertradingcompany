@@ -23,17 +23,20 @@ export interface UseImageProposalsResult {
   proposals: ImageProposal[];
   isLoading: boolean;
   processingId: string | null;
+  isRegenerating: boolean;
   fetchProposals: (pepperId?: string) => Promise<void>;
   approveProposal: (proposal: ImageProposal) => Promise<boolean>;
   rejectProposal: (proposal: ImageProposal) => Promise<boolean>;
   approveAll: (proposals: ImageProposal[]) => Promise<void>;
   rejectAll: (proposals: ImageProposal[]) => Promise<void>;
+  regenerateImages: (pepperId: string, pepperName: string, feedback?: string) => Promise<boolean>;
 }
 
 export function useImageProposals(): UseImageProposalsResult {
   const [proposals, setProposals] = useState<ImageProposal[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [isRegenerating, setIsRegenerating] = useState(false);
   const { toast } = useToast();
 
   const fetchProposals = useCallback(async (pepperId?: string) => {
@@ -180,14 +183,72 @@ export function useImageProposals(): UseImageProposalsResult {
     }
   }, [rejectProposal]);
 
+  const regenerateImages = useCallback(async (
+    pepperId: string, 
+    pepperName: string, 
+    feedback?: string
+  ): Promise<boolean> => {
+    setIsRegenerating(true);
+    
+    try {
+      // First, reject all current pending proposals for this pepper
+      const currentProposals = proposals.filter(p => p.pepper_id === pepperId);
+      for (const proposal of currentProposals) {
+        await rejectProposal(proposal);
+      }
+
+      // Get auth token
+      const { data: session } = await supabase.auth.getSession();
+      const accessToken = session?.session?.access_token;
+
+      // Call the image generation edge function with feedback as additional context
+      const response = await supabase.functions.invoke('pepper-image-generate', {
+        body: { 
+          pepperId, 
+          pepperName,
+          regenerationFeedback: feedback, // Pass feedback for prompt modification
+        },
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Image generation failed');
+      }
+
+      toast({
+        title: 'Images Regenerating',
+        description: 'New images are being generated with your feedback. This may take a minute.',
+      });
+
+      // Refresh proposals after a short delay to get new ones
+      setTimeout(() => {
+        fetchProposals(pepperId);
+      }, 3000);
+
+      return true;
+    } catch (err) {
+      console.error('Error regenerating images:', err);
+      toast({
+        title: 'Regeneration Failed',
+        description: err instanceof Error ? err.message : 'Failed to regenerate images',
+        variant: 'destructive',
+      });
+      return false;
+    } finally {
+      setIsRegenerating(false);
+    }
+  }, [proposals, rejectProposal, fetchProposals, toast]);
+
   return {
     proposals,
     isLoading,
     processingId,
+    isRegenerating,
     fetchProposals,
     approveProposal,
     rejectProposal,
     approveAll,
     rejectAll,
+    regenerateImages,
   };
 }

@@ -132,7 +132,13 @@ serve(async (req) => {
   }
 
   try {
-    const { pepperId, pepperName, jobId, referenceImageUrls = [] } = await req.json();
+    const { 
+      pepperId, 
+      pepperName, 
+      jobId, 
+      referenceImageUrls = [],
+      regenerationFeedback 
+    } = await req.json();
 
     if (!pepperId || !pepperName) {
       return new Response(
@@ -258,6 +264,12 @@ serve(async (req) => {
     // Default characteristics if no reference images or analysis failed
     if (!visualCharacteristics) {
       visualCharacteristics = `Pepper variety: ${pepperName}\nTypical characteristics of this cultivar should be depicted accurately.`;
+    }
+
+    // Add regeneration feedback if provided
+    if (regenerationFeedback) {
+      visualCharacteristics += `\n\nIMPORTANT - User feedback for this regeneration: ${regenerationFeedback}`;
+      console.log('Regeneration feedback applied:', regenerationFeedback);
     }
 
     // Step 2: Generate images
