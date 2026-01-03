@@ -120,10 +120,24 @@ serve(async (req) => {
       );
     }
 
+    // Check for duplicate email before creating
+    const { data: existingUsers, error: listError } = await adminClient.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error("Error listing users:", listError);
+    } else {
+      const emailExists = existingUsers?.users?.some(u => u.email?.toLowerCase() === email.toLowerCase());
+      if (emailExists) {
+        console.log("Duplicate email found:", email);
+        return new Response(
+          JSON.stringify({ error: "duplicate_email", message: "An account with this email already exists" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     // Generate a secure temporary password
     const temporaryPassword = generateSecurePassword(16);
-
-    // adminClient already created above for role check
 
     // Create the new user
     const { data: newUserData, error: createError } = await adminClient.auth.admin.createUser({
@@ -166,27 +180,22 @@ serve(async (req) => {
       console.error("Error creating pending password change:", pendingError);
     }
 
-    // Log the action to audit log
-    const { error: auditError } = await adminClient
-      .from("admin_audit_log")
-      .insert({
-        performed_by: callerUser.id,
-        action: "admin_created",
-        target_type: "user",
-        target_id: newUserId,
-        details: { email, display_name: displayName },
-      });
-
-    if (auditError) {
-      console.error("Error logging audit:", auditError);
-    }
+    // Track email status for response
+    let emailSent = false;
+    let emailError: string | null = null;
 
     // Send welcome email if requested and RESEND_API_KEY is configured
     if (sendWelcomeEmail) {
       const resendApiKey = Deno.env.get("RESEND_API_KEY");
       if (resendApiKey) {
         try {
-          await fetch("https://api.resend.com/emails", {
+          // Get the origin from request headers for correct app URL
+          const origin = req.headers.get("origin") || "https://lovable.dev";
+          const loginUrl = `${origin}/admin`;
+          
+          console.log("Sending welcome email to:", email, "with login URL:", loginUrl);
+
+          const emailResponse = await fetch("https://api.resend.com/emails", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -202,7 +211,7 @@ serve(async (req) => {
                 <h2>Your Login Credentials</h2>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Temporary Password:</strong> ${temporaryPassword}</p>
-                <p><strong>Login URL:</strong> ${Deno.env.get("SUPABASE_URL")?.replace('.supabase.co', '.lovable.app')}/admin</p>
+                <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
                 <p><em>You will be required to change your password upon first login.</em></p>
                 <hr>
                 <p>If you have any questions, please contact your administrator.</p>
@@ -210,11 +219,43 @@ serve(async (req) => {
               `,
             }),
           });
-        } catch (emailError) {
-          console.error("Error sending welcome email:", emailError);
-          // Don't fail the request if email fails
+
+          if (emailResponse.ok) {
+            emailSent = true;
+            console.log("Welcome email sent successfully to:", email);
+          } else {
+            const errorBody = await emailResponse.text();
+            emailError = `Email API error: ${emailResponse.status}`;
+            console.error("Email send failed:", errorBody);
+          }
+        } catch (err: any) {
+          emailError = err.message || "Failed to send email";
+          console.error("Error sending welcome email:", err);
         }
+      } else {
+        emailError = "RESEND_API_KEY not configured";
+        console.log("RESEND_API_KEY not configured, skipping email");
       }
+    }
+
+    // Log the action to audit log with email status
+    const { error: auditError } = await adminClient
+      .from("admin_audit_log")
+      .insert({
+        performed_by: callerUser.id,
+        action: "admin_created",
+        target_type: "user",
+        target_id: newUserId,
+        details: { 
+          email, 
+          display_name: displayName,
+          email_sent: emailSent,
+          email_error: emailError,
+        },
+      });
+
+    if (auditError) {
+      console.error("Error logging audit:", auditError);
     }
 
     return new Response(
@@ -223,7 +264,9 @@ serve(async (req) => {
         userId: newUserId,
         email,
         temporaryPassword,
-        message: sendWelcomeEmail ? "Admin created and welcome email sent" : "Admin created successfully",
+        emailSent,
+        emailError,
+        message: emailSent ? "Admin created and welcome email sent" : "Admin created successfully",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, User, UserPlus, UserMinus, RefreshCw, Copy, Check } from 'lucide-react';
+import { Shield, User, UserPlus, UserMinus, RefreshCw, Copy, Check, Mail, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface UserData {
   id: string;
   display_name: string | null;
   created_at: string;
+  last_sign_in_at: string | null;
   role: 'admin' | 'user';
   imageCount: number;
   isDeactivated: boolean;
@@ -26,6 +27,8 @@ export function UserManagement() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [tempPassword, setTempPassword] = useState('');
   const [copied, setCopied] = useState(false);
+  const [resendingEmail, setResendingEmail] = useState<string | null>(null);
+  const [emailFormError, setEmailFormError] = useState('');
   
   // Form state
   const [newEmail, setNewEmail] = useState('');
@@ -36,10 +39,10 @@ export function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      // Get profiles
+      // Get profiles including last_sign_in_at
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, display_name, created_at')
+        .select('id, display_name, created_at, last_sign_in_at')
         .order('created_at', { ascending: false });
 
       if (profilesError) throw profilesError;
@@ -87,6 +90,7 @@ export function UserManagement() {
         id: profile.id,
         display_name: profile.display_name,
         created_at: profile.created_at,
+        last_sign_in_at: profile.last_sign_in_at,
         role: roleMap.get(profile.id) || 'user',
         imageCount: imageCountMap.get(profile.id) || 0,
         isDeactivated: deactivatedSet.has(profile.id),
@@ -167,13 +171,26 @@ export function UserManagement() {
     }
   };
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleCreateAdmin = async () => {
+    setEmailFormError('');
+
     if (!newEmail || !newDisplayName) {
       toast({
         title: 'Error',
         description: 'Email and display name are required',
         variant: 'destructive',
       });
+      return;
+    }
+
+    // Email format validation
+    if (!validateEmail(newEmail)) {
+      setEmailFormError('Please enter a valid email address');
       return;
     }
 
@@ -206,7 +223,26 @@ export function UserManagement() {
         throw new Error(response.error.message || 'Failed to create admin');
       }
 
-      const { temporaryPassword } = response.data;
+      // Handle duplicate email error
+      if (response.data?.error === 'duplicate_email') {
+        setEmailFormError('An account with this email already exists');
+        return;
+      }
+
+      if (response.data?.error) {
+        throw new Error(response.data.message || response.data.error);
+      }
+
+      const { temporaryPassword, emailSent, emailError } = response.data;
+      
+      // Show different toasts based on email status
+      if (sendWelcomeEmail && !emailSent) {
+        toast({
+          title: 'Admin Created (Email Failed)',
+          description: emailError || 'Welcome email could not be sent. Share the password manually.',
+          variant: 'destructive',
+        });
+      }
       
       setTempPassword(temporaryPassword);
       setShowAddModal(false);
@@ -214,6 +250,7 @@ export function UserManagement() {
       setNewEmail('');
       setNewDisplayName('');
       setSendWelcomeEmail(false);
+      setEmailFormError('');
       
       fetchUsers();
     } catch (error: any) {
@@ -225,6 +262,67 @@ export function UserManagement() {
       });
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const handleResendWelcomeEmail = async (userId: string) => {
+    setResendingEmail(userId);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session?.access_token) {
+        toast({
+          title: 'Session Expired',
+          description: 'Please sign in again.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const response = await supabase.functions.invoke('resend-admin-welcome', {
+        body: { userId },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to resend welcome email');
+      }
+
+      if (response.data?.error) {
+        throw new Error(response.data.message || response.data.error);
+      }
+
+      const { temporaryPassword, emailSent, emailError } = response.data;
+
+      if (emailSent) {
+        toast({
+          title: 'Welcome Email Sent',
+          description: 'A new temporary password has been sent to the user.',
+        });
+      } else {
+        // Email failed but password was reset - show password modal
+        toast({
+          title: 'Password Reset (Email Failed)',
+          description: emailError || 'Share the new password manually.',
+          variant: 'destructive',
+        });
+      }
+
+      // Always show the password modal so admin can copy it
+      setTempPassword(temporaryPassword);
+      setShowPasswordModal(true);
+    } catch (error: any) {
+      console.error('Error resending welcome email:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to resend welcome email',
+        variant: 'destructive',
+      });
+    } finally {
+      setResendingEmail(null);
     }
   };
 
@@ -250,7 +348,15 @@ export function UserManagement() {
     <div className="space-y-4">
       {/* Add Admin Button */}
       <div className="flex justify-end">
-        <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+        <Dialog open={showAddModal} onOpenChange={(open) => {
+          setShowAddModal(open);
+          if (!open) {
+            setEmailFormError('');
+            setNewEmail('');
+            setNewDisplayName('');
+            setSendWelcomeEmail(false);
+          }
+        }}>
           <DialogTrigger asChild>
             <Button className="bg-tyrian hover:bg-tyrian/90 text-parchment font-heading uppercase tracking-wider text-xs">
               <UserPlus className="w-4 h-4 mr-2" />
@@ -271,10 +377,16 @@ export function UserManagement() {
                 <Input
                   type="email"
                   value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
+                  onChange={(e) => {
+                    setNewEmail(e.target.value);
+                    setEmailFormError('');
+                  }}
                   placeholder="admin@example.com"
-                  className="bg-parchment border-ink/30 focus:border-tyrian"
+                  className={`bg-parchment border-ink/30 focus:border-tyrian ${emailFormError ? 'border-red-500' : ''}`}
                 />
+                {emailFormError && (
+                  <p className="text-xs text-red-600 font-body">{emailFormError}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label className="font-heading text-xs uppercase tracking-wider text-ink/70">
@@ -327,12 +439,12 @@ export function UserManagement() {
         <DialogContent className="bg-parchment border-ink/20">
           <DialogHeader>
             <DialogTitle className="font-display text-xl uppercase tracking-wider text-ink">
-              Administrator Created
+              Temporary Password
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 pt-4">
             <p className="font-body text-sm text-ink/70">
-              The new administrator account has been created. Share this temporary password securely:
+              Share this temporary password securely with the administrator:
             </p>
             <div className="bg-parchment-dark/30 border border-ink/20 p-4 flex items-center justify-between">
               <code className="font-mono text-ink">{tempPassword}</code>
@@ -361,12 +473,13 @@ export function UserManagement() {
       {/* User List */}
       <div className="space-y-2">
         <div className="grid grid-cols-12 gap-4 px-4 py-2 font-heading text-xs uppercase tracking-wider text-ink/60 border-b border-ink/20">
-          <div className="col-span-3">User</div>
+          <div className="col-span-2">User</div>
           <div className="col-span-2">Role</div>
           <div className="col-span-1">Status</div>
           <div className="col-span-1">Images</div>
+          <div className="col-span-2">Last Login</div>
           <div className="col-span-2">Joined</div>
-          <div className="col-span-3">Actions</div>
+          <div className="col-span-2">Actions</div>
         </div>
 
         {users.map((user) => (
@@ -376,8 +489,8 @@ export function UserManagement() {
               user.isDeactivated ? 'opacity-50' : ''
             }`}
           >
-            <div className="col-span-3 flex items-center gap-2">
-              <User className="w-4 h-4 text-ink/40" />
+            <div className="col-span-2 flex items-center gap-2">
+              <User className="w-4 h-4 text-ink/40 flex-shrink-0" />
               <span className={`font-body text-sm text-ink truncate ${user.isDeactivated ? 'line-through' : ''}`}>
                 {user.display_name || 'Anonymous'}
               </span>
@@ -409,9 +522,30 @@ export function UserManagement() {
               {user.imageCount}
             </div>
             <div className="col-span-2 font-body text-xs text-ink/50">
+              {user.last_sign_in_at 
+                ? format(new Date(user.last_sign_in_at), 'MMM d, yyyy HH:mm')
+                : 'Never'}
+            </div>
+            <div className="col-span-2 font-body text-xs text-ink/50">
               {format(new Date(user.created_at), 'MMM d, yyyy')}
             </div>
-            <div className="col-span-3 flex gap-1">
+            <div className="col-span-2 flex gap-1">
+              {user.role === 'admin' && !user.isDeactivated && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleResendWelcomeEmail(user.id)}
+                  disabled={resendingEmail === user.id}
+                  className="border-ink/20 text-xs hover:bg-blue-50"
+                  title="Resend welcome email with new password"
+                >
+                  {resendingEmail === user.id ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <Mail className="w-3 h-3" />
+                  )}
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
