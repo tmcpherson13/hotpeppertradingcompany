@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useImageProposals, ImageProposal } from '@/hooks/useImageProposals';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,27 +13,11 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { 
-  Loader2, Check, X, Image as ImageIcon, Paintbrush, Camera, Flower2, 
+  Loader2, Check, X, Image as ImageIcon, Camera, Flower2, 
   ExternalLink, Trash2, ZoomIn 
 } from 'lucide-react';
 import { peppers } from '@/data/peppers';
-
-interface ImageProposal {
-  id: string;
-  pepper_id: string;
-  image_url: string | null;
-  storage_path: string | null;
-  source_type: string;
-  source_url: string | null;
-  license: string | null;
-  author: string | null;
-  prompt_used: string | null;
-  confidence_score: number | null;
-  status: string;
-  created_at: string;
-  reviewed_at: string | null;
-  reviewed_by: string | null;
-}
+import { useState } from 'react';
 
 interface ImageProposalReviewProps {
   pepperId?: string;
@@ -49,149 +32,42 @@ const SOURCE_TYPE_LABELS: Record<string, { label: string; icon: any; color: stri
 };
 
 export function ImageProposalReview({ pepperId, onComplete }: ImageProposalReviewProps) {
-  const [proposals, setProposals] = useState<ImageProposal[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [processingId, setProcessingId] = useState<string | null>(null);
+  const {
+    proposals,
+    isLoading,
+    processingId,
+    fetchProposals,
+    approveProposal,
+    rejectProposal,
+    approveAll,
+    rejectAll,
+  } = useImageProposals();
+
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
-  const { toast } = useToast();
-
-  const fetchProposals = useCallback(async () => {
-    try {
-      let query = supabase
-        .from('pepper_image_proposals')
-        .select('*')
-        .eq('status', 'pending')
-        .order('created_at', { ascending: false });
-
-      if (pepperId) {
-        query = query.eq('pepper_id', pepperId);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      setProposals(data || []);
-    } catch (err) {
-      console.error('Error fetching proposals:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pepperId]);
 
   useEffect(() => {
-    fetchProposals();
-  }, [fetchProposals]);
+    fetchProposals(pepperId);
+  }, [fetchProposals, pepperId]);
 
   const handleApprove = async (proposal: ImageProposal) => {
-    setProcessingId(proposal.id);
-
-    try {
-      const { data: session } = await supabase.auth.getSession();
-      const userId = session?.session?.user?.id;
-
-      // Update proposal status
-      const { error: updateError } = await supabase
-        .from('pepper_image_proposals')
-        .update({
-          status: 'approved',
-          reviewed_at: new Date().toISOString(),
-          reviewed_by: userId,
-        })
-        .eq('id', proposal.id);
-
-      if (updateError) throw updateError;
-
-      // Create entry in user_uploaded_images for gallery integration
-      if (proposal.image_url && proposal.storage_path) {
-        const { error: insertError } = await supabase
-          .from('user_uploaded_images')
-          .insert({
-            pepper_id: proposal.pepper_id,
-            user_id: userId!,
-            storage_path: proposal.storage_path,
-            filename: proposal.storage_path.split('/').pop() || 'image.png',
-          });
-
-        if (insertError) {
-          console.error('Error adding to gallery:', insertError);
-        }
-      }
-
-      toast({
-        title: 'Image Approved',
-        description: 'Image has been added to the pepper gallery',
-      });
-
-      fetchProposals();
-      onComplete?.();
-    } catch (err) {
-      console.error('Error approving proposal:', err);
-      toast({
-        title: 'Error',
-        description: 'Failed to approve image',
-        variant: 'destructive',
-      });
-    } finally {
-      setProcessingId(null);
-    }
+    const success = await approveProposal(proposal);
+    if (success) onComplete?.();
   };
 
   const handleReject = async (proposal: ImageProposal) => {
-    setProcessingId(proposal.id);
-
-    try {
-      const { data: session } = await supabase.auth.getSession();
-      const userId = session?.session?.user?.id;
-
-      // Update proposal status
-      const { error: updateError } = await supabase
-        .from('pepper_image_proposals')
-        .update({
-          status: 'rejected',
-          reviewed_at: new Date().toISOString(),
-          reviewed_by: userId,
-        })
-        .eq('id', proposal.id);
-
-      if (updateError) throw updateError;
-
-      // Delete from storage
-      if (proposal.storage_path) {
-        await supabase.storage
-          .from('pepper-images')
-          .remove([proposal.storage_path]);
-      }
-
-      toast({
-        title: 'Image Rejected',
-        description: 'Image has been removed',
-      });
-
-      fetchProposals();
-      onComplete?.();
-    } catch (err) {
-      console.error('Error rejecting proposal:', err);
-      toast({
-        title: 'Error',
-        description: 'Failed to reject image',
-        variant: 'destructive',
-      });
-    } finally {
-      setProcessingId(null);
-    }
+    const success = await rejectProposal(proposal);
+    if (success) onComplete?.();
   };
 
   const handleBulkApprove = async (pepperProposals: ImageProposal[]) => {
-    for (const proposal of pepperProposals) {
-      await handleApprove(proposal);
-    }
+    await approveAll(pepperProposals);
+    onComplete?.();
   };
 
   const handleBulkReject = async (pepperProposals: ImageProposal[]) => {
-    for (const proposal of pepperProposals) {
-      await handleReject(proposal);
-    }
+    await rejectAll(pepperProposals);
+    onComplete?.();
   };
 
   const getPepperName = (pepperId: string) => {
