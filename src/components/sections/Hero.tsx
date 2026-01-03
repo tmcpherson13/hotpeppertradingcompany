@@ -413,7 +413,7 @@ export function Hero() {
                 </motion.div>
               </motion.div>
               <Button variant="pepper" size="xl" className="min-w-[220px] transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_hsla(6,75%,45%,0.5)]" asChild>
-                <a href="#collection">View Current Consignment</a>
+                <Link to="/trading-post">View Current Consignment</Link>
               </Button>
             </div>
 
