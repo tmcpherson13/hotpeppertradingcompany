@@ -3,22 +3,22 @@ import logoWhite from '@/assets/logo-white.svg';
 
 const footerLinks = {
   cargo: [
-    { name: 'All Cultivars', href: '#collection' },
-    { name: 'By Route', href: '#routes' },
-    { name: 'Seasonal Releases', href: '#' },
-    { name: 'Trade Inquiries', href: '#' },
+    { name: 'All Cultivars', href: '/compendium', isRoute: true },
+    { name: 'By Route', href: '/origins', isRoute: true },
+    { name: 'Trading Post', href: '/trading-post', isRoute: true },
+    { name: 'Wishlist', href: '/wishlist', isRoute: true },
   ],
   knowledge: [
-    { name: 'Company Heritage', href: '#heritage' },
-    { name: 'Sourcing Regions', href: '#routes' },
-    { name: 'Capsicum Reference', href: '#' },
-    { name: 'Cultivation Notes', href: '#' },
+    { name: 'Company Heritage', href: '/#heritage', isRoute: false },
+    { name: 'Trade Routes', href: '/origins', isRoute: true },
+    { name: 'Capsicum Reference', href: '/compendium', isRoute: true },
+    { name: 'Seed Starting Guide', href: '/guides/seed-starting', isRoute: true },
   ],
   trade: [
-    { name: 'Shipping Terms', href: '#' },
-    { name: 'Return Policy', href: '#' },
-    { name: 'Trade Inquiries', href: '#' },
-    { name: 'Correspondence', href: '#' },
+    { name: 'Pre-Columbian Origins', href: '/history/pre-columbian-origins', isRoute: true },
+    { name: 'Columbian Exchange', href: '/history/columbian-exchange', isRoute: true },
+    { name: 'Global Integration', href: '/history/global-integration', isRoute: true },
+    { name: 'Correspondence', href: '/#newsletter', isRoute: false },
   ],
 };
 
@@ -62,12 +62,21 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.cargo.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -81,12 +90,21 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.knowledge.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -100,12 +118,21 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.trade.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="font-body text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
