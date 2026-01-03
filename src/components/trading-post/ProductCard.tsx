@@ -6,10 +6,34 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useWishlist } from "@/hooks/useWishlist";
+import { HeatBadge, HeatTier } from "./HeatBadge";
 
 interface ProductCardProps {
   product: ShopifyProduct;
   onQuickView?: (product: ShopifyProduct) => void;
+}
+
+// Helper function to determine heat tier from max SHU
+function getHeatTierFromSHU(maxSHU: number): HeatTier {
+  if (maxSHU >= 500000) return 5;
+  if (maxSHU >= 100000) return 4;
+  if (maxSHU >= 30000) return 3;
+  if (maxSHU >= 2500) return 2;
+  return 1;
+}
+
+// Parse SHU from tags like "shu:30000-50000" or product title/description
+function parseSHUFromProduct(tags: string[]): number | null {
+  // Look for SHU tag pattern
+  const shuTag = tags.find(tag => tag.toLowerCase().startsWith('shu:'));
+  if (shuTag) {
+    const match = shuTag.match(/shu:(\d+)(?:-(\d+))?/i);
+    if (match) {
+      // Return the max value if range, otherwise the single value
+      return parseInt(match[2] || match[1], 10);
+    }
+  }
+  return null;
 }
 
 export function ProductCard({ product, onQuickView }: ProductCardProps) {
@@ -22,7 +46,12 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
   const imageUrl = node.images.edges[0]?.node.url;
   const imageAlt = node.images.edges[0]?.node.altText || node.title;
   const isConsortium = node.productType === "Pepper Consortium";
+  const isCultivar = node.productType === "Cultivar";
   const isWishlisted = isInWishlist(node.id);
+  
+  // Get heat tier for cultivars
+  const maxSHU = parseSHUFromProduct(node.tags || []);
+  const heatTier = isCultivar && maxSHU ? getHeatTierFromSHU(maxSHU) : null;
   
   // Get the first available variant
   const defaultVariant = node.variants.edges[0]?.node;
@@ -89,6 +118,13 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
             <span className="px-2 py-1 bg-tyrian text-parchment text-[10px] uppercase tracking-wider font-heading">
               Consortium
             </span>
+          </div>
+        )}
+        
+        {/* Heat Badge for Cultivars */}
+        {heatTier && (
+          <div className="absolute top-3 left-3 bg-ink/80 backdrop-blur-sm px-2 py-1.5 rounded">
+            <HeatBadge tier={heatTier} />
           </div>
         )}
 
