@@ -6,24 +6,33 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Watermark configuration
-const WATERMARK_OPACITY = 0.20; // 20% opacity for subtle watermark
+// Watermark configuration - using actual company logo
+// The logo is hosted in the public folder and accessible via the app URL
 
-// Function to apply watermark using image editing AI
+// Function to apply watermark using image editing AI with the actual logo
 async function applyWatermark(
   lovableKey: string,
   imageBase64: string,
-  pepperName: string
+  pepperName: string,
+  supabaseUrl: string
 ): Promise<string> {
   try {
-    const watermarkPrompt = `Add a subtle, semi-transparent watermark in the bottom-right corner of this image. The watermark should be:
-- The Hot Pepper Trading Company logo: a circular emblem featuring a stylized chili pepper with decorative flourishes, similar to a vintage trade company seal
-- Positioned in the bottom-right corner with small margin
-- Very subtle at about 15-20% opacity
-- In a muted sepia, gold, or parchment tone that complements the image
-- Small enough to not distract from the main subject (approximately 5-8% of image width)
-- Professional and elegant, like an antique publisher's or trading company's mark
-Do NOT change the main image content, only add this small corner watermark logo.`;
+    // Use the actual company logo from storage
+    // The logo URL is constructed from the Supabase project URL
+    const logoUrl = `${supabaseUrl.replace('.supabase.co', '.lovable.app')}/branding/watermark-logo.png`;
+    
+    const watermarkPrompt = `Overlay the second image (the circular Hot Pepper Trading Company logo) as a subtle watermark in the bottom-right corner of the first image (the pepper image).
+
+Requirements:
+- Position the logo in the bottom-right corner with a small margin from the edges
+- Make the logo semi-transparent at about 15-20% opacity
+- Resize the logo to be small (approximately 5-8% of the image width)
+- Tint the logo to a muted sepia, gold, or parchment tone that complements the main image
+- The logo should look like a subtle publisher's mark or trading company seal
+- Do NOT alter the main pepper image content at all - only add this watermark overlay
+
+The first image is the main pepper image to watermark.
+The second image is the Hot Pepper Trading Company logo to use as the watermark.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -37,7 +46,8 @@ Do NOT change the main image content, only add this small corner watermark logo.
           role: 'user',
           content: [
             { type: 'text', text: watermarkPrompt },
-            { type: 'image_url', image_url: { url: imageBase64 } }
+            { type: 'image_url', image_url: { url: imageBase64 } },
+            { type: 'image_url', image_url: { url: logoUrl } }
           ]
         }],
         modalities: ['image', 'text'],
@@ -329,7 +339,7 @@ serve(async (req) => {
         console.log(`Applying watermark to ${type} image...`);
 
         // Apply watermark using image editing
-        const watermarkedImage = await applyWatermark(lovableKey, generatedImage, pepperName);
+        const watermarkedImage = await applyWatermark(lovableKey, generatedImage, pepperName, supabaseUrl);
         
         const timestamp = Date.now();
         const storagePath = `generated/${pepperId}/${type}-${timestamp}.png`;
