@@ -31,14 +31,19 @@ export default function TradingPost() {
     loadProducts();
   }, []);
 
-  // Categorize products
+  // Categorize products by product type
   const { cultivars, consortiums, merchandise } = useMemo(() => {
-    const cultivars = products.filter(p => 
-      p.node.productType !== "Pepper Consortium" && 
-      p.node.productType !== "Merchandise"
+    const cultivars = products.filter(p => {
+      const type = p.node.productType?.toLowerCase() || '';
+      return type.includes('cultivar') || type === '' || type === 'seeds';
+    });
+    const consortiums = products.filter(p => 
+      p.node.productType?.toLowerCase().includes('consortium')
     );
-    const consortiums = products.filter(p => p.node.productType === "Pepper Consortium");
-    const merchandise = products.filter(p => p.node.productType === "Merchandise");
+    const merchandise = products.filter(p => {
+      const type = p.node.productType?.toLowerCase() || '';
+      return type.includes('merchandise') || type.includes('merch') || type.includes('apparel');
+    });
     
     // Sort cultivars by price (lowest first for accessibility)
     cultivars.sort((a, b) => 
