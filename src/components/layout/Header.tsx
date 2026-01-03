@@ -10,8 +10,8 @@ const navLinks = [
   { name: 'Trading Post', href: '/trading-post', isRoute: true },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Origins Map', href: '/origins', isRoute: true },
+  { name: 'Cultivation Guide', href: '/guides/seed-starting', isRoute: true },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
-  { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
 
 export function Header() {
