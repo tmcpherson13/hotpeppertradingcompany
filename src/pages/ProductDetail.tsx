@@ -8,6 +8,7 @@ import { ShopifyProduct, CartItem, storefrontApiRequest, fetchProducts } from "@
 import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, ShoppingCart, Check, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
+import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
 const PRODUCT_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -225,10 +226,20 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-ink flex flex-col">
+    <div className="min-h-screen bg-ink flex flex-col relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={tradeRoutesBg} 
+          alt="" 
+          className="w-full h-full object-cover opacity-8"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/90 to-ink" />
+      </div>
+      
       <Header />
       
-      <main className="flex-1 py-12">
+      <main className="flex-1 py-12 relative z-10">
         <div className="container mx-auto px-4">
           {/* Breadcrumb */}
           <Link 
@@ -243,8 +254,8 @@ export default function ProductDetail() {
             {/* Image Gallery with Compass Navigation */}
             <div className="space-y-4">
               {/* Compass positioned outside image on desktop, above on mobile */}
-              <div className="flex items-start gap-4">
-                <CompassBack className="hidden lg:block flex-shrink-0" />
+              <div className="flex items-start gap-6">
+                <CompassBack className="hidden lg:block flex-shrink-0 -ml-2" />
                 <div className="flex-1 space-y-4">
                   <div className="lg:hidden mb-2">
                     <CompassBack />
@@ -284,7 +295,7 @@ export default function ProductDetail() {
                     {isConsortium && (
                       <div className="absolute top-4 left-4">
                         <span className="px-3 py-1.5 bg-tyrian text-parchment text-xs uppercase tracking-wider font-heading">
-                          Consortium Bundle
+                          Consortium
                         </span>
                       </div>
                     )}
