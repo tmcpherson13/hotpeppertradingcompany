@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ConsortiumCard, Consortium } from './ConsortiumCard';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
-import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
+import { SilkJadePassagesModal } from '@/components/sections/SilkJadePassagesModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
 import { LetterOfMarqueModal } from '@/components/sections/LetterOfMarqueModal';
@@ -232,7 +232,7 @@ export function ConsortiumCards() {
         open={africaModalOpen} 
         onOpenChange={setAfricaModalOpen} 
       />
-      <SpiritsOfAsiaModal
+      <SilkJadePassagesModal
         open={asiaModalOpen} 
         onOpenChange={setAsiaModalOpen} 
       />
