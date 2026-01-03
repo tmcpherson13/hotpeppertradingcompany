@@ -1,5 +1,5 @@
 # Memory: features/consortium/master-consortium-list
-Updated: 2026-01-02
+Updated: 2026-01-03
 
 ## Complete Consortium Lineup (Chronological Order - LOCKED)
 
@@ -10,7 +10,7 @@ Updated: 2026-01-02
 | 003 | Andean Diaspora | WESTERN SOUTH AMERICA | AndeanDiasporaModal.tsx | 1,500–186,000 SHU | Aji Limon (Anchor), Aji Amarillo, Devil's Breath, Aleppo, Gochugaru |
 | 004 | Embers of Africa | WEST AFRICAN COAST | ConsortiumDetailModal.tsx | 10,000–2,000,000 SHU | Peri Peri (Anchor), Urfa Biber, Scotch Bonnet, Wiri Wiri, Trinidad Scorpion |
 | 005 | Phoenician Legacy | MEDITERRANEAN | PhoenicianLegacyModal.tsx | 7,000–175,000 SHU | Aleppo (Anchor), Calabrian (Bridge), Urfa Biber (Body), Peri Peri (Vanguard), Cayenne (Flagship) |
-| 006 | Silk & Jade Passages | SILK ROAD & ASIAN SEAS | SpiritsOfAsiaModal.tsx | 4,000–1,041,427 SHU | Gochugaru (Convergence), Urfa Biber, Aleppo, Thai Bird's Eye, Ghost |
+| 006 | Silk & Jade Passages | SILK ROAD & ASIAN SEAS | SilkJadePassagesModal.tsx | 4,000–1,041,427 SHU | Gochugaru (Convergence), Urfa Biber, Aleppo, Thai Bird's Eye, Ghost |
 | 007 | Atlantic Provenance | ATLANTIC TRIANGLE | AtlanticProvenanceModal.tsx | 1,000–350,000 SHU | Ancho (Anchor), De Árbol (Bridge), Datil (Body), Wiri Wiri (Vanguard), Red Scotch Bonnet (Flagship) |
 | 008 | Letter of Marque | CARIBBEAN | LetterOfMarqueModal.tsx | 30,000–2,000,000 SHU | Orange Scotch Bonnet (Anchor), Caribbean Red Habanero (Bridge), Rocoto (Body), Fatalii (Vanguard), Trinidad Scorpion (Flagship) |
 | 009 | Manila Galleon | MARITIME SOUTHEAST ASIA | ManilaGalleonModal.tsx | 1,000–1,041,000 SHU | Ancho (Anchor), Aji Amarillo, Thai Bird's Eye, Gochugaru, Ghost |
