@@ -125,7 +125,7 @@ const consortiums: Consortium[] = [
     consortiumId: 'caribbean',
     regionLabel: 'CARIBBEAN',
     shopifyHandle: 'letter-of-marque-consortium',
-    heatTier: 4,
+    heatTier: 5,
   },
   {
     name: 'Manila Galleon',
@@ -151,7 +151,7 @@ const consortiums: Consortium[] = [
     consortiumId: 'natchez',
     regionLabel: 'AMERICAN SOUTH',
     shopifyHandle: 'old-natchez-trace-consortium',
-    heatTier: 3,
+    heatTier: 4,
   },
 ];
 

@@ -97,6 +97,13 @@ export function SouthernCrucibleModal({ open, onOpenChange }: SouthernCrucibleMo
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   Where Every Pepper Was Born
                 </p>
+                
+                {/* Scroll indicator */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce">
+                  <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-parchment/60">
+                    <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
               </div>
             </div>
 
