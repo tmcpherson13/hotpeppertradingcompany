@@ -127,6 +127,14 @@ export default function TradingPost() {
         {/* Parchment base */}
         <div className="absolute inset-0 bg-parchment" />
         
+        {/* Paper texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-40 mix-blend-multiply"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        
         {/* Purple grid lines - nautical chart aesthetic */}
         <svg className="absolute inset-0 w-full h-full opacity-15" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -415,7 +423,7 @@ export default function TradingPost() {
                   <ScrollText className="w-5 h-5 text-tyrian" />
                   <span className="text-tyrian font-heading text-sm uppercase tracking-widest">The Cargo</span>
                 </div>
-                <h2 className="font-heading text-3xl md:text-4xl text-ink mb-4">
+                <h2 className="font-heading text-3xl md:text-4xl text-ink font-bold mb-4">
                   Consortium Journeys
                 </h2>
                 <p className="text-ink/60 leading-relaxed">
