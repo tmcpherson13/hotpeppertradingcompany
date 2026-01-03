@@ -11,6 +11,7 @@ import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText } from 'lucide-react';
+import antiqueMap from '@/assets/antique-map.jpg';
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('enrichment');
@@ -24,10 +25,20 @@ export default function Admin() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-parchment flex flex-col">
+    <div className="min-h-screen bg-parchment flex flex-col relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={antiqueMap} 
+          alt="" 
+          className="w-full h-full object-cover opacity-8"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-parchment/95 via-parchment/97 to-parchment" />
+      </div>
+      
       <Header />
       
-      <main className="flex-1 pt-24 pb-12 px-4">
+      <main className="flex-1 pt-24 pb-12 px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8">

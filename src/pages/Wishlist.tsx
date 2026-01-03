@@ -57,11 +57,21 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="min-h-screen bg-ink">
+    <div className="min-h-screen bg-ink relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={tradeRoutesBg} 
+          alt="" 
+          className="w-full h-full object-cover opacity-8"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/90 to-ink" />
+      </div>
+      
       <Header />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className="relative pt-32 pb-16 overflow-hidden z-10">
         <div className="absolute inset-0">
           <img 
             src={tradeRoutesBg} 
@@ -88,7 +98,7 @@ export default function Wishlist() {
       </section>
 
       {/* Content */}
-      <section className="py-12 pb-24">
+      <section className="py-12 pb-24 relative z-10">
         <div className="container mx-auto px-4">
           {isLoading || authLoading ? (
             <div className="flex flex-col items-center justify-center py-16">

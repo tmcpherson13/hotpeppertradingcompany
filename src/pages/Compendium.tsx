@@ -113,11 +113,21 @@ const Compendium = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={antiqueMap} 
+          alt="" 
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/95 to-background" />
+      </div>
+      
       <Header />
 
       {/* Hero Header - with parallax background */}
-      <section ref={heroRef} className="pt-24 pb-12 relative overflow-hidden">
+      <section ref={heroRef} className="pt-24 pb-12 relative overflow-hidden z-10">
         {/* Parallax background image */}
         <motion.div 
           className="absolute inset-0 bg-cover bg-center"
@@ -206,7 +216,7 @@ const Compendium = () => {
       </section>
 
       {/* Main Content */}
-      <section className="py-12 bg-background">
+      <section className="py-12 bg-background relative z-10">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

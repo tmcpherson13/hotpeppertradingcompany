@@ -177,11 +177,21 @@ export default function Origins() {
   };
 
   return (
-    <div className="min-h-screen bg-ink">
+    <div className="min-h-screen bg-ink relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={tradeRoutesBg} 
+          alt="" 
+          className="w-full h-full object-cover opacity-8"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/90 to-ink" />
+      </div>
+      
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-8 overflow-hidden">
+      <section className="relative pt-32 pb-8 overflow-hidden z-10">
         <div className="absolute inset-0">
           <img 
             src={tradeRoutesBg} 
@@ -208,7 +218,7 @@ export default function Origins() {
       </section>
 
       {/* Map Section */}
-      <section className="relative pb-16">
+      <section className="relative pb-16 z-10">
         <div className="container mx-auto px-4">
           <div className="relative rounded-sm overflow-hidden border border-tyrian/30">
             <div 
@@ -291,7 +301,7 @@ export default function Origins() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 border-t border-tyrian/20">
+      <section className="py-12 border-t border-tyrian/20 relative z-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>

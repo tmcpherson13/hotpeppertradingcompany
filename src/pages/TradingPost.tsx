@@ -121,11 +121,21 @@ export default function TradingPost() {
   };
 
   return (
-    <div className="min-h-screen bg-ink">
+    <div className="min-h-screen bg-ink relative">
+      {/* Global background pattern */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <img 
+          src={tradeRoutesBg} 
+          alt="" 
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/90 to-ink" />
+      </div>
+      
       <Header />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-20 overflow-hidden z-10">
         <div className="absolute inset-0">
           <img 
             src={tradeRoutesBg} 
@@ -212,7 +222,7 @@ export default function TradingPost() {
       
       {/* Loading State */}
       {isLoading && (
-        <section className="py-24">
+        <section className="py-24 relative z-10">
           <div className="flex flex-col items-center justify-center">
             <Loader2 className="w-8 h-8 text-gold animate-spin mb-4" />
             <p className="text-parchment/60 font-heading">Loading cargo manifest...</p>
@@ -238,7 +248,7 @@ export default function TradingPost() {
       
       {/* Search Results */}
       {!isLoading && !error && isSearching && (
-        <section className="py-12">
+        <section className="py-12 relative z-10">
           <div className="container mx-auto px-4">
             <div className="mb-8">
               <p className="text-parchment/60 font-heading text-sm uppercase tracking-wider">
@@ -274,7 +284,7 @@ export default function TradingPost() {
       
       {/* All Products View */}
       {!isLoading && !error && !isSearching && viewMode === 'all' && (
-        <section className="py-16">
+        <section className="py-16 relative z-10">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mb-12">
               <h2 className="font-heading text-3xl md:text-4xl text-parchment mb-4">
@@ -308,7 +318,7 @@ export default function TradingPost() {
       {!isLoading && !error && !isSearching && viewMode === 'categorized' && (
         <>
           {/* Consortium Cards Section - Heritage Cards */}
-          <section className="py-16 bg-parchment/5">
+          <section className="py-16 bg-parchment/5 relative z-10">
             <div className="container mx-auto px-4">
               <div className="max-w-2xl mb-12">
                 <div className="flex items-center gap-3 mb-4">
@@ -331,7 +341,7 @@ export default function TradingPost() {
 
           {/* Cultivars Section - Entry Point */}
           {cultivars.length > 0 && (
-            <section className="py-16 border-b border-tyrian/20">
+            <section className="py-16 border-b border-tyrian/20 relative z-10">
               <div className="container mx-auto px-4">
                 <div className="max-w-2xl mb-12">
                   <div className="flex items-center gap-3 mb-4">
@@ -359,7 +369,7 @@ export default function TradingPost() {
           
           {/* Merchandise Section - If exists */}
           {merchandise.length > 0 && (
-            <section className="py-16 border-t border-tyrian/20">
+            <section className="py-16 border-t border-tyrian/20 relative z-10">
               <div className="container mx-auto px-4">
                 <div className="max-w-2xl mb-12">
                   <div className="flex items-center gap-3 mb-4">
