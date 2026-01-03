@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { queueId, action, reviewNotes, edits, autoApproved } = await req.json();
+    const { queueId, action, reviewNotes, edits, autoApproved, excludedFields } = await req.json();
 
     if (!queueId || !action) {
       return new Response(
@@ -49,6 +49,9 @@ serve(async (req) => {
     }
 
     console.log(`Processing ${action} for queue entry: ${queueId}${autoApproved ? ' (auto-approved)' : ''}`);
+    if (excludedFields?.length) {
+      console.log(`Excluding fields: ${excludedFields.join(', ')}`);
+    }
 
     // Fetch the queue entry
     const { data: queueEntry, error: fetchError } = await supabase
@@ -99,40 +102,56 @@ serve(async (req) => {
       );
     }
 
-    // Handle approval - merge edits if provided
-    const finalContent = {
-      description: edits?.proposed_description ?? queueEntry.proposed_description,
-      historical_notes: edits?.proposed_historical_notes ?? queueEntry.proposed_historical_notes,
-      flavor_notes: edits?.proposed_flavor_notes ?? queueEntry.proposed_flavor_notes,
-      aroma_notes: edits?.proposed_aroma_notes ?? queueEntry.proposed_aroma_notes,
-      culinary_uses: edits?.proposed_culinary_uses ?? queueEntry.proposed_culinary_uses,
-      trade_route: edits?.proposed_trade_route ?? queueEntry.proposed_trade_route,
+    // Handle approval - merge edits if provided, respecting excludedFields
+    const excluded = new Set(excludedFields || []);
+    
+    // Map proposed field names to override field names
+    const fieldMapping: Record<string, string> = {
+      'proposed_description': 'description',
+      'proposed_historical_notes': 'historical_notes',
+      'proposed_flavor_notes': 'flavor_notes',
+      'proposed_aroma_notes': 'aroma_notes',
+      'proposed_culinary_uses': 'culinary_uses',
+      'proposed_trade_route': 'trade_route',
+    };
+
+    const finalContent: Record<string, any> = {
       source_citations: queueEntry.source_citations,
     };
+
+    // Only include fields that are not excluded
+    for (const [proposedKey, overrideKey] of Object.entries(fieldMapping)) {
+      if (!excluded.has(proposedKey)) {
+        finalContent[overrideKey] = edits?.[proposedKey] ?? queueEntry[proposedKey];
+      }
+    }
 
     // Check if override already exists
     const { data: existingOverride } = await supabase
       .from('pepper_overrides')
-      .select('id, enrichment_version')
+      .select('*')
       .eq('pepper_id', queueEntry.pepper_id)
       .single();
 
     if (existingOverride) {
-      // Update existing override
+      // Build update object - only include non-excluded fields
+      const updateData: Record<string, any> = {
+        enrichment_version: (existingOverride.enrichment_version || 0) + 1,
+        updated_by: userId,
+        updated_at: new Date().toISOString(),
+        source_citations: finalContent.source_citations,
+      };
+
+      // Only update fields that are in finalContent (not excluded)
+      for (const overrideKey of Object.values(fieldMapping)) {
+        if (overrideKey in finalContent) {
+          updateData[overrideKey] = finalContent[overrideKey];
+        }
+      }
+
       const { error: updateOverrideError } = await supabase
         .from('pepper_overrides')
-        .update({
-          description: finalContent.description,
-          historical_notes: finalContent.historical_notes,
-          flavor_notes: finalContent.flavor_notes,
-          aroma_notes: finalContent.aroma_notes,
-          culinary_uses: finalContent.culinary_uses,
-          trade_route: finalContent.trade_route,
-          source_citations: finalContent.source_citations,
-          enrichment_version: (existingOverride.enrichment_version || 0) + 1,
-          updated_by: userId,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', existingOverride.id);
 
       if (updateOverrideError) {
@@ -143,21 +162,24 @@ serve(async (req) => {
         );
       }
     } else {
-      // Create new override
+      // Build insert object - only include non-excluded fields
+      const insertData: Record<string, any> = {
+        pepper_id: queueEntry.pepper_id,
+        enrichment_version: 1,
+        updated_by: userId,
+        source_citations: finalContent.source_citations,
+      };
+
+      // Only insert fields that are in finalContent (not excluded)
+      for (const overrideKey of Object.values(fieldMapping)) {
+        if (overrideKey in finalContent) {
+          insertData[overrideKey] = finalContent[overrideKey];
+        }
+      }
+
       const { error: insertOverrideError } = await supabase
         .from('pepper_overrides')
-        .insert({
-          pepper_id: queueEntry.pepper_id,
-          description: finalContent.description,
-          historical_notes: finalContent.historical_notes,
-          flavor_notes: finalContent.flavor_notes,
-          aroma_notes: finalContent.aroma_notes,
-          culinary_uses: finalContent.culinary_uses,
-          trade_route: finalContent.trade_route,
-          source_citations: finalContent.source_citations,
-          enrichment_version: 1,
-          updated_by: userId,
-        });
+        .insert(insertData);
 
       if (insertOverrideError) {
         console.error('Error creating pepper override:', insertOverrideError);

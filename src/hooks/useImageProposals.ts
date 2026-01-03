@@ -24,6 +24,7 @@ export interface UseImageProposalsResult {
   isLoading: boolean;
   processingId: string | null;
   isRegenerating: boolean;
+  regeneratingIds: Set<string>;
   fetchProposals: (pepperId?: string) => Promise<void>;
   approveProposal: (proposal: ImageProposal) => Promise<boolean>;
   rejectProposal: (proposal: ImageProposal) => Promise<boolean>;
@@ -38,6 +39,7 @@ export function useImageProposals(): UseImageProposalsResult {
   const [isLoading, setIsLoading] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [regeneratingIds, setRegeneratingIds] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   const fetchProposals = useCallback(async (pepperId?: string) => {
@@ -245,12 +247,10 @@ export function useImageProposals(): UseImageProposalsResult {
     pepperName: string,
     feedback?: string
   ): Promise<boolean> => {
-    setProcessingId(proposal.id);
+    // Add to regenerating set to track this specific image
+    setRegeneratingIds(prev => new Set(prev).add(proposal.id));
     
     try {
-      // First, reject the current proposal
-      await rejectProposal(proposal);
-
       // Get auth token
       const { data: session } = await supabase.auth.getSession();
       const accessToken = session?.session?.access_token;
@@ -270,6 +270,27 @@ export function useImageProposals(): UseImageProposalsResult {
         throw new Error(response.error.message || 'Image regeneration failed');
       }
 
+      // Now reject the old proposal after successful trigger
+      const userId = session?.session?.user?.id;
+      await supabase
+        .from('pepper_image_proposals')
+        .update({
+          status: 'rejected',
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: userId,
+        })
+        .eq('id', proposal.id);
+
+      // Delete from storage
+      if (proposal.storage_path) {
+        await supabase.storage
+          .from('pepper-images')
+          .remove([proposal.storage_path]);
+      }
+
+      // Remove from local state
+      setProposals(prev => prev.filter(p => p.id !== proposal.id));
+
       toast({
         title: 'Image Regenerating',
         description: 'A new image is being generated. This may take a moment.',
@@ -278,7 +299,7 @@ export function useImageProposals(): UseImageProposalsResult {
       // Refresh proposals after a short delay
       setTimeout(() => {
         fetchProposals(proposal.pepper_id);
-      }, 3000);
+      }, 5000);
 
       return true;
     } catch (err) {
@@ -290,15 +311,21 @@ export function useImageProposals(): UseImageProposalsResult {
       });
       return false;
     } finally {
-      setProcessingId(null);
+      // Remove from regenerating set
+      setRegeneratingIds(prev => {
+        const next = new Set(prev);
+        next.delete(proposal.id);
+        return next;
+      });
     }
-  }, [rejectProposal, fetchProposals, toast]);
+  }, [fetchProposals, toast]);
 
   return {
     proposals,
     isLoading,
     processingId,
     isRegenerating,
+    regeneratingIds,
     fetchProposals,
     approveProposal,
     rejectProposal,
