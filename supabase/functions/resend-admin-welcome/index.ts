@@ -185,7 +185,7 @@ serve(async (req) => {
             "Authorization": `Bearer ${resendApiKey}`,
           },
           body: JSON.stringify({
-            from: "Hot Pepper Trading Company <onboarding@resend.dev>",
+            from: "Hot Pepper Trading Company <noreply@mcpherson13.com>",
             to: [email],
             subject: "Your Password Has Been Reset - Hot Pepper Trading Company",
             html: `
