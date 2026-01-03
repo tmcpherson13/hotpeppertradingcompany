@@ -124,6 +124,9 @@ export function Footer() {
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
               Privacy Notice
             </a>
+            <Link to="/admin" className="font-body text-sm text-primary-foreground/40 hover:text-primary-foreground/60 transition-colors">
+              Administration
+            </Link>
           </div>
         </div>
       </div>
