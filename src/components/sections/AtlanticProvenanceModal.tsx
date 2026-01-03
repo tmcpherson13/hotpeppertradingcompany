@@ -1,7 +1,8 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { ScrollDownIndicator } from "@/components/ui/ScrollDownIndicator";
 import { Flame, MapPin, Utensils, BookOpen } from "lucide-react";
 import consortiumImage from "@/assets/consortium/atlantic-provenance.jpg";
 
@@ -60,7 +61,8 @@ const pairings = [
 export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenanceModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+        <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           {/* Hero Image */}
           <div className="relative w-full h-64 md:h-80">
@@ -71,19 +73,21 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
             <div className="absolute bottom-4 left-6 right-6">
-              <Badge className="mb-2 bg-primary/90 text-primary-foreground border-none">
-                № 007 · Atlantic Triangle
+              <Badge className="mb-3 bg-primary/90 text-primary-foreground border-none">
+                Pepper Consortium № 007
               </Badge>
-              <h2 className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide drop-shadow-lg">
-                Atlantic Provenance
-              </h2>
-              <p className="text-parchment/80 text-sm mt-1 font-body italic">
+              <DialogHeader>
+                <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
+                  Atlantic Provenance
+                </DialogTitle>
+              </DialogHeader>
+              <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                 Mexico → Caribbean → West Africa
               </p>
             </div>
           </div>
 
-          <div className="p-6 md:p-8 space-y-8">
+          <div className="p-6 md:p-8 pb-16 space-y-8">
             {/* The Consortium */}
             <section>
               <div className="flex items-center gap-3 mb-4">
@@ -212,12 +216,6 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
               </p>
             </div>
             
-            {/* Scroll indicator - at bottom of card */}
-            <div className="flex justify-center pb-4 animate-bounce">
-              <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-ink/40">
-                <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
           </div>
         </ScrollArea>
       </DialogContent>

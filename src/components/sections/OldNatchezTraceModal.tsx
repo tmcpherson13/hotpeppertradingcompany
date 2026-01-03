@@ -2,6 +2,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { ScrollDownIndicator } from "@/components/ui/ScrollDownIndicator";
 import { Flame, MapPin, Utensils, BookOpen, Ship } from "lucide-react";
 import { LogoDivider } from "@/components/ui/LogoDivider";
 import oldNatchezTraceImg from "@/assets/consortium/old-natchez-trace.jpg";
@@ -63,7 +64,8 @@ const pairings = [
 export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden relative">
+        <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           {/* Hero Image */}
           <div className="relative h-64 md:h-80 overflow-hidden">
@@ -86,7 +88,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
             </div>
           </div>
 
-          <div className="p-6 md:p-8">
+          <div className="p-6 md:p-8 pb-16">
             {/* The Consortium Section */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
@@ -201,12 +203,6 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
               </div>
             </div>
             
-            {/* Scroll indicator - at bottom of card */}
-            <div className="flex justify-center pt-6 pb-4 animate-bounce">
-              <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-ink/40">
-                <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
           </div>
         </ScrollArea>
       </DialogContent>

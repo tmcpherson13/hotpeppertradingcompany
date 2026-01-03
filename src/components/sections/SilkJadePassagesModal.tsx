@@ -7,6 +7,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
 import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 
@@ -67,7 +68,8 @@ const pairings = [
 export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30">
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+        <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
             {/* Hero Image */}
@@ -96,7 +98,7 @@ export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesMo
             </div>
 
             {/* Content */}
-            <div className="p-6 md:p-8 space-y-8">
+            <div className="p-6 md:p-8 pb-16 space-y-8">
               {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
@@ -214,12 +216,6 @@ export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesMo
                 </div>
               </div>
               
-              {/* Scroll indicator - at bottom of card */}
-              <div className="flex justify-center pb-4 animate-bounce">
-                <svg width="24" height="14" viewBox="0 0 24 14" fill="none" className="text-ink/40">
-                  <path d="M2 2L12 11L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
             </div>
           </div>
         </ScrollArea>
