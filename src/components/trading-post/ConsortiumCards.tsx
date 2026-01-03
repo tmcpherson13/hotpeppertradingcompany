@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
 import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
@@ -32,6 +33,7 @@ interface Consortium {
   image: string;
   consortiumId: string;
   regionLabel: string;
+  shopifyHandle: string;
   flipImage?: boolean;
 }
 
@@ -46,6 +48,7 @@ const consortiums: Consortium[] = [
     image: cradleOfFireImg,
     consortiumId: 'mesoamerica',
     regionLabel: 'MEXICO & CENTRAL AMERICA',
+    shopifyHandle: 'cradle-of-fire-consortium',
   },
   {
     name: 'Southern Crucible',
@@ -57,6 +60,7 @@ const consortiums: Consortium[] = [
     image: southernCrucibleImg,
     consortiumId: 'southamerica',
     regionLabel: 'SOUTH AMERICA',
+    shopifyHandle: 'southern-crucible-consortium',
   },
   {
     name: 'Andean Diaspora',
@@ -68,6 +72,7 @@ const consortiums: Consortium[] = [
     image: andeanDiasporaImg,
     consortiumId: 'andes',
     regionLabel: 'WESTERN SOUTH AMERICA',
+    shopifyHandle: 'andean-diaspora-consortium',
   },
   {
     name: 'Embers of Africa',
@@ -79,6 +84,7 @@ const consortiums: Consortium[] = [
     image: echoesOfAfricaImg,
     consortiumId: 'africa',
     regionLabel: 'WEST AFRICAN COAST',
+    shopifyHandle: 'embers-of-africa-consortium',
   },
   {
     name: 'Phoenician Legacy',
@@ -90,6 +96,7 @@ const consortiums: Consortium[] = [
     image: phoenicianLegacyImg,
     consortiumId: 'mediterranean',
     regionLabel: 'MEDITERRANEAN',
+    shopifyHandle: 'phoenician-legacy-consortium',
   },
   {
     name: 'Silk & Jade Passages',
@@ -101,6 +108,7 @@ const consortiums: Consortium[] = [
     image: silkJadePassagesImg,
     consortiumId: 'asia',
     regionLabel: 'SILK ROAD & ASIAN SEAS',
+    shopifyHandle: 'silk-jade-passages-consortium',
   },
   {
     name: 'Atlantic Provenance',
@@ -112,6 +120,7 @@ const consortiums: Consortium[] = [
     image: atlanticProvenanceImg,
     consortiumId: 'atlantic',
     regionLabel: 'ATLANTIC TRIANGLE',
+    shopifyHandle: 'atlantic-provenance-consortium',
   },
   {
     name: 'Letter of Marque',
@@ -124,6 +133,7 @@ const consortiums: Consortium[] = [
     flipImage: true,
     consortiumId: 'caribbean',
     regionLabel: 'CARIBBEAN',
+    shopifyHandle: 'letter-of-marque-consortium',
   },
   {
     name: 'Manila Galleon',
@@ -135,6 +145,7 @@ const consortiums: Consortium[] = [
     image: manilaGalleonImg,
     consortiumId: 'manila',
     regionLabel: 'MARITIME SOUTHEAST ASIA',
+    shopifyHandle: 'manila-galleon-consortium',
   },
   {
     name: 'Old Natchez Trace',
@@ -146,6 +157,7 @@ const consortiums: Consortium[] = [
     image: oldNatchezTraceImg,
     consortiumId: 'natchez',
     regionLabel: 'AMERICAN SOUTH',
+    shopifyHandle: 'old-natchez-trace-consortium',
   },
 ];
 
@@ -278,15 +290,25 @@ export function ConsortiumCards() {
                   "{consortium.description}"
                 </p>
                 
-                {/* Bottom Decorative Border */}
-                <div className="border-t border-dashed border-ink/20 pt-3">
+                {/* Bottom Decorative Border - Two Buttons */}
+                <div className="border-t border-dashed border-ink/20 pt-3 flex gap-2">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full text-xs uppercase tracking-[0.15em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment"
+                    className="flex-1 text-xs uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment"
                     onClick={() => handleConsortiumClick(consortium.consortiumId)}
                   >
-                    Examine Full Manifest
+                    View Manifest
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 text-xs uppercase tracking-[0.1em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment"
+                    asChild
+                  >
+                    <Link to={`/product/${consortium.shopifyHandle}`}>
+                      Procure Stock
+                    </Link>
                   </Button>
                 </div>
               </div>
