@@ -1,33 +1,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { MapPin, Ship, Compass, Navigation } from 'lucide-react';
+import { Navigation } from 'lucide-react';
 import { TradeRouteMap } from '@/components/map/TradeRouteMap';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
 
-const regions = [
-  {
-    name: 'The Americas',
-    region: 'Mexico & Central America',
-    description: 'Origin point of all capsicum species. Domesticated circa 4000 BCE. Source of Poblano, Serrano, Habanero, and most commercial cultivars.',
-    icon: MapPin,
-    coordinates: '19°N 99°W',
-  },
-  {
-    name: 'The Levant',
-    region: 'Syria & Turkey',
-    description: 'Primary source for Aleppo pepper, Urfa biber, and Marash. Cultivation established by 1600. Distinct terroir produces unique flavor profiles.',
-    icon: Compass,
-    coordinates: '36°N 37°E',
-  },
-  {
-    name: 'Southeast Asia',
-    region: 'Thailand & Indonesia',
-    description: 'Adopted capsicum within fifty years of introduction. Now produces Bird\'s Eye, Thai Dragon, and regional sambal cultivars. High pungency cultivars.',
-    icon: Ship,
-    coordinates: '13°N 100°E',
-  },
-];
 
 export function TradeRoutes() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -101,37 +78,6 @@ export function TradeRoutes() {
           </div>
         </motion.div>
 
-        {/* Region Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {regions.map((route, index) => (
-            <motion.div
-              key={route.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="relative bg-card border-2 border-border p-6 text-center hover:border-gold/50 transition-colors duration-300 shadow-card"
-            >
-              {/* Coordinate Badge */}
-              <div className="absolute top-3 right-3 bg-muted/80 border border-border px-2 py-1">
-                <span className="font-body text-[10px] text-muted-foreground tracking-wider">
-                  {route.coordinates}
-                </span>
-              </div>
-              
-              <route.icon className="w-8 h-8 text-gold mx-auto mb-3" />
-              <p className="text-muted-foreground font-body text-xs uppercase tracking-[0.25em] mb-2">
-                {route.region}
-              </p>
-              <h3 className="font-display text-lg text-foreground font-semibold mb-3">
-                {route.name}
-              </h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                {route.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
 
       </div>
     </section>
