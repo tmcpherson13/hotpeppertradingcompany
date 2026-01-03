@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { CompassBack } from "@/components/ui/CompassBack";
 import { ShopifyProduct, CartItem, storefrontApiRequest, fetchProducts } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, ShoppingCart, Check, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
@@ -242,6 +243,9 @@ export default function ProductDetail() {
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="relative aspect-square bg-parchment/5 border border-tyrian/30 rounded-sm overflow-hidden">
+                {/* Compass Back Navigation */}
+                <CompassBack className="absolute top-4 left-4 z-10" />
+                
                 {images.length > 0 ? (
                   <img
                     src={images[currentImageIndex].node.url}
