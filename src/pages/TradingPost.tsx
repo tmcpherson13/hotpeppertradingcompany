@@ -137,12 +137,36 @@ export default function TradingPost() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden z-10">
         <div className="absolute inset-0">
+          {/* Light parchment base */}
+          <div className="absolute inset-0 bg-parchment" />
+          
+          {/* Faint purple grid lines - map aesthetic */}
+          <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="trading-post-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="hsl(300 100% 18%)" strokeWidth="0.5" />
+              </pattern>
+              <pattern id="trading-post-grid-large" width="240" height="240" patternUnits="userSpaceOnUse">
+                <path d="M 240 0 L 0 0 0 240" fill="none" stroke="hsl(300 100% 18%)" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#trading-post-grid)" />
+            <rect width="100%" height="100%" fill="url(#trading-post-grid-large)" />
+          </svg>
+          
+          {/* Trade routes overlay - very faint */}
           <img 
             src={tradeRoutesBg} 
             alt="" 
-            className="w-full h-full object-cover opacity-20"
+            className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-multiply"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink" />
+          
+          {/* Gradient fade to ink at edges */}
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-transparent to-ink" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/40 via-transparent to-ink/40" />
+          
+          {/* Vignette for depth */}
+          <div className="absolute inset-0 bg-radial-vignette opacity-30" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
