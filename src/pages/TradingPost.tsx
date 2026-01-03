@@ -3,8 +3,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Filter, Package, Boxes } from "lucide-react";
+import { Loader2, Filter, Package, Boxes, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
@@ -15,6 +16,7 @@ export default function TradingPost() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<ProductFilter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function loadProducts() {
@@ -34,15 +36,27 @@ export default function TradingPost() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    if (filter === "all") return products;
+    let result = products;
+    
+    // Apply type filter
     if (filter === "cultivars") {
-      return products.filter(p => p.node.productType !== "Pepper Consortium");
+      result = result.filter(p => p.node.productType !== "Pepper Consortium");
+    } else if (filter === "consortiums") {
+      result = result.filter(p => p.node.productType === "Pepper Consortium");
     }
-    if (filter === "consortiums") {
-      return products.filter(p => p.node.productType === "Pepper Consortium");
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter(p => 
+        p.node.title.toLowerCase().includes(query) ||
+        p.node.description.toLowerCase().includes(query) ||
+        (p.node.tags && p.node.tags.some(tag => tag.toLowerCase().includes(query)))
+      );
     }
-    return products;
-  }, [products, filter]);
+    
+    return result;
+  }, [products, filter, searchQuery]);
 
   const cultivarCount = products.filter(p => p.node.productType !== "Pepper Consortium").length;
   const consortiumCount = products.filter(p => p.node.productType === "Pepper Consortium").length;
@@ -78,37 +92,67 @@ export default function TradingPost() {
       {/* Products Section */}
       <section className="py-12 relative">
         <div className="container mx-auto px-4">
-          {/* Filter Tabs */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 pb-6 border-b border-tyrian/30">
-            <div className="flex items-center gap-2 text-parchment/60">
-              <Filter className="w-4 h-4" />
-              <span className="text-sm font-heading uppercase tracking-wider">Filter by:</span>
+          {/* Search and Filter Bar */}
+          <div className="flex flex-col gap-4 mb-8 pb-6 border-b border-tyrian/30">
+            {/* Search Input */}
+            <div className="relative max-w-md w-full mx-auto sm:mx-0">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-parchment/40" />
+              <Input
+                type="text"
+                placeholder="Search cultivars & consortiums..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-10 bg-ink/50 border-tyrian/30 text-parchment placeholder:text-parchment/40 focus:border-gold/50 font-heading"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-parchment/40 hover:text-parchment transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
             
-            <Tabs value={filter} onValueChange={(v) => setFilter(v as ProductFilter)} className="w-full sm:w-auto">
-              <TabsList className="w-full sm:w-auto bg-tyrian/20 border border-tyrian/30">
-                <TabsTrigger 
-                  value="all" 
-                  className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
-                >
-                  All ({products.length})
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="cultivars" 
-                  className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
-                >
-                  <Package className="w-3 h-3 mr-1.5" />
-                  Cultivars ({cultivarCount})
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="consortiums" 
-                  className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
-                >
-                  <Boxes className="w-3 h-3 mr-1.5" />
-                  Consortiums ({consortiumCount})
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            {/* Filter Tabs */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-parchment/60">
+                <Filter className="w-4 h-4" />
+                <span className="text-sm font-heading uppercase tracking-wider">Filter by:</span>
+              </div>
+              
+              <Tabs value={filter} onValueChange={(v) => setFilter(v as ProductFilter)} className="w-full sm:w-auto">
+                <TabsList className="w-full sm:w-auto bg-tyrian/20 border border-tyrian/30">
+                  <TabsTrigger 
+                    value="all" 
+                    className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
+                  >
+                    All ({products.length})
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="cultivars" 
+                    className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
+                  >
+                    <Package className="w-3 h-3 mr-1.5" />
+                    Cultivars ({cultivarCount})
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="consortiums" 
+                    className="flex-1 sm:flex-none data-[state=active]:bg-tyrian data-[state=active]:text-parchment font-heading uppercase tracking-wider text-sm"
+                  >
+                    <Boxes className="w-3 h-3 mr-1.5" />
+                    Consortiums ({consortiumCount})
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+            
+            {/* Search results count */}
+            {searchQuery && (
+              <p className="text-sm text-parchment/60 font-heading">
+                {filteredProducts.length} result{filteredProducts.length !== 1 ? 's' : ''} for "{searchQuery}"
+              </p>
+            )}
           </div>
           
           {/* Loading State */}
@@ -137,7 +181,18 @@ export default function TradingPost() {
           {!isLoading && !error && filteredProducts.length === 0 && (
             <div className="text-center py-24">
               <Package className="w-12 h-12 text-parchment/30 mx-auto mb-4" />
-              <p className="text-parchment/60 font-heading">No products found</p>
+              <p className="text-parchment/60 font-heading">
+                {searchQuery ? `No products match "${searchQuery}"` : "No products found"}
+              </p>
+              {searchQuery && (
+                <Button
+                  variant="ghost"
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 text-gold hover:text-gold/80"
+                >
+                  Clear search
+                </Button>
+              )}
             </div>
           )}
           
