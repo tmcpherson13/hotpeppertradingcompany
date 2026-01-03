@@ -356,36 +356,6 @@ export default function TradingPost() {
             </section>
           )}
           
-          {/* Consortiums Section - Premium Tier */}
-          {consortiums.length > 0 && (
-            <section className="py-16 bg-gradient-to-b from-ink to-ink/95">
-              <div className="container mx-auto px-4">
-                <div className="max-w-2xl mb-12">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Crown className="w-5 h-5 text-gold" />
-                    <span className="text-gold font-heading text-sm uppercase tracking-widest">Curated Collections</span>
-                  </div>
-                  <h2 className="font-heading text-3xl md:text-4xl text-parchment mb-4">
-                    The Pepper Consortiums
-                  </h2>
-                  <p className="text-parchment/60 leading-relaxed">
-                    For the discerning collector, our consortiums represent the pinnacle of deliberate curation. 
-                    Each collection tells a story—tracing trade routes, honoring regional traditions, 
-                    or exploring the evolution of a single species across continents.
-                  </p>
-                  <p className="text-parchment/40 text-sm mt-4 font-heading italic">
-                    Five cultivars per consortium, selected for complementary heat profiles and culinary applications
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {consortiums.map((product) => (
-                    <ProductCard key={product.node.id} product={product} onQuickView={setQuickViewProduct} />
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
           
           {/* Merchandise Section - If exists */}
           {merchandise.length > 0 && (
