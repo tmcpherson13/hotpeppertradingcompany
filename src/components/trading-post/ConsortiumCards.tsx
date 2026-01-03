@@ -87,6 +87,18 @@ const consortiums: Consortium[] = [
     shopifyHandle: 'embers-of-africa-consortium',
   },
   {
+    name: 'Old Natchez Trace',
+    region: 'Gulf to Highlands',
+    tradeLot: 'CONSORTIUM № 010',
+    weight: '3 oz / 85g',
+    description: 'From Gulf port to highland trail—the fire that traveled America\'s earliest inland trade corridor by flatboat and footpath.',
+    price: '$38',
+    image: oldNatchezTraceImg,
+    consortiumId: 'natchez',
+    regionLabel: 'AMERICAN SOUTH',
+    shopifyHandle: 'old-natchez-trace-consortium',
+  },
+  {
     name: 'Phoenician Legacy',
     region: 'Mediterranean Basin',
     tradeLot: 'CONSORTIUM № 005',
@@ -146,18 +158,6 @@ const consortiums: Consortium[] = [
     consortiumId: 'manila',
     regionLabel: 'MARITIME SOUTHEAST ASIA',
     shopifyHandle: 'manila-galleon-consortium',
-  },
-  {
-    name: 'Old Natchez Trace',
-    region: 'Gulf to Highlands',
-    tradeLot: 'CONSORTIUM № 010',
-    weight: '3 oz / 85g',
-    description: 'From Gulf port to highland trail—the fire that traveled America\'s earliest inland trade corridor by flatboat and footpath.',
-    price: '$38',
-    image: oldNatchezTraceImg,
-    consortiumId: 'natchez',
-    regionLabel: 'AMERICAN SOUTH',
-    shopifyHandle: 'old-natchez-trace-consortium',
   },
 ];
 
@@ -225,14 +225,19 @@ export function ConsortiumCards() {
               {/* Top decorative border */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ink/20 to-transparent" />
               
-              {/* Image with sepia overlay */}
-              <div className="relative">
+              {/* Image with sepia overlay - Clickable */}
+              <Link to={`/product/${consortium.shopifyHandle}`} className="relative block cursor-pointer">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={consortium.image}
                     alt={`${consortium.name} consortium`}
                     className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 sepia-[0.15] ${consortium.flipImage ? 'scale-x-[-1] group-hover:scale-x-[-1.05]' : ''}`}
                   />
+                </div>
+                
+                {/* In Stock Badge */}
+                <div className="absolute top-3 left-3 bg-spice-600/90 text-parchment px-2 py-1 rounded">
+                  <span className="text-[9px] uppercase tracking-wider font-heading font-semibold">In Stock</span>
                 </div>
                 
                 {/* Archival Origin Stamp */}
@@ -260,7 +265,7 @@ export function ConsortiumCards() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Merchant Label Content */}
               <div className="p-4 bg-parchment-dark">
