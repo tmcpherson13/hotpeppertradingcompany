@@ -1,24 +1,28 @@
 import { ShopifyProduct, CartItem } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, Heart, Eye } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useWishlist } from "@/hooks/useWishlist";
 
 interface ProductCardProps {
   product: ShopifyProduct;
+  onQuickView?: (product: ShopifyProduct) => void;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, onQuickView }: ProductCardProps) {
   const [isAdded, setIsAdded] = useState(false);
   const addItem = useCartStore(state => state.addItem);
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const { node } = product;
   
   const price = parseFloat(node.priceRange.minVariantPrice.amount);
   const imageUrl = node.images.edges[0]?.node.url;
   const imageAlt = node.images.edges[0]?.node.altText || node.title;
   const isConsortium = node.productType === "Pepper Consortium";
+  const isWishlisted = isInWishlist(node.id);
   
   // Get the first available variant
   const defaultVariant = node.variants.edges[0]?.node;
@@ -48,13 +52,25 @@ export function ProductCard({ product }: ProductCardProps) {
     setTimeout(() => setIsAdded(false), 2000);
   };
 
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onQuickView?.(product);
+  };
+
   return (
     <Link 
       to={`/product/${node.handle}`}
       className="group relative bg-ink/50 border border-tyrian/30 rounded-sm overflow-hidden transition-all duration-300 hover:border-gold/40 hover:shadow-lg hover:shadow-tyrian/20 block"
     >
       {/* Product Image */}
-      <div className="aspect-square overflow-hidden bg-parchment/5">
+      <div className="aspect-square overflow-hidden bg-parchment/5 relative">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -75,6 +91,33 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
         )}
+
+        {/* Hover Actions */}
+        <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={handleWishlistToggle}
+            className={`
+              p-2 rounded-full transition-all shadow-lg
+              ${isWishlisted 
+                ? 'bg-pepper-red text-parchment' 
+                : 'bg-ink/80 text-parchment/70 hover:text-parchment hover:bg-ink'
+              }
+            `}
+            title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
+          </button>
+          
+          {onQuickView && (
+            <button
+              onClick={handleQuickView}
+              className="p-2 rounded-full bg-ink/80 text-parchment/70 hover:text-parchment hover:bg-ink transition-all shadow-lg"
+              title="Quick view"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
       
       {/* Product Info */}

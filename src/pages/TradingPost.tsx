@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
+import { HeatFilter } from "@/components/trading-post/HeatFilter";
+import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { Loader2, Search, X, Anchor, Crown, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,8 @@ export default function TradingPost() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [heatRange, setHeatRange] = useState<[number, number] | null>(null);
+  const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null);
 
   useEffect(() => {
     async function loadProducts() {
@@ -120,6 +124,19 @@ export default function TradingPost() {
           </div>
         </div>
       </section>
+
+      {/* Filters Section */}
+      {!isLoading && !error && (
+        <section className="py-4 border-b border-tyrian/20">
+          <div className="container mx-auto px-4">
+            <HeatFilter
+              minShu={0}
+              maxShu={2200000}
+              onRangeChange={setHeatRange}
+            />
+          </div>
+        </section>
+      )}
       
       {/* Loading State */}
       {isLoading && (
@@ -160,7 +177,7 @@ export default function TradingPost() {
             {searchResults && searchResults.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {searchResults.map((product) => (
-                  <ProductCard key={product.node.id} product={product} />
+                  <ProductCard key={product.node.id} product={product} onQuickView={setQuickViewProduct} />
                 ))}
               </div>
             ) : (
@@ -203,7 +220,7 @@ export default function TradingPost() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {cultivars.map((product) => (
-                    <ProductCard key={product.node.id} product={product} />
+                    <ProductCard key={product.node.id} product={product} onQuickView={setQuickViewProduct} />
                   ))}
                 </div>
               </div>
@@ -234,7 +251,7 @@ export default function TradingPost() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                   {consortiums.map((product) => (
-                    <ProductCard key={product.node.id} product={product} />
+                    <ProductCard key={product.node.id} product={product} onQuickView={setQuickViewProduct} />
                   ))}
                 </div>
               </div>
@@ -260,7 +277,7 @@ export default function TradingPost() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {merchandise.map((product) => (
-                    <ProductCard key={product.node.id} product={product} />
+                    <ProductCard key={product.node.id} product={product} onQuickView={setQuickViewProduct} />
                   ))}
                 </div>
               </div>
@@ -280,6 +297,13 @@ export default function TradingPost() {
       )}
       
       <Footer />
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={!!quickViewProduct}
+        onClose={() => setQuickViewProduct(null)}
+      />
     </div>
   );
 }
