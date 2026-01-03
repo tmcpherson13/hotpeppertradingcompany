@@ -426,7 +426,7 @@ export default function TradingPost() {
                 <h2 className="font-heading text-3xl md:text-4xl text-ink font-bold mb-4">
                   Consortium Journeys
                 </h2>
-                <p className="text-ink/60 leading-relaxed">
+                <p className="text-ink font-semibold leading-relaxed">
                   Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 
                   is evaluated for flavor profile, pungency, and regional provenance—selected not for volume, 
                   but for suitability. These are not products; they are releases, curated by route and lineage.
