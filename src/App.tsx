@@ -15,6 +15,7 @@ import { AdminRoute } from "./components/auth/AdminRoute";
 import PreColumbianOrigins from "./pages/history/PreColumbianOrigins";
 import ColumbianExchange from "./pages/history/ColumbianExchange";
 import GlobalIntegration from "./pages/history/GlobalIntegration";
+import SeedStartingGuide from "./pages/guides/SeedStartingGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
             <Route path="/history/columbian-exchange" element={<ColumbianExchange />} />
             <Route path="/history/global-integration" element={<GlobalIntegration />} />
+            <Route path="/guides/seed-starting" element={<SeedStartingGuide />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
