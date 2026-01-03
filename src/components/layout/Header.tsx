@@ -39,12 +39,23 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-tyrian border-b border-tyrian-dark/30">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* Logo with hover animation */}
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center">
-            <img 
+            <motion.img 
               src={logoDark} 
               alt="Hot Pepper Trading Company" 
               className="h-[6.2rem] w-auto brightness-0 invert"
+              whileHover={{ 
+                scale: 1.05,
+                rotate: [0, -2, 2, 0],
+                filter: 'brightness(0) invert(1) drop-shadow(0 0 8px rgba(212, 168, 75, 0.4))'
+              }}
+              transition={{ 
+                type: 'spring', 
+                stiffness: 400, 
+                damping: 25,
+                rotate: { duration: 0.4 }
+              }}
             />
           </Link>
 
