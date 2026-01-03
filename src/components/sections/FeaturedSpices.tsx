@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
-import { SpiritsOfAsiaModal } from '@/components/sections/SpiritsOfAsiaModal';
+import { SilkJadePassagesModal } from '@/components/sections/SilkJadePassagesModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
 import { LetterOfMarqueModal } from '@/components/sections/LetterOfMarqueModal';
@@ -444,7 +444,7 @@ export function FeaturedSpices() {
         open={africaModalOpen} 
         onOpenChange={setAfricaModalOpen} 
       />
-      <SpiritsOfAsiaModal
+      <SilkJadePassagesModal
         open={asiaModalOpen} 
         onOpenChange={setAsiaModalOpen} 
       />

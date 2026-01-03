@@ -8,9 +8,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
+import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 
-interface SpiritsOfAsiaModalProps {
+interface SilkJadePassagesModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -64,7 +64,7 @@ const pairings = [
   'Thai green or red curry',
 ];
 
-export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalProps) {
+export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30">
@@ -73,7 +73,7 @@ export function SpiritsOfAsiaModal({ open, onOpenChange }: SpiritsOfAsiaModalPro
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
-                src={spiritsOfAsiaImg}
+                src={silkJadePassagesImg}
                 alt="Silk & Jade Passages Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
