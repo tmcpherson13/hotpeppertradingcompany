@@ -18,8 +18,8 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Loader2, Check, X, ExternalLink, Edit2, Image as ImageIcon, 
-  ZoomIn, Trash2, Flower2, Camera, RefreshCw 
+  Loader2, Check, ExternalLink, Edit2, Image as ImageIcon, 
+  ZoomIn, Flower2, Camera, RefreshCw 
 } from 'lucide-react';
 
 interface EnrichmentReviewModalProps {
@@ -50,21 +50,20 @@ export function EnrichmentReviewModal({
     proposals: imageProposals, 
     isLoading: imagesLoading, 
     processingId,
-    isRegenerating,
     fetchProposals,
     approveProposal,
     rejectProposal,
     approveAll,
-    regenerateImages,
+    regenerateSingleImage,
   } = useImageProposals();
   
   const [reviewNotes, setReviewNotes] = useState('');
-  const [regenerationFeedback, setRegenerationFeedback] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState<Partial<EnrichmentQueueEntry>>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
-  const [showRegenerateInput, setShowRegenerateInput] = useState(false);
+  const [regeneratingImageId, setRegeneratingImageId] = useState<string | null>(null);
+  const [regenerateFeedback, setRegenerateFeedback] = useState('');
 
   const currentOverride = getOverride(pepper.id);
 
@@ -113,11 +112,11 @@ export function EnrichmentReviewModal({
     }
   };
 
-  const handleRegenerate = async () => {
-    const success = await regenerateImages(pepper.id, pepper.name, regenerationFeedback);
+  const handleRegenerateSingle = async (proposal: ImageProposal) => {
+    const success = await regenerateSingleImage(proposal, pepper.name, regenerateFeedback);
     if (success) {
-      setRegenerationFeedback('');
-      setShowRegenerateInput(false);
+      setRegeneratingImageId(null);
+      setRegenerateFeedback('');
     }
   };
 
@@ -300,31 +299,75 @@ export function EnrichmentReviewModal({
                                 )}
 
                                 {/* Actions */}
-                                <div className="flex gap-1 pt-1">
-                                  <Button
-                                    variant="default"
-                                    size="sm"
-                                    className="flex-1"
-                                    onClick={() => approveProposal(proposal)}
-                                    disabled={processingId === proposal.id}
-                                  >
-                                    {processingId === proposal.id ? (
-                                      <Loader2 className="w-4 h-4 animate-spin" />
-                                    ) : (
-                                      <>
-                                        <Check className="w-4 h-4 mr-1" />
-                                        Approve
-                                      </>
-                                    )}
-                                  </Button>
-                                  <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => rejectProposal(proposal)}
-                                    disabled={processingId === proposal.id}
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </Button>
+                                <div className="space-y-2 pt-1">
+                                  <div className="flex gap-1">
+                                    <Button
+                                      variant="default"
+                                      size="sm"
+                                      className="flex-1"
+                                      onClick={() => approveProposal(proposal)}
+                                      disabled={processingId === proposal.id}
+                                    >
+                                      {processingId === proposal.id ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                      ) : (
+                                        <>
+                                          <Check className="w-4 h-4 mr-1" />
+                                          Approve
+                                        </>
+                                      )}
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => setRegeneratingImageId(
+                                        regeneratingImageId === proposal.id ? null : proposal.id
+                                      )}
+                                      disabled={processingId === proposal.id}
+                                      className="border-amber-200 hover:bg-amber-50 text-amber-700"
+                                    >
+                                      <RefreshCw className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                  
+                                  {/* Per-image regenerate feedback */}
+                                  {regeneratingImageId === proposal.id && (
+                                    <div className="space-y-2 p-2 bg-amber-50/50 rounded border border-amber-200">
+                                      <Textarea
+                                        value={regenerateFeedback}
+                                        onChange={(e) => setRegenerateFeedback(e.target.value)}
+                                        placeholder="Describe changes... (e.g., 'more orange color', 'show stem')"
+                                        className="text-xs min-h-[60px] bg-parchment"
+                                      />
+                                      <div className="flex gap-1">
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="flex-1 text-xs"
+                                          onClick={() => {
+                                            setRegeneratingImageId(null);
+                                            setRegenerateFeedback('');
+                                          }}
+                                        >
+                                          Cancel
+                                        </Button>
+                                        <Button
+                                          variant="default"
+                                          size="sm"
+                                          className="flex-1 text-xs bg-amber-600 hover:bg-amber-700"
+                                          onClick={() => handleRegenerateSingle(proposal)}
+                                          disabled={processingId === proposal.id}
+                                        >
+                                          {processingId === proposal.id ? (
+                                            <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                                          ) : (
+                                            <RefreshCw className="w-3 h-3 mr-1" />
+                                          )}
+                                          Regenerate
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -376,64 +419,7 @@ export function EnrichmentReviewModal({
               />
             </div>
 
-            {/* Regeneration feedback input */}
-            {showRegenerateInput && (
-              <div className="border border-amber-200 bg-amber-50/50 rounded-lg p-3 space-y-2">
-                <Label htmlFor="regenerate-feedback" className="text-sm font-medium text-amber-800">
-                  Image Regeneration Feedback
-                </Label>
-                <Textarea
-                  id="regenerate-feedback"
-                  value={regenerationFeedback}
-                  onChange={(e) => setRegenerationFeedback(e.target.value)}
-                  placeholder="Describe what's wrong with the current images or how they should look instead... (e.g., 'The color should be more orange', 'Show the pepper with its stem', 'More wrinkled texture')"
-                  className="mt-1 bg-parchment min-h-[80px]"
-                />
-                <div className="flex gap-2 justify-end">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setShowRegenerateInput(false);
-                      setRegenerationFeedback('');
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={handleRegenerate}
-                    disabled={isRegenerating}
-                    className="bg-amber-600 hover:bg-amber-700"
-                  >
-                    {isRegenerating ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    ) : (
-                      <RefreshCw className="w-4 h-4 mr-2" />
-                    )}
-                    Regenerate Now
-                  </Button>
-                </div>
-              </div>
-            )}
-
             <div className="flex gap-2 justify-end flex-wrap">
-              {/* Reject text */}
-              <Button
-                variant="outline"
-                onClick={handleReject}
-                disabled={isApplying}
-                className="text-red-600 border-red-200 hover:bg-red-50"
-              >
-                {isApplying ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <X className="w-4 h-4 mr-2" />
-                )}
-                Reject Text
-              </Button>
-
               {/* Approve Text */}
               <Button
                 variant="outline"
@@ -465,21 +451,6 @@ export function EnrichmentReviewModal({
                   Approve Images ({pendingImageCount})
                 </Button>
               )}
-
-              {/* Regenerate Images */}
-              <Button
-                variant="outline"
-                onClick={() => setShowRegenerateInput(!showRegenerateInput)}
-                disabled={isRegenerating}
-                className="border-amber-200 hover:bg-amber-50 text-amber-700"
-              >
-                {isRegenerating ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                )}
-                Regenerate Images
-              </Button>
             </div>
           </div>
         </DialogContent>
