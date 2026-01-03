@@ -14,7 +14,7 @@ import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal
 import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
 import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
 import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
-import spiritsOfAsiaImg from '@/assets/consortium/spirits-of-asia.jpg';
+import silkJadeConceptA from '@/assets/consortium/silk-jade-passages-concept-a.jpg';
 import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
@@ -116,7 +116,7 @@ const spices: Spice[] = [
     weight: '3 oz / 85g',
     description: 'Where the caravans met the sea—overland through Aleppo and Anatolia, by sail through India and Southeast Asia.',
     price: '$35',
-    image: spiritsOfAsiaImg,
+    image: silkJadeConceptA,
     isConsortium: true,
     consortiumId: 'asia',
     regionLabel: 'SILK ROAD & ASIAN SEAS',
