@@ -505,6 +505,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_wishlists: {
+        Row: {
+          created_at: string
+          id: string
+          product_handle: string
+          product_id: string
+          product_image_url: string | null
+          product_price: string | null
+          product_title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_handle: string
+          product_id: string
+          product_image_url?: string | null
+          product_price?: string | null
+          product_title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_handle?: string
+          product_id?: string
+          product_image_url?: string | null
+          product_price?: string | null
+          product_title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

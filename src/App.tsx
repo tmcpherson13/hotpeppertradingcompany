@@ -9,6 +9,8 @@ import Compendium from "./pages/Compendium";
 import TradingPost from "./pages/TradingPost";
 import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
+import Wishlist from "./pages/Wishlist";
+import Origins from "./pages/Origins";
 import { AdminRoute } from "./components/auth/AdminRoute";
 import PreColumbianOrigins from "./pages/history/PreColumbianOrigins";
 import ColumbianExchange from "./pages/history/ColumbianExchange";
@@ -29,6 +31,8 @@ const App = () => (
             <Route path="/trading-post" element={<TradingPost />} />
             <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/compendium" element={<Compendium />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/origins" element={<Origins />} />
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
             <Route path="/history/columbian-exchange" element={<ColumbianExchange />} />

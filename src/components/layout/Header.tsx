@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Search, LogOut, Shield } from 'lucide-react';
+import { Menu, X, Search, LogOut, Shield, Heart } from 'lucide-react';
 import { CartDrawer } from '@/components/trading-post/CartDrawer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,7 +9,7 @@ import logoDark from '@/assets/logo-dark.svg';
 const navLinks = [
   { name: 'Trading Post', href: '/trading-post', isRoute: true },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
-  { name: 'Historical Context', href: '#heritage', isRoute: false },
+  { name: 'Origins Map', href: '/origins', isRoute: true },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
   { name: 'Inquiry', href: '#contact', isRoute: false },
 ];
@@ -78,6 +78,18 @@ export function Header() {
             <button className="hidden md:flex text-parchment/70 hover:text-gold transition-colors">
               <Search className="w-5 h-5" />
             </button>
+
+            {/* Wishlist Link */}
+            {user && (
+              <Link
+                to="/wishlist"
+                className="hidden md:flex p-2 text-parchment/80 hover:text-pepper-red transition-colors"
+                title="My Wishlist"
+              >
+                <Heart className="w-5 h-5" />
+              </Link>
+            )}
+
             <CartDrawer />
             
           {/* Auth buttons - Admin only (no public sign-in) */}

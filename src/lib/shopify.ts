@@ -145,10 +145,65 @@ const PRODUCTS_QUERY = `
   }
 `;
 
+// Fetch single product by handle
+const PRODUCT_BY_HANDLE_QUERY = `
+  query GetProductByHandle($handle: String!) {
+    productByHandle(handle: $handle) {
+      id
+      title
+      description
+      handle
+      productType
+      tags
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      images(first: 10) {
+        edges {
+          node {
+            url
+            altText
+          }
+        }
+      }
+      variants(first: 10) {
+        edges {
+          node {
+            id
+            title
+            price {
+              amount
+              currencyCode
+            }
+            availableForSale
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+      }
+      options {
+        name
+        values
+      }
+    }
+  }
+`;
+
 export async function fetchProducts(first: number = 100, query?: string): Promise<ShopifyProduct[]> {
   const data = await storefrontApiRequest(PRODUCTS_QUERY, { first, query });
   if (!data) return [];
   return data.data.products.edges;
+}
+
+export async function fetchProductByHandle(handle: string): Promise<ShopifyProduct | null> {
+  const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
+  if (!data || !data.data.productByHandle) return null;
+  return { node: data.data.productByHandle };
 }
 
 // Cart creation mutation
