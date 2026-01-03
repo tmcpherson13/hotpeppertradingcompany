@@ -16,14 +16,14 @@ async function applyWatermark(
   pepperName: string
 ): Promise<string> {
   try {
-    const watermarkPrompt = `Add a subtle, semi-transparent watermark logo in the bottom-right corner of this image. The watermark should be:
-- A simple vintage-style text mark reading "HPTC" (Hot Pepper Trading Company initials)
+    const watermarkPrompt = `Add a subtle, semi-transparent watermark in the bottom-right corner of this image. The watermark should be:
+- The Hot Pepper Trading Company logo: a circular emblem featuring a stylized chili pepper with decorative flourishes, similar to a vintage trade company seal
 - Positioned in the bottom-right corner with small margin
 - Very subtle at about 15-20% opacity
-- In a muted sepia or parchment color that complements the image
-- Small enough to not distract from the main subject
-- Professional and elegant, like a publisher's mark
-Do NOT change the main image content, only add this small corner watermark.`;
+- In a muted sepia, gold, or parchment tone that complements the image
+- Small enough to not distract from the main subject (approximately 5-8% of image width)
+- Professional and elegant, like an antique publisher's or trading company's mark
+Do NOT change the main image content, only add this small corner watermark logo.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
