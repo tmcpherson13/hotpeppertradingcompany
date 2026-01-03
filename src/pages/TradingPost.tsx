@@ -4,8 +4,9 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
 import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
+import { ConsortiumCards } from "@/components/trading-post/ConsortiumCards";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers } from "lucide-react";
+import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
@@ -306,6 +307,28 @@ export default function TradingPost() {
       {/* Categorized Products */}
       {!isLoading && !error && !isSearching && viewMode === 'categorized' && (
         <>
+          {/* Consortium Cards Section - Heritage Cards */}
+          <section className="py-16 bg-parchment/5">
+            <div className="container mx-auto px-4">
+              <div className="max-w-2xl mb-12">
+                <div className="flex items-center gap-3 mb-4">
+                  <ScrollText className="w-5 h-5 text-gold" />
+                  <span className="text-gold font-heading text-sm uppercase tracking-widest">The Cargo</span>
+                </div>
+                <h2 className="font-heading text-3xl md:text-4xl text-parchment mb-4">
+                  Regional Consortiums
+                </h2>
+                <p className="text-parchment/60 leading-relaxed">
+                  Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 
+                  is evaluated for flavor profile, pungency, and regional provenance—selected not for volume, 
+                  but for suitability. These are not products; they are releases, curated by route and lineage.
+                </p>
+              </div>
+              
+              <ConsortiumCards />
+            </div>
+          </section>
+
           {/* Cultivars Section - Entry Point */}
           {cultivars.length > 0 && (
             <section className="py-16 border-b border-tyrian/20">
