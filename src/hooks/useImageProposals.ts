@@ -30,6 +30,7 @@ export interface UseImageProposalsResult {
   approveAll: (proposals: ImageProposal[]) => Promise<void>;
   rejectAll: (proposals: ImageProposal[]) => Promise<void>;
   regenerateImages: (pepperId: string, pepperName: string, feedback?: string) => Promise<boolean>;
+  regenerateSingleImage: (proposal: ImageProposal, pepperName: string, feedback?: string) => Promise<boolean>;
 }
 
 export function useImageProposals(): UseImageProposalsResult {
@@ -206,7 +207,7 @@ export function useImageProposals(): UseImageProposalsResult {
         body: { 
           pepperId, 
           pepperName,
-          regenerationFeedback: feedback, // Pass feedback for prompt modification
+          regenerationFeedback: feedback,
         },
         headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
       });
@@ -239,6 +240,60 @@ export function useImageProposals(): UseImageProposalsResult {
     }
   }, [proposals, rejectProposal, fetchProposals, toast]);
 
+  const regenerateSingleImage = useCallback(async (
+    proposal: ImageProposal,
+    pepperName: string,
+    feedback?: string
+  ): Promise<boolean> => {
+    setProcessingId(proposal.id);
+    
+    try {
+      // First, reject the current proposal
+      await rejectProposal(proposal);
+
+      // Get auth token
+      const { data: session } = await supabase.auth.getSession();
+      const accessToken = session?.session?.access_token;
+
+      // Call the image generation edge function for just this image type
+      const response = await supabase.functions.invoke('pepper-image-generate', {
+        body: { 
+          pepperId: proposal.pepper_id, 
+          pepperName,
+          regenerationFeedback: feedback,
+          imageType: proposal.source_type, // Only regenerate this specific type
+        },
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Image regeneration failed');
+      }
+
+      toast({
+        title: 'Image Regenerating',
+        description: 'A new image is being generated. This may take a moment.',
+      });
+
+      // Refresh proposals after a short delay
+      setTimeout(() => {
+        fetchProposals(proposal.pepper_id);
+      }, 3000);
+
+      return true;
+    } catch (err) {
+      console.error('Error regenerating single image:', err);
+      toast({
+        title: 'Regeneration Failed',
+        description: err instanceof Error ? err.message : 'Failed to regenerate image',
+        variant: 'destructive',
+      });
+      return false;
+    } finally {
+      setProcessingId(null);
+    }
+  }, [rejectProposal, fetchProposals, toast]);
+
   return {
     proposals,
     isLoading,
@@ -250,5 +305,6 @@ export function useImageProposals(): UseImageProposalsResult {
     approveAll,
     rejectAll,
     regenerateImages,
+    regenerateSingleImage,
   };
 }

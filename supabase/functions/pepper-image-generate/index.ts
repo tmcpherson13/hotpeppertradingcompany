@@ -137,7 +137,8 @@ serve(async (req) => {
       pepperName, 
       jobId, 
       referenceImageUrls = [],
-      regenerationFeedback 
+      regenerationFeedback,
+      imageType, // Optional: if provided, only generate this specific type
     } = await req.json();
 
     if (!pepperId || !pepperName) {
@@ -276,11 +277,16 @@ serve(async (req) => {
     await updateJobProgress('image-generation');
     console.log('Generating images...');
 
-    const imageTypes = [
+    const allImageTypes = [
       { type: 'ai-botanical', template: BOTANICAL_PROMPT_TEMPLATE, aspectRatio: '3:4' },
       { type: 'ai-photo-plant', template: PHOTO_PLANT_PROMPT_TEMPLATE, aspectRatio: '4:3' },
       { type: 'ai-photo-individual', template: PHOTO_INDIVIDUAL_PROMPT_TEMPLATE, aspectRatio: '1:1' },
     ];
+
+    // Filter to specific type if provided
+    const imageTypes = imageType 
+      ? allImageTypes.filter(t => t.type === imageType)
+      : allImageTypes;
 
     for (const { type, template, aspectRatio } of imageTypes) {
       try {
