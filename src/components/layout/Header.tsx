@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingCart, Search, LogOut, Shield } from 'lucide-react';
+import { Menu, X, Search, LogOut, Shield } from 'lucide-react';
+import { CartDrawer } from '@/components/trading-post/CartDrawer';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import logoDark from '@/assets/logo-dark.svg';
 
 const navLinks = [
-  { name: 'The Cargo', href: '#collection', isRoute: false },
+  { name: 'Trading Post', href: '/trading-post', isRoute: true },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
   { name: 'Historical Context', href: '#heritage', isRoute: false },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
@@ -77,12 +78,7 @@ export function Header() {
             <button className="hidden md:flex text-parchment/70 hover:text-gold transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <button className="relative text-parchment/70 hover:text-gold transition-colors">
-              <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-ink text-[10px] font-bold flex items-center justify-center">
-                0
-              </span>
-            </button>
+            <CartDrawer />
             
           {/* Auth buttons - Admin only (no public sign-in) */}
           {!isLoading && user && (
