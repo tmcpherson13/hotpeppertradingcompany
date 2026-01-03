@@ -167,7 +167,6 @@ serve(async (req) => {
     // Track email status
     let emailSent = false;
     let emailError: string | null = null;
-    let emailFromUsed: string | null = null;
 
     // Send welcome email
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
@@ -179,70 +178,38 @@ serve(async (req) => {
         
         console.log("Resending welcome email to:", email, "with login URL:", loginUrl);
 
-        const PRIMARY_FROM = "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>";
-        const FALLBACK_FROM = "Hot Pepper Trading Company <onboarding@resend.dev>";
+        const emailResponse = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${resendApiKey}`,
+          },
+          body: JSON.stringify({
+            from: "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>",
+            to: [email],
+            subject: "Your Password Has Been Reset - Hot Pepper Trading Company",
+            html: `
+              <h1>Hello, ${displayName}!</h1>
+              <p>Your administrator password has been reset.</p>
+              <h2>Your New Login Credentials</h2>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>New Temporary Password:</strong> ${temporaryPassword}</p>
+              <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+              <p><em>You will be required to change your password upon login.</em></p>
+              <hr>
+              <p>If you did not request this reset, please contact your administrator immediately.</p>
+              <p>Regards,<br>Hot Pepper Trading Company</p>
+            `,
+          }),
+        });
 
-        const sendWithFrom = async (from: string) => {
-          return await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${resendApiKey}`,
-            },
-            body: JSON.stringify({
-              from,
-              to: [email],
-              subject: "Your Password Has Been Reset - Hot Pepper Trading Company",
-              html: `
-                <h1>Hello, ${displayName}!</h1>
-                <p>Your administrator password has been reset.</p>
-                <h2>Your New Login Credentials</h2>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>New Temporary Password:</strong> ${temporaryPassword}</p>
-                <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
-                <p><em>You will be required to change your password upon login.</em></p>
-                <hr>
-                <p>If you did not request this reset, please contact your administrator immediately.</p>
-                <p>Regards,<br>Hot Pepper Trading Company</p>
-              `,
-            }),
-          });
-        };
-
-        // Try primary sender first; if domain isn't verified yet, retry with Resend default sender.
-        const primaryResponse = await sendWithFrom(PRIMARY_FROM);
-
-        if (primaryResponse.ok) {
+        if (emailResponse.ok) {
           emailSent = true;
-          emailFromUsed = PRIMARY_FROM;
           console.log("Welcome email resent successfully to:", email);
         } else {
-          const primaryBody = await primaryResponse.text();
-
-          const isDomainUnverified403 =
-            primaryResponse.status === 403 &&
-            primaryBody.toLowerCase().includes("domain") &&
-            primaryBody.toLowerCase().includes("not verified");
-
-          if (isDomainUnverified403) {
-            console.warn(
-              "Primary sender domain not verified yet; retrying with fallback sender."
-            );
-
-            const fallbackResponse = await sendWithFrom(FALLBACK_FROM);
-            if (fallbackResponse.ok) {
-              emailSent = true;
-              emailFromUsed = FALLBACK_FROM;
-              console.log("Welcome email resent via fallback sender to:", email);
-            } else {
-              const fallbackBody = await fallbackResponse.text();
-              emailError = `Email API error: ${fallbackResponse.status}`;
-              console.error("Email send failed (fallback):", fallbackBody);
-            }
-          } else {
-            emailError = `Email API error: ${primaryResponse.status}`;
-            console.error("Email send failed:", primaryBody);
-          }
+          const errorBody = await emailResponse.text();
+          emailError = `Email API error: ${emailResponse.status}`;
+          console.error("Email send failed:", errorBody);
         }
       } catch (err: any) {
         emailError = err.message || "Failed to send email";
@@ -266,7 +233,6 @@ serve(async (req) => {
           display_name: displayName,
           email_sent: emailSent,
           email_error: emailError,
-          email_from: emailFromUsed,
         },
       });
 
@@ -282,11 +248,8 @@ serve(async (req) => {
         temporaryPassword,
         emailSent,
         emailError,
-        emailFrom: emailFromUsed,
         message: emailSent
-          ? (emailFromUsed?.includes("resend.dev")
-              ? "Welcome email resent successfully (temporary sender)"
-              : "Welcome email resent successfully")
+          ? "Welcome email resent successfully"
           : "Password reset (email not sent)",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }

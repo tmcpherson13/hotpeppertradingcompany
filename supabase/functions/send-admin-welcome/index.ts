@@ -36,88 +36,62 @@ serve(async (req) => {
       );
     }
 
-    const PRIMARY_FROM = "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>";
-    const FALLBACK_FROM = "Hot Pepper Trading Company <onboarding@resend.dev>";
+    const emailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${resendApiKey}`,
+      },
+      body: JSON.stringify({
+        from: "Hot Pepper Trading Company <noreply@hotpeppertradingcompany.com>",
+        to: [email],
+        subject: "Welcome to the Hot Pepper Trading Company Administration",
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <style>
+              body { font-family: Georgia, serif; line-height: 1.6; color: #2c1810; max-width: 600px; margin: 0 auto; padding: 20px; }
+              h1 { color: #722f37; border-bottom: 2px solid #c9a227; padding-bottom: 10px; }
+              h2 { color: #722f37; margin-top: 30px; }
+              .credentials { background: #f5f0e6; border: 1px solid #c9a227; padding: 20px; margin: 20px 0; }
+              .credentials p { margin: 5px 0; }
+              .password { font-family: monospace; background: #fff; padding: 8px 12px; border: 1px solid #ddd; display: inline-block; }
+              .note { font-style: italic; color: #666; background: #fff3cd; padding: 10px; border-left: 4px solid #c9a227; }
+              .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 14px; }
+            </style>
+          </head>
+          <body>
+            <h1>Welcome, ${displayName}!</h1>
+            
+            <p>You have been granted administrator access to the <strong>Hot Pepper Trading Company</strong>.</p>
+            
+            <h2>Your Login Credentials</h2>
+            
+            <div class="credentials">
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Temporary Password:</strong></p>
+              <p class="password">${temporaryPassword}</p>
+            </div>
+            
+            <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
+            
+            <div class="note">
+              <strong>Important:</strong> You will be required to change your password upon first login. 
+              Please choose a strong password with at least 12 characters, including uppercase, lowercase, numbers, and special characters.
+            </div>
+            
+            <div class="footer">
+              <p>If you did not expect this invitation or have any questions, please contact your administrator.</p>
+              <p>Regards,<br><strong>Hot Pepper Trading Company</strong></p>
+            </div>
+          </body>
+          </html>
+        `,
+      }),
+    });
 
-    const sendWithFrom = async (from: string) => {
-      return await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${resendApiKey}`,
-        },
-        body: JSON.stringify({
-          from,
-          to: [email],
-          subject: "Welcome to the Hot Pepper Trading Company Administration",
-          html: `
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <style>
-                body { font-family: Georgia, serif; line-height: 1.6; color: #2c1810; max-width: 600px; margin: 0 auto; padding: 20px; }
-                h1 { color: #722f37; border-bottom: 2px solid #c9a227; padding-bottom: 10px; }
-                h2 { color: #722f37; margin-top: 30px; }
-                .credentials { background: #f5f0e6; border: 1px solid #c9a227; padding: 20px; margin: 20px 0; }
-                .credentials p { margin: 5px 0; }
-                .password { font-family: monospace; background: #fff; padding: 8px 12px; border: 1px solid #ddd; display: inline-block; }
-                .note { font-style: italic; color: #666; background: #fff3cd; padding: 10px; border-left: 4px solid #c9a227; }
-                .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 14px; }
-              </style>
-            </head>
-            <body>
-              <h1>Welcome, ${displayName}!</h1>
-              
-              <p>You have been granted administrator access to the <strong>Hot Pepper Trading Company</strong>.</p>
-              
-              <h2>Your Login Credentials</h2>
-              
-              <div class="credentials">
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Temporary Password:</strong></p>
-                <p class="password">${temporaryPassword}</p>
-              </div>
-              
-              <p><strong>Login URL:</strong> <a href="${loginUrl}">${loginUrl}</a></p>
-              
-              <div class="note">
-                <strong>Important:</strong> You will be required to change your password upon first login. 
-                Please choose a strong password with at least 12 characters, including uppercase, lowercase, numbers, and special characters.
-              </div>
-              
-              <div class="footer">
-                <p>If you did not expect this invitation or have any questions, please contact your administrator.</p>
-                <p>Regards,<br><strong>Hot Pepper Trading Company</strong></p>
-              </div>
-            </body>
-            </html>
-          `,
-        }),
-      });
-    };
-
-    const primaryResponse = await sendWithFrom(PRIMARY_FROM);
-
-    if (!primaryResponse.ok) {
-      const primaryBody = await primaryResponse.text();
-
-      const isDomainUnverified403 =
-        primaryResponse.status === 403 &&
-        primaryBody.toLowerCase().includes("domain") &&
-        primaryBody.toLowerCase().includes("not verified");
-
-      if (isDomainUnverified403) {
-        console.warn(
-          "Primary sender domain not verified yet; retrying with fallback sender."
-        );
-        const fallbackResponse = await sendWithFrom(FALLBACK_FROM);
-        console.log("Welcome email send response (fallback):", fallbackResponse.status);
-      } else {
-        console.log("Welcome email send response (primary):", primaryResponse.status);
-      }
-    } else {
-      console.log("Welcome email send response (primary):", primaryResponse.status);
-    }
+    console.log("Welcome email send response:", emailResponse.status);
 
     return new Response(
       JSON.stringify({ success: true }),
