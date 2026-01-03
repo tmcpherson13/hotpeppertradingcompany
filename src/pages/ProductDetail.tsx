@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ShopifyProduct, CartItem, storefrontApiRequest } from "@/lib/shopify";
+import { ShopifyProduct, CartItem, storefrontApiRequest, fetchProducts } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, ShoppingCart, Check, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -63,9 +63,47 @@ const PRODUCT_QUERY = `
   }
 `;
 
+interface RelatedProductCardProps {
+  product: ShopifyProduct;
+}
+
+function RelatedProductCard({ product }: RelatedProductCardProps) {
+  const { node } = product;
+  const price = parseFloat(node.priceRange.minVariantPrice.amount);
+  const imageUrl = node.images.edges[0]?.node.url;
+  
+  return (
+    <Link 
+      to={`/product/${node.handle}`}
+      className="group block bg-ink/50 border border-tyrian/30 rounded-sm overflow-hidden hover:border-gold/40 transition-all"
+    >
+      <div className="aspect-square overflow-hidden bg-parchment/5">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={node.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-parchment/30">
+            No image
+          </div>
+        )}
+      </div>
+      <div className="p-3">
+        <h4 className="font-heading text-sm text-parchment line-clamp-1 group-hover:text-gold transition-colors">
+          {node.title}
+        </h4>
+        <p className="font-heading text-gold mt-1">${price.toFixed(2)}</p>
+      </div>
+    </Link>
+  );
+}
+
 export default function ProductDetail() {
   const { handle } = useParams<{ handle: string }>();
   const [product, setProduct] = useState<ShopifyProduct["node"] | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
@@ -74,18 +112,32 @@ export default function ProductDetail() {
   const addItem = useCartStore(state => state.addItem);
 
   useEffect(() => {
-    async function fetchProduct() {
+    async function fetchProductAndRelated() {
       if (!handle) return;
       
       try {
-        const data = await storefrontApiRequest(PRODUCT_QUERY, { handle });
-        if (data?.data?.productByHandle) {
-          setProduct(data.data.productByHandle);
+        const [productData, allProducts] = await Promise.all([
+          storefrontApiRequest(PRODUCT_QUERY, { handle }),
+          fetchProducts(100)
+        ]);
+        
+        if (productData?.data?.productByHandle) {
+          const currentProduct = productData.data.productByHandle;
+          setProduct(currentProduct);
+          
           // Set default variant
-          const firstVariant = data.data.productByHandle.variants.edges[0]?.node;
+          const firstVariant = currentProduct.variants.edges[0]?.node;
           if (firstVariant) {
             setSelectedVariantId(firstVariant.id);
           }
+          
+          // Filter related products (same product type, excluding current product)
+          const related = allProducts.filter(p => 
+            p.node.handle !== handle && 
+            p.node.productType === currentProduct.productType
+          ).slice(0, 4);
+          
+          setRelatedProducts(related);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -94,7 +146,13 @@ export default function ProductDetail() {
       }
     }
 
-    fetchProduct();
+    // Reset state when handle changes
+    setLoading(true);
+    setCurrentImageIndex(0);
+    setQuantity(1);
+    setIsAdded(false);
+    
+    fetchProductAndRelated();
   }, [handle]);
 
   const images = product?.images.edges || [];
@@ -364,6 +422,20 @@ export default function ProductDetail() {
               )}
             </div>
           </div>
+          
+          {/* Related Products */}
+          {relatedProducts.length > 0 && (
+            <div className="mt-16 pt-12 border-t border-tyrian/30">
+              <h2 className="font-heading text-2xl text-parchment mb-8">
+                {isConsortium ? "Other Consortiums" : "Similar Cultivars"}
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {relatedProducts.map(p => (
+                  <RelatedProductCard key={p.node.id} product={p} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
       
