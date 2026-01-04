@@ -204,7 +204,7 @@ export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesMo
               <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
-                  <span className="font-display text-ink">3 oz / 85g</span>
+                  <span className="font-display text-ink">5 × 2oz</span>
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>

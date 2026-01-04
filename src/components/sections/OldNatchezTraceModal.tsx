@@ -195,7 +195,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
                 "Where the river met the trail—fire that traveled by flatboat and footpath."
               </p>
               <div className="flex items-center justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground font-heading">
-                <span>3 oz / 85g</span>
+                <span>5 × 2oz</span>
                 <span className="text-primary">•</span>
                 <span className="text-primary font-semibold">$38</span>
                 <span className="text-primary">•</span>

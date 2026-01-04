@@ -196,7 +196,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
               <div className="flex flex-wrap justify-center gap-8 text-sm text-center">
                 <div>
                   <span className="text-muted-foreground uppercase tracking-wider text-xs block mb-1">Net Weight</span>
-                  <p className="text-ink font-display">2.5 oz (70g)</p>
+                  <p className="text-ink font-display">5 × 2oz</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground uppercase tracking-wider text-xs block mb-1">Price</span>
