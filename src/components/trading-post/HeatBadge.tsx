@@ -48,31 +48,31 @@ function SkullAndCrossbones({ className, tier }: { className?: string; tier: Hea
       
       {/* Skull */}
       <g>
-        {/* Cranium - dome with temporal narrowing */}
+        {/* Cranium - wider dome with temporal narrowing */}
         <path d="
-          M50 8
-          C72 8 82 20 82 38
-          C82 48 78 55 72 60
-          L72 66
-          C72 70 68 72 64 72
-          L60 72 L60 78 L56 78 L56 72
-          L44 72 L44 78 L40 78 L40 72
-          L36 72
-          C32 72 28 70 28 66
-          L28 60
-          C22 55 18 48 18 38
-          C18 20 28 8 50 8
+          M50 6
+          C75 6 88 20 88 40
+          C88 52 82 58 74 62
+          L74 68
+          C74 72 70 74 66 74
+          L62 74 L62 80 L56 80 L56 74
+          L44 74 L44 80 L38 80 L38 74
+          L34 74
+          C30 74 26 72 26 68
+          L26 62
+          C18 58 12 52 12 40
+          C12 20 25 6 50 6
           Z
         " />
         
-        {/* Left eye socket */}
-        <ellipse cx="36" cy="38" rx="9" ry="11" fill="black" />
+        {/* Left eye socket - larger */}
+        <ellipse cx="34" cy="38" rx="12" ry="14" fill="black" />
         
-        {/* Right eye socket */}
-        <ellipse cx="64" cy="38" rx="9" ry="11" fill="black" />
+        {/* Right eye socket - larger */}
+        <ellipse cx="66" cy="38" rx="12" ry="14" fill="black" />
         
         {/* Nasal cavity - inverted heart shape */}
-        <path d="M50 50 C46 50 44 54 44 58 L50 66 L56 58 C56 54 54 50 50 50 Z" fill="black" />
+        <path d="M50 52 C45 52 42 56 42 60 L50 70 L58 60 C58 56 55 52 50 52 Z" fill="black" />
       </g>
     </svg>
   );
