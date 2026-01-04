@@ -21,82 +21,59 @@ const tierColors: Record<HeatTier, string> = {
   5: 'text-red-900',
 };
 
-// Custom Skull & Crossbones SVG component - realistic maritime danger aesthetic
+// Custom Skull & Crossbones SVG component - clean anatomical maritime design
 function SkullAndCrossbones({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 36" fill="none" className={className}>
-      {/* Skull cranium - more anatomical shape */}
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      {/* Crossbones behind skull */}
       <path 
-        d="M16 2C9 2 4 7 4 14C4 18 6 21 9 23L8 26H24L23 23C26 21 28 18 28 14C28 7 23 2 16 2Z" 
+        d="M3 19L21 5" 
         stroke="currentColor" 
-        strokeWidth="1.5"
+        strokeWidth="2.5" 
+        strokeLinecap="round"
+      />
+      <path 
+        d="M3 5L21 19" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeLinecap="round"
+      />
+      {/* Bone end knobs */}
+      <circle cx="3" cy="19" r="1.8" fill="currentColor" />
+      <circle cx="21" cy="5" r="1.8" fill="currentColor" />
+      <circle cx="3" cy="5" r="1.8" fill="currentColor" />
+      <circle cx="21" cy="19" r="1.8" fill="currentColor" />
+      
+      {/* Skull cranium */}
+      <ellipse 
+        cx="12" 
+        cy="9" 
+        rx="7" 
+        ry="6.5" 
         fill="currentColor" 
-        fillOpacity="0.15" 
+        fillOpacity="0.15"
+        stroke="currentColor"
+        strokeWidth="1.5"
       />
-      {/* Cheekbones / temporal area */}
+      
+      {/* Eye sockets */}
+      <circle cx="9" cy="8" r="2" fill="currentColor" />
+      <circle cx="15" cy="8" r="2" fill="currentColor" />
+      
+      {/* Nasal cavity - heart/triangle shape */}
       <path 
-        d="M6 15C6 15 4 16 4 18C4 19.5 5.5 21 8 22" 
-        stroke="currentColor" 
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.6"
-      />
-      <path 
-        d="M26 15C26 15 28 16 28 18C28 19.5 26.5 21 24 22" 
-        stroke="currentColor" 
-        strokeWidth="1"
-        strokeLinecap="round"
-        opacity="0.6"
-      />
-      {/* Left eye socket - deep orbital */}
-      <ellipse cx="11" cy="12" rx="3" ry="3.5" fill="currentColor" />
-      <ellipse cx="11" cy="11.5" rx="1.5" ry="2" fill="currentColor" fillOpacity="0.3" />
-      {/* Right eye socket - deep orbital */}
-      <ellipse cx="21" cy="12" rx="3" ry="3.5" fill="currentColor" />
-      <ellipse cx="21" cy="11.5" rx="1.5" ry="2" fill="currentColor" fillOpacity="0.3" />
-      {/* Nasal cavity - triangular aperture */}
-      <path 
-        d="M16 15L13.5 20L16 19L18.5 20L16 15Z" 
+        d="M12 11L10.5 14L12 13.5L13.5 14L12 11Z" 
         fill="currentColor"
       />
-      {/* Maxilla (upper jaw) ridge */}
-      <path 
-        d="M10 22H22" 
-        stroke="currentColor" 
-        strokeWidth="1"
-        opacity="0.5"
-      />
-      {/* Teeth - more anatomical */}
-      <rect x="10" y="23" width="2" height="3" rx="0.5" fill="currentColor" />
-      <rect x="13" y="23" width="2" height="3.5" rx="0.5" fill="currentColor" />
-      <rect x="17" y="23" width="2" height="3.5" rx="0.5" fill="currentColor" />
-      <rect x="20" y="23" width="2" height="3" rx="0.5" fill="currentColor" />
       
-      {/* Crossbones - thicker with proper bone ends */}
-      {/* Left-to-right bone */}
+      {/* Jaw area */}
       <path 
-        d="M4 29L28 33" 
+        d="M7 14C7 14 9 16 12 16C15 16 17 14 17 14" 
         stroke="currentColor" 
-        strokeWidth="2.5" 
+        strokeWidth="1.2"
         strokeLinecap="round"
+        fill="none"
       />
-      {/* Right-to-left bone */}
-      <path 
-        d="M4 33L28 29" 
-        stroke="currentColor" 
-        strokeWidth="2.5" 
-        strokeLinecap="round"
-      />
-      {/* Bone end knobs - epiphyses */}
-      <circle cx="4" cy="29" r="2" fill="currentColor" />
-      <circle cx="28" cy="33" r="2" fill="currentColor" />
-      <circle cx="4" cy="33" r="2" fill="currentColor" />
-      <circle cx="28" cy="29" r="2" fill="currentColor" />
-      {/* Secondary knobs for realism */}
-      <circle cx="5.5" cy="28" r="1.2" fill="currentColor" opacity="0.7" />
-      <circle cx="26.5" cy="34" r="1.2" fill="currentColor" opacity="0.7" />
-      <circle cx="5.5" cy="34" r="1.2" fill="currentColor" opacity="0.7" />
-      <circle cx="26.5" cy="28" r="1.2" fill="currentColor" opacity="0.7" />
     </svg>
   );
 }
