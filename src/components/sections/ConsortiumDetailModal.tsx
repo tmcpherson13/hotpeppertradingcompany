@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
+import embersOfAfricaImg from '@/assets/consortium/embers-of-africa.jpg';
 
 interface ConsortiumDetailModalProps {
   open: boolean;
@@ -75,8 +75,8 @@ export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailMo
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">
               <img
-                src={echoesOfAfricaImg}
-                alt="Echoes of Africa Pepper Consortium"
+                src={embersOfAfricaImg}
+                alt="Embers of Africa Pepper Consortium"
                 className="w-full h-full object-cover sepia-[0.15]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
