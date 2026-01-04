@@ -45,3 +45,14 @@ Before marking any task complete:
 - Retain context from all user requests in current conversation
 - Cross-reference new requests against previous fixes
 - Identify when a "new" request is actually a repeat of an unresolved issue
+
+### 7. Anti-Redundancy Protocol for Suggestions
+- NEVER suggest actions that are already part of the current execution plan
+- Action suggestions should only offer NEW directions not already discussed
+- If plan is approved, execute immediately without re-confirming items in plan
+
+### 8. Visual Audit Analysis Requirements
+- Screenshots must be ANALYZED, not just captured
+- Button visibility must be verified visually (not just code review)
+- Component context matters: verify which components render in which view modes
+- After making visual fixes, re-screenshot to confirm fix worked
