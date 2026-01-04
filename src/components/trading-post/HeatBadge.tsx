@@ -29,33 +29,51 @@ function SkullAndCrossbones({ className, tier }: { className?: string; tier: Hea
       className={`${className} ${tierColors[tier]}`}
       fill="currentColor"
     >
-      {/* Crossbones - rendered first (behind skull) */}
-      {/* Left bone */}
-      <ellipse cx="10" cy="82" rx="6" ry="5" />
-      <ellipse cx="10" cy="92" rx="6" ry="5" />
-      <ellipse cx="90" cy="8" rx="6" ry="5" />
-      <ellipse cx="90" cy="18" rx="6" ry="5" />
-      <path d="M15 87 L85 13" stroke="currentColor" strokeWidth="10" strokeLinecap="round" />
-      {/* Right bone */}
-      <ellipse cx="90" cy="82" rx="6" ry="5" />
-      <ellipse cx="90" cy="92" rx="6" ry="5" />
-      <ellipse cx="10" cy="8" rx="6" ry="5" />
-      <ellipse cx="10" cy="18" rx="6" ry="5" />
-      <path d="M85 87 L15 13" stroke="currentColor" strokeWidth="10" strokeLinecap="round" />
+      {/* Crossbones - behind skull */}
+      <g>
+        {/* Bone 1: top-left to bottom-right */}
+        <ellipse cx="8" cy="12" rx="5" ry="4" />
+        <ellipse cx="8" cy="20" rx="5" ry="4" />
+        <path d="M13 16 L87 84" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+        <ellipse cx="92" cy="80" rx="5" ry="4" />
+        <ellipse cx="92" cy="88" rx="5" ry="4" />
+        
+        {/* Bone 2: top-right to bottom-left */}
+        <ellipse cx="92" cy="12" rx="5" ry="4" />
+        <ellipse cx="92" cy="20" rx="5" ry="4" />
+        <path d="M87 16 L13 84" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+        <ellipse cx="8" cy="80" rx="5" ry="4" />
+        <ellipse cx="8" cy="88" rx="5" ry="4" />
+      </g>
       
-      {/* Skull - rendered on top */}
-      {/* Main cranium - round shape */}
-      <ellipse cx="50" cy="42" rx="32" ry="30" />
-      {/* Lower jaw area - smooth continuation */}
-      <ellipse cx="50" cy="58" rx="22" ry="14" />
-      
-      {/* Left eye socket - large oval */}
-      <ellipse cx="38" cy="40" rx="10" ry="12" fill="black" />
-      {/* Right eye socket - large oval */}
-      <ellipse cx="62" cy="40" rx="10" ry="12" fill="black" />
-      
-      {/* Nasal cavity - heart/inverted triangle shape */}
-      <path d="M50 52 L44 60 Q50 64 56 60 Z" fill="black" />
+      {/* Skull */}
+      <g>
+        {/* Cranium - dome with temporal narrowing */}
+        <path d="
+          M50 8
+          C72 8 82 20 82 38
+          C82 48 78 55 72 60
+          L72 66
+          C72 70 68 72 64 72
+          L60 72 L60 78 L56 78 L56 72
+          L44 72 L44 78 L40 78 L40 72
+          L36 72
+          C32 72 28 70 28 66
+          L28 60
+          C22 55 18 48 18 38
+          C18 20 28 8 50 8
+          Z
+        " />
+        
+        {/* Left eye socket */}
+        <ellipse cx="36" cy="38" rx="9" ry="11" fill="black" />
+        
+        {/* Right eye socket */}
+        <ellipse cx="64" cy="38" rx="9" ry="11" fill="black" />
+        
+        {/* Nasal cavity - inverted heart shape */}
+        <path d="M50 50 C46 50 44 54 44 58 L50 66 L56 58 C56 54 54 50 50 50 Z" fill="black" />
+      </g>
     </svg>
   );
 }
