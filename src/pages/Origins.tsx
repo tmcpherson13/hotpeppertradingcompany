@@ -85,8 +85,10 @@ export default function Origins() {
     if (!mapContainer.current) return;
 
     // Transparent map - antique artwork is the visual backdrop
+    // Locked view to keep markers anchored to static artwork
     map.current = new maplibregl.Map({
       container: mapContainer.current,
+      interactive: false, // Disable all interactions to keep markers anchored
       style: {
         version: 8,
         sources: {},
@@ -103,11 +105,18 @@ export default function Origins() {
       },
       center: [-20, 20],
       zoom: 1.8,
-      minZoom: 1.5,
-      maxZoom: 6
+      minZoom: 1.8,
+      maxZoom: 1.8
     });
 
-    map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
+    // Explicitly disable all interactions as safeguard
+    map.current.scrollZoom.disable();
+    map.current.boxZoom.disable();
+    map.current.dragRotate.disable();
+    map.current.dragPan.disable();
+    map.current.keyboard.disable();
+    map.current.doubleClickZoom.disable();
+    map.current.touchZoomRotate.disable();
 
     // Add markers for each origin with antique styling
     originClusters.forEach(cluster => {
@@ -126,11 +135,7 @@ export default function Origins() {
 
       el.addEventListener('click', () => {
         setSelectedOrigin(cluster);
-        map.current?.flyTo({
-          center: cluster.coordinates,
-          zoom: 4,
-          duration: 1000
-        });
+        // No flyTo - map stays fixed to keep markers anchored to artwork
       });
 
       new maplibregl.Marker({ element: el })
