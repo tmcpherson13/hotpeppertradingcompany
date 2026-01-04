@@ -56,3 +56,33 @@ Before marking any task complete:
 - Button visibility must be verified visually (not just code review)
 - Component context matters: verify which components render in which view modes
 - After making visual fixes, re-screenshot to confirm fix worked
+
+### 9. Self-Verification Mandate (CRITICAL)
+
+**PROHIBITION**: NEVER ask the user to test, verify, or confirm something that can be verified using available tools.
+
+**Required Workflow for UI Changes**:
+1. Make code changes
+2. IMMEDIATELY use screenshot tool to capture the affected view
+3. ANALYZE the screenshot for the specific issue being fixed
+4. If issue persists, iterate on the fix
+5. Re-screenshot to confirm resolution
+6. ONLY report completion after visual confirmation
+
+**Required Workflow for Functional Changes**:
+1. Make code changes
+2. Use appropriate verification tools (console logs, network requests, database queries)
+3. If verification fails, debug and iterate
+4. ONLY report completion after functional confirmation
+
+**Explicit Violations (NEVER say these)**:
+- "Please test this and let me know if it works"
+- "Can you verify this is working?"
+- "Let me know if the issue is resolved"
+- "Try clicking the button to see if..."
+- "Check if the modal opens correctly"
+
+**Accountability**:
+- Reporting a fix as complete when it remains broken is a standards violation
+- If tools cannot verify a fix, explicitly state this limitation
+- User trust is damaged by false completion claims
