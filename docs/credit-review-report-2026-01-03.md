@@ -7,6 +7,26 @@
 
 ---
 
+## Violation Count Summary
+
+| Category | Count |
+|----------|-------|
+| **Total Execution Standards Violations** | **5** |
+| Failed Remediation Attempts | 2 |
+| Credits Consumed Without Resolution | Multiple |
+
+### Violations Documented
+
+1. **Multi-Part Request Protocol** — Items marked complete without individual verification
+2. **Visual Integrity Scan** — Card height fix not visually verified before completion
+3. **Verification Requirements** — Button functionality not tested before declaring fix complete
+4. **Self-Verification Mandate** — Fixes declared complete based on code changes, not observed behavior
+5. **Anti-Repetition Protocol** — Attempt A2 repeated similar strategies without diagnosing A1 failure
+
+Each violation is detailed with evidence in Section 3 below.
+
+---
+
 ## 1. Executive Summary
 
 On January 3, 2026, two major remediation attempts were made to fix critical e-commerce functionality on the Trading Post page. Both attempts failed to resolve the issues despite significant code changes and credit consumption.
