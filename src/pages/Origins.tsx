@@ -342,7 +342,7 @@ export default function Origins() {
                       {selectedOrigin.peppers.slice(0, 10).map(pepper => (
                         <Link
                           key={pepper.id}
-                          to={`/compendium?pepper=${pepper.id}`}
+                          to={`/compendium?pepper=${pepper.id}&from=origins`}
                           className="block p-2 hover:bg-tyrian/10 rounded transition-colors"
                         >
                           <div className="flex items-center gap-3">

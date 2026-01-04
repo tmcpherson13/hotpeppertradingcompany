@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/peppers';
-import { Flame, MapPin, Package, Pencil, Check, X, ArrowLeft } from 'lucide-react';
+import { Flame, MapPin, Package, Pencil, Check, X } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import logoDark from '@/assets/logo-dark.svg';
+import { CompassBack } from '@/components/ui/CompassBack';
 
 // Helper to get gallery from pepper (with legacy fallback) and apply saved order
 const getGalleryFromPepper = (pepper: Pepper): PepperImage[] => {
@@ -402,7 +402,6 @@ function EditableField({ value, onSave, isAdmin, multiline = false, className = 
 export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, showBackToOrigins = false }: PepperDetailModalProps) {
   const { isAdmin } = useAuth();
   const { getOverride, saveOverride } = usePepperOverrides();
-  const navigate = useNavigate();
   
   if (!pepper) return null;
 
@@ -421,18 +420,14 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 p-0">
         {/* Header with parchment styling */}
         <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
-          {/* Back to Origins button */}
+          {/* Back to Origins compass */}
           {showBackToOrigins && (
-            <button
-              onClick={() => {
-                onOpenChange(false);
-                navigate('/origins');
-              }}
-              className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 text-[10px] font-heading uppercase tracking-wider text-tyrian/80 hover:text-tyrian bg-parchment/80 hover:bg-parchment border border-tyrian/30 transition-colors z-10"
-            >
-              <ArrowLeft className="w-3 h-3" />
-              <span>Back to Origins</span>
-            </button>
+            <div className="absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
+              <CompassBack 
+                to="/origins" 
+                tooltipText="Return to Origins"
+              />
+            </div>
           )}
           
           {/* Corner ornaments */}

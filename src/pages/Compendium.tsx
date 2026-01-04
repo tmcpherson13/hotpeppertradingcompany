@@ -40,13 +40,13 @@ const Compendium = () => {
   // Handle direct link to a specific pepper via ?pepper=pepper-id
   useEffect(() => {
     const pepperId = searchParams.get('pepper');
+    const fromOrigins = searchParams.get('from') === 'origins';
     if (pepperId) {
       const pepper = peppers.find(p => p.id === pepperId);
       if (pepper) {
         setSelectedPepper(pepper);
         setModalOpen(true);
-        // Check if user came from Origins page
-        setCameFromOrigins(document.referrer.includes('/origins'));
+        setCameFromOrigins(fromOrigins);
       }
     }
   }, [searchParams]);
