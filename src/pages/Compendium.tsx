@@ -1,4 +1,5 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
@@ -24,6 +25,7 @@ const heatOrder: Record<HeatLevel, number> = {
 };
 
 const Compendium = () => {
+  const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
   const [selectedHeat, setSelectedHeat] = useState('All');
@@ -33,6 +35,18 @@ const Compendium = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  // Handle direct link to a specific pepper via ?pepper=pepper-id
+  useEffect(() => {
+    const pepperId = searchParams.get('pepper');
+    if (pepperId) {
+      const pepper = peppers.find(p => p.id === pepperId);
+      if (pepper) {
+        setSelectedPepper(pepper);
+        setModalOpen(true);
+      }
+    }
+  }, [searchParams]);
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
