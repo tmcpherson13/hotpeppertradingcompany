@@ -452,7 +452,7 @@ export default function TradingPost() {
 
               {/* Featured Hero Card */}
               <div className="mb-12">
-                <SkeletonConsortiumHero />
+                <SkeletonConsortiumHero onExplore={() => handleViewManifest('cradle-of-fire')} />
               </div>
 
               {/* Carousel */}

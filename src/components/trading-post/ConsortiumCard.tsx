@@ -117,11 +117,11 @@ export function ConsortiumCard({
           </p>
           
           {/* Bottom Decorative Border - Two Buttons */}
-          <div className="border-t border-dashed border-ink/20 pt-3 flex gap-2">
+          <div className="border-t border-dashed border-ink/20 pt-3 flex flex-col gap-2">
             <Button 
               variant="outline" 
               size="sm" 
-              className="flex-1 text-xs uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment"
+              className="w-full text-[10px] uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment py-2"
               onClick={() => onViewManifest(consortium.consortiumId)}
             >
               View Manifest
@@ -129,7 +129,7 @@ export function ConsortiumCard({
             <Button 
               variant="outline" 
               size="sm" 
-              className="flex-1 text-xs uppercase tracking-[0.1em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment"
+              className="w-full text-[10px] uppercase tracking-[0.1em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment py-2"
               asChild
             >
               <Link to={`/product/${consortium.shopifyHandle}`}>

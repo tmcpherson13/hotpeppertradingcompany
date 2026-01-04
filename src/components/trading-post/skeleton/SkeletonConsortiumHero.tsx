@@ -3,7 +3,11 @@ import { Crown, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import cradleOfFireImage from '@/assets/consortium/cradle-of-fire.jpg';
 
-export function SkeletonConsortiumHero() {
+interface SkeletonConsortiumHeroProps {
+  onExplore?: () => void;
+}
+
+export function SkeletonConsortiumHero({ onExplore }: SkeletonConsortiumHeroProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,7 +35,7 @@ export function SkeletonConsortiumHero() {
         </div>
 
         {/* Content Side */}
-        <div className="p-8 md:p-12 flex flex-col justify-center">
+        <div className="p-6 md:p-10 lg:p-12 flex flex-col justify-center">
           <div className="flex items-center gap-2 mb-4">
             <div className="h-px flex-1 bg-gold/30" />
             <span className="text-xs uppercase tracking-[0.2em] text-gold/80 font-heading">
@@ -40,16 +44,16 @@ export function SkeletonConsortiumHero() {
             <div className="h-px flex-1 bg-gold/30" />
           </div>
 
-          <h2 className="font-blackpearl text-4xl md:text-5xl text-parchment mb-4">
+          <h2 className="font-blackpearl text-3xl md:text-4xl lg:text-5xl text-parchment mb-4">
             Cradle of Fire
           </h2>
 
-          <p className="text-parchment/70 font-body leading-relaxed mb-6 italic">
+          <p className="text-parchment/70 font-body leading-relaxed mb-6 italic text-sm md:text-base">
             "Where the Capsicum genus first ignited the palates of ancient Mesoamerica. 
             Five cultivars tracing the origins of heat itself."
           </p>
 
-          <div className="flex items-center gap-6 mb-8">
+          <div className="flex items-center gap-6 mb-6 md:mb-8">
             <div className="flex items-center gap-2">
               <Flame className="w-4 h-4 text-pepper-red" />
               <span className="text-sm text-parchment/60 font-heading">5 Cultivars</span>
@@ -58,7 +62,8 @@ export function SkeletonConsortiumHero() {
           </div>
 
           <Button 
-            className="w-fit bg-tyrian hover:bg-tyrian/90 text-gold uppercase tracking-wider font-heading"
+            onClick={onExplore}
+            className="w-fit bg-tyrian hover:bg-tyrian/90 text-gold uppercase tracking-wider font-heading text-sm px-6 py-3"
           >
             Explore This Journey
           </Button>
