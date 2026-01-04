@@ -10,23 +10,24 @@ import {
 interface CompassBackProps {
   to?: string;
   className?: string;
+  tooltipText?: string;
 }
 
 /**
  * CompassBack - A west-pointing compass rose for navigation back to Trading Post.
  * Features hover animation with rotation and golden glow on the west pointer.
  */
-export function CompassBack({ to = '/trading-post', className = '' }: CompassBackProps) {
+export function CompassBack({ to = '/trading-post', className = '', tooltipText = 'Return to Trading Post' }: CompassBackProps) {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <Link to={to} aria-label="Return to Trading Post">
+          <Link to={to} aria-label={tooltipText}>
             <motion.div
               className={`cursor-pointer ${className}`}
               whileHover={{ 
                 scale: 1.15,
-                rotate: -15,
+                x: -8,
               }}
               transition={{ 
                 type: 'spring', 
@@ -129,7 +130,7 @@ export function CompassBack({ to = '/trading-post', className = '' }: CompassBac
           side="right" 
           className="bg-ink/95 text-parchment border-tyrian/40 font-heading text-xs uppercase tracking-wider"
         >
-          Return to Trading Post
+          {tooltipText}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
