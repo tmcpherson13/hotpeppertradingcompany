@@ -23,21 +23,21 @@ interface OriginCluster {
 // Fine-tuned coordinates calibrated to the trade-routes-bg.jpg artwork
 // MapLibre center: [12, 15], zoom: 1.35
 const originCoordinates: Record<string, [number, number]> = {
-  // Americas
-  'Mexico': [-102, 23],
-  'Peru': [-76, -9],
-  'Bolivia': [-65, -16],
-  'Brazil': [-50, -10],
-  'Ecuador': [-78, -1],
-  'USA': [-98, 38],
-  'New Mexico': [-106, 35],
-  'St Augustine, FL': [-82, 30],
+  // Americas (+10° longitude shift to align with artwork)
+  'Mexico': [-92, 23],
+  'Peru': [-66, -9],
+  'Bolivia': [-55, -16],
+  'Brazil': [-40, -10],
+  'Ecuador': [-68, -1],
+  'USA': [-88, 38],
+  'New Mexico': [-96, 35],
+  'St Augustine, FL': [-72, 30],
   
-  // Caribbean
-  'Trinidad': [-61, 10],
-  'Jamaica': [-77, 18],
-  'Guyana': [-58, 6],
-  'Caribbean': [-68, 17],
+  // Caribbean (+10° longitude shift to align with artwork)
+  'Trinidad': [-51, 10],
+  'Jamaica': [-67, 18],
+  'Guyana': [-48, 6],
+  'Caribbean': [-58, 17],
   
   // Europe
   'Italy': [12, 43],
