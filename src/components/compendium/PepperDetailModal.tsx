@@ -420,9 +420,9 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 p-0">
         {/* Header with parchment styling */}
         <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
-          {/* Back to Origins compass */}
+          {/* Back to Origins compass - positioned outside card like in ProductDetail */}
           {showBackToOrigins && (
-            <div className="absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
+            <div className="absolute top-4 -left-16 z-10" onClick={() => onOpenChange(false)}>
               <CompassBack 
                 to="/origins" 
                 tooltipText="Return to Origins"
