@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
 import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
-import { ConsortiumCards } from "@/components/trading-post/ConsortiumCards";
+// ConsortiumCards not currently used - carousel replaces grid in Exhibition Hall
 import { RegionalBlendsSection } from "@/components/trading-post/skeleton/RegionalBlendsSection";
 import { SkeletonConsortiumHero } from "@/components/trading-post/skeleton/SkeletonConsortiumHero";
 import { ConsortiumCarousel } from "@/components/trading-post/skeleton/ConsortiumCarousel";
@@ -14,16 +14,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
-// Import consortium modals
-import { CradleOfFireModal } from "@/components/sections/CradleOfFireModal";
-import { ManilaGalleonModal } from "@/components/sections/ManilaGalleonModal";
-import { PhoenicianLegacyModal } from "@/components/sections/PhoenicianLegacyModal";
-import { AtlanticProvenanceModal } from "@/components/sections/AtlanticProvenanceModal";
-import { LetterOfMarqueModal } from "@/components/sections/LetterOfMarqueModal";
-import { SilkJadePassagesModal } from "@/components/sections/SilkJadePassagesModal";
-import { AndeanDiasporaModal } from "@/components/sections/AndeanDiasporaModal";
-import { SouthernCrucibleModal } from "@/components/sections/SouthernCrucibleModal";
-import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal";
+// Import consortium modals (numerically ordered № 001 - № 010)
+import { CradleOfFireModal } from "@/components/sections/CradleOfFireModal";           // № 001
+import { SouthernCrucibleModal } from "@/components/sections/SouthernCrucibleModal";   // № 002
+import { AndeanDiasporaModal } from "@/components/sections/AndeanDiasporaModal";       // № 003
+import { EmbersOfAfricaModal } from "@/components/sections/EmbersOfAfricaModal";       // № 004
+import { PhoenicianLegacyModal } from "@/components/sections/PhoenicianLegacyModal";   // № 005
+import { SilkJadePassagesModal } from "@/components/sections/SilkJadePassagesModal";   // № 006
+import { AtlanticProvenanceModal } from "@/components/sections/AtlanticProvenanceModal"; // № 007
+import { LetterOfMarqueModal } from "@/components/sections/LetterOfMarqueModal";       // № 008
+import { ManilaGalleonModal } from "@/components/sections/ManilaGalleonModal";         // № 009
+import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal";     // № 010
 
 type ViewMode = 'exhibition' | 'all';
 
@@ -530,15 +531,16 @@ export default function TradingPost() {
         onClose={() => setQuickViewProduct(null)}
       />
 
-      {/* Consortium Modals */}
+      {/* Consortium Modals (numerically ordered № 001 - № 010) */}
       <CradleOfFireModal open={activeModal === 'cradle-of-fire'} onOpenChange={(open) => !open && closeModal()} />
-      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => !open && closeModal()} />
+      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => !open && closeModal()} />
+      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => !open && closeModal()} />
+      <EmbersOfAfricaModal open={activeModal === 'embers-of-africa'} onOpenChange={(open) => !open && closeModal()} />
       <PhoenicianLegacyModal open={activeModal === 'phoenician-legacy'} onOpenChange={(open) => !open && closeModal()} />
+      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => !open && closeModal()} />
       <AtlanticProvenanceModal open={activeModal === 'atlantic-provenance'} onOpenChange={(open) => !open && closeModal()} />
       <LetterOfMarqueModal open={activeModal === 'letter-of-marque'} onOpenChange={(open) => !open && closeModal()} />
-      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => !open && closeModal()} />
-      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => !open && closeModal()} />
-      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => !open && closeModal()} />
+      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => !open && closeModal()} />
       <OldNatchezTraceModal open={activeModal === 'old-natchez-trace'} onOpenChange={(open) => !open && closeModal()} />
     </div>
   );

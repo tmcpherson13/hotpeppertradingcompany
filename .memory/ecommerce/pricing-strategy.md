@@ -1,5 +1,12 @@
 # Memory: ecommerce/pricing-strategy
-Updated: 2026-01-03
+Updated: 2026-01-04
+
+## Weight Standardization
+
+All products use a standard 2oz format:
+- **Individual Cultivars**: 2oz per package
+- **Consortium Journeys**: 5 × 2oz (5 cultivars × 2oz each = 10oz total)
+- **Regional Consortiums**: 3 × 2oz (3 cultivars × 2oz each = 6oz total)
 
 ## Individual Cultivar Pricing ($9-$15)
 
@@ -14,20 +21,27 @@ Pricing is based on market scarcity using a 4-tier system:
 
 Note: Ghost peppers are categorized as "Common" due to widespread commercial availability despite their extreme heat level.
 
-## Consortium Pricing ($17-$23)
+## Regional Consortium Pricing ($15)
+
+All Regional Consortiums are priced at $15 (3 × 2oz):
+- Mediterranean Selection
+- Caribbean Heat Trio
+- Pacific Rim Blend
+
+## Consortium Journey Pricing ($17-$23)
 
 Pricing is based on heat intensity using a 4-tier system:
 
 | Tier | Price | Heat Level | Consortiums |
 |------|-------|------------|-------------|
-| 1 | $17 | Mild-Moderate | Phoenician Legacy, Silk & Jade Passages |
-| 2 | $19 | Moderate-Hot | Cradle of Fire, Southern Crucible, Andean Diaspora, Manila Galleon |
-| 3 | $21 | Hot | Atlantic Provenance, Old Natchez Trace, Embers of Africa |
-| 4 | $23 | Extreme | Letter of Marque (30K-2M SHU) |
+| 1 | $17.00 | Mild-Moderate | Phoenician Legacy, Silk & Jade Passages |
+| 2 | $19.00 | Moderate-Hot | Southern Crucible, Andean Diaspora, Manila Galleon |
+| 3 | $21.00 | Hot | Cradle of Fire, Atlantic Provenance, Old Natchez Trace, Embers of Africa |
+| 4 | $23.00 | Extreme | Letter of Marque (30K-2M SHU) |
 
 ## Pricing Philosophy
 
 - Cultivar pricing emphasizes accessibility with an entry point at $9
 - Consortium pricing reflects both curation value and heat intensity
 - Letter of Marque commands the premium price as the highest-heat collection
-- All prices use odd numbers for psychological pricing effect
+- All prices display with decimals ($XX.00) for consistency

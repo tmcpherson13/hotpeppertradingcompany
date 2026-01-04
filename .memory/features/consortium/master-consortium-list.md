@@ -17,10 +17,11 @@ Updated: 2026-01-03
 | 010 | Old Natchez Trace | AMERICAN SOUTH | OldNatchezTraceModal.tsx | 1,000–300,000 SHU | Tabasco (Anchor), Pequin, Hatch Green Chili, Red Jalapeño, Datil |
 
 ## Notes
-- All consortiums feature 5 cultivars
+- All consortiums feature 5 cultivars × 2oz each (10oz total per Consortium Journey)
 - Each consortium has a designated "Anchor" pepper (milder, foundational)
 - Numbered chronologically by historical timeline (origin → modern)
-- Cards in FeaturedSpices.tsx are ordered to match this sequence
+- Cards use unified data source: src/data/consortiums.ts
 - The 'The' prefix has been removed from all consortium names
 - **This order is LOCKED as of 2026-01-01**
 - Updated 2026-01-02: Phoenician Legacy heat range corrected (7,000–175,000 SHU), Letter of Marque heat range corrected (30,000–2,000,000 SHU), Atlantic Provenance pepper roles added
+- Updated 2026-01-04: All weights standardized to 5 × 2oz format; EmbersOfAfricaModal added to TradingPost.tsx; unified data source created

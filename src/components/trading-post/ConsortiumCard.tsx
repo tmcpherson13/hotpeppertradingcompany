@@ -111,8 +111,8 @@ export function ConsortiumCard({
             <span className="text-tyrian font-semibold">{consortium.price}</span>
           </div>
           
-          {/* Description */}
-          <p className="font-body text-xs text-ink/70 leading-relaxed text-center mb-4 italic">
+          {/* Description - Fixed height for consistent card sizes */}
+          <p className="font-body text-xs text-ink/70 leading-relaxed text-center mb-4 italic line-clamp-2 min-h-[2.5rem]">
             "{consortium.description}"
           </p>
           
