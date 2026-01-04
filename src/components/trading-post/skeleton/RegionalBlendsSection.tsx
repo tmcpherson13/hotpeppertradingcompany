@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Package, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ShopifyProduct } from '@/lib/shopify';
 import { HeatBadge } from '../HeatBadge';
+import { MediterraneanSelectionModal } from '@/components/sections/MediterraneanSelectionModal';
+import { CaribbeanHeatTrioModal } from '@/components/sections/CaribbeanHeatTrioModal';
+import { PacificRimBlendModal } from '@/components/sections/PacificRimBlendModal';
 
 // Map product handles to region labels and flavor profiles
 const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> = {
@@ -41,9 +45,10 @@ function getHeatTierFromProduct(product: ShopifyProduct): 1 | 2 | 3 | 4 | 5 | un
 interface RegionalBlendCardProps {
   product: ShopifyProduct;
   index: number;
+  onViewBlend: (handle: string) => void;
 }
 
-function RegionalBlendCard({ product, index }: RegionalBlendCardProps) {
+function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardProps) {
   const handle = product.node.handle;
   const meta = REGIONAL_META[handle] || { region: 'Regional Blend', flavorProfile: '' };
   const imageUrl = product.node.images?.edges?.[0]?.node?.url;
@@ -124,16 +129,26 @@ function RegionalBlendCard({ product, index }: RegionalBlendCardProps) {
               </span>
             </div>
             
-            <Button 
-              variant="outline"
-              size="sm"
-              className="w-full text-xs uppercase tracking-[0.1em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment"
-              asChild
-            >
-              <Link to={`/product/${handle}`}>
+            <div className="flex flex-col gap-2">
+              <Button 
+                variant="outline"
+                size="sm"
+                className="w-full text-[10px] uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment py-2"
+                onClick={() => onViewBlend(handle)}
+              >
                 View Blend
-              </Link>
-            </Button>
+              </Button>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="w-full text-[10px] uppercase tracking-[0.1em] border-tyrian/50 text-tyrian hover:bg-tyrian hover:text-parchment py-2"
+                asChild
+              >
+                <Link to={`/product/${handle}`}>
+                  Procure Stock
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -152,6 +167,8 @@ interface RegionalBlendsSectionProps {
 }
 
 export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) {
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
   // Filter for Regional Consortium products
   const regionalBlends = products.filter(p => 
     p.node.productType?.toLowerCase().includes('regional')
@@ -159,41 +176,64 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
   if (regionalBlends.length === 0) return null;
 
+  const handleViewBlend = (handle: string) => {
+    setActiveModal(handle);
+  };
+
+  const closeModal = () => setActiveModal(null);
+
   return (
-    <section className="py-16 relative z-10 border-y border-tyrian/20">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="flex items-center gap-4 mb-3">
-          <Sparkles className="w-6 h-6 text-tyrian" />
-          <div>
-            <div className="flex items-center gap-3">
-              <h2 className="font-blackpearl text-3xl text-ink">Regional Blends</h2>
-              <span className="text-[10px] uppercase tracking-wider bg-tyrian/20 text-tyrian px-2 py-1 rounded font-heading">
-                New
-              </span>
+    <>
+      <section className="py-16 relative z-10 border-y border-tyrian/20">
+        <div className="container mx-auto px-4">
+          {/* Section Header */}
+          <div className="flex items-center gap-4 mb-3">
+            <Sparkles className="w-6 h-6 text-tyrian" />
+            <div>
+              <div className="flex items-center gap-3">
+                <h2 className="font-blackpearl text-3xl text-ink">Regional Blends</h2>
+                <span className="text-[10px] uppercase tracking-wider bg-tyrian/20 text-tyrian px-2 py-1 rounded font-heading">
+                  New
+                </span>
+              </div>
+              <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
+                Curated 3-pepper selections by geography & flavor
+              </p>
             </div>
-            <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
-              Curated 3-pepper selections by geography & flavor
-            </p>
+          </div>
+
+          <p className="text-ink/70 font-body max-w-2xl mb-8">
+            A middle tier between individual cultivars and flagship journeys — 
+            focused blends that showcase regional character without the commitment of a full consortium.
+          </p>
+
+          {/* Regional Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {regionalBlends.map((product, index) => (
+              <RegionalBlendCard 
+                key={product.node.id} 
+                product={product} 
+                index={index}
+                onViewBlend={handleViewBlend}
+              />
+            ))}
           </div>
         </div>
+      </section>
 
-        <p className="text-ink/70 font-body max-w-2xl mb-8">
-          A middle tier between individual cultivars and flagship journeys — 
-          focused blends that showcase regional character without the commitment of a full consortium.
-        </p>
-
-        {/* Regional Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {regionalBlends.map((product, index) => (
-            <RegionalBlendCard 
-              key={product.node.id} 
-              product={product} 
-              index={index} 
-            />
-          ))}
-        </div>
-      </div>
-    </section>
+      {/* Regional Blend Modals */}
+      <MediterraneanSelectionModal 
+        open={activeModal === 'mediterranean-selection'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <CaribbeanHeatTrioModal 
+        open={activeModal === 'caribbean-heat-trio'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <PacificRimBlendModal 
+        open={activeModal === 'pacific-rim-blend'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+    </>
   );
 }
