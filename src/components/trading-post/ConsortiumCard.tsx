@@ -122,7 +122,11 @@ export function ConsortiumCard({
               variant="outline" 
               size="sm" 
               className="w-full text-[10px] uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment py-2"
-              onClick={() => onViewManifest(consortium.consortiumId)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onViewManifest(consortium.consortiumId);
+              }}
             >
               View Manifest
             </Button>

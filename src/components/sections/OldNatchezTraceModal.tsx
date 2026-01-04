@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollDownIndicator } from "@/components/ui/ScrollDownIndicator";
 import { Flame, MapPin, Utensils, BookOpen, Ship } from "lucide-react";
 import { LogoDivider } from "@/components/ui/LogoDivider";
+import { ConsortiumTradeDetails } from "@/components/consortium/ConsortiumTradeDetails";
 import oldNatchezTraceImg from "@/assets/consortium/old-natchez-trace.jpg";
 
 interface OldNatchezTraceModalProps {
@@ -194,13 +195,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
               <p className="font-body text-sm text-muted-foreground italic mb-4">
                 "Where the river met the trail—fire that traveled by flatboat and footpath."
               </p>
-              <div className="flex items-center justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground font-heading">
-                <span>5 × 2oz</span>
-                <span className="text-primary">•</span>
-                <span className="text-primary font-semibold">$38</span>
-                <span className="text-primary">•</span>
-                <span>1,000–300,000 SHU</span>
-              </div>
+              <ConsortiumTradeDetails consortiumId="old-natchez-trace" heatRange="1,000–300,000 SHU" />
             </div>
             
           </div>
