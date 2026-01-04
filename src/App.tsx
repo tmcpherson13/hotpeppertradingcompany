@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Compendium from "./pages/Compendium";
 import TradingPost from "./pages/TradingPost";
+import TradingPostSkeleton from "./pages/TradingPostSkeleton";
 import ProductDetail from "./pages/ProductDetail";
 import Admin from "./pages/Admin";
 import Wishlist from "./pages/Wishlist";
@@ -54,6 +55,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/trading-post" element={<TradingPost />} />
+            <Route path="/trading-post-preview" element={<TradingPostSkeleton />} />
             <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/compendium" element={<Compendium />} />
             <Route path="/wishlist" element={<Wishlist />} />
