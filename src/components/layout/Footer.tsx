@@ -12,7 +12,7 @@ const footerLinks = {
     { name: 'Company Heritage', href: '/#heritage', isRoute: false },
     { name: 'Trade Routes', href: '/origins', isRoute: true },
     { name: 'Capsicum Reference', href: '/compendium', isRoute: true },
-    { name: 'Seed Starting Guide', href: '/guides/seed-starting', isRoute: true },
+    { name: 'Our Heritage', href: '/#heritage', isRoute: false },
   ],
   history: [
     { name: 'Pre-Columbian Origins', href: '/history/pre-columbian-origins', isRoute: true },
