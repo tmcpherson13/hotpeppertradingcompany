@@ -1,4 +1,4 @@
-import skullIcon from '@/assets/icons/skull-crossbones.avif';
+import skullIcon from '@/assets/icons/skull-crossbones.png';
 
 export type HeatTier = 1 | 2 | 3 | 4 | 5;
 
