@@ -11,7 +11,7 @@ import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
 import embersOfAfricaImg from '@/assets/consortium/embers-of-africa.jpg';
 
-interface ConsortiumDetailModalProps {
+interface EmbersOfAfricaModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -65,7 +65,7 @@ const pairings = [
   'Okra-based dishes or gumbo',
 ];
 
-export function ConsortiumDetailModal({ open, onOpenChange }: ConsortiumDetailModalProps) {
+export function EmbersOfAfricaModal({ open, onOpenChange }: EmbersOfAfricaModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">

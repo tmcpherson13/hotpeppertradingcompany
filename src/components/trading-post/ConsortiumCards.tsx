@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ConsortiumCard, Consortium } from './ConsortiumCard';
-import { ConsortiumDetailModal } from '@/components/sections/ConsortiumDetailModal';
+import { EmbersOfAfricaModal } from '@/components/sections/EmbersOfAfricaModal';
 import { SilkJadePassagesModal } from '@/components/sections/SilkJadePassagesModal';
 import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
 import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
@@ -10,7 +10,7 @@ import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
 import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
 import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
 import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
-import echoesOfAfricaImg from '@/assets/consortium/echoes-of-africa.jpg';
+import embersOfAfricaImg from '@/assets/consortium/embers-of-africa.jpg';
 import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
@@ -68,7 +68,7 @@ const consortiums: Consortium[] = [
     weight: '3 oz / 85g',
     description: 'A layered symphony of heat from Urfa Biber to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
     price: '$21',
-    image: echoesOfAfricaImg,
+    image: embersOfAfricaImg,
     consortiumId: 'africa',
     regionLabel: 'WEST AFRICAN COAST',
     shopifyHandle: 'embers-of-africa-consortium',
@@ -228,7 +228,7 @@ export function ConsortiumCards() {
       </div>
 
       {/* Consortium Detail Modals */}
-      <ConsortiumDetailModal 
+      <EmbersOfAfricaModal 
         open={africaModalOpen} 
         onOpenChange={setAfricaModalOpen} 
       />

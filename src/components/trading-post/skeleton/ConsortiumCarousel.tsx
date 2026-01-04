@@ -12,7 +12,7 @@ import phoenicianLegacyImage from '@/assets/consortium/phoenician-legacy.jpg';
 import atlanticProvenanceImage from '@/assets/consortium/atlantic-provenance.jpg';
 import letterOfMarqueImage from '@/assets/consortium/letter-of-marque.jpg';
 import silkJadePassagesImage from '@/assets/consortium/silk-jade-passages.jpg';
-import echoesOfAfricaImage from '@/assets/consortium/echoes-of-africa.jpg';
+import embersOfAfricaImage from '@/assets/consortium/embers-of-africa.jpg';
 import andeanDiasporaImage from '@/assets/consortium/andean-diaspora.jpg';
 import southernCrucibleImage from '@/assets/consortium/southern-crucible.jpg';
 import oldNatchezTraceImage from '@/assets/consortium/old-natchez-trace.jpg';
@@ -104,7 +104,7 @@ const CONSORTIUMS: Consortium[] = [
     weight: "5 × 2oz",
     description: "Portuguese carrack routes brought new fire to ancient kingdoms.",
     price: "$19.00",
-    image: echoesOfAfricaImage,
+    image: embersOfAfricaImage,
     consortiumId: "embers-of-africa",
     regionLabel: "West African Coast",
     shopifyHandle: "embers-of-africa-consortium",
