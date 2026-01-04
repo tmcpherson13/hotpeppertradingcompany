@@ -5,13 +5,27 @@ import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
 import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
 import { ConsortiumCards } from "@/components/trading-post/ConsortiumCards";
+import { RegionalBlendsSection } from "@/components/trading-post/skeleton/RegionalBlendsSection";
+import { SkeletonConsortiumHero } from "@/components/trading-post/skeleton/SkeletonConsortiumHero";
+import { ConsortiumCarousel } from "@/components/trading-post/skeleton/ConsortiumCarousel";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText } from "lucide-react";
+import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
-type ViewMode = 'categorized' | 'all';
+// Import consortium modals
+import { CradleOfFireModal } from "@/components/sections/CradleOfFireModal";
+import { ManilaGalleonModal } from "@/components/sections/ManilaGalleonModal";
+import { PhoenicianLegacyModal } from "@/components/sections/PhoenicianLegacyModal";
+import { AtlanticProvenanceModal } from "@/components/sections/AtlanticProvenanceModal";
+import { LetterOfMarqueModal } from "@/components/sections/LetterOfMarqueModal";
+import { SilkJadePassagesModal } from "@/components/sections/SilkJadePassagesModal";
+import { AndeanDiasporaModal } from "@/components/sections/AndeanDiasporaModal";
+import { SouthernCrucibleModal } from "@/components/sections/SouthernCrucibleModal";
+import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal";
+
+type ViewMode = 'exhibition' | 'all';
 
 export default function TradingPost() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -20,9 +34,10 @@ export default function TradingPost() {
   const [searchQuery, setSearchQuery] = useState("");
   const [heatRange, setHeatRange] = useState<[number, number] | null>(null);
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const saved = localStorage.getItem('tradingpost-view-mode');
-    return (saved === 'all' || saved === 'categorized') ? saved : 'categorized';
+    return (saved === 'all' || saved === 'exhibition') ? saved : 'exhibition';
   });
 
   // Persist view mode preference
@@ -48,12 +63,19 @@ export default function TradingPost() {
   }, []);
 
   // Helper to get product category
-  const getProductCategory = (product: ShopifyProduct): 'cultivar' | 'consortium' | 'merchandise' => {
+  const getProductCategory = (product: ShopifyProduct): 'cultivar' | 'consortium' | 'regional' | 'merchandise' => {
     const type = product.node.productType?.toLowerCase() || '';
+    if (type.includes('regional')) return 'regional';
     if (type.includes('consortium')) return 'consortium';
     if (type.includes('merchandise') || type.includes('merch') || type.includes('apparel')) return 'merchandise';
     return 'cultivar';
   };
+
+  const handleViewManifest = (consortiumId: string) => {
+    setActiveModal(consortiumId);
+  };
+
+  const closeModal = () => setActiveModal(null);
 
   // Categorize products by product type
   const { cultivars, consortiums, merchandise } = useMemo(() => {
@@ -283,15 +305,15 @@ export default function TradingPost() {
               {/* View Toggle */}
               <div className="flex items-center gap-1 p-1 bg-ink/10 border border-tyrian/30 rounded-lg">
                 <button
-                  onClick={() => setViewMode('categorized')}
+                  onClick={() => setViewMode('exhibition')}
                   className={`flex items-center gap-2 px-4 py-2 rounded font-heading text-sm uppercase tracking-wider transition-all ${
-                    viewMode === 'categorized'
+                    viewMode === 'exhibition'
                       ? 'bg-tyrian text-gold'
                       : 'text-ink/60 hover:text-ink hover:bg-tyrian/20'
                   }`}
                 >
                   <Layers className="w-4 h-4" />
-                  <span className="hidden sm:inline">By Category</span>
+                  <span className="hidden sm:inline">Exhibition Hall</span>
                 </button>
                 <button
                   onClick={() => setViewMode('all')}
@@ -412,47 +434,47 @@ export default function TradingPost() {
         </section>
       )}
       
-      {/* Categorized Products */}
-      {!isLoading && !error && !isSearching && viewMode === 'categorized' && (
+      {/* Exhibition Hall Layout */}
+      {!isLoading && !error && !isSearching && viewMode === 'exhibition' && (
         <>
-          {/* Consortium Cards Section - Heritage Cards */}
+          {/* TIER 1: Consortium Journeys */}
           <section className="py-16 bg-ink/5 relative z-10">
             <div className="container mx-auto px-4">
-              <div className="max-w-2xl mb-12">
-                <div className="flex items-center gap-3 mb-4">
-                  <ScrollText className="w-5 h-5 text-tyrian" />
-                  <span className="text-tyrian font-heading text-sm uppercase tracking-widest">The Cargo</span>
+              <div className="flex items-center gap-4 mb-8">
+                <Crown className="w-6 h-6 text-gold" />
+                <div>
+                  <h2 className="font-blackpearl text-3xl text-ink">Consortium Journeys</h2>
+                  <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
+                    Flagship 5-pepper collections • 10 unique voyages
+                  </p>
                 </div>
-                <h2 className="font-heading text-3xl md:text-4xl text-ink font-bold mb-4">
-                  Consortium Journeys
-                </h2>
-                <p className="text-ink font-semibold leading-relaxed">
-                  Hot Pepper Trading Company assembles its collections with deliberate restraint. Each cultivar 
-                  is evaluated for flavor profile, pungency, and regional provenance—selected not for volume, 
-                  but for suitability. These are not products; they are releases, curated by route and lineage.
-                </p>
               </div>
-              
-              <ConsortiumCards />
+
+              {/* Featured Hero Card */}
+              <div className="mb-12">
+                <SkeletonConsortiumHero />
+              </div>
+
+              {/* Carousel */}
+              <ConsortiumCarousel onViewManifest={handleViewManifest} />
             </div>
           </section>
 
-          {/* Cultivars Section - Entry Point */}
+          {/* TIER 2: Regional Blends */}
+          <RegionalBlendsSection products={products} />
+
+          {/* TIER 3: Individual Cultivars */}
           {cultivars.length > 0 && (
-            <section className="py-16 border-b border-tyrian/20 relative z-10">
+            <section className="py-16 relative z-10">
               <div className="container mx-auto px-4">
-                <div className="max-w-2xl mb-12">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Anchor className="w-5 h-5 text-tyrian" />
-                    <span className="text-tyrian font-heading text-sm uppercase tracking-widest">Individual Cultivars</span>
+                <div className="flex items-center gap-4 mb-8">
+                  <Leaf className="w-6 h-6 text-green-700" />
+                  <div>
+                    <h2 className="font-blackpearl text-3xl text-ink">Individual Cultivars</h2>
+                    <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
+                      Single-origin peppers • {cultivars.length} varieties
+                    </p>
                   </div>
-                  <h2 className="font-heading text-3xl md:text-4xl text-ink mb-4">
-                    Single-Origin Seeds
-                  </h2>
-                  <p className="text-ink/60 leading-relaxed">
-                    Begin your collection with individual cultivars, each selected for exceptional provenance and flavor profile. 
-                    From approachable everyday varieties to rare specimens sought by collectors.
-                  </p>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -464,22 +486,18 @@ export default function TradingPost() {
             </section>
           )}
           
-          
           {/* Merchandise Section - If exists */}
           {merchandise.length > 0 && (
             <section className="py-16 border-t border-tyrian/20 relative z-10">
               <div className="container mx-auto px-4">
-                <div className="max-w-2xl mb-12">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Package className="w-5 h-5 text-tyrian" />
-                    <span className="text-tyrian font-heading text-sm uppercase tracking-widest">Trading Company Goods</span>
+                <div className="flex items-center gap-4 mb-8">
+                  <Package className="w-6 h-6 text-tyrian" />
+                  <div>
+                    <h2 className="font-blackpearl text-3xl text-ink">Merchandise</h2>
+                    <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
+                      Trading Company goods
+                    </p>
                   </div>
-                  <h2 className="font-heading text-3xl md:text-4xl text-ink mb-4">
-                    Merchandise
-                  </h2>
-                  <p className="text-ink/60 leading-relaxed">
-                    Carry the mark of the Trading Company beyond the garden.
-                  </p>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -511,6 +529,17 @@ export default function TradingPost() {
         isOpen={!!quickViewProduct}
         onClose={() => setQuickViewProduct(null)}
       />
+
+      {/* Consortium Modals */}
+      <CradleOfFireModal open={activeModal === 'cradle-of-fire'} onOpenChange={(open) => !open && closeModal()} />
+      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => !open && closeModal()} />
+      <PhoenicianLegacyModal open={activeModal === 'phoenician-legacy'} onOpenChange={(open) => !open && closeModal()} />
+      <AtlanticProvenanceModal open={activeModal === 'atlantic-provenance'} onOpenChange={(open) => !open && closeModal()} />
+      <LetterOfMarqueModal open={activeModal === 'letter-of-marque'} onOpenChange={(open) => !open && closeModal()} />
+      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => !open && closeModal()} />
+      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => !open && closeModal()} />
+      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => !open && closeModal()} />
+      <OldNatchezTraceModal open={activeModal === 'old-natchez-trace'} onOpenChange={(open) => !open && closeModal()} />
     </div>
   );
 }
