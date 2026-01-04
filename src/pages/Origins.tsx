@@ -20,38 +20,50 @@ interface OriginCluster {
   region: string;
 }
 
-// Fine-tuned coordinates aligned to the artwork's Mercator projection
+// Fine-tuned coordinates calibrated to the trade-routes-bg.jpg artwork
+// MapLibre center: [12, 15], zoom: 1.35
 const originCoordinates: Record<string, [number, number]> = {
-  'Mexico': [-100, 22],
-  'Peru': [-76, -10],
-  'Bolivia': [-65, -17],
-  'Brazil': [-52, -12],
+  // Americas
+  'Mexico': [-102, 23],
+  'Peru': [-76, -9],
+  'Bolivia': [-65, -16],
+  'Brazil': [-50, -10],
+  'Ecuador': [-78, -1],
+  'USA': [-98, 38],
+  'New Mexico': [-106, 35],
+  'St Augustine, FL': [-82, 30],
+  
+  // Caribbean
   'Trinidad': [-61, 10],
   'Jamaica': [-77, 18],
-  'Guyana': [-58, 5],
-  'India': [78, 22],
-  'Thailand': [101, 15],
-  'China': [105, 35],
-  'Korea': [127, 36],
-  'Japan': [138, 36],
-  'Italy': [12, 42],
+  'Guyana': [-58, 6],
+  'Caribbean': [-68, 17],
+  
+  // Europe
+  'Italy': [12, 43],
   'Spain': [-4, 40],
   'Hungary': [19, 47],
-  'Turkey': [35, 39],
-  'Syria': [38, 35],
-  'South Africa': [24, -30],
-  'Mozambique': [35, -18],
-  'Ghana': [-1, 8],
-  'USA': [-96, 38],
-  'New Mexico': [-106, 34],
-  'St Augustine, FL': [-81, 30],
-  'Philippines': [121, 12],
-  'Malaysia': [102, 4],
-  'Bangladesh': [90, 24],
   'France': [2, 46],
-  'Portugal': [-8, 40],
-  'Ecuador': [-78, -1],
-  'Caribbean': [-67, 18],
+  'Portugal': [-8, 39],
+  
+  // Middle East / Mediterranean
+  'Turkey': [33, 39],
+  'Syria': [38, 35],
+  
+  // Africa
+  'South Africa': [24, -29],
+  'Mozambique': [35, -18],
+  'Ghana': [0, 8],
+  
+  // Asia
+  'India': [78, 22],
+  'Bangladesh': [90, 24],
+  'Thailand': [101, 15],
+  'China': [105, 34],
+  'Korea': [127, 36],
+  'Japan': [138, 36],
+  'Philippines': [121, 12],
+  'Malaysia': [101, 4],
 };
 
 export default function Origins() {
@@ -86,11 +98,12 @@ export default function Origins() {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Transparent map - antique artwork is the visual backdrop
-    // Locked view to keep markers anchored to static artwork
+    // Hybrid approach: CSS background for visuals, MapLibre for marker positioning
+    // The map bounds are calibrated to match the trade-routes-bg.jpg artwork
+    // Image shows world from approximately -130W to 155E longitude, -55S to 75N latitude
+    
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      interactive: false, // Disable all interactions to keep markers anchored
       style: {
         version: 8,
         sources: {},
@@ -99,50 +112,52 @@ export default function Origins() {
             id: 'background',
             type: 'background',
             paint: {
-              'background-color': 'rgba(0,0,0,0)'
+              'background-color': 'rgba(0,0,0,0)' // Fully transparent
             }
           }
         ],
         glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
       },
-      center: [-20, 20],
-      zoom: 1.8,
-      minZoom: 1.8,
-      maxZoom: 1.8
+      center: [12, 15], // Center calibrated for the artwork
+      zoom: 1.35,
+      minZoom: 1.35,
+      maxZoom: 1.35, // Lock zoom to keep markers aligned
+      pitchWithRotate: false,
+      dragRotate: false
     });
 
-    // Explicitly disable all interactions as safeguard
+    // Disable all interactions to keep artwork/marker alignment
     map.current.scrollZoom.disable();
     map.current.boxZoom.disable();
-    map.current.dragRotate.disable();
     map.current.dragPan.disable();
     map.current.keyboard.disable();
     map.current.doubleClickZoom.disable();
     map.current.touchZoomRotate.disable();
 
-    // Add markers for each origin with antique styling
-    originClusters.forEach(cluster => {
-      const el = document.createElement('div');
-      el.className = 'origin-marker';
-      el.innerHTML = `
-        <div class="relative cursor-pointer group">
-          <div class="w-9 h-9 rounded-full bg-pepper-red border-2 border-gold flex items-center justify-center text-parchment font-bold text-xs shadow-[0_2px_8px_rgba(91,0,91,0.4),0_0_0_1px_rgba(91,0,91,0.2)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_4px_12px_rgba(91,0,91,0.5)]">
-            ${cluster.peppers.length}
+    // Add markers for each origin
+    map.current.on('load', () => {
+      originClusters.forEach(cluster => {
+        const el = document.createElement('div');
+        el.className = 'origin-marker';
+        el.innerHTML = `
+          <div class="relative cursor-pointer group">
+            <div class="w-9 h-9 rounded-full bg-pepper-red border-2 border-gold flex items-center justify-center text-parchment font-bold text-xs shadow-[0_2px_8px_rgba(91,0,91,0.4),0_0_0_1px_rgba(91,0,91,0.2)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_4px_12px_rgba(91,0,91,0.5)]">
+              ${cluster.peppers.length}
+            </div>
+            <div class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-ink font-heading uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity bg-parchment/90 px-2 py-0.5 rounded-sm shadow-sm">
+              ${cluster.name}
+            </div>
           </div>
-          <div class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-ink font-heading uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity bg-parchment/90 px-2 py-0.5 rounded-sm shadow-sm">
-            ${cluster.name}
-          </div>
-        </div>
-      `;
+        `;
 
-      el.addEventListener('click', () => {
-        setSelectedOrigin(cluster);
-        // No flyTo - map stays fixed to keep markers anchored to artwork
+        el.addEventListener('click', () => {
+          setSelectedOrigin(cluster);
+        });
+
+        new maplibregl.Marker({ element: el })
+          .setLngLat(cluster.coordinates)
+          .addTo(map.current!);
       });
-
-      new maplibregl.Marker({ element: el })
-        .setLngLat(cluster.coordinates)
-        .addTo(map.current!);
     });
 
     return () => {
