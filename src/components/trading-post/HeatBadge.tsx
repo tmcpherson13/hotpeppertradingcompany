@@ -1,5 +1,3 @@
-import skullIcon from '@/assets/icons/skull-crossbones.png';
-
 export type HeatTier = 1 | 2 | 3 | 4 | 5;
 
 interface HeatBadgeProps {
@@ -15,23 +13,41 @@ const tierLabels: Record<HeatTier, string> = {
   5: 'Extreme',
 };
 
-// CSS filter values to colorize the black icon to match heat tiers
-const tierFilters: Record<HeatTier, string> = {
-  1: 'sepia(1) saturate(3) hue-rotate(10deg) brightness(0.9)', // Gold
-  2: 'sepia(1) saturate(3) hue-rotate(10deg) brightness(0.9)', // Gold
-  3: 'sepia(1) saturate(5) hue-rotate(350deg) brightness(0.95)', // Orange
-  4: 'sepia(1) saturate(8) hue-rotate(330deg) brightness(0.8)', // Red
-  5: 'sepia(1) saturate(10) hue-rotate(320deg) brightness(0.6)', // Crimson
+// Color classes for each heat tier
+const tierColors: Record<HeatTier, string> = {
+  1: 'text-amber-500', // Gold
+  2: 'text-amber-500', // Gold
+  3: 'text-orange-500', // Orange
+  4: 'text-red-600', // Red
+  5: 'text-red-800', // Crimson
 };
 
 function SkullAndCrossbones({ className, tier }: { className?: string; tier: HeatTier }) {
   return (
-    <img 
-      src={skullIcon} 
-      alt="Heat level indicator" 
-      className={className}
-      style={{ filter: tierFilters[tier] }}
-    />
+    <svg 
+      viewBox="0 0 100 100" 
+      className={`${className} ${tierColors[tier]}`}
+      fill="currentColor"
+    >
+      {/* Skull */}
+      <ellipse cx="50" cy="35" rx="28" ry="25" />
+      {/* Jaw */}
+      <path d="M30 45 Q30 65 40 65 L40 55 L45 55 L45 65 L55 65 L55 55 L60 55 L60 65 L70 65 Q70 45 70 45" />
+      {/* Left eye socket */}
+      <ellipse cx="40" cy="32" rx="8" ry="9" fill="black" />
+      {/* Right eye socket */}
+      <ellipse cx="60" cy="32" rx="8" ry="9" fill="black" />
+      {/* Nose */}
+      <path d="M47 42 L50 50 L53 42 Z" fill="black" />
+      {/* Crossbones */}
+      <path d="M10 75 Q5 70 10 65 L85 20 Q95 15 95 25 Q95 30 90 30 L18 73 Q13 78 10 75 Z" />
+      <path d="M90 75 Q95 70 90 65 L15 20 Q5 15 5 25 Q5 30 10 30 L82 73 Q87 78 90 75 Z" />
+      {/* Bone ends */}
+      <circle cx="8" cy="70" r="6" />
+      <circle cx="8" cy="22" r="6" />
+      <circle cx="92" cy="70" r="6" />
+      <circle cx="92" cy="22" r="6" />
+    </svg>
   );
 }
 
