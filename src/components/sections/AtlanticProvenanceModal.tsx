@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ScrollDownIndicator } from "@/components/ui/ScrollDownIndicator";
 import { Flame, MapPin, Utensils, BookOpen } from "lucide-react";
-import consortiumImage from "@/assets/consortium/atlantic-provenance.jpg";
+import atlanticProvenanceImg from "@/assets/consortium/atlantic-provenance.jpg";
 
 interface AtlanticProvenanceModalProps {
   open: boolean;
@@ -67,7 +67,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
           {/* Hero Image */}
           <div className="relative w-full h-64 md:h-80">
             <img 
-              src={consortiumImage} 
+              src={atlanticProvenanceImg} 
               alt="Atlantic Provenance consortium illustration" 
               className="w-full h-full object-cover"
             />
