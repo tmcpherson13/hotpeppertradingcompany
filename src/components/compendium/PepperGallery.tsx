@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { PepperImage } from '@/data/peppers';
 import { ImageAttribution } from './ImageAttribution';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Shield } from 'lucide-react';
 import { useGallerySync, mergeGalleryWithUploads, PepperImageWithMeta } from '@/hooks/useGallerySync';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useAuth } from '@/contexts/AuthContext';
@@ -276,6 +276,13 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
 
   return (
     <div className="space-y-2">
+      {/* Admin mode indicator */}
+      {isAdmin && (
+        <div className="flex items-center justify-center gap-1.5 text-[10px] text-tyrian/70 bg-tyrian/10 border border-tyrian/20 rounded px-2 py-1 mx-auto w-fit">
+          <Shield className="w-3 h-3" />
+          <span className="font-medium tracking-wide uppercase">Admin Mode</span>
+        </div>
+      )}
       {/* Main Image Display */}
       <div className="relative flex justify-center">
         <div className={`w-48 h-48 border-2 border-ink/20 p-2 bg-parchment-dark/30 relative group transition-transform duration-200 origin-center z-10 ${!isDragging ? 'hover:scale-[5] hover:z-50' : ''}`}>
