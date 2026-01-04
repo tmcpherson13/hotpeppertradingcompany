@@ -35,6 +35,7 @@ const Compendium = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [cameFromOrigins, setCameFromOrigins] = useState(false);
 
   // Handle direct link to a specific pepper via ?pepper=pepper-id
   useEffect(() => {
@@ -44,6 +45,8 @@ const Compendium = () => {
       if (pepper) {
         setSelectedPepper(pepper);
         setModalOpen(true);
+        // Check if user came from Origins page
+        setCameFromOrigins(document.referrer.includes('/origins'));
       }
     }
   }, [searchParams]);
@@ -124,6 +127,14 @@ const Compendium = () => {
   const handleSelectPepper = (pepper: Pepper) => {
     setSelectedPepper(pepper);
     setModalOpen(true);
+    setCameFromOrigins(false); // Reset when selecting from within Compendium
+  };
+
+  const handleModalClose = (open: boolean) => {
+    setModalOpen(open);
+    if (!open) {
+      setCameFromOrigins(false);
+    }
   };
 
   return (
@@ -279,8 +290,9 @@ const Compendium = () => {
       <PepperDetailModal
         pepper={selectedPepper}
         open={modalOpen}
-        onOpenChange={setModalOpen}
+        onOpenChange={handleModalClose}
         onSelectPepper={handleSelectPepper}
+        showBackToOrigins={cameFromOrigins}
       />
 
       <Footer />
