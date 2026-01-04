@@ -421,10 +421,10 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
       {/* Header with parchment styling */}
       <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
         {/* Mobile compass - inside header on smaller screens */}
-        {showBackToOrigins && (
+        {showBackToOrigins && pepper && (
           <div className="lg:hidden absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
             <CompassBack 
-              to="/origins" 
+              to={`/origins?highlight=${encodeURIComponent(pepper.origin)}`}
               tooltipText="Return to Origins"
             />
           </div>
@@ -719,10 +719,10 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
         {/* Desktop layout: flex row with compass + card, matching Trading Post spacing (gap-6, -ml-2) */}
         <div className="hidden lg:flex items-start gap-6">
           {/* Compass - same positioning as ProductDetail.tsx */}
-          {showBackToOrigins && (
+          {showBackToOrigins && pepper && (
             <div className="flex-shrink-0 -ml-2" onClick={() => onOpenChange(false)}>
               <CompassBack 
-                to="/origins" 
+                to={`/origins?highlight=${encodeURIComponent(pepper.origin)}`}
                 tooltipText="Return to Origins"
               />
             </div>
