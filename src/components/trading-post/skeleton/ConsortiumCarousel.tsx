@@ -1,6 +1,9 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { ConsortiumCard, Consortium } from '../ConsortiumCard';
+import { cn } from '@/lib/utils';
 
 // Import consortium images
 import cradleOfFireImage from '@/assets/consortium/cradle-of-fire.jpg';
@@ -153,74 +156,100 @@ interface ConsortiumCarouselProps {
 }
 
 export function ConsortiumCarousel({ onViewManifest }: ConsortiumCarouselProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { 
+      loop: true,
+      align: 'start',
+      slidesToScroll: 1,
+      containScroll: false
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
 
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const cardWidth = 320; // Approximate card width + gap
-      const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const scrollTo = useCallback((index: number) => {
+    if (emblaApi) emblaApi.scrollTo(index);
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    onSelect();
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+
+    return () => {
+      emblaApi.off('select', onSelect);
+      emblaApi.off('reInit', onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   return (
     <div className="relative">
       {/* Navigation Arrows */}
-      {canScrollLeft && (
-        <button
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 rounded-full bg-ink/90 border border-gold/30 flex items-center justify-center text-gold hover:bg-ink transition-colors shadow-lg"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-      )}
-      
-      {canScrollRight && (
-        <button
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 rounded-full bg-ink/90 border border-gold/30 flex items-center justify-center text-gold hover:bg-ink transition-colors shadow-lg"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* Scrollable Container */}
-      <div
-        ref={scrollRef}
-        onScroll={checkScroll}
-        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 -mx-4 px-4"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      <button
+        onClick={scrollPrev}
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 rounded-full bg-ink/90 border border-gold/30 flex items-center justify-center text-gold hover:bg-ink hover:border-gold/60 transition-all shadow-lg"
+        aria-label="Previous slide"
       >
-        {CONSORTIUMS.map((consortium, index) => (
-          <div 
-            key={consortium.consortiumId}
-            className="flex-shrink-0 w-[300px] snap-start"
-          >
-            <ConsortiumCard
-              consortium={consortium}
-              onViewManifest={onViewManifest}
-              index={index}
-            />
-          </div>
-        ))}
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+      
+      <button
+        onClick={scrollNext}
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 rounded-full bg-ink/90 border border-gold/30 flex items-center justify-center text-gold hover:bg-ink hover:border-gold/60 transition-all shadow-lg"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
+      {/* Carousel Viewport */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-6">
+          {CONSORTIUMS.map((consortium, index) => (
+            <div 
+              key={consortium.consortiumId}
+              className="flex-shrink-0 w-[300px]"
+            >
+              <ConsortiumCard
+                consortium={consortium}
+                onViewManifest={onViewManifest}
+                index={index}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="flex justify-center gap-1 mt-4">
-        {CONSORTIUMS.map((_, index) => (
-          <div
+      {/* Navigation Dots */}
+      <div className="flex justify-center gap-2 mt-6">
+        {scrollSnaps.map((_, index) => (
+          <button
             key={index}
-            className="w-1.5 h-1.5 rounded-full bg-ink/20"
+            onClick={() => scrollTo(index)}
+            aria-label={`Go to slide ${index + 1}`}
+            className={cn(
+              "w-2.5 h-2.5 rounded-full transition-all duration-300",
+              index === selectedIndex 
+                ? "bg-gold scale-110" 
+                : "bg-ink/30 hover:bg-ink/50"
+            )}
           />
         ))}
       </div>
