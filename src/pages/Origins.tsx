@@ -8,8 +8,9 @@ import { MapPin, Flame, ExternalLink, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
+import antiqueMap from '@/assets/antique-map.jpg';
 import { CompassRose } from '@/components/map/CompassRose';
-import { AgedPaperOverlay, ShipSilhouette, SeaCreature, WindHead } from '@/components/map/NarrativeElements';
+import { AgedPaperOverlay, ShipSilhouette, SeaCreature, WindHead, NarrativeAnnotation } from '@/components/map/NarrativeElements';
 
 // Group peppers by origin with coordinates
 interface OriginCluster {
@@ -19,37 +20,38 @@ interface OriginCluster {
   region: string;
 }
 
+// Fine-tuned coordinates aligned to the artwork's Mercator projection
 const originCoordinates: Record<string, [number, number]> = {
-  'Mexico': [-102.5528, 23.6345],
-  'Peru': [-75.0152, -9.1900],
-  'Bolivia': [-64.9912, -16.2902],
-  'Brazil': [-51.9253, -14.2350],
-  'Trinidad': [-61.2225, 10.6918],
-  'Jamaica': [-77.2975, 18.1096],
-  'Guyana': [-58.9302, 4.8604],
-  'India': [78.9629, 20.5937],
-  'Thailand': [100.9925, 15.8700],
-  'China': [104.1954, 35.8617],
-  'Korea': [127.7669, 35.9078],
-  'Japan': [138.2529, 36.2048],
-  'Italy': [12.5674, 41.8719],
-  'Spain': [-3.7492, 40.4637],
-  'Hungary': [19.5033, 47.1625],
-  'Turkey': [35.2433, 38.9637],
-  'Syria': [38.9968, 34.8021],
-  'South Africa': [22.9375, -30.5595],
-  'Mozambique': [35.5296, -18.6657],
-  'Ghana': [-1.0232, 7.9465],
-  'USA': [-95.7129, 37.0902],
-  'New Mexico': [-106.0183, 34.3071],
-  'St Augustine, FL': [-81.3124, 29.8946],
-  'Philippines': [121.7740, 12.8797],
-  'Malaysia': [101.9758, 4.2105],
-  'Bangladesh': [90.3563, 23.6850],
-  'France': [2.2137, 46.2276],
-  'Portugal': [-8.2245, 39.3999],
-  'Ecuador': [-78.1834, -1.8312],
-  'Caribbean': [-66.5901, 18.2208],
+  'Mexico': [-100, 22],
+  'Peru': [-76, -10],
+  'Bolivia': [-65, -17],
+  'Brazil': [-52, -12],
+  'Trinidad': [-61, 10],
+  'Jamaica': [-77, 18],
+  'Guyana': [-58, 5],
+  'India': [78, 22],
+  'Thailand': [101, 15],
+  'China': [105, 35],
+  'Korea': [127, 36],
+  'Japan': [138, 36],
+  'Italy': [12, 42],
+  'Spain': [-4, 40],
+  'Hungary': [19, 47],
+  'Turkey': [35, 39],
+  'Syria': [38, 35],
+  'South Africa': [24, -30],
+  'Mozambique': [35, -18],
+  'Ghana': [-1, 8],
+  'USA': [-96, 38],
+  'New Mexico': [-106, 34],
+  'St Augustine, FL': [-81, 30],
+  'Philippines': [121, 12],
+  'Malaysia': [102, 4],
+  'Bangladesh': [90, 24],
+  'France': [2, 46],
+  'Portugal': [-8, 40],
+  'Ecuador': [-78, -1],
+  'Caribbean': [-67, 18],
 };
 
 export default function Origins() {
@@ -171,16 +173,15 @@ export default function Origins() {
   };
 
   return (
-    <div className="min-h-screen bg-parchment relative">
-      {/* Global background pattern - parchment base */}
+    <div className="min-h-screen bg-background relative">
+      {/* Global background pattern - matching Compendium style */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-parchment" />
-        <div 
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%235B005B' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
+        <img 
+          src={antiqueMap} 
+          alt="" 
+          className="w-full h-full object-cover opacity-10"
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/95 to-background" />
       </div>
       
       <Header />
@@ -247,6 +248,11 @@ export default function Origins() {
                 <AgedPaperOverlay className="opacity-30" />
               </div>
 
+              {/* Large decorative compass behind map - matching Compendium */}
+              <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none">
+                <CompassRose className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] opacity-[0.08]" />
+              </div>
+
               {/* Decorative elements */}
               <div className="absolute bottom-4 left-4 z-10 opacity-40 pointer-events-none">
                 <CompassRose className="w-24 h-24" />
@@ -263,6 +269,28 @@ export default function Origins() {
               <div className="absolute top-8 right-8 z-10 opacity-20 pointer-events-none">
                 <WindHead className="w-12 h-12 text-tyrian" direction="west" />
               </div>
+
+              {/* Latin annotations */}
+              <NarrativeAnnotation 
+                text="Terra Incognita" 
+                className="absolute top-6 left-1/4 z-10 opacity-30 pointer-events-none"
+                style={{ transform: 'rotate(-5deg)' }}
+              />
+              <NarrativeAnnotation 
+                text="Novus Mundus" 
+                className="absolute top-1/3 left-[8%] z-10 opacity-25 pointer-events-none"
+                style={{ transform: 'rotate(-8deg)' }}
+              />
+              <NarrativeAnnotation 
+                text="Mare Atlanticum" 
+                className="absolute top-[45%] left-[30%] z-10 opacity-20 pointer-events-none"
+                style={{ transform: 'rotate(2deg)' }}
+              />
+              <NarrativeAnnotation 
+                text="Orbis Terrarum" 
+                className="absolute bottom-16 right-[20%] z-10 opacity-25 pointer-events-none"
+                style={{ transform: 'rotate(3deg)' }}
+              />
 
               {/* MapLibre container - transparent, just for markers */}
               <div 
