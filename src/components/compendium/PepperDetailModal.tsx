@@ -415,35 +415,23 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
   const relatedPeppers = findRelatedPeppers(pepper, peppers);
   const tradeRouteSummary = generateTradeRouteSummary(pepper.tradeRouteTags || [], displayTradeRoute);
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* Back to Origins compass - positioned outside modal */}
-      {showBackToOrigins && (
-        <div 
-          className="fixed top-1/2 left-[calc(50%-22rem)] -translate-y-1/2 z-[60] hidden lg:block"
-          onClick={() => onOpenChange(false)}
-        >
-          <CompassBack 
-            to="/origins" 
-            tooltipText="Return to Origins"
-          />
-        </div>
-      )}
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 p-0">
-        {/* Header with parchment styling */}
-        <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
-          {/* Mobile compass - inside header on smaller screens */}
-          {showBackToOrigins && (
-            <div className="lg:hidden absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
-              <CompassBack 
-                to="/origins" 
-                tooltipText="Return to Origins"
-              />
-            </div>
-          )}
-          
-          {/* Corner ornaments */}
-          <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#5a4a3a]/30" />
+  // Card content JSX - reused for both desktop and mobile layouts
+  const cardContent = (
+    <>
+      {/* Header with parchment styling */}
+      <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
+        {/* Mobile compass - inside header on smaller screens */}
+        {showBackToOrigins && (
+          <div className="lg:hidden absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
+            <CompassBack 
+              to="/origins" 
+              tooltipText="Return to Origins"
+            />
+          </div>
+        )}
+        
+        {/* Corner ornaments */}
+        <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#5a4a3a]/30" />
           
           {/* Logo - positioned under pepper name area */}
           <div className="absolute top-16 right-4 opacity-20">
@@ -721,6 +709,34 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
               Close Registry
             </button>
           </div>
+        </div>
+    </>
+  );
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-none w-auto bg-transparent border-0 p-0 overflow-visible shadow-none">
+        {/* Desktop layout: flex row with compass + card, matching Trading Post spacing (gap-6, -ml-2) */}
+        <div className="hidden lg:flex items-start gap-6">
+          {/* Compass - same positioning as ProductDetail.tsx */}
+          {showBackToOrigins && (
+            <div className="flex-shrink-0 -ml-2" onClick={() => onOpenChange(false)}>
+              <CompassBack 
+                to="/origins" 
+                tooltipText="Return to Origins"
+              />
+            </div>
+          )}
+          
+          {/* Card content wrapper */}
+          <div className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 rounded-lg shadow-lg">
+            {cardContent}
+          </div>
+        </div>
+
+        {/* Mobile layout: just the card, compass inside header */}
+        <div className="lg:hidden max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 rounded-lg shadow-lg">
+          {cardContent}
         </div>
       </DialogContent>
     </Dialog>
