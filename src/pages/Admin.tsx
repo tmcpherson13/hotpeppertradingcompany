@@ -9,8 +9,9 @@ import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
 import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
 import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
+import { ReportsDownload } from '@/components/admin/ReportsDownload';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download } from 'lucide-react';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 export default function Admin() {
@@ -103,6 +104,13 @@ export default function Admin() {
                 <User className="w-4 h-4 shrink-0" />
                 Profile
               </TabsTrigger>
+              <TabsTrigger
+                value="reports"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
+              >
+                <Download className="w-4 h-4 shrink-0" />
+                Reports
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="users" className="mt-0">
@@ -168,6 +176,15 @@ export default function Admin() {
                   Your Profile
                 </h2>
                 <ProfileSettings />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="reports" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Downloadable Reports
+                </h2>
+                <ReportsDownload />
               </div>
             </TabsContent>
           </Tabs>
