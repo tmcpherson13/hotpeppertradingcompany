@@ -5,6 +5,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { peppers } from '@/data/peppers';
 import { MapPin, Flame, ExternalLink, X } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import tradeRoutesBg from '@/assets/trade-routes-bg.jpg';
@@ -69,7 +70,10 @@ const originCoordinates: Record<string, [number, number]> = {
 export default function Origins() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
+  const markersRef = useRef<Map<string, HTMLElement>>(new Map());
   const [selectedOrigin, setSelectedOrigin] = useState<OriginCluster | null>(null);
+  const [highlightedOrigin, setHighlightedOrigin] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Group peppers by origin
   const originClusters = useMemo(() => {
@@ -94,6 +98,30 @@ export default function Origins() {
 
     return Object.values(clusters).filter(c => c.peppers.length > 0);
   }, []);
+
+  // Check for highlight parameter from Compendium return
+  useEffect(() => {
+    const highlight = searchParams.get('highlight');
+    if (highlight) {
+      setHighlightedOrigin(highlight);
+      // Clear the param from URL after reading
+      searchParams.delete('highlight');
+      setSearchParams(searchParams, { replace: true });
+      
+      // Auto-select the origin after a brief delay for visual effect
+      setTimeout(() => {
+        const cluster = originClusters.find(c => c.name === highlight);
+        if (cluster) {
+          setSelectedOrigin(cluster);
+        }
+      }, 500);
+      
+      // Clear highlight after animation completes
+      setTimeout(() => {
+        setHighlightedOrigin(null);
+      }, 3000);
+    }
+  }, [searchParams, setSearchParams, originClusters]);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -139,9 +167,10 @@ export default function Origins() {
       originClusters.forEach(cluster => {
         const el = document.createElement('div');
         el.className = 'origin-marker';
+        el.dataset.origin = cluster.name;
         el.innerHTML = `
-          <div class="relative cursor-pointer group">
-            <div class="w-9 h-9 rounded-full bg-pepper-red border-2 border-gold flex items-center justify-center text-parchment font-bold text-xs shadow-[0_2px_8px_rgba(91,0,91,0.4),0_0_0_1px_rgba(91,0,91,0.2)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_4px_12px_rgba(91,0,91,0.5)]">
+          <div class="relative cursor-pointer group origin-marker-inner">
+            <div class="marker-circle w-9 h-9 rounded-full bg-pepper-red border-2 border-gold flex items-center justify-center text-parchment font-bold text-xs shadow-[0_2px_8px_rgba(91,0,91,0.4),0_0_0_1px_rgba(91,0,91,0.2)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_4px_12px_rgba(91,0,91,0.5)]">
               ${cluster.peppers.length}
             </div>
             <div class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-ink font-heading uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity bg-parchment/90 px-2 py-0.5 rounded-sm shadow-sm">
@@ -149,6 +178,9 @@ export default function Origins() {
             </div>
           </div>
         `;
+
+        // Store reference for highlighting
+        markersRef.current.set(cluster.name, el);
 
         el.addEventListener('click', () => {
           setSelectedOrigin(cluster);
@@ -162,8 +194,23 @@ export default function Origins() {
 
     return () => {
       map.current?.remove();
+      markersRef.current.clear();
     };
   }, [originClusters]);
+
+  // Apply highlight effect to marker
+  useEffect(() => {
+    markersRef.current.forEach((el, name) => {
+      const circle = el.querySelector('.marker-circle');
+      if (circle) {
+        if (name === highlightedOrigin) {
+          circle.classList.add('origin-highlight-pulse');
+        } else {
+          circle.classList.remove('origin-highlight-pulse');
+        }
+      }
+    });
+  }, [highlightedOrigin]);
 
   const getHeatColor = (heatLevel: string) => {
     switch (heatLevel) {
