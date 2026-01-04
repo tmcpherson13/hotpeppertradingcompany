@@ -62,7 +62,12 @@ export function SkeletonConsortiumHero({ onExplore }: SkeletonConsortiumHeroProp
           </div>
 
           <Button 
-            onClick={onExplore}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onExplore?.();
+            }}
             className="w-fit bg-tyrian hover:bg-tyrian/90 text-gold uppercase tracking-wider font-heading text-sm px-6 py-3"
           >
             Explore This Journey
