@@ -30,7 +30,7 @@ const consortiums: Consortium[] = [
     description: 'Where it all began—from wild chiltepin to cultivated diversity, the full arc of Mexican pepper heritage.',
     price: '$19',
     image: cradleOfFireImg,
-    consortiumId: 'mesoamerica',
+    consortiumId: 'cradle-of-fire',
     regionLabel: 'MEXICO & CENTRAL AMERICA',
     shopifyHandle: 'cradle-of-fire-consortium',
     heatTier: 2,
@@ -43,7 +43,7 @@ const consortiums: Consortium[] = [
     description: 'From Amazon to Andes—the continent that gave fire to the world. Every pepper traces its lineage here.',
     price: '$19',
     image: southernCrucibleImg,
-    consortiumId: 'southamerica',
+    consortiumId: 'southern-crucible',
     regionLabel: 'SOUTH AMERICA',
     shopifyHandle: 'southern-crucible-consortium',
     heatTier: 2,
@@ -56,7 +56,7 @@ const consortiums: Consortium[] = [
     description: 'Two cultivars, two directions—from the Andes to Aleppo and Korea, this is the story of peppers that traveled and those that stayed.',
     price: '$19',
     image: andeanDiasporaImg,
-    consortiumId: 'andes',
+    consortiumId: 'andean-diaspora',
     regionLabel: 'WESTERN SOUTH AMERICA',
     shopifyHandle: 'andean-diaspora-consortium',
     heatTier: 2,
@@ -69,7 +69,7 @@ const consortiums: Consortium[] = [
     description: 'A layered symphony of heat from Urfa Biber to Trinidad—fruity, smoky, citrus, tropical, and an unforgettable slow-building inferno.',
     price: '$21',
     image: embersOfAfricaImg,
-    consortiumId: 'africa',
+    consortiumId: 'embers-of-africa',
     regionLabel: 'WEST AFRICAN COAST',
     shopifyHandle: 'embers-of-africa-consortium',
     heatTier: 3,
@@ -82,7 +82,7 @@ const consortiums: Consortium[] = [
     description: 'Ancient routes, Mediterranean fire—from Aleppo to Calabria, the peppers that traveled the paths first carved by Phoenician traders.',
     price: '$17',
     image: phoenicianLegacyImg,
-    consortiumId: 'mediterranean',
+    consortiumId: 'phoenician-legacy',
     regionLabel: 'MEDITERRANEAN',
     shopifyHandle: 'phoenician-legacy-consortium',
     heatTier: 1,
@@ -95,7 +95,7 @@ const consortiums: Consortium[] = [
     description: 'Where the caravans met the sea—overland through Aleppo and Anatolia, by sail through India and Southeast Asia.',
     price: '$17',
     image: silkJadePassagesImg,
-    consortiumId: 'asia',
+    consortiumId: 'silk-jade-passages',
     regionLabel: 'SILK ROAD & ASIAN SEAS',
     shopifyHandle: 'silk-jade-passages-consortium',
     heatTier: 1,
@@ -108,7 +108,7 @@ const consortiums: Consortium[] = [
     description: 'Mexico to Caribbean to West Africa—the triangular crossing where fire became jerk, pepper pot, and piri piri.',
     price: '$21',
     image: atlanticProvenanceImg,
-    consortiumId: 'atlantic',
+    consortiumId: 'atlantic-provenance',
     regionLabel: 'ATLANTIC TRIANGLE',
     shopifyHandle: 'atlantic-provenance-consortium',
     heatTier: 3,
@@ -122,7 +122,7 @@ const consortiums: Consortium[] = [
     price: '$23',
     image: letterOfMarqueImg,
     flipImage: true,
-    consortiumId: 'caribbean',
+    consortiumId: 'letter-of-marque',
     regionLabel: 'CARIBBEAN',
     shopifyHandle: 'letter-of-marque-consortium',
     heatTier: 5,
@@ -135,7 +135,7 @@ const consortiums: Consortium[] = [
     description: 'Across the Pacific—from Acapulco to Manila to Asia. The longest trade route in history carried fire that transformed a continent.',
     price: '$19',
     image: manilaGalleonImg,
-    consortiumId: 'manila',
+    consortiumId: 'manila-galleon',
     regionLabel: 'MARITIME SOUTHEAST ASIA',
     shopifyHandle: 'manila-galleon-consortium',
     heatTier: 2,
@@ -148,7 +148,7 @@ const consortiums: Consortium[] = [
     description: 'From Gulf port to highland trail—the fire that traveled America\'s earliest inland trade corridor by flatboat and footpath.',
     price: '$21',
     image: oldNatchezTraceImg,
-    consortiumId: 'natchez',
+    consortiumId: 'old-natchez-trace',
     regionLabel: 'AMERICAN SOUTH',
     shopifyHandle: 'old-natchez-trace-consortium',
     heatTier: 4,
@@ -169,34 +169,34 @@ export function ConsortiumCards() {
 
   const handleConsortiumClick = (consortiumId: string) => {
     switch (consortiumId) {
-      case 'africa':
+      case 'embers-of-africa':
         setAfricaModalOpen(true);
         break;
-      case 'asia':
+      case 'silk-jade-passages':
         setAsiaModalOpen(true);
         break;
-      case 'andes':
+      case 'andean-diaspora':
         setAndesModalOpen(true);
         break;
-      case 'caribbean':
+      case 'letter-of-marque':
         setCaribbeanModalOpen(true);
         break;
-      case 'mediterranean':
+      case 'phoenician-legacy':
         setMediterraneanModalOpen(true);
         break;
-      case 'atlantic':
+      case 'atlantic-provenance':
         setAtlanticModalOpen(true);
         break;
-      case 'manila':
+      case 'manila-galleon':
         setManilaModalOpen(true);
         break;
-      case 'natchez':
+      case 'old-natchez-trace':
         setNatchezModalOpen(true);
         break;
-      case 'mesoamerica':
+      case 'cradle-of-fire':
         setMesoamericaModalOpen(true);
         break;
-      case 'southamerica':
+      case 'southern-crucible':
         setSouthamericaModalOpen(true);
         break;
     }
