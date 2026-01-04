@@ -18,6 +18,7 @@ import southernCrucibleImage from '@/assets/consortium/southern-crucible.jpg';
 import oldNatchezTraceImage from '@/assets/consortium/old-natchez-trace.jpg';
 
 const CONSORTIUMS: Consortium[] = [
+  // № 001 - Cradle of Fire
   {
     name: "Cradle of Fire",
     region: "Mesoamerican Origins",
@@ -31,19 +32,49 @@ const CONSORTIUMS: Consortium[] = [
     shopifyHandle: "cradle-of-fire-consortium",
     heatTier: 4
   },
+  // № 002 - Southern Crucible
   {
-    name: "Manila Galleon",
-    region: "Pacific Trade Route",
+    name: "Southern Crucible",
+    region: "Brazilian Lowlands",
     tradeLot: "№ 002",
     weight: "5 × 2oz",
-    description: "Tracing the silver ships that carried New World fire to Asian shores.",
+    description: "Where rainforest biodiversity meets Portuguese colonial cultivation.",
     price: "$19.00",
-    image: manilaGalleonImage,
-    consortiumId: "manila-galleon",
-    regionLabel: "Maritime Southeast Asia",
-    shopifyHandle: "manila-galleon-consortium",
+    image: southernCrucibleImage,
+    consortiumId: "southern-crucible",
+    regionLabel: "South America",
+    shopifyHandle: "southern-crucible-consortium",
+    heatTier: 4
+  },
+  // № 003 - Andean Diaspora
+  {
+    name: "Andean Diaspora",
+    region: "South American Highlands",
+    tradeLot: "№ 003",
+    weight: "5 × 2oz",
+    description: "Two cultivars, two directions—how Andean peppers transformed the globe.",
+    price: "$19.00",
+    image: andeanDiasporaImage,
+    consortiumId: "andean-diaspora",
+    regionLabel: "Western South America",
+    shopifyHandle: "andean-diaspora-consortium",
     heatTier: 3
   },
+  // № 004 - Embers of Africa
+  {
+    name: "Embers of Africa",
+    region: "West African Coast",
+    tradeLot: "№ 004",
+    weight: "5 × 2oz",
+    description: "Portuguese carrack routes brought new fire to ancient kingdoms.",
+    price: "$19.00",
+    image: embersOfAfricaImage,
+    consortiumId: "embers-of-africa",
+    regionLabel: "West African Coast",
+    shopifyHandle: "embers-of-africa-consortium",
+    heatTier: 4
+  },
+  // № 005 - Phoenician Legacy
   {
     name: "Phoenician Legacy",
     region: "Mediterranean Basin",
@@ -57,32 +88,7 @@ const CONSORTIUMS: Consortium[] = [
     shopifyHandle: "phoenician-legacy-consortium",
     heatTier: 2
   },
-  {
-    name: "Atlantic Provenance",
-    region: "Atlantic Triangle",
-    tradeLot: "№ 007",
-    weight: "5 × 2oz",
-    description: "The triangular trade that reshaped cuisines across three continents.",
-    price: "$19.00",
-    image: atlanticProvenanceImage,
-    consortiumId: "atlantic-provenance",
-    regionLabel: "Atlantic Triangle",
-    shopifyHandle: "atlantic-provenance-consortium",
-    heatTier: 3
-  },
-  {
-    name: "Letter of Marque",
-    region: "Caribbean Waters",
-    tradeLot: "№ 008",
-    weight: "5 × 2oz",
-    description: "Privateer's cargo: the most prized cultivars from pirate-ruled waters.",
-    price: "$23.00",
-    image: letterOfMarqueImage,
-    consortiumId: "letter-of-marque",
-    regionLabel: "Caribbean",
-    shopifyHandle: "letter-of-marque-consortium",
-    heatTier: 5
-  },
+  // № 006 - Silk & Jade Passages
   {
     name: "Silk & Jade Passages",
     region: "Overland Routes",
@@ -97,49 +103,53 @@ const CONSORTIUMS: Consortium[] = [
     flipImage: true,
     heatTier: 3
   },
+  // № 007 - Atlantic Provenance
   {
-    name: "Embers of Africa",
-    region: "West African Coast",
-    tradeLot: "№ 010",
+    name: "Atlantic Provenance",
+    region: "Atlantic Triangle",
+    tradeLot: "№ 007",
     weight: "5 × 2oz",
-    description: "Portuguese carrack routes brought new fire to ancient kingdoms.",
+    description: "The triangular trade that reshaped cuisines across three continents.",
     price: "$19.00",
-    image: embersOfAfricaImage,
-    consortiumId: "embers-of-africa",
-    regionLabel: "West African Coast",
-    shopifyHandle: "embers-of-africa-consortium",
-    heatTier: 4
-  },
-  {
-    name: "Andean Diaspora",
-    region: "South American Highlands",
-    tradeLot: "№ 003",
-    weight: "5 × 2oz",
-    description: "Two cultivars, two directions—how Andean peppers transformed the globe.",
-    price: "$19.00",
-    image: andeanDiasporaImage,
-    consortiumId: "andean-diaspora",
-    regionLabel: "Western South America",
-    shopifyHandle: "andean-diaspora-consortium",
+    image: atlanticProvenanceImage,
+    consortiumId: "atlantic-provenance",
+    regionLabel: "Atlantic Triangle",
+    shopifyHandle: "atlantic-provenance-consortium",
     heatTier: 3
   },
+  // № 008 - Letter of Marque
   {
-    name: "Southern Crucible",
-    region: "Brazilian Lowlands",
-    tradeLot: "№ 004",
+    name: "Letter of Marque",
+    region: "Caribbean Waters",
+    tradeLot: "№ 008",
     weight: "5 × 2oz",
-    description: "Where rainforest biodiversity meets Portuguese colonial cultivation.",
-    price: "$19.00",
-    image: southernCrucibleImage,
-    consortiumId: "southern-crucible",
-    regionLabel: "South America",
-    shopifyHandle: "southern-crucible-consortium",
-    heatTier: 4
+    description: "Privateer's cargo: the most prized cultivars from pirate-ruled waters.",
+    price: "$23.00",
+    image: letterOfMarqueImage,
+    consortiumId: "letter-of-marque",
+    regionLabel: "Caribbean",
+    shopifyHandle: "letter-of-marque-consortium",
+    heatTier: 5
   },
+  // № 009 - Manila Galleon
+  {
+    name: "Manila Galleon",
+    region: "Pacific Trade Route",
+    tradeLot: "№ 009",
+    weight: "5 × 2oz",
+    description: "Tracing the silver ships that carried New World fire to Asian shores.",
+    price: "$19.00",
+    image: manilaGalleonImage,
+    consortiumId: "manila-galleon",
+    regionLabel: "Maritime Southeast Asia",
+    shopifyHandle: "manila-galleon-consortium",
+    heatTier: 3
+  },
+  // № 010 - Old Natchez Trace
   {
     name: "Old Natchez Trace",
     region: "American South",
-    tradeLot: "№ 009",
+    tradeLot: "№ 010",
     weight: "5 × 2oz",
     description: "From the Kaintuck flatboats to Creole kitchens—American fire.",
     price: "$17.00",
@@ -220,12 +230,13 @@ export function ConsortiumCarousel({ onViewManifest }: ConsortiumCarouselProps) 
       </button>
 
       {/* Carousel Viewport */}
+      {/* Carousel Viewport */}
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6">
+        <div className="flex -ml-6">
           {CONSORTIUMS.map((consortium, index) => (
             <div 
               key={consortium.consortiumId}
-              className="flex-shrink-0 w-[300px]"
+              className="pl-6 flex-[0_0_300px]"
             >
               <ConsortiumCard
                 consortium={consortium}
