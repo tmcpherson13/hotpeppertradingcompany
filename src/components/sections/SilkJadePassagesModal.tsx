@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import { ConsortiumTradeDetails } from '@/components/consortium/ConsortiumTradeDetails';
 import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 
 interface SilkJadePassagesModalProps {
@@ -201,20 +202,7 @@ export function SilkJadePassagesModal({ open, onOpenChange }: SilkJadePassagesMo
               </section>
 
               {/* Trade Details */}
-              <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
-                  <span className="font-display text-ink">5 × 2oz</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-                  <span className="font-display text-primary text-lg">$35</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">4,000–1,041,427 SHU</span>
-                </div>
-              </div>
+              <ConsortiumTradeDetails consortiumId="silk-jade-passages" heatRange="4,000–1,041,427 SHU" />
               
             </div>
           </div>

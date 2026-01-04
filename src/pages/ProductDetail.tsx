@@ -336,9 +336,12 @@ export default function ProductDetail() {
                 <h1 className="font-heading text-4xl text-parchment mb-4">
                   {product.title}
                 </h1>
-                <p className="font-heading text-3xl text-gold">
-                  ${parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount).toFixed(2)}
-                </p>
+                <div className="flex items-baseline gap-2">
+                  <p className="font-heading text-3xl text-gold">
+                    ${parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount).toFixed(2)}
+                  </p>
+                  <span className="text-parchment/50 text-sm font-heading">2 oz</span>
+                </div>
               </div>
 
               {/* Variant Selection */}

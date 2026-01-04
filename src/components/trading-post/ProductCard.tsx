@@ -168,9 +168,12 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
         </div>
         
         <div className="flex items-center justify-between pt-2 border-t border-parchment/10">
-          <span className="font-heading text-xl text-gold">
-            ${price.toFixed(2)}
-          </span>
+          <div>
+            <span className="font-heading text-xl text-gold">
+              ${price.toFixed(2)}
+            </span>
+            <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz</span>
+          </div>
           
           <Button
             size="sm"

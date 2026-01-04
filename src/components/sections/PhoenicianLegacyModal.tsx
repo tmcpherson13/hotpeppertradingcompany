@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import { ConsortiumTradeDetails } from '@/components/consortium/ConsortiumTradeDetails';
 import phoenicianLegacyImg from '@/assets/consortium/phoenician-legacy.jpg';
 
 interface PhoenicianLegacyModalProps {
@@ -202,20 +203,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
               </section>
 
               {/* Trade Details */}
-              <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
-                  <span className="font-display text-ink">5 × 2oz</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-                  <span className="font-display text-primary text-lg">$36</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">7,000–175,000 SHU</span>
-                </div>
-              </div>
+              <ConsortiumTradeDetails consortiumId="phoenician-legacy" heatRange="7,000–175,000 SHU" />
               
             </div>
           </div>

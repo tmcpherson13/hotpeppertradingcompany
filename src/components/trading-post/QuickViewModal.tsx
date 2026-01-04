@@ -100,10 +100,13 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
             </p>
 
             <div className="space-y-4">
-              {/* Price */}
+              {/* Price & Weight */}
               <div className="flex items-center justify-between py-3 border-t border-b border-parchment/10">
                 <span className="text-parchment/60 font-heading uppercase tracking-wider text-sm">Price</span>
-                <span className="font-heading text-2xl text-gold">${price.toFixed(2)}</span>
+                <div className="text-right">
+                  <span className="font-heading text-2xl text-gold">${price.toFixed(2)}</span>
+                  <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz</span>
+                </div>
               </div>
 
               {/* Variant info if multiple */}

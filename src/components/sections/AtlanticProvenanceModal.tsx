@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ScrollDownIndicator } from "@/components/ui/ScrollDownIndicator";
 import { Flame, MapPin, Utensils, BookOpen } from "lucide-react";
+import { ConsortiumTradeDetails } from "@/components/consortium/ConsortiumTradeDetails";
 import atlanticProvenanceImg from "@/assets/consortium/atlantic-provenance.jpg";
 
 interface AtlanticProvenanceModalProps {
@@ -186,28 +187,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
             <Separator className="bg-ink/20" />
 
             {/* Trade Details */}
-            <section className="border-t border-dashed border-ink/20 pt-6">
-              <div className="flex items-center gap-3 mb-4">
-                <MapPin className="h-5 w-5 text-primary" />
-                <h3 className="font-display text-xl text-ink uppercase tracking-wide">
-                  Trade Details
-                </h3>
-              </div>
-              <div className="flex flex-wrap justify-center gap-8 text-sm text-center">
-                <div>
-                  <span className="text-muted-foreground uppercase tracking-wider text-xs block mb-1">Net Weight</span>
-                  <p className="text-ink font-display">5 × 2oz</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground uppercase tracking-wider text-xs block mb-1">Price</span>
-                  <p className="text-ink font-display">$24.00</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground uppercase tracking-wider text-xs block mb-1">Heat Range</span>
-                  <p className="text-ink font-display">1,000–350,000 SHU</p>
-                </div>
-              </div>
-            </section>
+            <ConsortiumTradeDetails consortiumId="atlantic-provenance" heatRange="1,000–350,000 SHU" />
 
             {/* Closing Statement */}
             <div className="text-center pt-4 pb-2">
