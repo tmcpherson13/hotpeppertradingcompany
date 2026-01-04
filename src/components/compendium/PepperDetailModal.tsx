@@ -417,12 +417,24 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* Back to Origins compass - positioned outside modal */}
+      {showBackToOrigins && (
+        <div 
+          className="fixed top-1/2 left-[calc(50%-22rem)] -translate-y-1/2 z-[60] hidden lg:block"
+          onClick={() => onOpenChange(false)}
+        >
+          <CompassBack 
+            to="/origins" 
+            tooltipText="Return to Origins"
+          />
+        </div>
+      )}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#f5efe6] border-2 border-[#5a4a3a]/30 p-0">
         {/* Header with parchment styling */}
         <div className="bg-[#e8dcc4] px-6 py-5 border-b border-[#5a4a3a]/20 relative">
-          {/* Back to Origins compass - positioned outside card like in ProductDetail */}
+          {/* Mobile compass - inside header on smaller screens */}
           {showBackToOrigins && (
-            <div className="absolute top-4 -left-16 z-10" onClick={() => onOpenChange(false)}>
+            <div className="lg:hidden absolute top-3 left-3 z-10" onClick={() => onOpenChange(false)}>
               <CompassBack 
                 to="/origins" 
                 tooltipText="Return to Origins"
