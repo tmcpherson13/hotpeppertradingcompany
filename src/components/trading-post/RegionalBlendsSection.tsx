@@ -30,31 +30,31 @@ const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> =
     region: 'East & Southeast Asia', 
     flavorProfile: 'Citrus • Bright • Complex' 
   },
-  'andean-heights': {
+  'andean-heights-regional-blend': {
     region: 'Peru & Ecuador',
     flavorProfile: 'Citrus • Tropical • Volcanic'
   },
-  'african-fire': {
+  'african-fire-regional-blend': {
     region: 'Pan-African Routes',
     flavorProfile: 'Earthy • Citrus • Heritage'
   },
-  'mexican-triad': {
+  'mexican-triad-regional-blend': {
     region: 'Mexico',
     flavorProfile: 'Earthy • Bright • Essential'
   },
-  'indian-subcontinent': {
+  'indian-subcontinent-regional-blend': {
     region: 'South Asia',
     flavorProfile: 'Aromatic • Colorful • Intense'
   },
-  'turkish-terroir': {
+  'turkish-terroir-regional-blend': {
     region: 'Anatolia & Levant',
     flavorProfile: 'Smoky • Earthy • Ancient'
   },
-  'south-american-heat': {
+  'south-american-heat-regional-blend': {
     region: 'South America',
     flavorProfile: 'Citrus • Tropical • Versatile'
   },
-  'american-fusion': {
+  'american-fusion-regional-blend': {
     region: 'Continental Americas',
     flavorProfile: 'Fresh • Fruity • Continental'
   },
@@ -272,31 +272,31 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
       {/* Regional Blend Modals - New 7 */}
       <AndeanHeightsModal 
-        open={activeModal === 'andean-heights'} 
+        open={activeModal === 'andean-heights-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <AfricanFireModal 
-        open={activeModal === 'african-fire'} 
+        open={activeModal === 'african-fire-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <MexicanTriadModal 
-        open={activeModal === 'mexican-triad'} 
+        open={activeModal === 'mexican-triad-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <IndianSubcontinentModal 
-        open={activeModal === 'indian-subcontinent'} 
+        open={activeModal === 'indian-subcontinent-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <TurkishTerroirModal 
-        open={activeModal === 'turkish-terroir'} 
+        open={activeModal === 'turkish-terroir-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <SouthAmericanHeatModal 
-        open={activeModal === 'south-american-heat'} 
+        open={activeModal === 'south-american-heat-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
       <AmericanFusionModal 
-        open={activeModal === 'american-fusion'} 
+        open={activeModal === 'american-fusion-regional-blend'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
     </>
