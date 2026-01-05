@@ -109,9 +109,7 @@ export function ConsortiumCard({
           </h3>
           
           {/* Trade Details */}
-          <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider text-ink/60 font-heading mb-3">
-            <span>{consortium.weight}</span>
-            <span className="text-tyrian">•</span>
+          <div className="flex items-center justify-center text-[10px] uppercase tracking-wider text-ink/60 font-heading mb-3">
             <span className="text-tyrian font-semibold">{consortium.price}</span>
           </div>
           
