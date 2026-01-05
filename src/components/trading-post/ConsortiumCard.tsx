@@ -101,7 +101,7 @@ export function ConsortiumCard({
           
           {/* Product Name - Blackpearl Style */}
           <h3 className={`font-blackpearl text-xl text-ink text-center ${
-            consortium.name === 'Silk & Jade Passages' || consortium.name === 'Atlantic Provenance' || consortium.name === 'Andean Diaspora'
+            consortium.name === 'Silk & Jade Passages' || consortium.name === 'Atlantic Provenance'
               ? 'mb-2' 
               : 'mb-5'
           }`}>
