@@ -141,7 +141,7 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
           <div className="flex items-center gap-2 mb-2">
             <div className="h-px flex-1 bg-ink/20" />
             <span className="text-[9px] uppercase tracking-[0.15em] text-tyrian font-heading">
-              Regional Blend
+              {meta.region}
             </span>
             <div className="h-px flex-1 bg-ink/20" />
           </div>
