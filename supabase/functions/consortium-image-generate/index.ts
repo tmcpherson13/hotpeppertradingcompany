@@ -6,266 +6,83 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Regional consortium definitions (excluding Turkish Terroir)
-const REGIONAL_CONSORTIUMS: Record<string, { name: string; peppers: string[] }> = {
+// Regional consortium definitions with unique backgrounds
+const REGIONAL_CONSORTIUMS: Record<string, { name: string; peppers: string[]; background: string }> = {
   'african-fire': {
     name: 'African Fire',
-    peppers: ['Mombasa Chili', 'Peri Peri', 'Malagueta']
+    peppers: ['Mombasa Chili', 'Peri Peri', 'Malagueta'],
+    background: 'weathered African mahogany table with carved tribal geometric patterns and sun-bleached edges'
   },
   'american-fusion': {
     name: 'American Fusion',
-    peppers: ['Fresno', 'Rocoto', 'Datil']
+    peppers: ['Fresno', 'Rocoto', 'Datil'],
+    background: 'rustic American barn wood planks with vintage iron nails and copper patina accents'
   },
   'andean-heights': {
     name: 'Andean Heights',
-    peppers: ['Aji Panca', 'Aji Amarillo', "Devil's Breath"]
+    peppers: ['Aji Panca', 'Aji Amarillo', "Devil's Breath"],
+    background: 'hand-woven Peruvian alpaca textile with bold red and orange geometric Incan patterns'
   },
   'caribbean-heat-trio': {
     name: 'Caribbean Heat Trio',
-    peppers: ['Scotch Bonnet', 'Habanero', 'Trinidad Scorpion']
+    peppers: ['Scotch Bonnet', 'Habanero', 'Trinidad Scorpion'],
+    background: 'sun-bleached Caribbean driftwood with scattered white sand and small seashells'
   },
   'indian-subcontinent': {
     name: 'Indian Subcontinent',
-    peppers: ['Kashmiri Chili', 'Ghost Pepper', 'Naga Viper']
+    peppers: ['Kashmiri Chili', 'Ghost Pepper', 'Naga Viper'],
+    background: 'ornate antique Indian brass tray with embossed lotus and paisley engravings'
   },
   'mediterranean-selection': {
     name: 'Mediterranean Selection',
-    peppers: ['Aleppo', 'Calabrian', 'Urfa Biber']
+    peppers: ['Aleppo', 'Calabrian', 'Urfa Biber'],
+    background: 'ancient terracotta tiles from a sun-drenched Mediterranean villa with ochre and sienna tones'
   },
   'mexican-triad': {
     name: 'Mexican Triad',
-    peppers: ['Chipotle Morita', 'Chile de Árbol', 'Orange Habanero']
+    peppers: ['Chipotle Morita', 'Chile de Árbol', 'Orange Habanero'],
+    background: 'hand-painted Talavera ceramic platter with cobalt blue and marigold yellow floral motifs'
   },
   'pacific-rim': {
     name: 'Pacific Rim Blend',
-    peppers: ['Gochugaru', "Thai Bird's Eye", 'Tien Tsin']
+    peppers: ['Gochugaru', "Thai Bird's Eye", 'Tien Tsin'],
+    background: 'lacquered Asian bamboo serving tray with mother-of-pearl cherry blossom inlay'
   },
   'south-american-heat': {
     name: 'South American Heat',
-    peppers: ['Aji Dulce', 'Aji Charapita', 'Malagueta']
+    peppers: ['Aji Dulce', 'Aji Charapita', 'Malagueta'],
+    background: 'aged Brazilian rosewood cutting board with rich natural grain and jungle leaf shadows'
   }
 };
 
-// Web search for reference images
-async function searchPepperImages(pepperName: string, lovableKey: string): Promise<string[]> {
-  try {
-    console.log(`Searching web for ${pepperName} images...`);
-    
-    // Use Lovable AI to describe what to search for
-    const searchResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'user',
-          content: `You are helping generate search queries for finding high-quality reference images of the "${pepperName}" pepper variety. 
-          
-Provide 5 specific search queries that would find detailed photos of this pepper. Focus on:
-- Scientific/botanical photos
-- Fresh pepper photos showing color and shape
-- Photos showing the pepper in its natural state (not cooked or processed)
+// Randomized artistic elements for unique compositions
+const LIGHTING_STYLES = [
+  'warm golden hour sunlight streaming dramatically from the left side',
+  'soft diffused morning light filtering through gauze curtains from above',
+  'dramatic Rembrandt lighting with deep moody shadows on one side',
+  'cool northern window light with subtle blue-grey undertones',
+  'warm candlelit ambiance with flickering amber and honey tones',
+  'bright Mediterranean afternoon sun casting long dramatic shadows',
+  'stormy twilight light with rich purple and orange atmospheric glow'
+];
 
-Return ONLY a JSON array of search query strings, nothing else:
-["query1", "query2", "query3", "query4", "query5"]`
-        }],
-      }),
-    });
+const ARTISTIC_ACCENTS = [
+  'scattered whole peppercorns and crushed red chili flakes',
+  'a few drops of golden olive oil glistening on the surface',
+  'wisps of fragrant smoke curling upward through the scene',
+  'fresh herb sprigs of thyme, rosemary, and oregano as accents',
+  'coarse pink Himalayan salt crystals scattered artfully',
+  'dried flower petals in muted burgundy and ochre tones',
+  'vintage brass spice spoon with patina and scattered seeds',
+  'antique linen cloth with hand-stitched edges draped softly'
+];
 
-    if (!searchResponse.ok) {
-      console.error('Search query generation failed');
-      return [];
-    }
-
-    const searchData = await searchResponse.json();
-    const queryContent = searchData.choices?.[0]?.message?.content || '';
-    
-    // Extract JSON array
-    const jsonMatch = queryContent.match(/\[[\s\S]*?\]/);
-    if (!jsonMatch) return [];
-    
-    const queries = JSON.parse(jsonMatch[0]) as string[];
-    console.log(`Generated ${queries.length} search queries for ${pepperName}`);
-    
-    return queries.slice(0, 3); // Use top 3 queries
-  } catch (err) {
-    console.error(`Error generating search queries for ${pepperName}:`, err);
-    return [];
-  }
-}
-
-// Analyze reference images and extract visual characteristics
-async function analyzeReferenceImages(
-  pepperName: string, 
-  imageUrls: string[], 
-  lovableKey: string
-): Promise<string> {
-  if (imageUrls.length === 0) {
-    return `${pepperName}: Typical characteristics of this cultivar should be depicted accurately.`;
-  }
-
-  try {
-    // Use up to 5 images for analysis
-    const imagesToAnalyze = imageUrls.slice(0, 5);
-    const imageContent = imagesToAnalyze.map(url => ({
-      type: 'image_url',
-      image_url: { url }
-    }));
-
-    const analysisPrompt = `Analyze these reference images of the "${pepperName}" pepper variety and extract detailed visual characteristics for hyper-realistic image generation:
-
-1. Pod shape and size (elongated, round, wrinkled, etc.)
-2. Exact colors and color gradients (ripe and unripe if visible)
-3. Surface texture (smooth, wrinkled, bumpy, shiny/matte)
-4. Stem and calyx appearance
-5. Any distinctive visual features
-
-Provide a concise description (3-4 sentences) focusing on the most distinctive visual characteristics that would help recreate this pepper hyper-realistically.`;
-
-    const analysisResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: analysisPrompt },
-            ...imageContent
-          ]
-        }],
-      }),
-    });
-
-    if (!analysisResponse.ok) {
-      console.error(`Analysis failed for ${pepperName}`);
-      return `${pepperName}: Typical characteristics should be depicted.`;
-    }
-
-    const analysisData = await analysisResponse.json();
-    return `${pepperName}: ${analysisData.choices?.[0]?.message?.content || 'Typical characteristics.'}`;
-  } catch (err) {
-    console.error(`Error analyzing ${pepperName}:`, err);
-    return `${pepperName}: Typical characteristics should be depicted.`;
-  }
-}
-
-// Generate the consortium image with all 3 peppers
-async function generateConsortiumImage(
-  consortiumName: string,
-  pepperDescriptions: string[],
-  lovableKey: string
-): Promise<string | null> {
-  const prompt = `Create a hyper-realistic artistic still life photograph featuring exactly THREE pepper varieties arranged together.
-
-PEPPERS TO INCLUDE (EACH MUST BE CLEARLY VISIBLE AND IDENTIFIABLE):
-${pepperDescriptions.map((desc, i) => `${i + 1}. ${desc}`).join('\n')}
-
-CRITICAL REQUIREMENTS:
-- Feature ONLY these 3 specific pepper varieties, no other peppers
-- Each pepper must be clearly distinguishable and accurately depicted
-- Show 2-3 specimens of each variety for visual richness (6-9 total peppers)
-- Hyper-realistic 8K photograph quality with perfect sharp focus
-- Professional food photography lighting with soft shadows
-
-ARTISTIC STILL LIFE COMPOSITION:
-- Arrange on rustic aged wood surface with subtle texture
-- Include complementary props: vintage brass spice spoon, scattered peppercorns, dried herbs, aged linen cloth
-- Warm, moody lighting suggesting a spice merchant's table
-- Shallow depth of field with slight bokeh on background elements
-- Rich, saturated natural colors
-- Overhead or 45-degree angle view
-- Composition suitable for a premium spice trading company product image
-
-The image should feel like a museum-quality photograph of rare pepper specimens from the "${consortiumName}" collection.`;
-
-  console.log(`Generating consortium image for ${consortiumName}...`);
-
-  const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${lovableKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'google/gemini-2.5-flash-image-preview',
-      messages: [{ role: 'user', content: prompt }],
-      modalities: ['image', 'text'],
-    }),
-  });
-
-  if (!imageResponse.ok) {
-    const errorText = await imageResponse.text();
-    console.error(`Image generation failed for ${consortiumName}:`, errorText);
-    return null;
-  }
-
-  const imageData = await imageResponse.json();
-  return imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
-}
-
-// Apply watermark
-async function applyWatermark(
-  lovableKey: string,
-  imageBase64: string,
-  consortiumName: string,
-  supabaseUrl: string
-): Promise<string> {
-  try {
-    const logoUrl = `${supabaseUrl.replace('.supabase.co', '.lovable.app')}/branding/watermark-logo.png`;
-    
-    const watermarkPrompt = `Overlay the second image (the circular Hot Pepper Trading Company logo) as a subtle watermark in the bottom-right corner of the first image (the consortium pepper image).
-
-Requirements:
-- Position the logo in the bottom-right corner with a small margin from the edges
-- Make the logo semi-transparent at about 15-20% opacity
-- Resize the logo to be small (approximately 5-8% of the image width)
-- Tint the logo to a muted sepia, gold, or parchment tone that complements the main image
-- The logo should look like a subtle publisher's mark or trading company seal
-- Do NOT alter the main pepper image content at all - only add this watermark overlay
-
-The first image is the main ${consortiumName} consortium image to watermark.
-The second image is the Hot Pepper Trading Company logo to use as the watermark.`;
-
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-image-preview',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: watermarkPrompt },
-            { type: 'image_url', image_url: { url: imageBase64 } },
-            { type: 'image_url', image_url: { url: logoUrl } }
-          ]
-        }],
-        modalities: ['image', 'text'],
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const watermarkedImage = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-      if (watermarkedImage) return watermarkedImage;
-    }
-    
-    console.log('Watermarking failed, using original image');
-    return imageBase64;
-  } catch (err) {
-    console.error('Watermark error:', err);
-    return imageBase64;
-  }
-}
+const COMPOSITION_ANGLES = [
+  'dramatic bird\'s eye view looking straight down',
+  '45-degree angle capturing depth and dimension',
+  'low 30-degree angle emphasizing pepper textures',
+  'slightly off-center overhead with asymmetric balance'
+];
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -312,57 +129,65 @@ serve(async (req) => {
       console.log(`\n=== Processing ${consortium.name} ===`);
       console.log(`Peppers: ${consortium.peppers.join(', ')}`);
 
-      const pepperDescriptions: string[] = [];
-
-      // Process each pepper - gather references and analyze
-      for (const pepperName of consortium.peppers) {
-        console.log(`\n--- Gathering references for ${pepperName} ---`);
-        
-        // Get existing research images from database
-        const { data: researchData, error: researchError } = await supabase
-          .from('pepper_research')
-          .select('metadata')
-          .eq('source_type', 'wikimedia_images')
-          .ilike('query', `%${pepperName}%`);
-
-        let imageUrls: string[] = [];
-
-        if (!researchError && researchData) {
-          researchData.forEach((record: any) => {
-            const metadata = record.metadata;
-            if (metadata?.images && Array.isArray(metadata.images)) {
-              metadata.images.forEach((img: any) => {
-                if (img.url) imageUrls.push(img.url);
-              });
-            }
-          });
-        }
-
-        console.log(`Found ${imageUrls.length} existing reference images for ${pepperName}`);
-
-        // If we don't have enough images, note it but continue
-        // (Web search would require external API - using what we have from research)
-        const targetImages = 50;
-        if (imageUrls.length < targetImages) {
-          console.log(`Note: Only ${imageUrls.length}/${targetImages} reference images available for ${pepperName}`);
-        }
-
-        // Analyze the available references
-        const description = await analyzeReferenceImages(pepperName, imageUrls.slice(0, 10), lovableKey);
-        pepperDescriptions.push(description);
-        
-        console.log(`Analysis complete for ${pepperName}`);
+      // Random selections for unique composition each time
+      const lighting = LIGHTING_STYLES[Math.floor(Math.random() * LIGHTING_STYLES.length)];
+      const accent1 = ARTISTIC_ACCENTS[Math.floor(Math.random() * ARTISTIC_ACCENTS.length)];
+      let accent2 = ARTISTIC_ACCENTS[Math.floor(Math.random() * ARTISTIC_ACCENTS.length)];
+      while (accent2 === accent1) {
+        accent2 = ARTISTIC_ACCENTS[Math.floor(Math.random() * ARTISTIC_ACCENTS.length)];
       }
+      const angle = COMPOSITION_ANGLES[Math.floor(Math.random() * COMPOSITION_ANGLES.length)];
 
-      // Generate the consortium image
-      const generatedImage = await generateConsortiumImage(
-        consortium.name,
-        pepperDescriptions,
-        lovableKey
-      );
+      // Build detailed prompt for hyper-realistic artistic still life with DENSE pepper arrangement
+      const prompt = `Create a hyper-realistic artistic still life photograph. The entire frame should be FILLED with fresh chili peppers arranged abundantly on ${consortium.background}.
 
-      if (!generatedImage) {
-        console.error(`Failed to generate image for ${consortium.name}`);
+PEPPERS TO FEATURE (FILL 75-80% OF THE FRAME):
+1. ${consortium.peppers[0]} - Include 8-10 specimens in various sizes and angles, some whole, some cut to show seeds
+2. ${consortium.peppers[1]} - Include 8-10 specimens scattered throughout, overlapping naturally with others
+3. ${consortium.peppers[2]} - Include 6-8 specimens filling remaining space, creating visual balance
+
+CRITICAL COMPOSITION REQUIREMENTS:
+- DENSE ARRANGEMENT: Peppers should fill nearly the entire frame like a bountiful harvest display
+- Show peppers overlapping, tumbling, clustered together naturally
+- Mix of whole peppers and some cut in half to reveal colorful interiors and seeds
+- Various orientations: some facing camera, some sideways, some at angles
+- Background surface should only peek through in small gaps between peppers
+- ${angle}
+
+ARTISTIC ELEMENTS:
+- ${accent1}
+- ${accent2}
+
+LIGHTING & ATMOSPHERE:
+- ${lighting}
+- Ultra-sharp focus on pepper textures, wrinkles, glossy skin, and matte surfaces
+- Shallow depth of field with soft bokeh only on the furthest edges
+- Rich, saturated natural colors true to each pepper variety
+- Professional food photography quality, 8K hyper-realistic detail
+- Painterly quality reminiscent of Dutch Golden Age still life masters
+
+The image should look like a premium spice trading company's showcase photograph of the "${consortium.name}" collection - abundant, luxurious, and meticulously detailed.
+
+NO TEXT. NO WATERMARKS. NO PEOPLE. ONLY PEPPERS AND ARTISTIC ACCENTS.`;
+
+      console.log(`Generating with: ${angle}, ${lighting.substring(0, 40)}...`);
+
+      const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${lovableKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash-image-preview',
+          messages: [{ role: 'user', content: prompt }],
+          modalities: ['image', 'text'],
+        }),
+      });
+
+      if (!imageResponse.ok) {
+        const errorText = await imageResponse.text();
+        console.error(`Image generation failed for ${consortium.name}:`, errorText);
         results.push({
           consortiumId: id,
           name: consortium.name,
@@ -372,15 +197,25 @@ serve(async (req) => {
         continue;
       }
 
-      // Apply watermark
-      console.log(`Applying watermark to ${consortium.name} image...`);
-      const watermarkedImage = await applyWatermark(lovableKey, generatedImage, consortium.name, supabaseUrl);
+      const imageData = await imageResponse.json();
+      const generatedImage = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+
+      if (!generatedImage) {
+        console.error(`No image returned for ${consortium.name}`);
+        results.push({
+          consortiumId: id,
+          name: consortium.name,
+          success: false,
+          error: 'No image in response'
+        });
+        continue;
+      }
 
       // Save to storage
       const timestamp = Date.now();
       const storagePath = `regional-consortiums/${id}-${timestamp}.png`;
 
-      const base64Data = watermarkedImage.replace(/^data:image\/\w+;base64,/, '');
+      const base64Data = generatedImage.replace(/^data:image\/\w+;base64,/, '');
       const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 
       const { error: uploadError } = await supabase.storage
@@ -414,7 +249,8 @@ serve(async (req) => {
         success: true,
         imageUrl: publicUrl,
         storagePath,
-        peppersAnalyzed: consortium.peppers
+        peppers: consortium.peppers,
+        style: { lighting: lighting.substring(0, 50), angle }
       });
     }
 
