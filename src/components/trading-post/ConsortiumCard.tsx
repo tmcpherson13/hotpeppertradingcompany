@@ -100,7 +100,11 @@ export function ConsortiumCard({
           </div>
           
           {/* Product Name - Blackpearl Style */}
-          <h3 className="font-blackpearl text-xl text-ink text-center mb-2">
+          <h3 className={`font-blackpearl text-xl text-ink text-center ${
+            consortium.name === 'Silk & Jade Passages' || consortium.name === 'Atlantic Provenance' 
+              ? 'mb-2' 
+              : 'mb-5'
+          }`}>
             {consortium.name}
           </h3>
           
