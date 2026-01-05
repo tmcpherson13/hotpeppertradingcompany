@@ -89,7 +89,7 @@ export function ConsortiumCard({
         </Link>
 
         {/* Merchant Label Content */}
-        <div className="p-4 bg-parchment-dark">
+        <div className="p-4 bg-parchment-dark min-h-[200px] flex flex-col">
           {/* Decorative line */}
           <div className="flex items-center gap-2 mb-3">
             <div className="flex-1 h-px bg-ink/20" />
@@ -117,7 +117,7 @@ export function ConsortiumCard({
           </p>
           
           {/* Bottom Decorative Border - Two Buttons */}
-          <div className="border-t border-dashed border-ink/20 pt-3 flex flex-col gap-2">
+          <div className="border-t border-dashed border-ink/20 pt-3 flex flex-col gap-2 mt-auto">
             <Button 
               variant="outline" 
               size="sm" 
