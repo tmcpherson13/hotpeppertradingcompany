@@ -439,8 +439,8 @@ export default function TradingPost() {
       {!isLoading && !error && !isSearching && viewMode === 'exhibition' && (
         <>
           {/* TIER 1: Consortium Journeys */}
-          <section className="py-16 bg-parchment/90 relative z-10">
-            <div className="container mx-auto px-4">
+          <section className="py-16 relative z-10">
+            <div className="container mx-auto px-4 bg-parchment/90 rounded-lg p-6">
               <div className="flex items-center gap-4 mb-8">
                 <Crown className="w-6 h-6 text-gold" />
                 <div>
