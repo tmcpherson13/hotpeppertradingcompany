@@ -108,15 +108,17 @@ export function ConsortiumCard({
             {consortium.name}
           </h3>
           
-          {/* Trade Details */}
-          <div className="flex items-center justify-center text-[10px] uppercase tracking-wider text-ink/60 font-heading mb-3">
-            <span className="text-tyrian font-semibold">{consortium.price}</span>
+          {/* Trade Details & Description - Centered between name and buttons */}
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center text-xl uppercase tracking-wider text-ink/60 font-heading mb-4">
+              <span className="text-tyrian font-semibold">{consortium.price}</span>
+            </div>
+            
+            {/* Description - Fixed height for consistent card sizes */}
+            <p className="font-body text-xs text-ink/70 leading-relaxed text-center italic line-clamp-2 min-h-[2.5rem]">
+              "{consortium.description}"
+            </p>
           </div>
-          
-          {/* Description - Fixed height for consistent card sizes */}
-          <p className="font-body text-xs text-ink/70 leading-relaxed text-center mb-4 italic line-clamp-2 min-h-[2.5rem]">
-            "{consortium.description}"
-          </p>
           
           {/* Bottom Decorative Border - Two Buttons */}
           <div className="border-t border-dashed border-ink/20 pt-3 flex flex-col gap-2 mt-auto">
