@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.resend-admin-welcome]
 verify_jwt = false
+
+[functions.consortium-image-generate]
+verify_jwt = false
