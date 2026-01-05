@@ -125,7 +125,7 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
           {/* 3-Pepper badge */}
           <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-tyrian/90 backdrop-blur-sm px-2 py-1 rounded">
             <Package className="w-3 h-3 text-gold" />
-            <span className="text-xs text-gold font-heading">3 Peppers</span>
+            <span className="text-xs text-gold font-heading">3 Cultivars</span>
           </div>
 
           {/* Region Banner */}
@@ -171,7 +171,7 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
                 className="w-full text-[10px] uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment py-2"
                 onClick={() => onViewBlend(handle)}
               >
-                View Blend
+                View Consortium
               </Button>
               <Button 
                 variant="outline"
@@ -226,9 +226,9 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
             <Sparkles className="w-6 h-6 text-tyrian" />
             <div>
               <div className="flex items-center gap-3">
-                <h2 className="font-blackpearl text-3xl text-ink">Regional Blends</h2>
+                <h2 className="font-blackpearl text-3xl text-ink">Regional Consortiums</h2>
                 <span className="text-[10px] uppercase tracking-wider bg-tyrian/20 text-tyrian px-2 py-1 rounded font-heading">
-                  10 Blends
+                  10 Consortiums
                 </span>
               </div>
               <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
@@ -239,7 +239,7 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
           <p className="text-ink/70 font-body max-w-2xl mb-8">
             A middle tier between individual cultivars and flagship journeys — 
-            focused blends that showcase regional character without the commitment of a full consortium.
+            focused consortiums that showcase regional character without the commitment of a full journey.
           </p>
 
           {/* Regional Cards Grid */}
