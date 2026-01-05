@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -93,6 +94,7 @@ export function EmbersOfAfricaModal({ open, onOpenChange }: EmbersOfAfricaModalP
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
                     Embers of Africa
                   </DialogTitle>
+                  <DialogDescription className="sr-only">Details about the Embers of Africa pepper consortium</DialogDescription>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   A Layered Symphony of Heat Across Trade Routes

@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -93,6 +94,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
                     Phoenician Legacy
                   </DialogTitle>
+                  <DialogDescription className="sr-only">Details about the Phoenician Legacy pepper consortium</DialogDescription>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   Ancient Routes, Mediterranean Fire
