@@ -63,11 +63,13 @@ const pairings = [
 ];
 
 export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModalProps) {
+  console.log('[OldNatchezTraceModal] Rendering with open:', open);
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden relative">
+      <DialogContent forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden relative">
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh]">
+        <ScrollArea className="max-h-[90vh] min-h-[200px]">
           {/* Hero Image */}
           <div className="relative h-64 md:h-80 overflow-hidden">
             <img 

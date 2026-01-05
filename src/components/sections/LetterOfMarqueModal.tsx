@@ -67,11 +67,13 @@ const pairings = [
 ];
 
 export function LetterOfMarqueModal({ open, onOpenChange }: LetterOfMarqueModalProps) {
+  console.log('[LetterOfMarqueModal] Rendering with open:', open);
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+      <DialogContent forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh]">
+        <ScrollArea className="max-h-[90vh] min-h-[200px]">
           <div className="relative">
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">

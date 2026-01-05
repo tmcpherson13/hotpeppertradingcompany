@@ -60,11 +60,13 @@ const pairings = [
 ];
 
 export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenanceModalProps) {
+  console.log('[AtlanticProvenanceModal] Rendering with open:', open);
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+      <DialogContent forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh]">
+        <ScrollArea className="max-h-[90vh] min-h-[200px]">
           {/* Hero Image */}
           <div className="relative w-full h-64 md:h-80">
             <img 
