@@ -71,7 +71,7 @@ export function PhoenicianLegacyModal({ open, onOpenChange }: PhoenicianLegacyMo
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+      <DialogContent preventAutoClose forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh] min-h-[200px]">
           <div className="relative">
