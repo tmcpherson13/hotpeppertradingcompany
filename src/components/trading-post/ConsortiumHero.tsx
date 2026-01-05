@@ -3,11 +3,11 @@ import { Crown, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import cradleOfFireImage from '@/assets/consortium/cradle-of-fire.jpg';
 
-interface SkeletonConsortiumHeroProps {
+interface ConsortiumHeroProps {
   onExplore?: () => void;
 }
 
-export function SkeletonConsortiumHero({ onExplore }: SkeletonConsortiumHeroProps) {
+export function ConsortiumHero({ onExplore }: ConsortiumHeroProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

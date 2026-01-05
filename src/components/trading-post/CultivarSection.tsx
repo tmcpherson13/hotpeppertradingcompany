@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Flame } from 'lucide-react';
 import { ShopifyProduct } from '@/lib/shopify';
-import { ProductCard } from '../ProductCard';
+import { ProductCard } from './ProductCard';
 
-interface SkeletonCultivarSectionProps {
+interface CultivarSectionProps {
   cultivars: ShopifyProduct[];
   onQuickView: (product: ShopifyProduct) => void;
 }
@@ -29,7 +29,7 @@ function getShuFromProduct(product: ShopifyProduct): number | null {
   return null;
 }
 
-export function SkeletonCultivarSection({ cultivars, onQuickView }: SkeletonCultivarSectionProps) {
+export function CultivarSection({ cultivars, onQuickView }: CultivarSectionProps) {
   const [activeTab, setActiveTab] = useState<HeatTab>('all');
 
   const filteredCultivars = useMemo(() => {

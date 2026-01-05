@@ -5,9 +5,9 @@ import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
 import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
 // ConsortiumCards not currently used - carousel replaces grid in Exhibition Hall
-import { RegionalBlendsSection } from "@/components/trading-post/skeleton/RegionalBlendsSection";
-import { SkeletonConsortiumHero } from "@/components/trading-post/skeleton/SkeletonConsortiumHero";
-import { ConsortiumCarousel } from "@/components/trading-post/skeleton/ConsortiumCarousel";
+import { RegionalBlendsSection } from "@/components/trading-post/RegionalBlendsSection";
+import { ConsortiumHero } from "@/components/trading-post/ConsortiumHero";
+import { ConsortiumCarousel } from "@/components/trading-post/ConsortiumCarousel";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -453,7 +453,7 @@ export default function TradingPost() {
 
               {/* Featured Hero Card */}
               <div className="mb-12">
-                <SkeletonConsortiumHero onExplore={() => handleViewManifest('cradle-of-fire')} />
+                <ConsortiumHero onExplore={() => handleViewManifest('cradle-of-fire')} />
               </div>
 
               {/* Carousel */}
