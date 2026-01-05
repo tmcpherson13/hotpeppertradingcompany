@@ -76,7 +76,18 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative"
+        onPointerDownOutside={(e) => {
+          console.log('[AndeanDiasporaModal] onPointerDownOutside triggered', e);
+        }}
+        onInteractOutside={(e) => {
+          console.log('[AndeanDiasporaModal] onInteractOutside triggered', e);
+        }}
+        onEscapeKeyDown={(e) => {
+          console.log('[AndeanDiasporaModal] onEscapeKeyDown triggered', e);
+        }}
+      >
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh] min-h-[200px]">
           <div className="relative">
