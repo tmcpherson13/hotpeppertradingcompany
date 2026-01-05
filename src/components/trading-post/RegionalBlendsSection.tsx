@@ -184,8 +184,8 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
   return (
     <>
-      <section className="py-16 relative z-10 border-y border-tyrian/20">
-        <div className="container mx-auto px-4">
+      <section className="py-16 relative z-10">
+        <div className="container mx-auto px-4 bg-parchment/90 rounded-lg p-6">
           {/* Section Header */}
           <div className="flex items-center gap-4 mb-3">
             <Sparkles className="w-6 h-6 text-tyrian" />
