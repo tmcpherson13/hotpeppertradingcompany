@@ -597,7 +597,7 @@ export default function TradingPost() {
         console.log('[Test Dialog] onOpenChange called with:', open);
         setTestDialogOpen(open);
       }}>
-        <DialogContent className="max-w-md bg-white border-2 border-gray-300">
+        <DialogContent preventAutoClose className="max-w-md bg-white border-2 border-gray-300">
           <DialogHeader>
             <DialogTitle>Test Dialog Works!</DialogTitle>
             <DialogDescription>
