@@ -9,53 +9,60 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import americanFusionImg from '@/assets/regional-blends/american-fusion.jpg';
 
-interface ScorpionsTrailModalProps {
+interface AmericanFusionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 const pepperProfiles = [
   {
+    name: 'Fresno',
+    origin: 'California',
+    heat: 'Medium (2,500–10,000 SHU)',
+    flavor: 'Bright, slightly fruity with clean heat and thick, meaty walls.',
+    role: 'Anchor — the California classic, fresher and fruitier than jalapeño.',
+  },
+  {
+    name: 'Rocoto',
+    origin: 'Peru (Andes highlands)',
+    heat: 'Hot (30,000–100,000 SHU)',
+    flavor: 'Apple-like crunch with intense, unique heat and thick, juicy walls.',
+    role: 'Body — the black-seeded highlander, one of the oldest domesticated peppers.',
+  },
+  {
     name: 'Datil',
     origin: 'Florida (St. Augustine)',
-    heat: 'Hot (100,000–300,000 SHU)',
+    heat: 'Very Hot (100,000–300,000 SHU)',
     flavor: 'Sweet, tangy, with fruity complexity and a clean, sharp heat.',
-    role: 'Anchor — the Minorcan legacy, bridging Spanish colonial history with New World fire.',
-  },
-  {
-    name: 'Red Savina Habanero',
-    origin: 'Yucatán (California developed)',
-    heat: 'Extreme (350,000–580,000 SHU)',
-    flavor: 'Floral, citrusy with intense, building heat and fruity sweetness.',
-    role: 'Body — once the world\'s hottest, a breeder\'s triumph of heat and flavor.',
-  },
-  {
-    name: 'Trinidad Scorpion',
-    origin: 'Trinidad & Tobago',
-    heat: 'Super-Hot (1,200,000–2,000,000 SHU)',
-    flavor: 'Fruity, slightly floral with devastating, lingering heat and sweet undertones.',
-    role: 'Finisher — the scorpion\'s sting, named for its pointed tail. Handle with extreme care.',
+    role: 'Finisher — the Minorcan legacy, bridging Spanish colonial history with New World fire.',
   },
 ];
 
 const pairings = [
-  'Caribbean-style hot sauces',
-  'Tropical fruit salsas (with caution)',
-  'Jerk marinades (small amounts)',
-  'Extreme heat challenges',
-  'Chocolate and coffee desserts',
-  'Rum-based cocktails (infused)',
+  'California-style salsas and tacos',
+  'Peruvian rocoto relleno',
+  'Florida datil hot sauce',
+  'Grilled fish and seafood',
+  'Fusion cuisine dishes',
+  'Farm-to-table vegetable dishes',
 ];
 
-export function ScorpionsTrailModal({ open, onOpenChange }: ScorpionsTrailModalProps) {
+export function AmericanFusionModal({ open, onOpenChange }: AmericanFusionModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-red-900 via-red-700 to-orange-500">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={americanFusionImg}
+                alt="American Fusion Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -64,11 +71,11 @@ export function ScorpionsTrailModal({ open, onOpenChange }: ScorpionsTrailModalP
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Scorpion's Trail
+                    American Fusion
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  Fruity • Intense • Devastating
+                  Fresh • Fruity • Continental
                 </p>
               </div>
             </div>
@@ -120,21 +127,19 @@ export function ScorpionsTrailModal({ open, onOpenChange }: ScorpionsTrailModalP
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    For those who seek the outer limits.
+                    Where continents meet in the Americas.
                   </p>
                   <p>
-                    The superhot pepper revolution began in the Caribbean. Trinidad's breeding 
-                    programs pushed Capsicum chinense to its thermal limits, creating peppers 
-                    that would have been unimaginable to ancient cultivators.
+                    The Americas span from the Andean highlands to the Florida coast, 
+                    and this blend captures that continental range. From California's 
+                    fresh Fresno to the ancient Rocoto of Peru to the colonial mystery 
+                    of the Datil — each pepper represents a different chapter in American 
+                    pepper history.
                   </p>
                   <p>
-                    This blend walks the scorpion's path — from the historical Datil through 
-                    the record-breaking Red Savina to the fearsome Trinidad Scorpion. 
-                    A journey for the bold, the curious, and the slightly masochistic.
-                  </p>
-                  <p className="font-semibold text-primary">
-                    ⚠️ Warning: This blend contains extremely hot peppers. Use sparingly 
-                    and handle with appropriate precautions.
+                    This blend celebrates fusion — the blending of indigenous, colonial, 
+                    and modern pepper cultivation that defines the Americas. Three peppers 
+                    from three distinct traditions, united by the New World.
                   </p>
                 </div>
               </section>
@@ -168,11 +173,11 @@ export function ScorpionsTrailModal({ open, onOpenChange }: ScorpionsTrailModalP
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-                  <span className="font-display text-primary text-lg">$19</span>
+                  <span className="font-display text-primary text-lg">$16</span>
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">100,000–2,000,000 SHU</span>
+                  <span className="font-display text-ink">2,500–300,000 SHU</span>
                 </div>
               </div>
             </div>

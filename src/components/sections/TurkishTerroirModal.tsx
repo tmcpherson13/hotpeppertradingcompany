@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import turkishTerroirImg from '@/assets/regional-blends/turkish-terroir.jpg';
 
 interface TurkishTerroirModalProps {
   open: boolean;
@@ -31,11 +32,11 @@ const pepperProfiles = [
     role: 'Body — the dark jewel of Anatolia, sweated nightly to develop its sultry depth.',
   },
   {
-    name: 'Fresno',
-    origin: 'California (via Mexico)',
-    heat: 'Medium (2,500–10,000 SHU)',
-    flavor: 'Bright, slightly fruity with clean heat and thick, meaty walls.',
-    role: 'Finisher — the New World bridge, adding fresh brightness to the ancient blend.',
+    name: 'Marash Biber',
+    origin: 'Turkey (Kahramanmaraş)',
+    heat: 'Medium (2,500–5,000 SHU)',
+    flavor: 'Warm, complex heat with sun-dried tomato sweetness and subtle smokiness.',
+    role: 'Finisher — the silky red flakes of Maraş, gentler than Aleppo with deeper warmth.',
   },
 ];
 
@@ -55,7 +56,13 @@ export function TurkishTerroirModal({ open, onOpenChange }: TurkishTerroirModalP
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-amber-800 via-red-700 to-orange-600">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={turkishTerroirImg}
+                alt="Turkish Terroir Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -125,13 +132,13 @@ export function TurkishTerroirModal({ open, onOpenChange }: TurkishTerroirModalP
                   <p>
                     The crossroads of continents, Turkey developed unique pepper varieties 
                     and curing techniques found nowhere else. The sun-sweat process of Urfa, 
-                    the olive oil crush of Aleppo — these are ancient traditions preserved 
-                    by generations of pepper masters.
+                    the olive oil crush of Aleppo, the gentle drying of Marash — these are 
+                    ancient traditions preserved by generations of pepper masters.
                   </p>
                   <p>
-                    This blend celebrates Anatolian terroir with its signature flavors — 
-                    smoky, earthy, and complex — brightened by the fresh Fresno, a nod to 
-                    the global pepper diaspora these ancient varieties inspired.
+                    This blend celebrates pure Anatolian terroir — three Turkish treasures 
+                    that showcase the region's mastery of pepper preservation and flavor 
+                    development, each with its own distinct character.
                   </p>
                 </div>
               </section>

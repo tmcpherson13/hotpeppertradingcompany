@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import africanFireImg from '@/assets/regional-blends/african-fire.jpg';
 
 interface AfricanFireModalProps {
   open: boolean;
@@ -17,18 +18,18 @@ interface AfricanFireModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Peri Peri',
-    origin: 'Mozambique & Southern Africa',
-    heat: 'Hot (50,000–175,000 SHU)',
-    flavor: 'Bright, citrusy heat with herbaceous notes and a clean, sharp finish.',
-    role: 'Anchor — the Portuguese-African fusion that conquered the world from Nando\'s to home kitchens.',
-  },
-  {
     name: 'Mombasa Chili',
     origin: 'Kenya (East African Coast)',
     heat: 'Medium-Hot (25,000–40,000 SHU)',
     flavor: 'Earthy, warm heat with subtle fruity undertones and a lingering warmth.',
-    role: 'Body — the spice route pepper, traded from the ancient Swahili coast ports.',
+    role: 'Anchor — the spice route pepper, traded from the ancient Swahili coast ports.',
+  },
+  {
+    name: 'Peri Peri',
+    origin: 'Mozambique & Southern Africa',
+    heat: 'Hot (50,000–175,000 SHU)',
+    flavor: 'Bright, citrusy heat with herbaceous notes and a clean, sharp finish.',
+    role: 'Body — the Portuguese-African fusion that conquered the world from Nando\'s to home kitchens.',
   },
   {
     name: 'Malagueta',
@@ -55,8 +56,13 @@ export function AfricanFireModal({ open, onOpenChange }: AfricanFireModalProps) 
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            {/* Hero Image - using gradient background */}
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-red-800 via-orange-700 to-amber-600">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={africanFireImg}
+                alt="African Fire Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">

@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import indianSubcontinentImg from '@/assets/regional-blends/indian-subcontinent.jpg';
 
 interface IndianSubcontinentModalProps {
   open: boolean;
@@ -24,28 +25,28 @@ const pepperProfiles = [
     role: 'Anchor — the color king of Indian cuisine, essential for tandoori\'s signature hue.',
   },
   {
-    name: 'Cayenne',
-    origin: 'South America (now global)',
-    heat: 'Hot (30,000–50,000 SHU)',
-    flavor: 'Clean, direct heat with slightly fruity undertones.',
-    role: 'Body — the workhorse of curry powders, bringing reliable, consistent fire.',
-  },
-  {
     name: 'Ghost Pepper',
     origin: 'Northeast India (Assam)',
     heat: 'Extreme (855,000–1,041,000 SHU)',
     flavor: 'Slow-building, devastating heat with fruity, smoky complexity.',
-    role: 'Finisher — the Bhut Jolokia, once the world\'s hottest, handle with reverence.',
+    role: 'Body — the Bhut Jolokia, once the world\'s hottest, used sparingly for depth.',
+  },
+  {
+    name: 'Naga Viper',
+    origin: 'England (from Indian genetics)',
+    heat: 'Superhot (1,349,000+ SHU)',
+    flavor: 'Intense, complex heat with floral notes and a slow, creeping burn.',
+    role: 'Finisher — the British-bred hybrid, a cross of Naga Morich, Bhut Jolokia, and Trinidad Scorpion.',
   },
 ];
 
 const pairings = [
   'Tandoori chicken and lamb',
   'Rogan josh and Kashmiri curries',
-  'Biryani and pulao',
-  'Vindaloo (for the brave)',
-  'Curry powder blends',
+  'Vindaloo and phaal (for the brave)',
+  'Extreme curry challenges',
   'Indian pickles and chutneys',
+  'Chocolate-chili fusions',
 ];
 
 export function IndianSubcontinentModal({ open, onOpenChange }: IndianSubcontinentModalProps) {
@@ -55,7 +56,13 @@ export function IndianSubcontinentModal({ open, onOpenChange }: IndianSubcontine
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-orange-700 via-red-600 to-yellow-500">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={indianSubcontinentImg}
+                alt="Indian Subcontinent Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -120,18 +127,18 @@ export function IndianSubcontinentModal({ open, onOpenChange }: IndianSubcontine
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    Where Portuguese traders ignited a culinary revolution.
+                    From the highlands of Kashmir to the volcanic intensity of the Naga lands.
                   </p>
                   <p>
-                    Before 1498, India had black pepper but no chilies. Portuguese traders 
-                    changed everything, introducing Capsicum peppers that would transform 
-                    Indian cuisine within a generation. Today, India is the world's largest 
-                    producer and consumer of chili peppers.
+                    India is the world's largest producer and consumer of chili peppers, and 
+                    its northeastern states gave birth to the superhot revolution. The Bhut 
+                    Jolokia, Naga Morich, and their descendants represent the pinnacle of 
+                    Capsicum chinense development.
                   </p>
                   <p>
-                    This blend spans India's heat spectrum — from the mild, color-rich 
-                    Kashmiri to the reliable Cayenne to the legendary Ghost Pepper from 
-                    the northeastern hills. A journey through 500 years of adaptation.
+                    This blend explores India's extremes — from the gentle, color-rich Kashmiri 
+                    to the legendary Ghost Pepper and the British-bred Naga Viper that combines 
+                    Indian genetics into something even more intense. Handle with reverence.
                   </p>
                 </div>
               </section>
@@ -169,7 +176,7 @@ export function IndianSubcontinentModal({ open, onOpenChange }: IndianSubcontine
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">1,000–1,041,000 SHU</span>
+                  <span className="font-display text-ink">1,000–1,349,000+ SHU</span>
                 </div>
               </div>
             </div>

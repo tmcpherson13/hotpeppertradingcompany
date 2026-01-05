@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import andeanHeightsImg from '@/assets/regional-blends/andean-heights.jpg';
 
 interface AndeanHeightsModalProps {
   open: boolean;
@@ -17,11 +18,11 @@ interface AndeanHeightsModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Aji Limon',
-    origin: 'Peru (Andes)',
-    heat: 'Medium (15,000–30,000 SHU)',
-    flavor: 'Bright citrus notes with clean, lemony heat that dances on the palate.',
-    role: 'Anchor — the lemon drop of the Andes, bringing zesty freshness to the blend.',
+    name: 'Aji Panca',
+    origin: 'Peru (Coastal)',
+    heat: 'Mild (500–1,500 SHU)',
+    flavor: 'Deep, berry-like sweetness with smoky, sun-dried complexity and mild warmth.',
+    role: 'Anchor — the dark jewel of Peru, essential to adobos and anticuchos.',
   },
   {
     name: 'Aji Amarillo',
@@ -55,8 +56,13 @@ export function AndeanHeightsModal({ open, onOpenChange }: AndeanHeightsModalPro
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            {/* Hero Image - using gradient background since no image exists yet */}
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-amber-700 via-orange-600 to-yellow-500">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={andeanHeightsImg}
+                alt="Andean Heights Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               {/* Title Overlay */}
@@ -171,7 +177,7 @@ export function AndeanHeightsModal({ open, onOpenChange }: AndeanHeightsModalPro
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">15,000–1,500,000+ SHU</span>
+                  <span className="font-display text-ink">500–1,500,000+ SHU</span>
                 </div>
               </div>
             </div>
