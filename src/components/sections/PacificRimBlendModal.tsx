@@ -32,21 +32,21 @@ const pepperProfiles = [
     role: 'Body — the backbone of Thai curries and stir-fries, adding electric intensity.',
   },
   {
-    name: 'Siling Labuyo',
-    origin: 'Philippines',
-    heat: 'Very Hot (80,000–100,000 SHU)',
-    flavor: 'Citrusy, pungent with a fruity complexity and fierce, lingering heat.',
-    role: 'Finisher — wild Filipino fire, carrying the spirit of the Manila Galleon trade.',
+    name: 'Tien Tsin',
+    origin: 'China (Tianjin)',
+    heat: 'Hot (50,000–75,000 SHU)',
+    flavor: 'Clean, direct heat with a slight nuttiness when toasted in oil.',
+    role: 'Finisher — the backbone of Sichuan and Hunan cooking, named for the great port city.',
   },
 ];
 
 const pairings = [
   'Korean kimchi and banchan',
   'Thai green or red curry',
-  'Filipino adobo and sinigang',
+  'Kung Pao chicken and mapo tofu',
   'Stir-fried noodles and rice dishes',
   'Asian-inspired marinades',
-  'Pacific Rim fusion tacos',
+  'Sichuan-style hot pot',
 ];
 
 export function PacificRimBlendModal({ open, onOpenChange }: PacificRimBlendModalProps) {
@@ -140,8 +140,8 @@ export function PacificRimBlendModal({ open, onOpenChange }: PacificRimBlendModa
                   </p>
                   <p>
                     This blend captures that dynamic exchange — from Korea's sun-dried gochugaru 
-                    to Thailand's electric bird's eye and the wild Filipino labuyo. Together, 
-                    they represent centuries of adaptation and the bright, citrus-forward heat 
+                    to Thailand's electric bird's eye and China's essential Tien Tsin. Together, 
+                    they represent centuries of adaptation and the bright, aromatic heat 
                     that defines Pacific Asian cuisine.
                   </p>
                 </div>

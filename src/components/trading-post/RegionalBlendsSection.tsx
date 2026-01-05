@@ -8,6 +8,13 @@ import { HeatBadge } from './HeatBadge';
 import { MediterraneanSelectionModal } from '@/components/sections/MediterraneanSelectionModal';
 import { CaribbeanHeatTrioModal } from '@/components/sections/CaribbeanHeatTrioModal';
 import { PacificRimBlendModal } from '@/components/sections/PacificRimBlendModal';
+import { AndeanHeightsModal } from '@/components/sections/AndeanHeightsModal';
+import { AfricanFireModal } from '@/components/sections/AfricanFireModal';
+import { MexicanTriadModal } from '@/components/sections/MexicanTriadModal';
+import { IndianSubcontinentModal } from '@/components/sections/IndianSubcontinentModal';
+import { TurkishTerroirModal } from '@/components/sections/TurkishTerroirModal';
+import { SouthAmericanHeatModal } from '@/components/sections/SouthAmericanHeatModal';
+import { ScorpionsTrailModal } from '@/components/sections/ScorpionsTrailModal';
 
 // Map product handles to region labels and flavor profiles
 const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> = {
@@ -22,6 +29,34 @@ const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> =
   'pacific-rim-blend': { 
     region: 'East & Southeast Asia', 
     flavorProfile: 'Citrus • Bright • Complex' 
+  },
+  'andean-heights': {
+    region: 'Peru & Ecuador',
+    flavorProfile: 'Citrus • Tropical • Volcanic'
+  },
+  'african-fire': {
+    region: 'Pan-African Routes',
+    flavorProfile: 'Earthy • Citrus • Heritage'
+  },
+  'mexican-triad': {
+    region: 'Mexico',
+    flavorProfile: 'Earthy • Bright • Essential'
+  },
+  'indian-subcontinent': {
+    region: 'South Asia',
+    flavorProfile: 'Aromatic • Colorful • Intense'
+  },
+  'turkish-terroir': {
+    region: 'Anatolia & Levant',
+    flavorProfile: 'Smoky • Earthy • Ancient'
+  },
+  'south-american-heat': {
+    region: 'South America',
+    flavorProfile: 'Citrus • Tropical • Versatile'
+  },
+  'scorpions-trail': {
+    region: 'Caribbean & Americas',
+    flavorProfile: 'Fruity • Intense • Devastating'
   },
 };
 
@@ -193,7 +228,7 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
               <div className="flex items-center gap-3">
                 <h2 className="font-blackpearl text-3xl text-ink">Regional Blends</h2>
                 <span className="text-[10px] uppercase tracking-wider bg-tyrian/20 text-tyrian px-2 py-1 rounded font-heading">
-                  New
+                  10 Blends
                 </span>
               </div>
               <p className="text-ink/60 font-heading text-sm uppercase tracking-wider">
@@ -208,7 +243,7 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
           </p>
 
           {/* Regional Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regionalBlends.map((product, index) => (
               <RegionalBlendCard 
                 key={product.node.id} 
@@ -221,7 +256,7 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
         </div>
       </section>
 
-      {/* Regional Blend Modals */}
+      {/* Regional Blend Modals - Original 3 */}
       <MediterraneanSelectionModal 
         open={activeModal === 'mediterranean-selection'} 
         onOpenChange={(open) => !open && closeModal()} 
@@ -232,6 +267,36 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
       />
       <PacificRimBlendModal 
         open={activeModal === 'pacific-rim-blend'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+
+      {/* Regional Blend Modals - New 7 */}
+      <AndeanHeightsModal 
+        open={activeModal === 'andean-heights'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <AfricanFireModal 
+        open={activeModal === 'african-fire'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <MexicanTriadModal 
+        open={activeModal === 'mexican-triad'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <IndianSubcontinentModal 
+        open={activeModal === 'indian-subcontinent'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <TurkishTerroirModal 
+        open={activeModal === 'turkish-terroir'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <SouthAmericanHeatModal 
+        open={activeModal === 'south-american-heat'} 
+        onOpenChange={(open) => !open && closeModal()} 
+      />
+      <ScorpionsTrailModal 
+        open={activeModal === 'scorpions-trail'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
     </>
