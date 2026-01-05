@@ -89,14 +89,14 @@ export function ConsortiumCard({
         </Link>
 
         {/* Merchant Label Content */}
-        <div className="p-4 bg-parchment-dark h-[219px] flex flex-col">
-          {/* Decorative line */}
-          <div className="flex items-center gap-2 mb-3">
-            <div className="flex-1 h-px bg-ink/20" />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-ink/60 font-heading">
+        <div className="p-4 bg-parchment-dark flex flex-col">
+          {/* Decorative line - fixed height for 2-line labels */}
+          <div className="flex items-start gap-2 mb-3 min-h-[2.25rem]">
+            <div className="flex-1 h-px bg-ink/20 mt-[0.35rem]" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-ink/60 font-heading text-center leading-tight max-w-[70%]">
               {consortium.regionLabel}
             </span>
-            <div className="flex-1 h-px bg-ink/20" />
+            <div className="flex-1 h-px bg-ink/20 mt-[0.35rem]" />
           </div>
           
           {/* Product Name - Blackpearl Style */}
