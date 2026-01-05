@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+// Force rebuild after image update
 import africanFireImg from '@/assets/regional-blends/african-fire.jpg';
 
 interface AfricanFireModalProps {
