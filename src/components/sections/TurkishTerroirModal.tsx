@@ -67,7 +67,7 @@ export function TurkishTerroirModal({ open, onOpenChange }: TurkishTerroirModalP
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-tyrian/90 text-gold border-none">
-                  Regional Blend • 3 Peppers
+                  Regional Consortium • 3 Cultivars
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
