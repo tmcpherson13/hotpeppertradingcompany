@@ -9,7 +9,7 @@ import { RegionalBlendsSection } from "@/components/trading-post/RegionalBlendsS
 import { ConsortiumHero } from "@/components/trading-post/ConsortiumHero";
 import { ConsortiumCarousel } from "@/components/trading-post/ConsortiumCarousel";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf, Bug } from "lucide-react";
+import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -27,39 +27,8 @@ import { LetterOfMarqueModal } from "@/components/sections/LetterOfMarqueModal";
 import { ManilaGalleonModal } from "@/components/sections/ManilaGalleonModal";         // № 009
 import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal";     // № 010
 
-type ViewMode = 'exhibition' | 'all';
 
-// Debug HUD Component
-const ModalDebugHUD = ({ activeModal, lastCall }: { activeModal: string | null; lastCall: string | null }) => {
-  if (import.meta.env.PROD) return null;
-  
-  return (
-    <div className="fixed bottom-4 right-4 z-[100] bg-black/90 text-green-400 font-mono text-xs p-3 rounded-lg shadow-lg border border-green-500/50 max-w-xs">
-      <div className="flex items-center gap-2 mb-2 text-green-300 font-bold">
-        <Bug className="w-4 h-4" />
-        Modal Debug HUD
-      </div>
-      <div className="space-y-1">
-        <div>
-          <span className="text-gray-400">activeModal:</span>{' '}
-          <span className={activeModal ? 'text-yellow-400' : 'text-red-400'}>
-            {activeModal || 'null'}
-          </span>
-        </div>
-        <div>
-          <span className="text-gray-400">isOpen:</span>{' '}
-          <span className={activeModal ? 'text-green-400' : 'text-red-400'}>
-            {activeModal ? 'true' : 'false'}
-          </span>
-        </div>
-        <div>
-          <span className="text-gray-400">lastCall:</span>{' '}
-          <span className="text-blue-400">{lastCall || 'none'}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
+type ViewMode = 'exhibition' | 'all';
 
 export default function TradingPost() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -69,8 +38,6 @@ export default function TradingPost() {
   const [heatRange, setHeatRange] = useState<[number, number] | null>(null);
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const [lastHandleCall, setLastHandleCall] = useState<string | null>(null);
-  const [testDialogOpen, setTestDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const saved = localStorage.getItem('tradingpost-view-mode');
     return (saved === 'all' || saved === 'exhibition') ? saved : 'exhibition';
@@ -108,25 +75,15 @@ export default function TradingPost() {
   };
 
   const handleViewManifest = useCallback((consortiumId: string) => {
-    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
-    console.log(`[Modal Debug ${timestamp}] handleViewManifest called with:`, consortiumId);
-    console.log(`[Modal Debug ${timestamp}] Previous activeModal:`, activeModal);
-    setLastHandleCall(`${consortiumId} @ ${timestamp}`);
+    console.log('[Modal] Opening:', consortiumId);
     setActiveModal(consortiumId);
-  }, [activeModal]);
+  }, []);
 
   const closeModal = useCallback(() => {
-    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
-    console.log(`[Modal Debug ${timestamp}] closeModal called, clearing activeModal from:`, activeModal);
-    console.trace('[Modal Debug] closeModal stack trace');
+    console.log('[Modal] Closing');
     setActiveModal(null);
-  }, [activeModal]);
+  }, []);
 
-  // Debug: Log activeModal state changes
-  useEffect(() => {
-    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
-    console.log(`[Modal Debug ${timestamp}] activeModal state changed to:`, activeModal);
-  }, [activeModal]);
 
   // Categorize products by product type
   const { cultivars, consortiums, merchandise } = useMemo(() => {
@@ -573,45 +530,6 @@ export default function TradingPost() {
       )}
       
       <Footer />
-
-      {/* Debug HUD */}
-      <ModalDebugHUD activeModal={activeModal} lastCall={lastHandleCall} />
-
-      {/* Test Dialog Button - Fixed position */}
-      {import.meta.env.DEV && (
-        <Button
-          onClick={() => {
-            console.log('[Test Dialog] Opening test dialog');
-            setTestDialogOpen(true);
-          }}
-          className="fixed bottom-4 left-4 z-[100] bg-purple-600 hover:bg-purple-700 text-white"
-          size="sm"
-        >
-          <Bug className="w-4 h-4 mr-2" />
-          Test Dialog
-        </Button>
-      )}
-
-      {/* Minimal Test Dialog */}
-      <Dialog open={testDialogOpen} onOpenChange={(open) => {
-        console.log('[Test Dialog] onOpenChange called with:', open);
-        setTestDialogOpen(open);
-      }}>
-        <DialogContent preventAutoClose className="max-w-md bg-white border-2 border-gray-300">
-          <DialogHeader>
-            <DialogTitle>Test Dialog Works!</DialogTitle>
-            <DialogDescription>
-              If you can see this, the base Dialog component is functioning correctly.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <p className="text-gray-600">
-              The issue is likely specific to consortium modals, not the Dialog primitive itself.
-            </p>
-          </div>
-          <Button onClick={() => setTestDialogOpen(false)}>Close Test</Button>
-        </DialogContent>
-      </Dialog>
 
       {/* Quick View Modal */}
       <QuickViewModal

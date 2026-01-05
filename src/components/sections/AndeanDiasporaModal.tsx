@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -76,7 +77,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent preventAutoClose className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
+      <DialogContent preventAutoClose forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh] min-h-[200px]">
           <div className="relative">
@@ -98,6 +99,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
                     Andean Diaspora
                   </DialogTitle>
+                  <DialogDescription className="sr-only">Details about the Andean Diaspora pepper consortium</DialogDescription>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   Two Cultivars, Two Directions

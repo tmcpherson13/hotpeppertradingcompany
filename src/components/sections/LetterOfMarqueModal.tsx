@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -93,6 +94,7 @@ export function LetterOfMarqueModal({ open, onOpenChange }: LetterOfMarqueModalP
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
                     Letter of Marque
                   </DialogTitle>
+                  <DialogDescription className="sr-only">Details about the Letter of Marque pepper consortium</DialogDescription>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                   Sanctioned Fire from the Golden Age of Piracy

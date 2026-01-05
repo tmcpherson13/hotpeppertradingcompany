@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -68,6 +68,8 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent preventAutoClose forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 bg-parchment border-2 border-ink/30 overflow-hidden relative">
+        <DialogTitle className="sr-only">Old Natchez Trace</DialogTitle>
+        <DialogDescription className="sr-only">Details about the Old Natchez Trace pepper consortium</DialogDescription>
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh] min-h-[200px]">
           {/* Hero Image */}

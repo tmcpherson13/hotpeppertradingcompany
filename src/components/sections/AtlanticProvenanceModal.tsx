@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -83,6 +83,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
                 <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
                   Atlantic Provenance
                 </DialogTitle>
+                <DialogDescription className="sr-only">Details about the Atlantic Provenance pepper consortium</DialogDescription>
               </DialogHeader>
               <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
                 Mexico → Caribbean → West Africa
