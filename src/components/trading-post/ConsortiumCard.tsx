@@ -89,7 +89,7 @@ export function ConsortiumCard({
         </Link>
 
         {/* Merchant Label Content */}
-        <div className="p-4 bg-parchment-dark min-h-[200px] flex flex-col">
+        <div className="p-4 bg-parchment-dark h-[219px] flex flex-col">
           {/* Decorative line */}
           <div className="flex items-center gap-2 mb-3">
             <div className="flex-1 h-px bg-ink/20" />
