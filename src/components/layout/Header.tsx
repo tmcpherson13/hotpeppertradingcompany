@@ -7,11 +7,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import logoDark from '@/assets/logo-dark.svg';
 
 const navLinks = [
+  { name: 'Home', href: '/', isRoute: true },
   { name: 'Trading Post', href: '/trading-post', isRoute: true },
   { name: 'The Compendium', href: '/compendium', isRoute: true },
-  { name: 'Origins Map', href: '/origins', isRoute: true },
   { name: 'Our Heritage', href: '/#heritage', isRoute: false },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
+  { name: 'Origins Map', href: '/origins', isRoute: true },
 ];
 
 export function Header() {
@@ -22,16 +23,20 @@ export function Header() {
   const isHomePage = location.pathname === '/';
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    // Extract hash correctly from both '#routes' and '/#heritage' formats
+    const hashIndex = href.indexOf('#');
+    const targetId = hashIndex !== -1 ? href.slice(hashIndex + 1) : '';
+    
     if (!isHomePage) {
-      e.preventDefault();
-      const targetId = href.replace('#', '');
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+      // Navigate to home with hash - ScrollToHash in App.tsx handles the scroll
+      navigate('/' + (targetId ? '#' + targetId : ''));
+    } else if (targetId) {
+      // Already on homepage - scroll to element directly
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
