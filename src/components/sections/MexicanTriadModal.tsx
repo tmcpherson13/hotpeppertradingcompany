@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import mexicanTriadImg from '@/assets/regional-blends/mexican-triad.jpg';
 
 interface MexicanTriadModalProps {
   open: boolean;
@@ -17,11 +18,11 @@ interface MexicanTriadModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Ancho',
-    origin: 'Mexico (Puebla)',
-    heat: 'Mild (1,000–2,000 SHU)',
-    flavor: 'Sweet, earthy, with notes of dried fruit, chocolate, and tobacco.',
-    role: 'Anchor — the dried poblano, cornerstone of mole negro and Mexican cuisine.',
+    name: 'Chipotle Morita',
+    origin: 'Mexico',
+    heat: 'Medium (5,000–10,000 SHU)',
+    flavor: 'Smoky, rich, with deep chocolate and tobacco notes from the smoking process.',
+    role: 'Anchor — the smoked jalapeño, smaller and smokier than chipotle meco.',
   },
   {
     name: 'Chile de Árbol',
@@ -31,21 +32,21 @@ const pepperProfiles = [
     role: 'Body — the "tree chile" with thin walls that dry to a translucent red.',
   },
   {
-    name: 'Serrano',
-    origin: 'Mexico (Sierra Mountains)',
-    heat: 'Medium-Hot (10,000–23,000 SHU)',
-    flavor: 'Bright, grassy, clean heat with crisp, vegetal notes.',
-    role: 'Finisher — the mountain pepper of Mexico, essential for authentic salsa verde.',
+    name: 'Orange Habanero',
+    origin: 'Mexico (Yucatán)',
+    heat: 'Very Hot (100,000–350,000 SHU)',
+    flavor: 'Intense tropical fruit with citrus notes and fierce, lingering heat.',
+    role: 'Finisher — the Yucatán flame, bringing Caribbean fire to Mexican cuisine.',
   },
 ];
 
 const pairings = [
+  'Adobo sauces and marinades',
   'Mole negro and mole rojo',
-  'Authentic salsa verde',
-  'Chile-rubbed meats',
-  'Enchilada sauces',
-  'Mexican rice dishes',
+  'Cochinita pibil',
+  'Yucatán-style hot sauces',
   'Barbacoa and carnitas',
+  'Smoky salsas',
 ];
 
 export function MexicanTriadModal({ open, onOpenChange }: MexicanTriadModalProps) {
@@ -55,7 +56,13 @@ export function MexicanTriadModal({ open, onOpenChange }: MexicanTriadModalProps
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-red-900 via-red-700 to-orange-600">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={mexicanTriadImg}
+                alt="Mexican Triad Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -120,17 +127,17 @@ export function MexicanTriadModal({ open, onOpenChange }: MexicanTriadModalProps
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    The holy trinity of Mexican dried chiles.
+                    From smoke to flame — Mexico's range of fire.
                   </p>
                   <p>
                     Mexico is the cradle of pepper cultivation, with dozens of distinct varieties 
-                    developed over millennia. These three represent the essential building blocks 
-                    of Mexican cuisine — the sweet depth of the Ancho, the bright heat of the 
-                    Árbol, and the fresh fire of the Serrano.
+                    developed over millennia. This blend spans Mexico's heat spectrum — from the 
+                    deep, smoky Chipotle Morita through the sharp Árbol to the tropical inferno 
+                    of the Orange Habanero from the Yucatán.
                   </p>
                   <p>
-                    Together, they form the backbone of salsas, moles, adobos, and marinades 
-                    that define Mexican cooking. No kitchen is complete without them.
+                    Together, they form a journey through Mexican cooking traditions, from 
+                    the central highlands to the Caribbean coast.
                   </p>
                 </div>
               </section>
@@ -168,7 +175,7 @@ export function MexicanTriadModal({ open, onOpenChange }: MexicanTriadModalProps
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">1,000–30,000 SHU</span>
+                  <span className="font-display text-ink">5,000–350,000 SHU</span>
                 </div>
               </div>
             </div>

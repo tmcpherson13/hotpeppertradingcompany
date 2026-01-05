@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
+import southAmericanHeatImg from '@/assets/regional-blends/south-american-heat.jpg';
 
 interface SouthAmericanHeatModalProps {
   open: boolean;
@@ -17,35 +18,35 @@ interface SouthAmericanHeatModalProps {
 
 const pepperProfiles = [
   {
-    name: 'Aji Limon',
-    origin: 'Peru (Andes)',
-    heat: 'Medium (15,000–30,000 SHU)',
-    flavor: 'Bright citrus notes with clean, lemony heat that dances on the palate.',
-    role: 'Anchor — the lemon drop of the Andes, perfect for ceviche and fresh salsas.',
+    name: 'Aji Dulce',
+    origin: 'Venezuela & Caribbean',
+    heat: 'Very Mild (0–500 SHU)',
+    flavor: 'Sweet, aromatic with habanero-like fragrance but no heat.',
+    role: 'Anchor — the gentle giant, all the chinense aroma without the fire.',
   },
   {
-    name: 'Wiri Wiri',
-    origin: 'Guyana',
-    heat: 'Very Hot (100,000–350,000 SHU)',
-    flavor: 'Fruity, tropical heat with hints of citrus and a floral complexity.',
-    role: 'Body — the tiny powerhouse of the Guyanese kitchen, deceptively fierce.',
+    name: 'Aji Charapita',
+    origin: 'Peru (Amazon)',
+    heat: 'Hot (30,000–50,000 SHU)',
+    flavor: 'Intense fruity heat with citrus notes in a tiny, golden package.',
+    role: 'Body — the world\'s most expensive pepper, harvested wild from the jungle.',
   },
   {
-    name: 'Red Jalapeño',
-    origin: 'Mexico (now South American staple)',
-    heat: 'Medium (2,500–8,000 SHU)',
-    flavor: 'Ripe, slightly sweet with grassy, vegetal warmth and thick walls.',
-    role: 'Finisher — the mature jalapeño, sweeter and more complex than its green counterpart.',
+    name: 'Malagueta',
+    origin: 'Brazil',
+    heat: 'Hot (60,000–100,000 SHU)',
+    flavor: 'Sharp, clean heat with slightly fruity, aromatic notes.',
+    role: 'Finisher — the Brazilian staple, essential to feijoada and vatapá.',
   },
 ];
 
 const pairings = [
-  'Peruvian ceviche',
-  'Guyanese pepper sauce',
+  'Brazilian feijoada',
+  'Vatapá and moqueca',
+  'Venezuelan arepas and hallacas',
+  'Peruvian jungle cuisine',
+  'Tropical fruit salsas',
   'Grilled meats and churrasco',
-  'Fresh salsas and pico de gallo',
-  'Empanadas',
-  'Black bean dishes',
 ];
 
 export function SouthAmericanHeatModal({ open, onOpenChange }: SouthAmericanHeatModalProps) {
@@ -55,7 +56,13 @@ export function SouthAmericanHeatModal({ open, onOpenChange }: SouthAmericanHeat
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-green-700 via-yellow-600 to-red-600">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <img
+                src={southAmericanHeatImg}
+                alt="South American Heat Regional Blend"
+                className="w-full h-full object-cover sepia-[0.15]"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -68,7 +75,7 @@ export function SouthAmericanHeatModal({ open, onOpenChange }: SouthAmericanHeat
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  Citrus • Tropical • Versatile
+                  Sweet • Fruity • Tropical
                 </p>
               </div>
             </div>
@@ -124,14 +131,14 @@ export function SouthAmericanHeatModal({ open, onOpenChange }: SouthAmericanHeat
                   </p>
                   <p>
                     South America is where the Capsicum genus began its 6,000-year journey. 
-                    From the Andes to the Amazon, from Peru to Guyana, the continent's 
-                    peppers developed extraordinary diversity — citrus notes, tropical fruit, 
-                    fierce heat, and gentle warmth.
+                    From the Caribbean coast of Venezuela to the Amazon jungle to the 
+                    tropical kitchens of Brazil, the continent's peppers developed extraordinary 
+                    diversity — sweet aromatics, jungle intensity, and clean Brazilian fire.
                   </p>
                   <p>
-                    This blend captures that range — the bright Aji Limon, the fierce 
-                    little Wiri Wiri, and the ripe Red Jalapeño that came south from 
-                    Mexico to become a South American staple.
+                    This blend captures that range — the aromatic Aji Dulce, the precious 
+                    wild Charapita, and the essential Malagueta that defines Brazilian 
+                    cooking. A journey from mild fragrance to building heat.
                   </p>
                 </div>
               </section>
@@ -169,7 +176,7 @@ export function SouthAmericanHeatModal({ open, onOpenChange }: SouthAmericanHeat
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">2,500–350,000 SHU</span>
+                  <span className="font-display text-ink">0–100,000 SHU</span>
                 </div>
               </div>
             </div>

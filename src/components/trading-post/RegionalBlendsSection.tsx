@@ -14,7 +14,7 @@ import { MexicanTriadModal } from '@/components/sections/MexicanTriadModal';
 import { IndianSubcontinentModal } from '@/components/sections/IndianSubcontinentModal';
 import { TurkishTerroirModal } from '@/components/sections/TurkishTerroirModal';
 import { SouthAmericanHeatModal } from '@/components/sections/SouthAmericanHeatModal';
-import { ScorpionsTrailModal } from '@/components/sections/ScorpionsTrailModal';
+import { AmericanFusionModal } from '@/components/sections/AmericanFusionModal';
 
 // Map product handles to region labels and flavor profiles
 const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> = {
@@ -54,9 +54,9 @@ const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> =
     region: 'South America',
     flavorProfile: 'Citrus • Tropical • Versatile'
   },
-  'scorpions-trail': {
-    region: 'Caribbean & Americas',
-    flavorProfile: 'Fruity • Intense • Devastating'
+  'american-fusion': {
+    region: 'Continental Americas',
+    flavorProfile: 'Fresh • Fruity • Continental'
   },
 };
 
@@ -295,8 +295,8 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
         open={activeModal === 'south-american-heat'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
-      <ScorpionsTrailModal 
-        open={activeModal === 'scorpions-trail'} 
+      <AmericanFusionModal 
+        open={activeModal === 'american-fusion'} 
         onOpenChange={(open) => !open && closeModal()} 
       />
     </>
