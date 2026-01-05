@@ -9,81 +9,71 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import mediterraneanImg from '@/assets/consortium/mediterranean-selection.jpg';
 
-interface MediterraneanSelectionModalProps {
+interface MexicanTriadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 const pepperProfiles = [
   {
-    name: 'Aleppo',
-    origin: 'Syria (The Crossroads)',
-    heat: 'Mild-Medium (8,000–12,000 SHU)',
-    flavor: 'Fruity, sun-dried tomato notes with moderate, oily heat and raisin-like sweetness.',
-    role: 'Anchor — the cornerstone of Levantine cuisine, bringing warmth without overwhelming.',
+    name: 'Ancho',
+    origin: 'Mexico (Puebla)',
+    heat: 'Mild (1,000–2,000 SHU)',
+    flavor: 'Sweet, earthy, with notes of dried fruit, chocolate, and tobacco.',
+    role: 'Anchor — the dried poblano, cornerstone of mole negro and Mexican cuisine.',
   },
   {
-    name: 'Calabrian',
-    origin: 'Italy (Calabria)',
-    heat: 'Hot (25,000–40,000 SHU)',
-    flavor: 'Fruity, smoky, with a spicy kick that defines Southern Italian cuisine.',
-    role: 'Bridge — the fiery heart of Calabrese cooking, essential for \'nduja and pasta arrabiata.',
+    name: 'Chile de Árbol',
+    origin: 'Mexico',
+    heat: 'Hot (15,000–30,000 SHU)',
+    flavor: 'Bright, nutty, with grassy undertones and clean, direct heat.',
+    role: 'Body — the "tree chile" with thin walls that dry to a translucent red.',
   },
   {
-    name: 'Urfa Biber',
-    origin: 'Turkey (Şanlıurfa)',
-    heat: 'Medium (7,000–15,000 SHU)',
-    flavor: 'Smoky, earthy, with chocolate and raisin notes from its unique sun-sweat curing process.',
-    role: 'Finisher — the ancient Anatolian treasure, adding sultry depth to complete the journey.',
+    name: 'Serrano',
+    origin: 'Mexico (Sierra Mountains)',
+    heat: 'Medium-Hot (10,000–23,000 SHU)',
+    flavor: 'Bright, grassy, clean heat with crisp, vegetal notes.',
+    role: 'Finisher — the mountain pepper of Mexico, essential for authentic salsa verde.',
   },
 ];
 
 const pairings = [
-  'Aleppo-rubbed lamb with mint yogurt',
-  'Calabrian \'nduja on crusty bread',
-  'Urfa-dusted eggs with olive oil',
-  'Mediterranean shakshuka',
-  'Grilled vegetables with olive oil',
-  'Roasted fish with lemon and herbs',
+  'Mole negro and mole rojo',
+  'Authentic salsa verde',
+  'Chile-rubbed meats',
+  'Enchilada sauces',
+  'Mexican rice dishes',
+  'Barbacoa and carnitas',
 ];
 
-export function MediterraneanSelectionModal({ open, onOpenChange }: MediterraneanSelectionModalProps) {
+export function MexicanTriadModal({ open, onOpenChange }: MexicanTriadModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            {/* Hero Image */}
-            <div className="relative h-64 md:h-80 overflow-hidden">
-              <img
-                src={mediterraneanImg}
-                alt="Mediterranean Selection Regional Blend"
-                className="w-full h-full object-cover sepia-[0.15]"
-              />
+            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-red-900 via-red-700 to-orange-600">
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
-              {/* Title Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <Badge className="mb-3 bg-tyrian/90 text-gold border-none">
                   Regional Blend • 3 Peppers
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Mediterranean Selection
+                    Mexican Triad
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  Smoky • Earthy • Warm
+                  Earthy • Bright • Essential
                 </p>
               </div>
             </div>
 
-            {/* Content */}
             <div className="p-6 md:p-8 pb-16 space-y-8">
-              {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
                   <Flame className="h-5 w-5 text-primary" />
@@ -123,7 +113,6 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
 
               <Separator className="bg-ink/20" />
 
-              {/* The Story */}
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <BookOpen className="h-5 w-5 text-primary" />
@@ -131,24 +120,23 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    Where the sun-baked shores meet ancient olive groves.
+                    The holy trinity of Mexican dried chiles.
                   </p>
                   <p>
-                    The Mediterranean has always been a crossroads of flavors. From the souks of Aleppo 
-                    to the sun-drenched hills of Calabria and the Basque valleys, peppers found their way 
-                    into cuisines that value depth and complexity over raw heat.
+                    Mexico is the cradle of pepper cultivation, with dozens of distinct varieties 
+                    developed over millennia. These three represent the essential building blocks 
+                    of Mexican cuisine — the sweet depth of the Ancho, the bright heat of the 
+                    Árbol, and the fresh fire of the Serrano.
                   </p>
                   <p>
-                    This selection captures that philosophy — three peppers that speak to each other 
-                    across borders and centuries, united by the warm, smoky character that defines 
-                    Mediterranean cooking.
+                    Together, they form the backbone of salsas, moles, adobos, and marinades 
+                    that define Mexican cooking. No kitchen is complete without them.
                   </p>
                 </div>
               </section>
 
               <Separator className="bg-ink/20" />
 
-              {/* Pairings */}
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <Utensils className="h-5 w-5 text-primary" />
@@ -169,7 +157,6 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
 
               <Separator className="bg-ink/20" />
 
-              {/* Trade Details */}
               <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
@@ -177,11 +164,11 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-                  <span className="font-display text-primary text-lg">$15</span>
+                  <span className="font-display text-primary text-lg">$13</span>
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">7,000–40,000 SHU</span>
+                  <span className="font-display text-ink">1,000–30,000 SHU</span>
                 </div>
               </div>
             </div>

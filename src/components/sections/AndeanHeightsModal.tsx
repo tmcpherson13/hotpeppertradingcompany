@@ -9,60 +9,54 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollDownIndicator } from '@/components/ui/ScrollDownIndicator';
 import { Flame, MapPin, Utensils, BookOpen } from 'lucide-react';
-import mediterraneanImg from '@/assets/consortium/mediterranean-selection.jpg';
 
-interface MediterraneanSelectionModalProps {
+interface AndeanHeightsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 const pepperProfiles = [
   {
-    name: 'Aleppo',
-    origin: 'Syria (The Crossroads)',
-    heat: 'Mild-Medium (8,000–12,000 SHU)',
-    flavor: 'Fruity, sun-dried tomato notes with moderate, oily heat and raisin-like sweetness.',
-    role: 'Anchor — the cornerstone of Levantine cuisine, bringing warmth without overwhelming.',
+    name: 'Aji Limon',
+    origin: 'Peru (Andes)',
+    heat: 'Medium (15,000–30,000 SHU)',
+    flavor: 'Bright citrus notes with clean, lemony heat that dances on the palate.',
+    role: 'Anchor — the lemon drop of the Andes, bringing zesty freshness to the blend.',
   },
   {
-    name: 'Calabrian',
-    origin: 'Italy (Calabria)',
-    heat: 'Hot (25,000–40,000 SHU)',
-    flavor: 'Fruity, smoky, with a spicy kick that defines Southern Italian cuisine.',
-    role: 'Bridge — the fiery heart of Calabrese cooking, essential for \'nduja and pasta arrabiata.',
+    name: 'Aji Amarillo',
+    origin: 'Peru',
+    heat: 'Hot (40,000–50,000 SHU)',
+    flavor: 'Fruity, tropical complexity with a building warmth and golden-orange hue.',
+    role: 'Body — the cornerstone of Peruvian cuisine for 5,000 years, essential to ají de gallina.',
   },
   {
-    name: 'Urfa Biber',
-    origin: 'Turkey (Şanlıurfa)',
-    heat: 'Medium (7,000–15,000 SHU)',
-    flavor: 'Smoky, earthy, with chocolate and raisin notes from its unique sun-sweat curing process.',
-    role: 'Finisher — the ancient Anatolian treasure, adding sultry depth to complete the journey.',
+    name: "Devil's Breath",
+    origin: 'Ecuador',
+    heat: 'Extreme (1,500,000+ SHU)',
+    flavor: 'Intense, fruity aromatics with devastating heat that unfolds in waves.',
+    role: 'Finisher — the volcanic fire of the Andes, handle with reverence.',
   },
 ];
 
 const pairings = [
-  'Aleppo-rubbed lamb with mint yogurt',
-  'Calabrian \'nduja on crusty bread',
-  'Urfa-dusted eggs with olive oil',
-  'Mediterranean shakshuka',
-  'Grilled vegetables with olive oil',
-  'Roasted fish with lemon and herbs',
+  'Peruvian ceviche with fresh lime',
+  'Ají de gallina (Peruvian chicken)',
+  'Lomo saltado',
+  'Grilled alpaca or lamb',
+  'Quinoa bowls with roasted vegetables',
+  'Tropical fruit salsas',
 ];
 
-export function MediterraneanSelectionModal({ open, onOpenChange }: MediterraneanSelectionModalProps) {
+export function AndeanHeightsModal({ open, onOpenChange }: AndeanHeightsModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            {/* Hero Image */}
-            <div className="relative h-64 md:h-80 overflow-hidden">
-              <img
-                src={mediterraneanImg}
-                alt="Mediterranean Selection Regional Blend"
-                className="w-full h-full object-cover sepia-[0.15]"
-              />
+            {/* Hero Image - using gradient background since no image exists yet */}
+            <div className="relative h-64 md:h-80 overflow-hidden bg-gradient-to-br from-amber-700 via-orange-600 to-yellow-500">
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
               
               {/* Title Overlay */}
@@ -72,18 +66,17 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
                 </Badge>
                 <DialogHeader>
                   <DialogTitle className="font-display text-3xl md:text-4xl text-parchment uppercase tracking-wide">
-                    Mediterranean Selection
+                    Andean Heights
                   </DialogTitle>
                 </DialogHeader>
                 <p className="text-parchment/80 font-heading text-sm tracking-wide mt-2">
-                  Smoky • Earthy • Warm
+                  Citrus • Tropical • Volcanic
                 </p>
               </div>
             </div>
 
             {/* Content */}
             <div className="p-6 md:p-8 pb-16 space-y-8">
-              {/* The Pepper Profiles */}
               <section>
                 <div className="flex items-center gap-3 mb-6">
                   <Flame className="h-5 w-5 text-primary" />
@@ -123,7 +116,6 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
 
               <Separator className="bg-ink/20" />
 
-              {/* The Story */}
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <BookOpen className="h-5 w-5 text-primary" />
@@ -131,24 +123,23 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
                 </div>
                 <div className="prose prose-sm max-w-none font-body text-muted-foreground leading-relaxed space-y-4">
                   <p className="italic text-ink/80">
-                    Where the sun-baked shores meet ancient olive groves.
+                    From the terraced slopes where peppers first learned to climb.
                   </p>
                   <p>
-                    The Mediterranean has always been a crossroads of flavors. From the souks of Aleppo 
-                    to the sun-drenched hills of Calabria and the Basque valleys, peppers found their way 
-                    into cuisines that value depth and complexity over raw heat.
+                    The Andes gave the world the Capsicum baccatum species — peppers bred for 
+                    flavor as much as fire. For millennia, Andean peoples cultivated varieties 
+                    with citrus notes, tropical sweetness, and complex heat profiles.
                   </p>
                   <p>
-                    This selection captures that philosophy — three peppers that speak to each other 
-                    across borders and centuries, united by the warm, smoky character that defines 
-                    Mediterranean cooking.
+                    This blend spans the Andean heat spectrum from the bright, accessible 
+                    Aji Limon to the ancient Aji Amarillo to the modern volcanic intensity 
+                    of Devil's Breath. A journey from the valleys to the volcanic peaks.
                   </p>
                 </div>
               </section>
 
               <Separator className="bg-ink/20" />
 
-              {/* Pairings */}
               <section>
                 <div className="flex items-center gap-3 mb-4">
                   <Utensils className="h-5 w-5 text-primary" />
@@ -169,7 +160,6 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
 
               <Separator className="bg-ink/20" />
 
-              {/* Trade Details */}
               <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
@@ -177,11 +167,11 @@ export function MediterraneanSelectionModal({ open, onOpenChange }: Mediterranea
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-                  <span className="font-display text-primary text-lg">$15</span>
+                  <span className="font-display text-primary text-lg">$17</span>
                 </div>
                 <div className="text-center">
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
-                  <span className="font-display text-ink">7,000–40,000 SHU</span>
+                  <span className="font-display text-ink">15,000–1,500,000+ SHU</span>
                 </div>
               </div>
             </div>
