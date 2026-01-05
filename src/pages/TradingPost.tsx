@@ -73,10 +73,20 @@ export default function TradingPost() {
   };
 
   const handleViewManifest = (consortiumId: string) => {
+    console.log('[Modal Debug] handleViewManifest called with:', consortiumId);
+    console.log('[Modal Debug] Previous activeModal:', activeModal);
     setActiveModal(consortiumId);
   };
 
-  const closeModal = () => setActiveModal(null);
+  const closeModal = () => {
+    console.log('[Modal Debug] closeModal called, clearing activeModal');
+    setActiveModal(null);
+  };
+
+  // Debug: Log activeModal state changes
+  useEffect(() => {
+    console.log('[Modal Debug] activeModal state changed to:', activeModal);
+  }, [activeModal]);
 
   // Categorize products by product type
   const { cultivars, consortiums, merchandise } = useMemo(() => {
