@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
-import { ConsortiumCard } from '../ConsortiumCard';
+import { ConsortiumCard } from './ConsortiumCard';
 import { CONSORTIUMS } from '@/data/consortiums';
 import { cn } from '@/lib/utils';
 

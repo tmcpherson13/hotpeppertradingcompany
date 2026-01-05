@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Package, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ShopifyProduct } from '@/lib/shopify';
-import { HeatBadge } from '../HeatBadge';
+import { HeatBadge } from './HeatBadge';
 import { MediterraneanSelectionModal } from '@/components/sections/MediterraneanSelectionModal';
 import { CaribbeanHeatTrioModal } from '@/components/sections/CaribbeanHeatTrioModal';
 import { PacificRimBlendModal } from '@/components/sections/PacificRimBlendModal';
