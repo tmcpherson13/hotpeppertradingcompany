@@ -129,6 +129,7 @@ export function ConsortiumCard({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('[ConsortiumCard] View Manifest clicked for:', consortium.consortiumId);
                 onViewManifest(consortium.consortiumId);
               }}
             >

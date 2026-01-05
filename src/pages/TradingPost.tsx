@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
@@ -9,9 +9,10 @@ import { RegionalBlendsSection } from "@/components/trading-post/RegionalBlendsS
 import { ConsortiumHero } from "@/components/trading-post/ConsortiumHero";
 import { ConsortiumCarousel } from "@/components/trading-post/ConsortiumCarousel";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf } from "lucide-react";
+import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf, Bug } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
 // Import consortium modals (numerically ordered № 001 - № 010)
@@ -28,6 +29,38 @@ import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal
 
 type ViewMode = 'exhibition' | 'all';
 
+// Debug HUD Component
+const ModalDebugHUD = ({ activeModal, lastCall }: { activeModal: string | null; lastCall: string | null }) => {
+  if (import.meta.env.PROD) return null;
+  
+  return (
+    <div className="fixed bottom-4 right-4 z-[100] bg-black/90 text-green-400 font-mono text-xs p-3 rounded-lg shadow-lg border border-green-500/50 max-w-xs">
+      <div className="flex items-center gap-2 mb-2 text-green-300 font-bold">
+        <Bug className="w-4 h-4" />
+        Modal Debug HUD
+      </div>
+      <div className="space-y-1">
+        <div>
+          <span className="text-gray-400">activeModal:</span>{' '}
+          <span className={activeModal ? 'text-yellow-400' : 'text-red-400'}>
+            {activeModal || 'null'}
+          </span>
+        </div>
+        <div>
+          <span className="text-gray-400">isOpen:</span>{' '}
+          <span className={activeModal ? 'text-green-400' : 'text-red-400'}>
+            {activeModal ? 'true' : 'false'}
+          </span>
+        </div>
+        <div>
+          <span className="text-gray-400">lastCall:</span>{' '}
+          <span className="text-blue-400">{lastCall || 'none'}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function TradingPost() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +69,8 @@ export default function TradingPost() {
   const [heatRange, setHeatRange] = useState<[number, number] | null>(null);
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [lastHandleCall, setLastHandleCall] = useState<string | null>(null);
+  const [testDialogOpen, setTestDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const saved = localStorage.getItem('tradingpost-view-mode');
     return (saved === 'all' || saved === 'exhibition') ? saved : 'exhibition';
@@ -72,20 +107,25 @@ export default function TradingPost() {
     return 'cultivar';
   };
 
-  const handleViewManifest = (consortiumId: string) => {
-    console.log('[Modal Debug] handleViewManifest called with:', consortiumId);
-    console.log('[Modal Debug] Previous activeModal:', activeModal);
+  const handleViewManifest = useCallback((consortiumId: string) => {
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
+    console.log(`[Modal Debug ${timestamp}] handleViewManifest called with:`, consortiumId);
+    console.log(`[Modal Debug ${timestamp}] Previous activeModal:`, activeModal);
+    setLastHandleCall(`${consortiumId} @ ${timestamp}`);
     setActiveModal(consortiumId);
-  };
+  }, [activeModal]);
 
-  const closeModal = () => {
-    console.log('[Modal Debug] closeModal called, clearing activeModal');
+  const closeModal = useCallback(() => {
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
+    console.log(`[Modal Debug ${timestamp}] closeModal called, clearing activeModal from:`, activeModal);
+    console.trace('[Modal Debug] closeModal stack trace');
     setActiveModal(null);
-  };
+  }, [activeModal]);
 
   // Debug: Log activeModal state changes
   useEffect(() => {
-    console.log('[Modal Debug] activeModal state changed to:', activeModal);
+    const timestamp = new Date().toISOString().split('T')[1].slice(0, 12);
+    console.log(`[Modal Debug ${timestamp}] activeModal state changed to:`, activeModal);
   }, [activeModal]);
 
   // Categorize products by product type
@@ -534,6 +574,45 @@ export default function TradingPost() {
       
       <Footer />
 
+      {/* Debug HUD */}
+      <ModalDebugHUD activeModal={activeModal} lastCall={lastHandleCall} />
+
+      {/* Test Dialog Button - Fixed position */}
+      {import.meta.env.DEV && (
+        <Button
+          onClick={() => {
+            console.log('[Test Dialog] Opening test dialog');
+            setTestDialogOpen(true);
+          }}
+          className="fixed bottom-4 left-4 z-[100] bg-purple-600 hover:bg-purple-700 text-white"
+          size="sm"
+        >
+          <Bug className="w-4 h-4 mr-2" />
+          Test Dialog
+        </Button>
+      )}
+
+      {/* Minimal Test Dialog */}
+      <Dialog open={testDialogOpen} onOpenChange={(open) => {
+        console.log('[Test Dialog] onOpenChange called with:', open);
+        setTestDialogOpen(open);
+      }}>
+        <DialogContent className="max-w-md bg-white border-2 border-gray-300">
+          <DialogHeader>
+            <DialogTitle>Test Dialog Works!</DialogTitle>
+            <DialogDescription>
+              If you can see this, the base Dialog component is functioning correctly.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-gray-600">
+              The issue is likely specific to consortium modals, not the Dialog primitive itself.
+            </p>
+          </div>
+          <Button onClick={() => setTestDialogOpen(false)}>Close Test</Button>
+        </DialogContent>
+      </Dialog>
+
       {/* Quick View Modal */}
       <QuickViewModal
         product={quickViewProduct}
@@ -542,16 +621,16 @@ export default function TradingPost() {
       />
 
       {/* Consortium Modals (numerically ordered № 001 - № 010) */}
-      <CradleOfFireModal open={activeModal === 'cradle-of-fire'} onOpenChange={(open) => !open && closeModal()} />
-      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => !open && closeModal()} />
-      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => !open && closeModal()} />
-      <EmbersOfAfricaModal open={activeModal === 'embers-of-africa'} onOpenChange={(open) => !open && closeModal()} />
-      <PhoenicianLegacyModal open={activeModal === 'phoenician-legacy'} onOpenChange={(open) => !open && closeModal()} />
-      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => !open && closeModal()} />
-      <AtlanticProvenanceModal open={activeModal === 'atlantic-provenance'} onOpenChange={(open) => !open && closeModal()} />
-      <LetterOfMarqueModal open={activeModal === 'letter-of-marque'} onOpenChange={(open) => !open && closeModal()} />
-      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => !open && closeModal()} />
-      <OldNatchezTraceModal open={activeModal === 'old-natchez-trace'} onOpenChange={(open) => !open && closeModal()} />
+      <CradleOfFireModal open={activeModal === 'cradle-of-fire'} onOpenChange={(open) => { console.log('[CradleOfFire] onOpenChange:', open); if (!open) closeModal(); }} />
+      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => { console.log('[SouthernCrucible] onOpenChange:', open); if (!open) closeModal(); }} />
+      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => { console.log('[AndeanDiaspora] onOpenChange:', open); if (!open) closeModal(); }} />
+      <EmbersOfAfricaModal open={activeModal === 'embers-of-africa'} onOpenChange={(open) => { console.log('[EmbersOfAfrica] onOpenChange:', open); if (!open) closeModal(); }} />
+      <PhoenicianLegacyModal open={activeModal === 'phoenician-legacy'} onOpenChange={(open) => { console.log('[PhoenicianLegacy] onOpenChange:', open); if (!open) closeModal(); }} />
+      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => { console.log('[SilkJadePassages] onOpenChange:', open); if (!open) closeModal(); }} />
+      <AtlanticProvenanceModal open={activeModal === 'atlantic-provenance'} onOpenChange={(open) => { console.log('[AtlanticProvenance] onOpenChange:', open); if (!open) closeModal(); }} />
+      <LetterOfMarqueModal open={activeModal === 'letter-of-marque'} onOpenChange={(open) => { console.log('[LetterOfMarque] onOpenChange:', open); if (!open) closeModal(); }} />
+      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => { console.log('[ManilaGalleon] onOpenChange:', open); if (!open) closeModal(); }} />
+      <OldNatchezTraceModal open={activeModal === 'old-natchez-trace'} onOpenChange={(open) => { console.log('[OldNatchezTrace] onOpenChange:', open); if (!open) closeModal(); }} />
     </div>
   );
 }
