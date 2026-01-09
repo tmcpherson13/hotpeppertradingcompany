@@ -79,7 +79,7 @@ export function AndeanDiasporaModal({ open, onOpenChange }: AndeanDiasporaModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent preventAutoClose forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh] min-h-[200px]">
+        <ScrollArea className="h-[90vh] min-h-[200px]">
           <div className="relative">
             {/* Hero Image */}
             <div className="relative h-64 md:h-80 overflow-hidden">

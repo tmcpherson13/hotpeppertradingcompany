@@ -66,7 +66,7 @@ export function AtlanticProvenanceModal({ open, onOpenChange }: AtlanticProvenan
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent preventAutoClose forceMount={open ? true : undefined} className="max-w-4xl max-h-[90vh] p-0 overflow-hidden bg-parchment border-2 border-ink/30 relative">
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh] min-h-[200px]">
+        <ScrollArea className="h-[90vh] min-h-[200px]">
           {/* Hero Image */}
           <div className="relative w-full h-64 md:h-80">
             <img 

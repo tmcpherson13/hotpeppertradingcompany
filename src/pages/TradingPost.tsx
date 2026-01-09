@@ -42,6 +42,16 @@ export default function TradingPost() {
     return (saved === 'all' || saved === 'exhibition') ? saved : 'exhibition';
   });
 
+  // Dev-only: allow opening a manifest via URL for debugging (e.g. /trading-post?debugModal=cradle-of-fire)
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const debugModal = new URLSearchParams(window.location.search).get('debugModal');
+    if (debugModal) {
+      console.log('[Modal][DEV] Opening from URL:', debugModal);
+      setActiveModal(debugModal);
+    }
+  }, []);
+
   // Persist view mode preference
   useEffect(() => {
     localStorage.setItem('tradingpost-view-mode', viewMode);
