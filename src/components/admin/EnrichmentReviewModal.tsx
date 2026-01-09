@@ -296,7 +296,7 @@ export function EnrichmentReviewModal({
                     ) : (
                       <Check className="w-4 h-4 mr-2" />
                     )}
-                    Approve All Text
+                    Approve All Text & Images
                   </Button>
                 </div>
               </div>
