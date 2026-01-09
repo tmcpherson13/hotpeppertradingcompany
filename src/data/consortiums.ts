@@ -1,4 +1,4 @@
-import { Consortium } from '@/components/trading-post/ConsortiumCard';
+import { Consortium } from '@/components/trading-post/JourneyCard';
 
 // Import all consortium images
 import cradleOfFireImage from '@/assets/consortium/cradle-of-fire.jpg';

@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
 import { QuickViewModal } from "@/components/trading-post/QuickViewModal";
-import { ConsortiumCards } from "@/components/trading-post/ConsortiumCards";
+import { JourneyGrid } from "@/components/trading-post/JourneyGrid";
 import { RegionalBlendsSection } from "@/components/trading-post/RegionalBlendsSection";
 import { ConsortiumHero } from "@/components/trading-post/ConsortiumHero";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
@@ -462,8 +462,8 @@ export default function TradingPost() {
                 <ConsortiumHero onExplore={() => handleViewManifest('cradle-of-fire')} />
               </div>
 
-              {/* Consortium Grid */}
-              <ConsortiumCards onViewManifest={handleViewManifest} />
+              {/* Journey Grid */}
+              <JourneyGrid onViewManifest={handleViewManifest} />
             </div>
           </section>
 
