@@ -71,7 +71,7 @@ export function OldNatchezTraceModal({ open, onOpenChange }: OldNatchezTraceModa
         <DialogTitle className="sr-only">Old Natchez Trace</DialogTitle>
         <DialogDescription className="sr-only">Details about the Old Natchez Trace pepper consortium</DialogDescription>
         <ScrollDownIndicator />
-        <ScrollArea className="max-h-[90vh] min-h-[200px]">
+        <ScrollArea className="h-[90vh] min-h-[200px]">
           {/* Hero Image */}
           <div className="relative h-64 md:h-80 overflow-hidden">
             <img 
