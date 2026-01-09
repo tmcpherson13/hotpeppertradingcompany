@@ -15,7 +15,7 @@ export function AdminRoute({ children }: AdminRouteProps) {
   const { user, isLoading, isAdmin, isAdminLoading, mustChangePassword, clearPasswordChangeRequirement, signOut } = useAuth();
 
   // Wait for both session AND admin status to load before making decisions
-  if (isLoading || isAdminLoading) {
+  if (isLoading || (isAdminLoading && !isAdmin)) {
     return (
       <div className="min-h-screen bg-parchment flex items-center justify-center">
         <div className="text-ink/60 font-body">Loading...</div>
