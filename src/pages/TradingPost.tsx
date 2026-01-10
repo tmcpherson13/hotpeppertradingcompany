@@ -247,22 +247,25 @@ export default function TradingPost() {
             <div className="flex flex-wrap justify-center gap-4 mb-4">
               <Button 
                 variant="gold" 
+                size="lg"
                 onClick={() => document.getElementById('journeys')?.scrollIntoView({ behavior: 'smooth' })}
-                className="gap-2"
+                className="gap-2 min-w-[160px] font-heading"
               >
                 <Crown className="w-4 h-4" /> Journeys
               </Button>
               <Button 
                 variant="tyrian" 
+                size="lg"
                 onClick={() => document.getElementById('regional')?.scrollIntoView({ behavior: 'smooth' })}
-                className="gap-2"
+                className="gap-2 min-w-[160px] font-heading"
               >
                 <Compass className="w-4 h-4" /> Regional
               </Button>
               <Button 
                 variant="ink" 
+                size="lg"
                 onClick={() => document.getElementById('cultivars')?.scrollIntoView({ behavior: 'smooth' })}
-                className="gap-2"
+                className="gap-2 min-w-[160px] font-heading"
               >
                 <Leaf className="w-4 h-4" /> Cultivars
               </Button>
