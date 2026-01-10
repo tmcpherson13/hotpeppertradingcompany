@@ -90,9 +90,10 @@ export function CartDrawer() {
                         <p className="text-xs text-parchment/60">
                           {item.selectedOptions.map(option => option.value).join(' • ')}
                         </p>
-                        <p className="font-semibold text-gold mt-1">
-                          ${parseFloat(item.price.amount).toFixed(2)}
-                        </p>
+                        <div className="flex items-baseline gap-1.5 mt-1">
+                          <span className="font-semibold text-gold">${parseFloat(item.price.amount).toFixed(2)}</span>
+                          <span className="text-parchment/50 text-[10px]">2 oz (56.70g)</span>
+                        </div>
                       </div>
                       
                       <div className="flex flex-col items-end gap-2 flex-shrink-0">
