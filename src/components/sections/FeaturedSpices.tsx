@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOverlay';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
+import { HeatBadge, HeatTier } from '@/components/trading-post/HeatBadge';
 import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
 import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
 import { AndeanDiasporaContent } from '@/components/sections/AndeanDiasporaContent';
@@ -40,6 +41,7 @@ interface Spice {
   consortiumId?: string;
   regionLabel?: string;
   flipImage?: boolean;
+  heatTier?: HeatTier;
 }
 
 const spices: Spice[] = [
@@ -56,6 +58,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'mesoamerica',
     regionLabel: 'MEXICO & CENTRAL AMERICA',
+    heatTier: 4,
   },
   {
     name: 'Southern Crucible',
@@ -69,6 +72,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'southamerica',
     regionLabel: 'SOUTH AMERICA',
+    heatTier: 4,
   },
   {
     name: 'Andean Diaspora',
@@ -82,6 +86,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'andes',
     regionLabel: 'WESTERN SOUTH AMERICA',
+    heatTier: 3,
   },
   {
     name: 'Embers of Africa',
@@ -95,6 +100,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'africa',
     regionLabel: 'WEST AFRICAN COAST',
+    heatTier: 4,
   },
   {
     name: 'Phoenician Legacy',
@@ -108,6 +114,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'mediterranean',
     regionLabel: 'MEDITERRANEAN',
+    heatTier: 2,
   },
   {
     name: 'Silk & Jade Passages',
@@ -121,6 +128,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'asia',
     regionLabel: 'SILK ROAD & ASIAN SEAS',
+    heatTier: 3,
   },
   {
     name: 'Atlantic Provenance',
@@ -134,6 +142,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'atlantic',
     regionLabel: 'ATLANTIC TRIANGLE',
+    heatTier: 3,
   },
   {
     name: 'Letter of Marque',
@@ -148,6 +157,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'caribbean',
     regionLabel: 'CARIBBEAN',
+    heatTier: 5,
   },
   {
     name: 'Manila Galleon',
@@ -161,6 +171,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'manila',
     regionLabel: 'MARITIME SOUTHEAST ASIA',
+    heatTier: 3,
   },
   {
     name: 'Old Natchez Trace',
@@ -174,6 +185,7 @@ const spices: Spice[] = [
     isConsortium: true,
     consortiumId: 'natchez',
     regionLabel: 'AMERICAN SOUTH',
+    heatTier: 4,
   },
 ];
 
@@ -338,6 +350,15 @@ export function FeaturedSpices() {
                     {spice.name}
                   </h3>
                   
+                  {/* Heat Badge */}
+                  {spice.heatTier && (
+                    <div className="flex justify-center mb-2">
+                      <div className="bg-ink/80 backdrop-blur-sm px-2 py-1 rounded">
+                        <HeatBadge tier={spice.heatTier} />
+                      </div>
+                    </div>
+                  )}
+
                   {/* Trade Details */}
                   <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider text-muted-foreground font-heading mb-3">
                     <span>{spice.weight}</span>
