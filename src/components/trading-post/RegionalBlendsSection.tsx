@@ -161,7 +161,7 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
                 ${parseFloat(price).toFixed(2)}
               </span>
               <span className="text-[10px] uppercase tracking-wider text-ink/50 font-heading">
-                3 × 2oz
+                2 oz (56.70g)
               </span>
             </div>
             

@@ -154,7 +154,7 @@ export function CaribbeanHeatTrioContent() {
         <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
           <div className="text-center">
             <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
-            <span className="font-display text-ink">3 × 2oz</span>
+            <span className="font-display text-ink">2 oz (56.70g)</span>
           </div>
           <div className="text-center">
             <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
