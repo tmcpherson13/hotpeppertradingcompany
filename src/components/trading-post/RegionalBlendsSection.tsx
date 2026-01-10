@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Package, Sparkles } from 'lucide-react';
+import { Package, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ShopifyProduct } from '@/lib/shopify';
 import { HeatBadge } from './HeatBadge';
-import { MediterraneanSelectionModal } from '@/components/sections/MediterraneanSelectionModal';
-import { CaribbeanHeatTrioModal } from '@/components/sections/CaribbeanHeatTrioModal';
-import { PacificRimBlendModal } from '@/components/sections/PacificRimBlendModal';
-import { AndeanHeightsModal } from '@/components/sections/AndeanHeightsModal';
-import { AfricanFireModal } from '@/components/sections/AfricanFireModal';
-import { MexicanTriadModal } from '@/components/sections/MexicanTriadModal';
-import { IndianSubcontinentModal } from '@/components/sections/IndianSubcontinentModal';
-import { TurkishTerroirModal } from '@/components/sections/TurkishTerroirModal';
-import { SouthAmericanHeatModal } from '@/components/sections/SouthAmericanHeatModal';
-import { AmericanFusionModal } from '@/components/sections/AmericanFusionModal';
+import { MediterraneanSelectionContent } from '@/components/sections/MediterraneanSelectionContent';
+import { CaribbeanHeatTrioContent } from '@/components/sections/CaribbeanHeatTrioContent';
+import { PacificRimBlendContent } from '@/components/sections/PacificRimBlendContent';
+import { AndeanHeightsContent } from '@/components/sections/AndeanHeightsContent';
+import { AfricanFireContent } from '@/components/sections/AfricanFireContent';
+import { MexicanTriadContent } from '@/components/sections/MexicanTriadContent';
+import { IndianSubcontinentContent } from '@/components/sections/IndianSubcontinentContent';
+import { TurkishTerroirContent } from '@/components/sections/TurkishTerroirContent';
+import { SouthAmericanHeatContent } from '@/components/sections/SouthAmericanHeatContent';
+import { AmericanFusionContent } from '@/components/sections/AmericanFusionContent';
 
 // Map product handles to region labels and flavor profiles
 const REGIONAL_META: Record<string, { region: string; flavorProfile: string }> = {
@@ -171,7 +172,7 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
                 className="w-full text-[10px] uppercase tracking-[0.1em] border-ink/30 text-ink/70 hover:bg-ink hover:text-parchment py-2"
                 onClick={() => onViewBlend(handle)}
               >
-                View Consortium
+                View Manifest
               </Button>
               <Button 
                 variant="outline"
@@ -197,12 +198,14 @@ function RegionalBlendCard({ product, index, onViewBlend }: RegionalBlendCardPro
   );
 }
 
+type ManifestState = { open: false } | { open: true; handle: string };
+
 interface RegionalBlendsSectionProps {
   products: ShopifyProduct[];
 }
 
 export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) {
-  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [manifest, setManifest] = useState<ManifestState>({ open: false });
 
   // Filter for Regional Consortium products
   const regionalBlends = products.filter(p => 
@@ -212,10 +215,10 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
   if (regionalBlends.length === 0) return null;
 
   const handleViewBlend = (handle: string) => {
-    setActiveModal(handle);
+    setManifest({ open: true, handle });
   };
 
-  const closeModal = () => setActiveModal(null);
+  const closeModal = () => setManifest({ open: false });
 
   return (
     <>
@@ -256,49 +259,34 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
         </div>
       </section>
 
-      {/* Regional Blend Modals - Original 3 */}
-      <MediterraneanSelectionModal 
-        open={activeModal === 'mediterranean-selection'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <CaribbeanHeatTrioModal 
-        open={activeModal === 'caribbean-heat-trio'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <PacificRimBlendModal 
-        open={activeModal === 'pacific-rim-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-
-      {/* Regional Blend Modals - New 7 */}
-      <AndeanHeightsModal 
-        open={activeModal === 'andean-heights-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <AfricanFireModal 
-        open={activeModal === 'african-fire-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <MexicanTriadModal 
-        open={activeModal === 'mexican-triad-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <IndianSubcontinentModal 
-        open={activeModal === 'indian-subcontinent-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <TurkishTerroirModal 
-        open={activeModal === 'turkish-terroir-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <SouthAmericanHeatModal 
-        open={activeModal === 'south-american-heat-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
-      <AmericanFusionModal 
-        open={activeModal === 'american-fusion-regional-blend'} 
-        onOpenChange={(open) => !open && closeModal()} 
-      />
+      {/* Custom Modal Overlay */}
+      {manifest.open && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/60" onClick={closeModal} />
+          <div className="relative z-10 flex items-start justify-center pt-8 pb-8 overflow-y-auto h-full">
+            <div className="relative w-[min(92vw,900px)] bg-parchment border-2 border-ink/30 rounded-lg shadow-2xl max-h-[90vh] overflow-hidden">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ink/50 text-parchment flex items-center justify-center hover:bg-ink/70 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <ScrollArea className="h-[90vh]">
+                {manifest.handle === 'mediterranean-selection' && <MediterraneanSelectionContent />}
+                {manifest.handle === 'caribbean-heat-trio' && <CaribbeanHeatTrioContent />}
+                {manifest.handle === 'pacific-rim-blend' && <PacificRimBlendContent />}
+                {manifest.handle === 'andean-heights-regional-blend' && <AndeanHeightsContent />}
+                {manifest.handle === 'african-fire-regional-blend' && <AfricanFireContent />}
+                {manifest.handle === 'mexican-triad-regional-blend' && <MexicanTriadContent />}
+                {manifest.handle === 'indian-subcontinent-regional-blend' && <IndianSubcontinentContent />}
+                {manifest.handle === 'turkish-terroir-regional-blend' && <TurkishTerroirContent />}
+                {manifest.handle === 'south-american-heat-regional-blend' && <SouthAmericanHeatContent />}
+                {manifest.handle === 'american-fusion-regional-blend' && <AmericanFusionContent />}
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
