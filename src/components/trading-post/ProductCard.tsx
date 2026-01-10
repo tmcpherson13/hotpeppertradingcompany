@@ -172,7 +172,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
             <span className="font-heading text-xl text-gold">
               ${price.toFixed(2)}
             </span>
-            <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz</span>
+            <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz (56.70g)</span>
           </div>
           
           <Button
