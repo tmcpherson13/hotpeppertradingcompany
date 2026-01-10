@@ -1,12 +1,12 @@
 # Memory: ecommerce/pricing-strategy
-Updated: 2026-01-04
+Updated: 2026-01-10
 
 ## Weight Standardization
 
-All products use a standard 2oz format:
-- **Individual Cultivars**: 2oz per package
-- **Consortium Journeys**: 5 × 2oz (5 cultivars × 2oz each = 10oz total)
-- **Regional Consortiums**: 3 × 2oz (3 cultivars × 2oz each = 6oz total)
+All products use a standard 2 oz (56.70g) bottle format:
+- **Individual Cultivars**: 2 oz (56.70g)
+- **Consortium Journeys**: 2 oz (56.70g)
+- **Regional Consortiums**: 2 oz (56.70g)
 
 ## Individual Cultivar Pricing ($9-$15)
 
@@ -23,10 +23,17 @@ Note: Ghost peppers are categorized as "Common" due to widespread commercial ava
 
 ## Regional Consortium Pricing ($15)
 
-All Regional Consortiums are priced at $15 (3 × 2oz):
+All Regional Consortiums are priced at $15 (2 oz / 56.70g):
 - Mediterranean Selection
 - Caribbean Heat Trio
 - Pacific Rim Blend
+- Andean Heights
+- African Fire
+- Mexican Triad
+- Indian Subcontinent
+- Turkish Terroir
+- South American Heat
+- American Fusion
 
 ## Consortium Journey Pricing ($17-$23)
 

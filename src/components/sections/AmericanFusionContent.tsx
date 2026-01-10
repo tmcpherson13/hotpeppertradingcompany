@@ -150,11 +150,11 @@ export function AmericanFusionContent() {
         <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
           <div className="text-center">
             <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
-            <span className="font-display text-ink">3 × 2oz</span>
+            <span className="font-display text-ink">2 oz (56.70g)</span>
           </div>
           <div className="text-center">
             <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Price</span>
-            <span className="font-display text-primary text-lg">$16</span>
+            <span className="font-display text-primary text-lg">$15</span>
           </div>
           <div className="text-center">
             <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>

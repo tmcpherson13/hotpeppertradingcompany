@@ -13,7 +13,7 @@ export function ConsortiumTradeDetails({ consortiumId, heatRange }: ConsortiumTr
   const consortium = getConsortiumById(consortiumId);
   
   // Fallback values if consortium not found (shouldn't happen)
-  const weight = consortium?.weight ?? "5 × 2oz";
+  const weight = consortium?.weight ?? "2 oz (56.70g)";
   const price = consortium?.price ?? "$21.00";
 
   return (
