@@ -268,14 +268,24 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
           {/* Regional Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {regionalBlends.map((product, index) => (
-              <RegionalBlendCard 
-                key={product.node.id} 
-                product={product} 
-                index={index}
-                onViewBlend={handleViewBlend}
-              />
-            ))}
+            {regionalBlends.map((product, index) => {
+              // Position South American Heat in column 2 (slot 11) when we have 10 items
+              const isLastItem = index === regionalBlends.length - 1;
+              const shouldOffsetToColumn2 = isLastItem && regionalBlends.length === 10;
+              
+              return (
+                <div 
+                  key={product.node.id}
+                  className={shouldOffsetToColumn2 ? 'lg:col-start-2' : ''}
+                >
+                  <RegionalBlendCard 
+                    product={product} 
+                    index={index}
+                    onViewBlend={handleViewBlend}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
