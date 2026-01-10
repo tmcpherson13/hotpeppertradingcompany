@@ -204,13 +204,34 @@ interface RegionalBlendsSectionProps {
   products: ShopifyProduct[];
 }
 
+// Preferred display order for regional blends
+const REGIONAL_ORDER = [
+  'mediterranean-selection',
+  'caribbean-heat-trio',
+  'pacific-rim-blend',
+  'andean-heights-regional-blend',
+  'african-fire-regional-blend',
+  'mexican-triad-regional-blend',
+  'indian-subcontinent-regional-blend',
+  'turkish-terroir-regional-blend',
+  'american-fusion-regional-blend',
+  'south-american-heat-regional-blend',
+];
+
 export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) {
   const [manifest, setManifest] = useState<ManifestState>({ open: false });
 
-  // Filter for Regional Consortium products
-  const regionalBlends = products.filter(p => 
-    p.node.productType?.toLowerCase().includes('regional')
-  );
+  // Filter for Regional Consortium products and sort by preferred order
+  const regionalBlends = products
+    .filter(p => p.node.productType?.toLowerCase().includes('regional'))
+    .sort((a, b) => {
+      const aIndex = REGIONAL_ORDER.indexOf(a.node.handle);
+      const bIndex = REGIONAL_ORDER.indexOf(b.node.handle);
+      // Items not in list go to end
+      const aOrder = aIndex === -1 ? 999 : aIndex;
+      const bOrder = bIndex === -1 ? 999 : bIndex;
+      return aOrder - bOrder;
+    });
 
   if (regionalBlends.length === 0) return null;
 
