@@ -28,6 +28,7 @@ import { OldNatchezTraceModal } from "@/components/sections/OldNatchezTraceModal
 
 
 type ViewMode = 'exhibition' | 'all';
+type ManifestState = { open: false } | { open: true; consortiumId: string };
 
 export default function TradingPost() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -36,7 +37,7 @@ export default function TradingPost() {
   const [searchQuery, setSearchQuery] = useState("");
   const [heatRange, setHeatRange] = useState<[number, number] | null>(null);
   const [quickViewProduct, setQuickViewProduct] = useState<ShopifyProduct | null>(null);
-  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [manifest, setManifest] = useState<ManifestState>({ open: false });
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const saved = localStorage.getItem('tradingpost-view-mode');
     return (saved === 'all' || saved === 'exhibition') ? saved : 'exhibition';
@@ -48,7 +49,7 @@ export default function TradingPost() {
     const debugModal = new URLSearchParams(window.location.search).get('debugModal');
     if (debugModal) {
       console.log('[Modal][DEV] Opening from URL:', debugModal);
-      setActiveModal(debugModal);
+      setManifest({ open: true, consortiumId: debugModal });
     }
   }, []);
 
@@ -85,12 +86,12 @@ export default function TradingPost() {
 
   const handleViewManifest = useCallback((consortiumId: string) => {
     console.log('[Modal] Opening:', consortiumId);
-    setActiveModal(consortiumId);
+    setManifest({ open: true, consortiumId });
   }, []);
 
   const closeModal = useCallback(() => {
     console.log('[Modal] Closing');
-    setActiveModal(null);
+    setManifest({ open: false });
   }, []);
 
 
@@ -572,17 +573,37 @@ export default function TradingPost() {
         onClose={() => setQuickViewProduct(null)}
       />
 
-      {/* Consortium Modals (numerically ordered № 001 - № 010) */}
-      <CradleOfFireModal open={activeModal === 'cradle-of-fire'} onOpenChange={(open) => { console.log('[CradleOfFire] onOpenChange:', open); if (!open) closeModal(); }} />
-      <SouthernCrucibleModal open={activeModal === 'southern-crucible'} onOpenChange={(open) => { console.log('[SouthernCrucible] onOpenChange:', open); if (!open) closeModal(); }} />
-      <AndeanDiasporaModal open={activeModal === 'andean-diaspora'} onOpenChange={(open) => { console.log('[AndeanDiaspora] onOpenChange:', open); if (!open) closeModal(); }} />
-      <EmbersOfAfricaModal open={activeModal === 'embers-of-africa'} onOpenChange={(open) => { console.log('[EmbersOfAfrica] onOpenChange:', open); if (!open) closeModal(); }} />
-      <PhoenicianLegacyModal open={activeModal === 'phoenician-legacy'} onOpenChange={(open) => { console.log('[PhoenicianLegacy] onOpenChange:', open); if (!open) closeModal(); }} />
-      <SilkJadePassagesModal open={activeModal === 'silk-jade-passages'} onOpenChange={(open) => { console.log('[SilkJadePassages] onOpenChange:', open); if (!open) closeModal(); }} />
-      <AtlanticProvenanceModal open={activeModal === 'atlantic-provenance'} onOpenChange={(open) => { console.log('[AtlanticProvenance] onOpenChange:', open); if (!open) closeModal(); }} />
-      <LetterOfMarqueModal open={activeModal === 'letter-of-marque'} onOpenChange={(open) => { console.log('[LetterOfMarque] onOpenChange:', open); if (!open) closeModal(); }} />
-      <ManilaGalleonModal open={activeModal === 'manila-galleon'} onOpenChange={(open) => { console.log('[ManilaGalleon] onOpenChange:', open); if (!open) closeModal(); }} />
-      <OldNatchezTraceModal open={activeModal === 'old-natchez-trace'} onOpenChange={(open) => { console.log('[OldNatchezTrace] onOpenChange:', open); if (!open) closeModal(); }} />
+      {/* Consortium Modals - Only render the active one (numerically ordered № 001 - № 010) */}
+      {manifest.open && manifest.consortiumId === 'cradle-of-fire' && (
+        <CradleOfFireModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'southern-crucible' && (
+        <SouthernCrucibleModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'andean-diaspora' && (
+        <AndeanDiasporaModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'embers-of-africa' && (
+        <EmbersOfAfricaModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'phoenician-legacy' && (
+        <PhoenicianLegacyModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'silk-jade-passages' && (
+        <SilkJadePassagesModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'atlantic-provenance' && (
+        <AtlanticProvenanceModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'letter-of-marque' && (
+        <LetterOfMarqueModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'manila-galleon' && (
+        <ManilaGalleonModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
+      {manifest.open && manifest.consortiumId === 'old-natchez-trace' && (
+        <OldNatchezTraceModal open={true} onOpenChange={(open) => { if (!open) closeModal(); }} />
+      )}
     </div>
   );
 }
