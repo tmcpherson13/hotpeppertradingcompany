@@ -244,16 +244,28 @@ export default function TradingPost() {
               Purveyors of artisan hot pepper flake blends—curated consortiums ranging from our 3-cultivar Regional selections to our flagship 5-cultivar Journeys—alongside single-origin cultivars for the discerning palate
             </p>
             
-            <div className="flex flex-wrap justify-center gap-3 mb-4">
-              <button onClick={() => document.getElementById('journeys')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center gap-2 px-5 py-2.5 bg-gold/90 hover:bg-gold text-ink font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105">
+            <div className="flex flex-wrap justify-center gap-4 mb-4">
+              <Button 
+                variant="gold" 
+                onClick={() => document.getElementById('journeys')?.scrollIntoView({ behavior: 'smooth' })}
+                className="gap-2"
+              >
                 <Crown className="w-4 h-4" /> Journeys
-              </button>
-              <button onClick={() => document.getElementById('regional')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center gap-2 px-5 py-2.5 bg-tyrian/90 hover:bg-tyrian text-parchment font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105">
+              </Button>
+              <Button 
+                variant="tyrian" 
+                onClick={() => document.getElementById('regional')?.scrollIntoView({ behavior: 'smooth' })}
+                className="gap-2"
+              >
                 <Compass className="w-4 h-4" /> Regional
-              </button>
-              <button onClick={() => document.getElementById('cultivars')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center gap-2 px-5 py-2.5 bg-green-800/90 hover:bg-green-800 text-parchment font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105">
+              </Button>
+              <Button 
+                variant="ink" 
+                onClick={() => document.getElementById('cultivars')?.scrollIntoView({ behavior: 'smooth' })}
+                className="gap-2"
+              >
                 <Leaf className="w-4 h-4" /> Cultivars
-              </button>
+              </Button>
             </div>
             
             <div className="relative max-w-md mx-auto mt-8">
