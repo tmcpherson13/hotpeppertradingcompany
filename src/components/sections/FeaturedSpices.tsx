@@ -2,17 +2,19 @@ import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { X } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
-import { EmbersOfAfricaModal } from '@/components/sections/EmbersOfAfricaModal';
-import { SilkJadePassagesModal } from '@/components/sections/SilkJadePassagesModal';
-import { AndeanDiasporaModal } from '@/components/sections/AndeanDiasporaModal';
-import { PhoenicianLegacyModal } from '@/components/sections/PhoenicianLegacyModal';
-import { LetterOfMarqueModal } from '@/components/sections/LetterOfMarqueModal';
-import { AtlanticProvenanceModal } from '@/components/sections/AtlanticProvenanceModal';
-import { ManilaGalleonModal } from '@/components/sections/ManilaGalleonModal';
-import { OldNatchezTraceModal } from '@/components/sections/OldNatchezTraceModal';
-import { CradleOfFireModal } from '@/components/sections/CradleOfFireModal';
-import { SouthernCrucibleModal } from '@/components/sections/SouthernCrucibleModal';
+import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
+import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
+import { AndeanDiasporaContent } from '@/components/sections/AndeanDiasporaContent';
+import { PhoenicianLegacyContent } from '@/components/sections/PhoenicianLegacyContent';
+import { LetterOfMarqueContent } from '@/components/sections/LetterOfMarqueContent';
+import { AtlanticProvenanceContent } from '@/components/sections/AtlanticProvenanceContent';
+import { ManilaGalleonContent } from '@/components/sections/ManilaGalleonContent';
+import { OldNatchezTraceContent } from '@/components/sections/OldNatchezTraceContent';
+import { CradleOfFireContent } from '@/components/sections/CradleOfFireContent';
+import { SouthernCrucibleContent } from '@/components/sections/SouthernCrucibleContent';
 import embersOfAfricaImg from '@/assets/consortium/embers-of-africa.jpg';
 import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
@@ -176,18 +178,11 @@ const spices: Spice[] = [
   },
 ];
 
+type ManifestState = { open: false } | { open: true; consortiumId: string };
+
 export function FeaturedSpices() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [africaModalOpen, setAfricaModalOpen] = useState(false);
-  const [asiaModalOpen, setAsiaModalOpen] = useState(false);
-  const [andesModalOpen, setAndesModalOpen] = useState(false);
-  const [caribbeanModalOpen, setCaribbeanModalOpen] = useState(false);
-  const [mediterraneanModalOpen, setMediterraneanModalOpen] = useState(false);
-  const [atlanticModalOpen, setAtlanticModalOpen] = useState(false);
-  const [manilaModalOpen, setManilaModalOpen] = useState(false);
-  const [natchezModalOpen, setNatchezModalOpen] = useState(false);
-  const [mesoamericaModalOpen, setMesoamericaModalOpen] = useState(false);
-  const [southamericaModalOpen, setSouthamericaModalOpen] = useState(false);
+  const [manifest, setManifest] = useState<ManifestState>({ open: false });
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -196,39 +191,12 @@ export function FeaturedSpices() {
   const patternY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
 
   const handleConsortiumClick = (consortiumId?: string) => {
-    switch (consortiumId) {
-      case 'africa':
-        setAfricaModalOpen(true);
-        break;
-      case 'asia':
-        setAsiaModalOpen(true);
-        break;
-      case 'andes':
-        setAndesModalOpen(true);
-        break;
-      case 'caribbean':
-        setCaribbeanModalOpen(true);
-        break;
-      case 'mediterranean':
-        setMediterraneanModalOpen(true);
-        break;
-      case 'atlantic':
-        setAtlanticModalOpen(true);
-        break;
-      case 'manila':
-        setManilaModalOpen(true);
-        break;
-      case 'natchez':
-        setNatchezModalOpen(true);
-        break;
-      case 'mesoamerica':
-        setMesoamericaModalOpen(true);
-        break;
-      case 'southamerica':
-        setSouthamericaModalOpen(true);
-        break;
+    if (consortiumId) {
+      setManifest({ open: true, consortiumId });
     }
   };
+
+  const closeModal = () => setManifest({ open: false });
 
   return (
     <section ref={sectionRef} id="collection" className="relative py-20 overflow-hidden">
@@ -439,47 +407,34 @@ export function FeaturedSpices() {
         </motion.div>
       </div>
 
-      {/* Consortium Detail Modals */}
-      <EmbersOfAfricaModal 
-        open={africaModalOpen} 
-        onOpenChange={setAfricaModalOpen} 
-      />
-      <SilkJadePassagesModal
-        open={asiaModalOpen} 
-        onOpenChange={setAsiaModalOpen} 
-      />
-      <AndeanDiasporaModal 
-        open={andesModalOpen} 
-        onOpenChange={setAndesModalOpen} 
-      />
-      <LetterOfMarqueModal 
-        open={caribbeanModalOpen} 
-        onOpenChange={setCaribbeanModalOpen} 
-      />
-      <PhoenicianLegacyModal 
-        open={mediterraneanModalOpen} 
-        onOpenChange={setMediterraneanModalOpen} 
-      />
-      <AtlanticProvenanceModal 
-        open={atlanticModalOpen} 
-        onOpenChange={setAtlanticModalOpen} 
-      />
-      <ManilaGalleonModal 
-        open={manilaModalOpen} 
-        onOpenChange={setManilaModalOpen} 
-      />
-      <OldNatchezTraceModal 
-        open={natchezModalOpen} 
-        onOpenChange={setNatchezModalOpen} 
-      />
-      <CradleOfFireModal 
-        open={mesoamericaModalOpen} 
-        onOpenChange={setMesoamericaModalOpen} 
-      />
-      <SouthernCrucibleModal 
-        open={southamericaModalOpen} 
-        onOpenChange={setSouthamericaModalOpen} 
-      />
+      {/* Custom Modal Overlay */}
+      {manifest.open && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/60" onClick={closeModal} />
+          <div className="relative z-10 flex items-start justify-center pt-8 pb-8 overflow-y-auto h-full">
+            <div className="relative w-[min(92vw,900px)] bg-parchment border-2 border-ink/30 rounded-lg shadow-2xl max-h-[90vh] overflow-hidden">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ink/50 text-parchment flex items-center justify-center hover:bg-ink/70 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <ScrollArea className="h-[90vh]">
+                {manifest.consortiumId === 'mesoamerica' && <CradleOfFireContent />}
+                {manifest.consortiumId === 'southamerica' && <SouthernCrucibleContent />}
+                {manifest.consortiumId === 'andes' && <AndeanDiasporaContent />}
+                {manifest.consortiumId === 'africa' && <EmbersOfAfricaContent />}
+                {manifest.consortiumId === 'mediterranean' && <PhoenicianLegacyContent />}
+                {manifest.consortiumId === 'asia' && <SilkJadePassagesContent />}
+                {manifest.consortiumId === 'atlantic' && <AtlanticProvenanceContent />}
+                {manifest.consortiumId === 'caribbean' && <LetterOfMarqueContent />}
+                {manifest.consortiumId === 'manila' && <ManilaGalleonContent />}
+                {manifest.consortiumId === 'natchez' && <OldNatchezTraceContent />}
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
