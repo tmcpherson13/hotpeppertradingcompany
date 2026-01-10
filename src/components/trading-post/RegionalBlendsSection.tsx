@@ -219,7 +219,7 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
 
   return (
     <>
-      <section className="py-16 relative z-10">
+      <section id="regional" className="py-16 relative z-10 scroll-mt-24">
         <div className="container mx-auto px-4 bg-parchment/90 rounded-lg p-6">
           {/* Section Header */}
           <div className="flex items-center gap-4 mb-3">
