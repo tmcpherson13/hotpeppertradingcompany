@@ -235,30 +235,12 @@ export default function TradingPost() {
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden z-10">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-parchment" />
-          <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="trading-post-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="hsl(300 100% 18%)" strokeWidth="0.5" />
-              </pattern>
-              <pattern id="trading-post-grid-large" width="240" height="240" patternUnits="userSpaceOnUse">
-                <path d="M 240 0 L 0 0 0 240" fill="none" stroke="hsl(300 100% 18%)" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#trading-post-grid)" />
-            <rect width="100%" height="100%" fill="url(#trading-post-grid-large)" />
-          </svg>
-          <img src={tradeRoutesBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-transparent to-ink" />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink/40 via-transparent to-ink/40" />
-          <div className="absolute inset-0 bg-radial-vignette opacity-30" />
-        </div>
+        <div className="absolute inset-0 bg-parchment/90" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="font-blackpearl text-5xl md:text-7xl text-parchment mb-4">The Trading Post</h1>
-            <p className="text-lg text-parchment/70 font-heading max-w-2xl mx-auto mb-6">
+            <h1 className="font-blackpearl text-5xl md:text-7xl text-ink mb-4">The Trading Post</h1>
+            <p className="text-lg text-ink/70 font-heading max-w-2xl mx-auto mb-6">
               Purveyors of artisan hot pepper flake blends—curated consortiums ranging from our 3-cultivar Regional selections to our flagship 5-cultivar Journeys—alongside single-origin cultivars for the discerning palate
             </p>
             
@@ -275,10 +257,10 @@ export default function TradingPost() {
             </div>
             
             <div className="relative max-w-md mx-auto mt-8">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-parchment/40" />
-              <Input type="text" placeholder="Search the manifest..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-11 pr-11 py-6 bg-ink/80 border-tyrian/40 text-parchment placeholder:text-parchment/40 focus:border-gold/50 font-heading text-center" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+              <Input type="text" placeholder="Search the manifest..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-11 pr-11 py-6 bg-parchment border-ink/30 text-ink placeholder:text-ink/40 focus:border-tyrian/50 font-heading text-center" />
               {searchQuery && (
-                <button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-parchment/40 hover:text-parchment transition-colors">
+                <button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-ink/40 hover:text-ink transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               )}
