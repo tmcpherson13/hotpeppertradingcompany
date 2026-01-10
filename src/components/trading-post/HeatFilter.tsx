@@ -63,8 +63,8 @@ export function HeatFilter({ minShu, maxShu, onRangeChange }: HeatFilterProps) {
             size="sm"
             className={`
               font-heading uppercase tracking-wider text-xs
-              border-tyrian/40 text-parchment hover:bg-tyrian/20
-              ${isFiltering ? 'bg-tyrian/30 border-gold/50' : ''}
+              bg-tyrian/20 border-tyrian/40 text-ink hover:bg-tyrian/30
+              ${isFiltering ? 'bg-tyrian/40 border-gold/50' : ''}
             `}
           >
             <Flame className="w-3.5 h-3.5 mr-1.5 text-pepper-red" />
