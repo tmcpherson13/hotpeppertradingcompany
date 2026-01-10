@@ -340,7 +340,7 @@ export default function ProductDetail() {
                   <p className="font-heading text-3xl text-gold">
                     ${parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount).toFixed(2)}
                   </p>
-                  <span className="text-parchment/50 text-sm font-heading">2 oz</span>
+                  <span className="text-parchment/50 text-sm font-heading">2 oz (56.70g)</span>
                 </div>
               </div>
 

@@ -105,7 +105,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                 <span className="text-parchment/60 font-heading uppercase tracking-wider text-sm">Price</span>
                 <div className="text-right">
                   <span className="font-heading text-2xl text-gold">${price.toFixed(2)}</span>
-                  <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz</span>
+                  <span className="text-parchment/50 text-xs ml-2 font-heading">2 oz (56.70g)</span>
                 </div>
               </div>
 
