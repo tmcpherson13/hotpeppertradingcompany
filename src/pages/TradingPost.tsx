@@ -287,7 +287,7 @@ export default function TradingPost() {
       {/* Filters & View Toggle Section */}
       {!isLoading && !error && (
         <section className="py-4 border-b border-tyrian/20 relative z-10">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 py-4 bg-parchment/90 rounded-lg">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-1 p-1 bg-ink/10 border border-tyrian/30 rounded-lg">
                 <button onClick={() => setViewMode('exhibition')} className={`flex items-center gap-2 px-4 py-2 rounded font-heading text-sm uppercase tracking-wider transition-all ${viewMode === 'exhibition' ? 'bg-tyrian text-gold' : 'text-ink/60 hover:text-ink hover:bg-tyrian/20'}`}>
