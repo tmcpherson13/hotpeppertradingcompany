@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import DOMPurify from "dompurify";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -427,7 +428,7 @@ export default function ProductDetail() {
                 <h2 className="font-heading text-xl text-parchment">Description</h2>
                 <div 
                   className="prose prose-invert prose-sm max-w-none text-parchment/80"
-                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.descriptionHtml || product.description) }}
                 />
               </div>
 
