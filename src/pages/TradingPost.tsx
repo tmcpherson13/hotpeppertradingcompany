@@ -8,7 +8,7 @@ import { JourneyGrid } from "@/components/trading-post/JourneyGrid";
 import { RegionalBlendsSection } from "@/components/trading-post/RegionalBlendsSection";
 import { ConsortiumHero } from "@/components/trading-post/ConsortiumHero";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
-import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf } from "lucide-react";
+import { Loader2, Search, X, Anchor, Crown, Package, LayoutGrid, Layers, ScrollText, Leaf, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -287,9 +287,34 @@ export default function TradingPost() {
             <h1 className="font-blackpearl text-5xl md:text-7xl text-parchment mb-4">
               The Trading Post
             </h1>
-            <p className="text-lg text-parchment/70 font-heading max-w-2xl mx-auto">
+            <p className="text-lg text-parchment/70 font-heading max-w-2xl mx-auto mb-6">
               Purveyors of artisan hot pepper flake blends—curated consortiums ranging from our 3-cultivar Regional selections to our flagship 5-cultivar Journeys—alongside single-origin cultivars for the discerning palate
             </p>
+            
+            {/* Quick Navigation Buttons */}
+            <div className="flex flex-wrap justify-center gap-3 mb-4">
+              <button
+                onClick={() => document.getElementById('journeys')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-2 px-5 py-2.5 bg-gold/90 hover:bg-gold text-ink font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105"
+              >
+                <Crown className="w-4 h-4" />
+                Journeys
+              </button>
+              <button
+                onClick={() => document.getElementById('regional')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-2 px-5 py-2.5 bg-tyrian/90 hover:bg-tyrian text-parchment font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105"
+              >
+                <Compass className="w-4 h-4" />
+                Regional
+              </button>
+              <button
+                onClick={() => document.getElementById('cultivars')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-2 px-5 py-2.5 bg-green-800/90 hover:bg-green-800 text-parchment font-heading text-sm uppercase tracking-wider rounded transition-all hover:scale-105"
+              >
+                <Leaf className="w-4 h-4" />
+                Cultivars
+              </button>
+            </div>
             
             {/* Search */}
             <div className="relative max-w-md mx-auto mt-8">
@@ -455,7 +480,7 @@ export default function TradingPost() {
       {!isLoading && !error && !isSearching && viewMode === 'exhibition' && (
         <>
           {/* TIER 1: Consortium Journeys */}
-          <section className="py-16 relative z-10">
+          <section id="journeys" className="py-16 relative z-10 scroll-mt-24">
             <div className="container mx-auto px-4 bg-parchment/90 rounded-lg p-6">
               <div className="flex items-center gap-4 mb-8">
                 <Crown className="w-6 h-6 text-gold" />
@@ -482,7 +507,7 @@ export default function TradingPost() {
 
           {/* TIER 3: Individual Cultivars */}
           {cultivars.length > 0 && (
-            <section className="py-16 relative z-10">
+            <section id="cultivars" className="py-16 relative z-10 scroll-mt-24">
               <div className="container mx-auto px-4 bg-parchment/90 rounded-lg p-6">
                 <div className="flex items-center gap-4 mb-8">
                   <Leaf className="w-6 h-6 text-green-700" />
