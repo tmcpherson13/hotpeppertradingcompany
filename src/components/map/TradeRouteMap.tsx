@@ -447,13 +447,10 @@ const tradeRoutes = {
   ] as RouteData[],
 };
 
-// Route layer IDs for each route index
+// Route layer IDs for each route index (reduced from 5 to 2 layers to prevent LineAtlas exhaustion)
 const getRouteLayerIds = (index: number) => [
-  `route-aura-${index}`,
-  `route-glow-outer-${index}`,
-  `route-glow-inner-${index}`,
+  `route-glow-${index}`,
   `route-line-${index}`,
-  `route-highlight-${index}`,
 ];
 
 export function TradeRouteMap() {
@@ -737,42 +734,8 @@ export function TradeRouteMap() {
     if (!map.current || !isMapLoaded) return;
 
     const m = map.current;
-    let frameCount = 0;
-
-    const animateDashes = () => {
-      frameCount++;
-      
-      // Only update every 10th frame to reduce load and prevent instability
-      if (frameCount % 10 === 0) {
-        tradeRoutes.routes.forEach((route, index) => {
-          if (visibleRoutes.has(index)) {
-            const highlightLayerId = `route-highlight-${index}`;
-            try {
-              // Check if layer exists before setting property
-              if (!m.getLayer(highlightLayerId)) return;
-              
-              // Use sinusoidal variation that ALWAYS stays positive (min 4, max 12)
-              // This prevents zero/negative dasharray values that crash MapLibre
-              const phase = (frameCount * 0.02) % (Math.PI * 2);
-              const dashLength = 8 + Math.sin(phase) * 2;  // Range: 6 to 10
-              const gapLength = 12 + Math.cos(phase) * 2;  // Range: 10 to 14
-              
-              // Extra safety: clamp values to ensure they're always valid
-              const safeDash = Math.max(4, dashLength);
-              const safeGap = Math.max(4, gapLength);
-              
-              m.setPaintProperty(highlightLayerId, 'line-dasharray', [safeDash, safeGap]);
-            } catch (e) {
-              // Layer may not exist or map may be in transition - silently ignore
-            }
-          }
-        });
-      }
-
-      animationFrameRef.current = requestAnimationFrame(animateDashes);
-    };
-
-    animateDashes();
+    // Dash animation removed - was causing LineAtlas exhaustion errors
+    // Routes now use static styling for better stability
 
     return () => {
       if (animationFrameRef.current) {
@@ -866,7 +829,7 @@ export function TradeRouteMap() {
           'background-color': '#e4d5b7', // Warmer, more aged parchment
         },
       },
-      // Graticule lines - delicate hand-drawn navigational grid
+      // Graticule lines - delicate hand-drawn navigational grid (solid to reduce LineAtlas usage)
       {
         id: 'graticule-lines',
         type: 'line',
@@ -876,10 +839,9 @@ export function TradeRouteMap() {
           'line-color': '#5a4a3a',
           'line-width': 0.3,
           'line-opacity': 0.12,
-          'line-dasharray': [8, 12],
         },
       },
-      // Special latitude lines (Equator, Tropics) - subtle emphasis
+      // Special latitude lines (Equator, Tropics) - subtle emphasis (solid to reduce LineAtlas usage)
       {
         id: 'graticule-special',
         type: 'line',
@@ -889,7 +851,6 @@ export function TradeRouteMap() {
           'line-color': '#3a2a1a',
           'line-width': 0.5,
           'line-opacity': 0.15,
-          'line-dasharray': [12, 8],
         },
       },
       // Land mass fill - aged vellum appearance
@@ -989,26 +950,9 @@ export function TradeRouteMap() {
             ? { aura: '#8B4513', glowOuter: '#A0522D', glowInner: '#CD853F', main: '#8B4513', accent: '#DAA520' }  // Sienna/Brown for overland
             : { aura: '#5B005B', glowOuter: '#7B1A7B', glowInner: '#8B2A8B', main: '#5B005B', accent: '#d4a84b' }; // Tyrian Purple for maritime
 
-          // Outermost diffuse glow - prestige aura
+          // Single glow layer - combined effect (reduced from 3 layers to prevent LineAtlas exhaustion)
           m?.addLayer({
-            id: `route-aura-${index}`,
-            type: 'line',
-            source: `route-${index}`,
-            layout: {
-              'line-join': 'round',
-              'line-cap': 'round',
-            },
-            paint: {
-              'line-color': colors.aura,
-              'line-width': 18,
-              'line-opacity': ghostOpacity,
-              'line-blur': 8,
-            },
-          });
-
-          // Secondary glow layer - rich halo
-          m?.addLayer({
-            id: `route-glow-outer-${index}`,
+            id: `route-glow-${index}`,
             type: 'line',
             source: `route-${index}`,
             layout: {
@@ -1017,26 +961,9 @@ export function TradeRouteMap() {
             },
             paint: {
               'line-color': colors.glowOuter,
-              'line-width': 10,
+              'line-width': 12,
               'line-opacity': ghostOpacity,
-              'line-blur': 4,
-            },
-          });
-
-          // Inner glow - concentrated
-          m?.addLayer({
-            id: `route-glow-inner-${index}`,
-            type: 'line',
-            source: `route-${index}`,
-            layout: {
-              'line-join': 'round',
-              'line-cap': 'round',
-            },
-            paint: {
-              'line-color': colors.glowInner,
-              'line-width': 6,
-              'line-opacity': ghostOpacity,
-              'line-blur': 2,
+              'line-blur': 5,
             },
           });
 
@@ -1053,24 +980,7 @@ export function TradeRouteMap() {
               'line-color': colors.main,
               'line-width': 3,
               'line-opacity': ghostOpacity,
-              ...(isOverland ? { 'line-dasharray': [6, 4] } : {}), // Dashed for overland
-            },
-          });
-
-          // Highlight stroke - precious metal accent
-          m?.addLayer({
-            id: `route-highlight-${index}`,
-            type: 'line',
-            source: `route-${index}`,
-            layout: {
-              'line-join': 'round',
-              'line-cap': 'round',
-            },
-            paint: {
-              'line-color': colors.accent,
-              'line-width': 1,
-              'line-opacity': ghostOpacity,
-              'line-dasharray': isOverland ? [4, 6] : [8, 12],
+              ...(isOverland ? { 'line-dasharray': [6, 4] } : {}), // Dashed only for overland routes
             },
           });
         });
@@ -1081,7 +991,7 @@ export function TradeRouteMap() {
           // Query all route layers at click point
           const routeLayerIds: string[] = [];
           tradeRoutes.routes.forEach((_, index) => {
-            routeLayerIds.push(`route-line-${index}`, `route-highlight-${index}`);
+            routeLayerIds.push(`route-line-${index}`, `route-glow-${index}`);
           });
           
           const features = m?.queryRenderedFeatures(e.point, {
@@ -1091,7 +1001,7 @@ export function TradeRouteMap() {
           if (features && features.length > 0) {
             // Extract route index from layer ID
             const layerId = features[0].layer?.id;
-            const match = layerId?.match(/route-(?:line|highlight)-(\d+)/);
+            const match = layerId?.match(/route-(?:line|glow)-(\d+)/);
             if (match) {
               const routeIndex = parseInt(match[1], 10);
               const route = tradeRoutes.routes[routeIndex];
