@@ -26,3 +26,6 @@ verify_jwt = false
 
 [functions.consortium-image-generate]
 verify_jwt = false
+
+[functions.rotate-featured-consortium]
+verify_jwt = false

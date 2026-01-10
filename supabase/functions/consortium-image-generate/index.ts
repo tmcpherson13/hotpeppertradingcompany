@@ -268,7 +268,7 @@ NO TEXT. NO WATERMARKS. NO PEOPLE. ONLY PEPPERS AND ARTISTIC ACCENTS.`;
   } catch (error) {
     console.error('Error in consortium-image-generate:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ success: false, error: 'An internal error occurred. Please try again.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

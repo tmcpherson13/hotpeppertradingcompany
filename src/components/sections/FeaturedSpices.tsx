@@ -2,9 +2,11 @@ import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Star } from 'lucide-react';
 import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOverlay';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { HeatBadge, HeatTier } from '@/components/trading-post/HeatBadge';
+import { useFeaturedConsortium, getDaysUntilNextRotation } from '@/hooks/useFeaturedConsortium';
 import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
 import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
 import { AndeanDiasporaContent } from '@/components/sections/AndeanDiasporaContent';
@@ -194,6 +196,10 @@ type ManifestState = { open: false } | { open: true; consortiumId: string };
 export function FeaturedSpices() {
   const sectionRef = useRef<HTMLElement>(null);
   const [manifest, setManifest] = useState<ManifestState>({ open: false });
+  const { data: featuredData } = useFeaturedConsortium();
+  const featuredIndex = featuredData?.consortium_index ?? 0;
+  const daysUntilRotation = getDaysUntilNextRotation();
+  
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -283,17 +289,33 @@ export function FeaturedSpices() {
 
         {/* Trade Goods Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {spices.map((spice, index) => (
+          {spices.map((spice, index) => {
+            const isFeatured = index === featuredIndex;
+            
+            return (
             <motion.article
               key={spice.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group merchant-label"
+              className={`group merchant-label ${isFeatured ? 'relative' : ''}`}
             >
+              {/* Featured Badge */}
+              {isFeatured && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
+                  <div className="bg-gold text-ink px-3 py-1 rounded-full flex items-center gap-1.5 shadow-lg">
+                    <Star className="w-3 h-3 fill-ink" />
+                    <span className="text-[9px] uppercase tracking-wider font-heading font-semibold">
+                      Featured This Week
+                    </span>
+                    <Star className="w-3 h-3 fill-ink" />
+                  </div>
+                </div>
+              )}
+              
               {/* Trade Label Card */}
-              <div className="relative bg-parchment border-2 border-ink/30 shadow-deep">
+              <div className={`relative bg-parchment border-2 shadow-deep ${isFeatured ? 'border-gold ring-2 ring-gold/30' : 'border-ink/30'}`}>
                 {/* Top decorative border */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ink/20 to-transparent" />
                 
@@ -401,7 +423,8 @@ export function FeaturedSpices() {
                 <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-ink/30" />
               </div>
             </motion.article>
-          ))}
+            );
+          })}
         </div>
 
         {/* View All - Trade Record Style */}
