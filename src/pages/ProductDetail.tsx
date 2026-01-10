@@ -96,7 +96,10 @@ function RelatedProductCard({ product }: RelatedProductCardProps) {
         <h4 className="font-heading text-sm text-parchment line-clamp-1 group-hover:text-gold transition-colors">
           {node.title}
         </h4>
-        <p className="font-heading text-gold mt-1">${price.toFixed(2)}</p>
+        <div className="flex items-baseline gap-1.5 mt-1">
+          <span className="font-heading text-gold">${price.toFixed(2)}</span>
+          <span className="text-parchment/50 text-xs font-heading">2 oz (56.70g)</span>
+        </div>
       </div>
     </Link>
   );
