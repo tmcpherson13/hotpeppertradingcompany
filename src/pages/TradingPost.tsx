@@ -11,7 +11,7 @@ import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { Loader2, Search, X, Crown, Package, LayoutGrid, Layers, Leaf, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ConsortiumManifestOverlay } from "@/components/ui/ConsortiumManifestOverlay";
 import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 
 // Import consortium content components (numerically ordered № 001 - № 010)
@@ -94,15 +94,7 @@ export default function TradingPost() {
     setManifest({ open: false });
   }, []);
 
-  // Handle escape key to close modal
-  useEffect(() => {
-    if (!manifest.open) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [manifest.open, closeModal]);
+  // Note: Escape key handling is now in ConsortiumManifestOverlay
 
   // Categorize products by product type
   const { cultivars, consortiums, merchandise } = useMemo(() => {
@@ -418,32 +410,10 @@ export default function TradingPost() {
 
       <QuickViewModal product={quickViewProduct} isOpen={!!quickViewProduct} onClose={() => setQuickViewProduct(null)} />
 
-      {/* Custom Modal Overlay for Consortium Manifests */}
-      {manifest.open && (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/60" onClick={closeModal} />
-          
-          {/* Modal Container */}
-          <div className="relative z-10 flex items-start justify-center pt-8 pb-8 overflow-y-auto h-full">
-            <div className="relative w-[min(92vw,900px)] bg-parchment border-2 border-ink/30 rounded-lg shadow-2xl max-h-[90vh] overflow-hidden">
-              {/* Close Button */}
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ink/50 text-parchment flex items-center justify-center hover:bg-ink/70 transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              
-              {/* ScrollArea wrapper */}
-              <ScrollArea className="h-[90vh]">
-                {renderConsortiumContent()}
-              </ScrollArea>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Consortium Manifest Modal */}
+      <ConsortiumManifestOverlay open={manifest.open} onClose={closeModal}>
+        {renderConsortiumContent()}
+      </ConsortiumManifestOverlay>
     </div>
   );
 }

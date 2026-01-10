@@ -2,8 +2,7 @@ import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOverlay';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
 import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
@@ -407,34 +406,19 @@ export function FeaturedSpices() {
         </motion.div>
       </div>
 
-      {/* Custom Modal Overlay */}
-      {manifest.open && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/60" onClick={closeModal} />
-          <div className="relative z-10 flex items-start justify-center pt-8 pb-8 overflow-y-auto h-full">
-            <div className="relative w-[min(92vw,900px)] bg-parchment border-2 border-ink/30 rounded-lg shadow-2xl max-h-[90vh] overflow-hidden">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ink/50 text-parchment flex items-center justify-center hover:bg-ink/70 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <ScrollArea className="h-[90vh]">
-                {manifest.consortiumId === 'mesoamerica' && <CradleOfFireContent />}
-                {manifest.consortiumId === 'southamerica' && <SouthernCrucibleContent />}
-                {manifest.consortiumId === 'andes' && <AndeanDiasporaContent />}
-                {manifest.consortiumId === 'africa' && <EmbersOfAfricaContent />}
-                {manifest.consortiumId === 'mediterranean' && <PhoenicianLegacyContent />}
-                {manifest.consortiumId === 'asia' && <SilkJadePassagesContent />}
-                {manifest.consortiumId === 'atlantic' && <AtlanticProvenanceContent />}
-                {manifest.consortiumId === 'caribbean' && <LetterOfMarqueContent />}
-                {manifest.consortiumId === 'manila' && <ManilaGalleonContent />}
-                {manifest.consortiumId === 'natchez' && <OldNatchezTraceContent />}
-              </ScrollArea>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Manifest Modal */}
+      <ConsortiumManifestOverlay open={manifest.open} onClose={closeModal}>
+        {manifest.open && manifest.consortiumId === 'mesoamerica' && <CradleOfFireContent />}
+        {manifest.open && manifest.consortiumId === 'southamerica' && <SouthernCrucibleContent />}
+        {manifest.open && manifest.consortiumId === 'andes' && <AndeanDiasporaContent />}
+        {manifest.open && manifest.consortiumId === 'africa' && <EmbersOfAfricaContent />}
+        {manifest.open && manifest.consortiumId === 'mediterranean' && <PhoenicianLegacyContent />}
+        {manifest.open && manifest.consortiumId === 'asia' && <SilkJadePassagesContent />}
+        {manifest.open && manifest.consortiumId === 'atlantic' && <AtlanticProvenanceContent />}
+        {manifest.open && manifest.consortiumId === 'caribbean' && <LetterOfMarqueContent />}
+        {manifest.open && manifest.consortiumId === 'manila' && <ManilaGalleonContent />}
+        {manifest.open && manifest.consortiumId === 'natchez' && <OldNatchezTraceContent />}
+      </ConsortiumManifestOverlay>
     </section>
   );
 }

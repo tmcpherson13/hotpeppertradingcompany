@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Package, Sparkles, X } from 'lucide-react';
+import { Package, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOverlay';
 import { ShopifyProduct } from '@/lib/shopify';
 import { HeatBadge } from './HeatBadge';
 import { MediterraneanSelectionContent } from '@/components/sections/MediterraneanSelectionContent';
@@ -259,34 +259,19 @@ export function RegionalBlendsSection({ products }: RegionalBlendsSectionProps) 
         </div>
       </section>
 
-      {/* Custom Modal Overlay */}
-      {manifest.open && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/60" onClick={closeModal} />
-          <div className="relative z-10 flex items-start justify-center pt-8 pb-8 overflow-y-auto h-full">
-            <div className="relative w-[min(92vw,900px)] bg-parchment border-2 border-ink/30 rounded-lg shadow-2xl max-h-[90vh] overflow-hidden">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-ink/50 text-parchment flex items-center justify-center hover:bg-ink/70 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <ScrollArea className="h-[90vh]">
-                {manifest.handle === 'mediterranean-selection' && <MediterraneanSelectionContent />}
-                {manifest.handle === 'caribbean-heat-trio' && <CaribbeanHeatTrioContent />}
-                {manifest.handle === 'pacific-rim-blend' && <PacificRimBlendContent />}
-                {manifest.handle === 'andean-heights-regional-blend' && <AndeanHeightsContent />}
-                {manifest.handle === 'african-fire-regional-blend' && <AfricanFireContent />}
-                {manifest.handle === 'mexican-triad-regional-blend' && <MexicanTriadContent />}
-                {manifest.handle === 'indian-subcontinent-regional-blend' && <IndianSubcontinentContent />}
-                {manifest.handle === 'turkish-terroir-regional-blend' && <TurkishTerroirContent />}
-                {manifest.handle === 'south-american-heat-regional-blend' && <SouthAmericanHeatContent />}
-                {manifest.handle === 'american-fusion-regional-blend' && <AmericanFusionContent />}
-              </ScrollArea>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Manifest Modal */}
+      <ConsortiumManifestOverlay open={manifest.open} onClose={closeModal}>
+        {manifest.open && manifest.handle === 'mediterranean-selection' && <MediterraneanSelectionContent />}
+        {manifest.open && manifest.handle === 'caribbean-heat-trio' && <CaribbeanHeatTrioContent />}
+        {manifest.open && manifest.handle === 'pacific-rim-blend' && <PacificRimBlendContent />}
+        {manifest.open && manifest.handle === 'andean-heights-regional-blend' && <AndeanHeightsContent />}
+        {manifest.open && manifest.handle === 'african-fire-regional-blend' && <AfricanFireContent />}
+        {manifest.open && manifest.handle === 'mexican-triad-regional-blend' && <MexicanTriadContent />}
+        {manifest.open && manifest.handle === 'indian-subcontinent-regional-blend' && <IndianSubcontinentContent />}
+        {manifest.open && manifest.handle === 'turkish-terroir-regional-blend' && <TurkishTerroirContent />}
+        {manifest.open && manifest.handle === 'south-american-heat-regional-blend' && <SouthAmericanHeatContent />}
+        {manifest.open && manifest.handle === 'american-fusion-regional-blend' && <AmericanFusionContent />}
+      </ConsortiumManifestOverlay>
     </>
   );
 }
