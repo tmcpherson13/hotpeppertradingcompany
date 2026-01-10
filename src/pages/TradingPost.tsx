@@ -288,7 +288,7 @@ export default function TradingPost() {
               The Trading Post
             </h1>
             <p className="text-lg text-parchment/70 font-heading max-w-2xl mx-auto">
-              From single cultivars to curated consortiums, each selection reflects centuries of horticultural tradition and deliberate curation
+              Purveyors of artisan hot pepper flake blends—curated consortiums ranging from our 3-cultivar Regional selections to our flagship 5-cultivar Journeys—alongside single-origin cultivars for the discerning palate
             </p>
             
             {/* Search */}
