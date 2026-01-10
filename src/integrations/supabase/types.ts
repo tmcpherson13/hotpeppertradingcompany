@@ -161,6 +161,27 @@ export type Database = {
         }
         Relationships: []
       }
+      featured_consortium: {
+        Row: {
+          consortium_index: number
+          id: string
+          last_rotated_at: string
+          updated_at: string
+        }
+        Insert: {
+          consortium_index?: number
+          id?: string
+          last_rotated_at?: string
+          updated_at?: string
+        }
+        Update: {
+          consortium_index?: number
+          id?: string
+          last_rotated_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hidden_gallery_images: {
         Row: {
           hidden_at: string
