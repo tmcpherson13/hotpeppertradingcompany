@@ -10,8 +10,9 @@ import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
 import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
 import { ReportsDownload } from '@/components/admin/ReportsDownload';
+import { FeaturedRotationControls } from '@/components/admin/FeaturedRotationControls';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download, Star } from 'lucide-react';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 export default function Admin() {
@@ -111,6 +112,13 @@ export default function Admin() {
                 <Download className="w-4 h-4 shrink-0" />
                 Reports
               </TabsTrigger>
+              <TabsTrigger
+                value="featured"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
+              >
+                <Star className="w-4 h-4 shrink-0" />
+                Featured
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="users" className="mt-0">
@@ -185,6 +193,15 @@ export default function Admin() {
                   Downloadable Reports
                 </h2>
                 <ReportsDownload />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="featured" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  Featured Consortium Controls
+                </h2>
+                <FeaturedRotationControls />
               </div>
             </TabsContent>
           </Tabs>

@@ -6,7 +6,7 @@ import { Star } from 'lucide-react';
 import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOverlay';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { HeatBadge, HeatTier } from '@/components/trading-post/HeatBadge';
-import { useFeaturedConsortium, getDaysUntilNextRotation } from '@/hooks/useFeaturedConsortium';
+import { useFeaturedConsortium, formatRotationCountdown, getNextRotationDate } from '@/hooks/useFeaturedConsortium';
 import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
 import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
 import { AndeanDiasporaContent } from '@/components/sections/AndeanDiasporaContent';
@@ -198,7 +198,8 @@ export function FeaturedSpices() {
   const [manifest, setManifest] = useState<ManifestState>({ open: false });
   const { data: featuredData } = useFeaturedConsortium();
   const featuredIndex = featuredData?.consortium_index ?? 0;
-  const daysUntilRotation = getDaysUntilNextRotation();
+  const countdownText = formatRotationCountdown();
+  const nextRotation = getNextRotationDate();
   
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -301,13 +302,16 @@ export function FeaturedSpices() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className={`group merchant-label ${isFeatured ? 'relative' : ''}`}
             >
-              {/* Featured Badge */}
+              {/* Featured Badge with Countdown */}
               {isFeatured && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-                  <div className="bg-gold text-ink px-3 py-1 rounded-full flex items-center gap-1.5 shadow-lg">
+                  <div className="bg-gold text-ink px-3 py-1 rounded-full flex items-center gap-1.5 shadow-lg group/badge cursor-help" title={`Next rotation: ${nextRotation.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`}>
                     <Star className="w-3 h-3 fill-ink" />
                     <span className="text-[9px] uppercase tracking-wider font-heading font-semibold">
                       Featured This Week
+                    </span>
+                    <span className="text-[8px] opacity-70 font-body">
+                      ({countdownText})
                     </span>
                     <Star className="w-3 h-3 fill-ink" />
                   </div>

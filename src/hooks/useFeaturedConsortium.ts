@@ -50,3 +50,11 @@ export function getNextRotationDate(): Date {
   
   return nextSunday;
 }
+
+// Format countdown display (e.g., "3 days", "Today", "Tomorrow")
+export function formatRotationCountdown(): string {
+  const days = getDaysUntilNextRotation();
+  if (days === 0 || days === 7) return 'Today';
+  if (days === 1) return 'Tomorrow';
+  return `${days} days`;
+}
