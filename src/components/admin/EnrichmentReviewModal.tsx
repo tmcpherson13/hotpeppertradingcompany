@@ -29,6 +29,7 @@ import {
   Loader2, Check, ExternalLink, Edit2, Image as ImageIcon, 
   ZoomIn, Flower2, Camera, RefreshCw, X, CheckCircle2, XCircle, Save
 } from 'lucide-react';
+import { ReferenceImageUpload } from './ReferenceImageUpload';
 
 interface EnrichmentReviewModalProps {
   open: boolean;
@@ -74,6 +75,7 @@ export function EnrichmentReviewModal({
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
   const [regeneratingImageId, setRegeneratingImageId] = useState<string | null>(null);
   const [regenerateFeedback, setRegenerateFeedback] = useState('');
+  const [regenerateReferenceImages, setRegenerateReferenceImages] = useState<File[]>([]);
   const [fieldApprovals, setFieldApprovals] = useState<Record<string, FieldApprovalStatus>>({});
   
   // Manual override fields state
@@ -150,10 +152,16 @@ export function EnrichmentReviewModal({
   };
 
   const handleRegenerateSingle = async (proposal: ImageProposal) => {
-    const success = await regenerateSingleImage(proposal, pepper.name, regenerateFeedback);
+    const success = await regenerateSingleImage(
+      proposal, 
+      pepper.name, 
+      regenerateFeedback,
+      regenerateReferenceImages.length > 0 ? regenerateReferenceImages : undefined
+    );
     if (success) {
       setRegeneratingImageId(null);
       setRegenerateFeedback('');
+      setRegenerateReferenceImages([]);
     }
   };
   
@@ -561,13 +569,20 @@ export function EnrichmentReviewModal({
                                   
                                   {/* Per-image regenerate feedback */}
                                   {regeneratingImageId === proposal.id && (
-                                    <div className="space-y-2 p-2 bg-amber-50/50 rounded border border-amber-200">
+                                    <div className="space-y-3 p-3 bg-amber-50/50 rounded border border-amber-200">
                                       <Textarea
                                         value={regenerateFeedback}
                                         onChange={(e) => setRegenerateFeedback(e.target.value)}
                                         placeholder="Describe changes... (e.g., 'more orange color', 'show stem')"
                                         className="text-xs min-h-[60px] bg-parchment"
                                       />
+                                      
+                                      <ReferenceImageUpload
+                                        images={regenerateReferenceImages}
+                                        onImagesChange={setRegenerateReferenceImages}
+                                        maxImages={3}
+                                      />
+                                      
                                       <div className="flex gap-1">
                                         <Button
                                           variant="ghost"
@@ -576,6 +591,7 @@ export function EnrichmentReviewModal({
                                           onClick={() => {
                                             setRegeneratingImageId(null);
                                             setRegenerateFeedback('');
+                                            setRegenerateReferenceImages([]);
                                           }}
                                         >
                                           Cancel
