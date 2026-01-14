@@ -9,6 +9,10 @@ export interface PepperOverride {
   description: string | null;
   historical_notes: string | null;
   trade_route: string | null;
+  origin: string | null;
+  heat_level: string | null;
+  scoville_min: number | null;
+  scoville_max: number | null;
   updated_at: string | null;
   updated_by: string | null;
 }
@@ -17,7 +21,7 @@ interface UsePepperOverridesResult {
   overrides: Map<string, PepperOverride>;
   isLoading: boolean;
   getOverride: (pepperId: string) => PepperOverride | undefined;
-  saveOverride: (pepperId: string, fields: Partial<Pick<PepperOverride, 'description' | 'historical_notes' | 'trade_route'>>) => Promise<boolean>;
+  saveOverride: (pepperId: string, fields: Partial<Pick<PepperOverride, 'description' | 'historical_notes' | 'trade_route' | 'origin' | 'heat_level' | 'scoville_min' | 'scoville_max'>>) => Promise<boolean>;
   isSaving: boolean;
 }
 
@@ -55,7 +59,7 @@ export function usePepperOverrides(): UsePepperOverridesResult {
 
   const saveOverride = useCallback(async (
     pepperId: string,
-    fields: Partial<Pick<PepperOverride, 'description' | 'historical_notes' | 'trade_route'>>
+    fields: Partial<Pick<PepperOverride, 'description' | 'historical_notes' | 'trade_route' | 'origin' | 'heat_level' | 'scoville_min' | 'scoville_max'>>
   ): Promise<boolean> => {
     if (!user) {
       toast.error('You must be logged in to edit');

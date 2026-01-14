@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Pepper } from '@/data/pepperTypes';
+import { Pepper, heatLevels } from '@/data/pepperTypes';
 import { usePepperEnrichment, EnrichmentQueueEntry } from '@/hooks/usePepperEnrichment';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import { useImageProposals, ImageProposal } from '@/hooks/useImageProposals';
@@ -12,14 +12,22 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { 
   Loader2, Check, ExternalLink, Edit2, Image as ImageIcon, 
-  ZoomIn, Flower2, Camera, RefreshCw, X, CheckCircle2, XCircle
+  ZoomIn, Flower2, Camera, RefreshCw, X, CheckCircle2, XCircle, Save
 } from 'lucide-react';
 
 interface EnrichmentReviewModalProps {
@@ -47,7 +55,7 @@ export function EnrichmentReviewModal({
   onComplete,
 }: EnrichmentReviewModalProps) {
   const { approve, reject, isApplying } = usePepperEnrichment();
-  const { getOverride } = usePepperOverrides();
+  const { getOverride, saveOverride, isSaving } = usePepperOverrides();
   const { 
     proposals: imageProposals, 
     isLoading: imagesLoading, 
@@ -67,6 +75,13 @@ export function EnrichmentReviewModal({
   const [regeneratingImageId, setRegeneratingImageId] = useState<string | null>(null);
   const [regenerateFeedback, setRegenerateFeedback] = useState('');
   const [fieldApprovals, setFieldApprovals] = useState<Record<string, FieldApprovalStatus>>({});
+  
+  // Manual override fields state
+  const [manualOrigin, setManualOrigin] = useState('');
+  const [manualHeatLevel, setManualHeatLevel] = useState('');
+  const [manualScovilleMin, setManualScovilleMin] = useState<number | ''>('');
+  const [manualScovilleMax, setManualScovilleMax] = useState<number | ''>('');
+  const [savingManualOverrides, setSavingManualOverrides] = useState(false);
 
   const currentOverride = getOverride(pepper.id);
 
@@ -77,7 +92,7 @@ export function EnrichmentReviewModal({
     }
   }, [open, pepper.id, fetchProposals]);
 
-  // Reset field approvals when queue entry changes
+  // Reset field approvals and manual overrides when queue entry changes
   useEffect(() => {
     if (queueEntry) {
       setEditedContent({
@@ -99,6 +114,16 @@ export function EnrichmentReviewModal({
       });
     }
   }, [queueEntry]);
+  
+  // Initialize manual override fields from existing overrides or pepper data
+  useEffect(() => {
+    if (open && pepper) {
+      setManualOrigin(currentOverride?.origin || pepper.origin || '');
+      setManualHeatLevel(currentOverride?.heat_level || pepper.heatLevel || '');
+      setManualScovilleMin(currentOverride?.scoville_min ?? pepper.scovilleMin ?? '');
+      setManualScovilleMax(currentOverride?.scoville_max ?? pepper.scovilleMax ?? '');
+    }
+  }, [open, pepper, currentOverride]);
 
   if (!queueEntry) return null;
 
@@ -130,6 +155,18 @@ export function EnrichmentReviewModal({
       setRegeneratingImageId(null);
       setRegenerateFeedback('');
     }
+  };
+  
+  const handleSaveManualOverrides = async () => {
+    setSavingManualOverrides(true);
+    const success = await saveOverride(pepper.id, {
+      origin: manualOrigin || null,
+      heat_level: manualHeatLevel || null,
+      scoville_min: manualScovilleMin === '' ? null : manualScovilleMin,
+      scoville_max: manualScovilleMax === '' ? null : manualScovilleMax,
+    });
+    setSavingManualOverrides(false);
+    return success;
   };
 
   const fields = [
@@ -184,6 +221,105 @@ export function EnrichmentReviewModal({
             <TabsContent value="compare" className="flex-1 overflow-hidden mt-0">
               <ScrollArea className="h-[50vh]">
                 <div className="space-y-4 p-4">
+                  {/* Manual Overrides Section */}
+                  <div className="border-2 border-amber-300 rounded-lg overflow-hidden bg-amber-50/30">
+                    <div className="bg-amber-100/50 px-3 py-2 flex items-center justify-between">
+                      <span className="font-heading text-sm uppercase tracking-wider text-amber-800">
+                        Manual Overrides
+                      </span>
+                      <Badge className="bg-amber-200 text-amber-800 text-xs">
+                        Editable Fields
+                      </Badge>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <p className="text-xs text-ink/60 mb-3">
+                        Adjust these core pepper attributes directly. Changes save independently from AI enrichment approval.
+                      </p>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        {/* Provenance */}
+                        <div className="space-y-1.5">
+                          <Label htmlFor="manual-origin" className="text-sm font-medium">
+                            Provenance
+                          </Label>
+                          <Input
+                            id="manual-origin"
+                            value={manualOrigin}
+                            onChange={(e) => setManualOrigin(e.target.value)}
+                            placeholder={pepper.origin || 'e.g., Jamaica'}
+                            className="bg-parchment"
+                          />
+                          <p className="text-xs text-ink/50">Current: {pepper.origin || 'Not set'}</p>
+                        </div>
+                        
+                        {/* Pungency */}
+                        <div className="space-y-1.5">
+                          <Label htmlFor="manual-heat-level" className="text-sm font-medium">
+                            Pungency
+                          </Label>
+                          <Select value={manualHeatLevel} onValueChange={setManualHeatLevel}>
+                            <SelectTrigger id="manual-heat-level" className="bg-parchment">
+                              <SelectValue placeholder="Select heat level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {heatLevels.map((level) => (
+                                <SelectItem key={level} value={level}>
+                                  {level}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <p className="text-xs text-ink/50">Current: {pepper.heatLevel || 'Not set'}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Scoville Range */}
+                      <div className="space-y-1.5">
+                        <Label className="text-sm font-medium">Scoville Range (SHU)</Label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="number"
+                            value={manualScovilleMin}
+                            onChange={(e) => setManualScovilleMin(e.target.value === '' ? '' : parseInt(e.target.value))}
+                            placeholder="Min"
+                            className="bg-parchment w-32"
+                            min={0}
+                          />
+                          <span className="text-ink/50">—</span>
+                          <Input
+                            type="number"
+                            value={manualScovilleMax}
+                            onChange={(e) => setManualScovilleMax(e.target.value === '' ? '' : parseInt(e.target.value))}
+                            placeholder="Max"
+                            className="bg-parchment w-32"
+                            min={0}
+                          />
+                          <span className="text-xs text-ink/50">SHU</span>
+                        </div>
+                        <p className="text-xs text-ink/50">
+                          Current: {pepper.scovilleMin?.toLocaleString() || '?'} - {pepper.scovilleMax?.toLocaleString() || '?'} SHU
+                        </p>
+                      </div>
+                      
+                      <Button
+                        onClick={handleSaveManualOverrides}
+                        disabled={savingManualOverrides || isSaving}
+                        size="sm"
+                        className="bg-amber-600 hover:bg-amber-700 text-white"
+                      >
+                        {savingManualOverrides ? (
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        ) : (
+                          <Save className="w-4 h-4 mr-2" />
+                        )}
+                        Save Manual Overrides
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <Separator className="my-2" />
+                  
+                  {/* AI-Generated Fields */}
                   {fields.map(({ key, label, current }) => {
                     const proposed = queueEntry[key as keyof EnrichmentQueueEntry] as string | null;
                     const edited = editedContent[key as keyof typeof editedContent] as string | undefined;

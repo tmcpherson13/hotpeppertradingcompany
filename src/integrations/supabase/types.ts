@@ -359,9 +359,13 @@ export type Database = {
           description: string | null
           enrichment_version: number | null
           flavor_notes: string | null
+          heat_level: string | null
           historical_notes: string | null
           id: string
+          origin: string | null
           pepper_id: string
+          scoville_max: number | null
+          scoville_min: number | null
           source_citations: Json | null
           trade_route: string | null
           updated_at: string | null
@@ -373,9 +377,13 @@ export type Database = {
           description?: string | null
           enrichment_version?: number | null
           flavor_notes?: string | null
+          heat_level?: string | null
           historical_notes?: string | null
           id?: string
+          origin?: string | null
           pepper_id: string
+          scoville_max?: number | null
+          scoville_min?: number | null
           source_citations?: Json | null
           trade_route?: string | null
           updated_at?: string | null
@@ -387,9 +395,13 @@ export type Database = {
           description?: string | null
           enrichment_version?: number | null
           flavor_notes?: string | null
+          heat_level?: string | null
           historical_notes?: string | null
           id?: string
+          origin?: string | null
           pepper_id?: string
+          scoville_max?: number | null
+          scoville_min?: number | null
           source_citations?: Json | null
           trade_route?: string | null
           updated_at?: string | null

@@ -3,6 +3,7 @@ import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies, Pe
 import { Package, ChevronRight } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
+import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import logoDark from '@/assets/logo-dark.svg';
 
 // Helper to get primary image from gallery or legacy sources, respecting saved order
@@ -58,6 +59,7 @@ const formatScoville = (min: number, max: number) => {
 
 export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
   const [, forceRender] = useState(0);
+  const { getOverride } = usePepperOverrides();
 
   useEffect(() => {
     const handler = () => forceRender((v) => v + 1);
@@ -90,6 +92,13 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
         {peppers.map((pepper) => {
           const pepperImage = getPrimaryImage(pepper);
           const showThumbnail = !!pepperImage;
+          const override = getOverride(pepper.id);
+          
+          // Use override values if available
+          const displayOrigin = override?.origin ?? pepper.origin;
+          const displayHeatLevel = override?.heat_level ?? pepper.heatLevel;
+          const displayScovilleMin = override?.scoville_min ?? pepper.scovilleMin;
+          const displayScovilleMax = override?.scoville_max ?? pepper.scovilleMax;
           
           return (
           <button
@@ -158,7 +167,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   Provenance
                 </span>
                 <span className="font-body text-sm text-[#3a2a1a]">
-                  {pepper.origin}, {pepper.region}
+                  {displayOrigin}, {pepper.region}
                 </span>
               </div>
 
@@ -168,9 +177,9 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   Pungency
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${getHeatColor(pepper.heatLevel)}`} />
+                  <span className={`w-2 h-2 rounded-full ${getHeatColor(displayHeatLevel)}`} />
                   <span className="font-body text-sm text-[#3a2a1a]">
-                    {pepper.heatLevel}
+                    {displayHeatLevel}
                   </span>
                 </div>
               </div>
@@ -181,7 +190,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   Scoville
                 </span>
                 <span className="font-body text-sm text-[#3a2a1a]">
-                  {formatScoville(pepper.scovilleMin, pepper.scovilleMax)} <span className="text-[#5a4a3a]/50 text-xs">SHU</span>
+                  {formatScoville(displayScovilleMin, displayScovilleMax)} <span className="text-[#5a4a3a]/50 text-xs">SHU</span>
                 </span>
               </div>
             </div>
