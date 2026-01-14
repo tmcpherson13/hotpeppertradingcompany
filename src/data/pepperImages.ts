@@ -180,6 +180,7 @@ export const pepperImageMap: Record<string, string> = {
   'peri-peri': periPeriImg,
   'red-jalapeno': redJalapenoImg,
   'red-savina-habanero': redSavinaHabaneroImg,
+  'scotch-bonnet': scotchBonnetImg,
   'scotch-bonnet-orange': scotchBonnetImg,
   'thai': thaiImg,
   'trinidad-scorpion': trinidadScorpionImg,

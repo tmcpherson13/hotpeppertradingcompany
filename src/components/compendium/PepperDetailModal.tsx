@@ -411,6 +411,10 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
   const displayDescription = override?.description ?? pepper.description;
   const displayHistoricalNotes = override?.historical_notes ?? pepper.historicalNotes;
   const displayTradeRoute = override?.trade_route ?? pepper.tradeRoute;
+  const displayOrigin = override?.origin ?? pepper.origin;
+  const displayHeatLevel = override?.heat_level ?? pepper.heatLevel;
+  const displayScovilleMin = override?.scoville_min ?? pepper.scovilleMin;
+  const displayScovilleMax = override?.scoville_max ?? pepper.scovilleMax;
 
   const relatedPeppers = findRelatedPeppers(pepper, peppers);
   const tradeRouteSummary = generateTradeRouteSummary(pepper.tradeRouteTags || [], displayTradeRoute);
@@ -486,16 +490,16 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
           {/* Quick facts grid - Labeled Fields */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
-              <Flame className={`w-5 h-5 mx-auto mb-1 ${getHeatColor(pepper.heatLevel)}`} />
+              <Flame className={`w-5 h-5 mx-auto mb-1 ${getHeatColor(displayHeatLevel)}`} />
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Pungency</p>
-              <p className={`font-body text-sm font-medium ${getHeatColor(pepper.heatLevel)}`}>
-                {pepper.heatLevel}
+              <p className={`font-body text-sm font-medium ${getHeatColor(displayHeatLevel)}`}>
+                {displayHeatLevel}
               </p>
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <MapPin className="w-5 h-5 mx-auto mb-1 text-[#8b2942]" />
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Provenance</p>
-              <p className="font-body text-sm font-medium text-[#3a2a1a]">{pepper.origin}, {pepper.region}</p>
+              <p className="font-body text-sm font-medium text-[#3a2a1a]">{displayOrigin}, {pepper.region}</p>
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <div className="w-5 h-5 mx-auto mb-1 flex items-center justify-center text-[#4a7c59] font-display text-xs">
@@ -503,7 +507,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
               </div>
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Scoville</p>
               <p className="font-body text-sm font-medium text-[#3a2a1a]">
-                {formatScoville(pepper.scovilleMin, pepper.scovilleMax)}
+                {formatScoville(displayScovilleMin, displayScovilleMax)}
               </p>
             </div>
           </div>
