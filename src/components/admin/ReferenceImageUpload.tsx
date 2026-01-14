@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { useCallback, useState, useEffect } from 'react';
+import { Upload, X, Image as ImageIcon, ClipboardPaste } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface ReferenceImageUploadProps {
   images: File[];
@@ -18,6 +19,7 @@ export function ReferenceImageUpload({
 }: ReferenceImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [previews, setPreviews] = useState<string[]>([]);
+  const { toast } = useToast();
 
   const validateFile = (file: File): boolean => {
     if (!ACCEPTED_TYPES.includes(file.type)) {
@@ -54,6 +56,41 @@ export function ReferenceImageUpload({
     onImagesChange(newImages);
     setPreviews(newPreviews);
   }, [images, previews, onImagesChange]);
+
+  // Handle clipboard paste
+  const handlePaste = useCallback((e: ClipboardEvent) => {
+    if (images.length >= maxImages) return;
+    
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    const imageFiles: File[] = [];
+    
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.startsWith('image/')) {
+        const file = item.getAsFile();
+        if (file && validateFile(file)) {
+          imageFiles.push(file);
+        }
+      }
+    }
+
+    if (imageFiles.length > 0) {
+      e.preventDefault();
+      addFiles(imageFiles);
+      toast({
+        title: 'Image Pasted',
+        description: `${imageFiles.length} image${imageFiles.length > 1 ? 's' : ''} added from clipboard`,
+      });
+    }
+  }, [images.length, maxImages, addFiles, toast]);
+
+  // Add global paste listener when component is mounted
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+  }, [handlePaste]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -150,7 +187,7 @@ export function ReferenceImageUpload({
                 <Upload className="w-6 h-6 text-muted-foreground" />
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Drag & drop images or <span className="text-primary font-medium">browse</span>
+                    Drag & drop, <span className="text-primary font-medium">browse</span>, or <ClipboardPaste className="w-3.5 h-3.5 inline-block mx-0.5" /><span className="text-primary font-medium">paste</span>
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     JPEG, PNG, WebP • Max 5MB each
