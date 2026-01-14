@@ -30,10 +30,11 @@ export interface UseImageProposalsResult {
   rejectProposal: (proposal: ImageProposal) => Promise<boolean>;
   approveAll: (proposals: ImageProposal[]) => Promise<void>;
   rejectAll: (proposals: ImageProposal[]) => Promise<void>;
-  regenerateImages: (pepperId: string, pepperName: string, feedback?: string) => Promise<boolean>;
-  regenerateSingleImage: (proposal: ImageProposal, pepperName: string, feedback?: string) => Promise<boolean>;
+  regenerateImages: (pepperId: string, pepperName: string, feedback?: string, referenceImages?: File[]) => Promise<boolean>;
+  regenerateSingleImage: (proposal: ImageProposal, pepperName: string, feedback?: string, referenceImages?: File[]) => Promise<boolean>;
   deleteProposal: (proposal: ImageProposal) => Promise<boolean>;
   deleteAll: (proposals: ImageProposal[]) => Promise<{ success: number; failed: number }>;
+  convertFilesToDataUrls: (files: File[]) => Promise<string[]>;
 }
 
 export function useImageProposals(): UseImageProposalsResult {
@@ -188,10 +189,23 @@ export function useImageProposals(): UseImageProposalsResult {
     }
   }, [rejectProposal]);
 
+  // Convert File[] to base64 data URLs for edge function
+  const convertFilesToDataUrls = useCallback(async (files: File[]): Promise<string[]> => {
+    return Promise.all(
+      files.map(file => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      }))
+    );
+  }, []);
+
   const regenerateImages = useCallback(async (
     pepperId: string, 
     pepperName: string, 
-    feedback?: string
+    feedback?: string,
+    referenceImages?: File[]
   ): Promise<boolean> => {
     setIsRegenerating(true);
     
@@ -206,12 +220,19 @@ export function useImageProposals(): UseImageProposalsResult {
       const { data: session } = await supabase.auth.getSession();
       const accessToken = session?.session?.access_token;
 
+      // Convert reference images to data URLs if provided
+      let referenceImageUrls: string[] | undefined;
+      if (referenceImages && referenceImages.length > 0) {
+        referenceImageUrls = await convertFilesToDataUrls(referenceImages);
+      }
+
       // Call the image generation edge function with feedback as additional context
       const response = await supabase.functions.invoke('pepper-image-generate', {
         body: { 
           pepperId, 
           pepperName,
           regenerationFeedback: feedback,
+          referenceImageUrls,
         },
         headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
       });
@@ -242,12 +263,13 @@ export function useImageProposals(): UseImageProposalsResult {
     } finally {
       setIsRegenerating(false);
     }
-  }, [proposals, rejectProposal, fetchProposals, toast]);
+  }, [proposals, rejectProposal, fetchProposals, toast, convertFilesToDataUrls]);
 
   const regenerateSingleImage = useCallback(async (
     proposal: ImageProposal,
     pepperName: string,
-    feedback?: string
+    feedback?: string,
+    referenceImages?: File[]
   ): Promise<boolean> => {
     // Add to regenerating set to track this specific image
     setRegeneratingIds(prev => new Set(prev).add(proposal.id));
@@ -257,12 +279,19 @@ export function useImageProposals(): UseImageProposalsResult {
       const { data: session } = await supabase.auth.getSession();
       const accessToken = session?.session?.access_token;
 
+      // Convert reference images to data URLs if provided
+      let referenceImageUrls: string[] | undefined;
+      if (referenceImages && referenceImages.length > 0) {
+        referenceImageUrls = await convertFilesToDataUrls(referenceImages);
+      }
+
       // Call the image generation edge function for just this image type
       const response = await supabase.functions.invoke('pepper-image-generate', {
         body: { 
           pepperId: proposal.pepper_id, 
           pepperName,
           regenerationFeedback: feedback,
+          referenceImageUrls,
           imageType: proposal.source_type, // Only regenerate this specific type
         },
         headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
@@ -320,7 +349,7 @@ export function useImageProposals(): UseImageProposalsResult {
         return next;
       });
     }
-  }, [fetchProposals, toast]);
+  }, [fetchProposals, toast, convertFilesToDataUrls]);
 
   const deleteProposal = useCallback(async (proposal: ImageProposal): Promise<boolean> => {
     setProcessingId(proposal.id);
@@ -415,5 +444,6 @@ export function useImageProposals(): UseImageProposalsResult {
     regenerateSingleImage,
     deleteProposal,
     deleteAll,
+    convertFilesToDataUrls,
   };
 }
