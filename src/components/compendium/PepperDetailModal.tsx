@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/peppers';
-import { Flame, MapPin, Package, Pencil, Check, X } from 'lucide-react';
+import { Flame, MapPin, Package, Pencil, Check, X, ChevronDown } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
@@ -296,6 +296,9 @@ const findRelatedPeppers = (pepper: Pepper, allPeppers: Pepper[]): RelatedPepper
   return scored.slice(0, 3);
 };
 
+// Heat level options for dropdown
+const HEAT_LEVELS = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'];
+
 // Editable text field component for admins
 interface EditableFieldProps {
   value: string;
@@ -399,6 +402,276 @@ function EditableField({ value, onSave, isAdmin, multiline = false, className = 
   );
 }
 
+// Inline editable field for quick facts grid (text input)
+interface InlineEditableTextProps {
+  value: string;
+  onSave: (value: string) => Promise<void>;
+  isAdmin: boolean;
+  className?: string;
+}
+
+function InlineEditableText({ value, onSave, isAdmin, className = '' }: InlineEditableTextProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(value);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setEditValue(value);
+  }, [value]);
+
+  const handleSave = async () => {
+    if (editValue === value) {
+      setIsEditing(false);
+      return;
+    }
+    setIsSaving(true);
+    await onSave(editValue);
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditValue(value);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      handleCancel();
+    }
+  };
+
+  if (!isAdmin) {
+    return <p className={className}>{value}</p>;
+  }
+
+  if (isEditing) {
+    return (
+      <div className="relative">
+        <input
+          type="text"
+          value={editValue}
+          onChange={(e) => setEditValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={handleSave}
+          className="w-full px-1 py-0.5 text-center border border-tyrian/50 bg-parchment font-body text-sm text-[#3a2a1a] focus:outline-none focus:ring-1 focus:ring-tyrian/30"
+          disabled={isSaving}
+          autoFocus
+        />
+        <div className="absolute -top-1.5 -right-1.5 flex gap-0.5">
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="w-4 h-4 bg-[#2d5a3d] text-white flex items-center justify-center hover:bg-[#3a7a4d] transition-colors disabled:opacity-50 text-[10px]"
+            title="Save"
+          >
+            <Check className="w-2.5 h-2.5" />
+          </button>
+          <button
+            onClick={handleCancel}
+            disabled={isSaving}
+            className="w-4 h-4 bg-[#8b2942] text-white flex items-center justify-center hover:bg-[#a33955] transition-colors text-[10px]"
+            title="Cancel"
+          >
+            <X className="w-2.5 h-2.5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative cursor-pointer" onClick={() => setIsEditing(true)}>
+      <p className={className}>{value}</p>
+      <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Pencil className="w-3 h-3 text-tyrian/60" />
+      </div>
+    </div>
+  );
+}
+
+// Inline editable select for heat level
+interface InlineEditableSelectProps {
+  value: string;
+  options: string[];
+  onSave: (value: string) => Promise<void>;
+  isAdmin: boolean;
+  className?: string;
+  getColorClass?: (value: string) => string;
+}
+
+function InlineEditableSelect({ value, options, onSave, isAdmin, className = '', getColorClass }: InlineEditableSelectProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(value);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setEditValue(value);
+  }, [value]);
+
+  const handleSave = async (newValue: string) => {
+    if (newValue === value) {
+      setIsEditing(false);
+      return;
+    }
+    setIsSaving(true);
+    await onSave(newValue);
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditValue(value);
+    setIsEditing(false);
+  };
+
+  const colorClass = getColorClass ? getColorClass(value) : '';
+
+  if (!isAdmin) {
+    return <p className={`${className} ${colorClass}`}>{value}</p>;
+  }
+
+  if (isEditing) {
+    return (
+      <div className="relative">
+        <select
+          value={editValue}
+          onChange={(e) => {
+            setEditValue(e.target.value);
+            handleSave(e.target.value);
+          }}
+          onBlur={handleCancel}
+          className="w-full px-1 py-0.5 text-center border border-tyrian/50 bg-parchment font-body text-sm text-[#3a2a1a] focus:outline-none focus:ring-1 focus:ring-tyrian/30 cursor-pointer appearance-none"
+          disabled={isSaving}
+          autoFocus
+        >
+          {options.map((opt) => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-[#5a4a3a]/50 pointer-events-none" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative cursor-pointer" onClick={() => setIsEditing(true)}>
+      <p className={`${className} ${colorClass}`}>{value}</p>
+      <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Pencil className="w-3 h-3 text-tyrian/60" />
+      </div>
+    </div>
+  );
+}
+
+// Inline editable number range for Scoville
+interface InlineEditableScovilleProps {
+  min: number;
+  max: number;
+  onSave: (min: number, max: number) => Promise<void>;
+  isAdmin: boolean;
+  className?: string;
+}
+
+function InlineEditableScoville({ min, max, onSave, isAdmin, className = '' }: InlineEditableScovilleProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editMin, setEditMin] = useState(min);
+  const [editMax, setEditMax] = useState(max);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setEditMin(min);
+    setEditMax(max);
+  }, [min, max]);
+
+  const handleSave = async () => {
+    if (editMin === min && editMax === max) {
+      setIsEditing(false);
+      return;
+    }
+    setIsSaving(true);
+    await onSave(editMin, editMax);
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditMin(min);
+    setEditMax(max);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      handleCancel();
+    }
+  };
+
+  if (!isAdmin) {
+    return <p className={className}>{formatScoville(min, max)}</p>;
+  }
+
+  if (isEditing) {
+    return (
+      <div className="relative">
+        <div className="flex items-center gap-1 justify-center">
+          <input
+            type="number"
+            value={editMin}
+            onChange={(e) => setEditMin(Number(e.target.value))}
+            onKeyDown={handleKeyDown}
+            className="w-16 px-1 py-0.5 text-center border border-tyrian/50 bg-parchment font-body text-xs text-[#3a2a1a] focus:outline-none focus:ring-1 focus:ring-tyrian/30"
+            disabled={isSaving}
+            autoFocus
+            min={0}
+          />
+          <span className="text-[10px] text-[#5a4a3a]/50">–</span>
+          <input
+            type="number"
+            value={editMax}
+            onChange={(e) => setEditMax(Number(e.target.value))}
+            onKeyDown={handleKeyDown}
+            className="w-16 px-1 py-0.5 text-center border border-tyrian/50 bg-parchment font-body text-xs text-[#3a2a1a] focus:outline-none focus:ring-1 focus:ring-tyrian/30"
+            disabled={isSaving}
+            min={0}
+          />
+        </div>
+        <div className="absolute -top-1.5 -right-1.5 flex gap-0.5">
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="w-4 h-4 bg-[#2d5a3d] text-white flex items-center justify-center hover:bg-[#3a7a4d] transition-colors disabled:opacity-50"
+            title="Save"
+          >
+            <Check className="w-2.5 h-2.5" />
+          </button>
+          <button
+            onClick={handleCancel}
+            disabled={isSaving}
+            className="w-4 h-4 bg-[#8b2942] text-white flex items-center justify-center hover:bg-[#a33955] transition-colors"
+            title="Cancel"
+          >
+            <X className="w-2.5 h-2.5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative cursor-pointer" onClick={() => setIsEditing(true)}>
+      <p className={className}>{formatScoville(min, max)}</p>
+      <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Pencil className="w-3 h-3 text-tyrian/60" />
+      </div>
+    </div>
+  );
+}
+
 export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, showBackToOrigins = false }: PepperDetailModalProps) {
   const { isAdmin } = useAuth();
   const { getOverride, saveOverride } = usePepperOverrides();
@@ -492,23 +765,44 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <Flame className={`w-5 h-5 mx-auto mb-1 ${getHeatColor(displayHeatLevel)}`} />
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Pungency</p>
-              <p className={`font-body text-sm font-medium ${getHeatColor(displayHeatLevel)}`}>
-                {displayHeatLevel}
-              </p>
+              <InlineEditableSelect
+                value={displayHeatLevel}
+                options={HEAT_LEVELS}
+                onSave={async (value) => {
+                  await saveOverride(pepper.id, { heat_level: value });
+                }}
+                isAdmin={isAdmin}
+                className="font-body text-sm font-medium"
+                getColorClass={getHeatColor}
+              />
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <MapPin className="w-5 h-5 mx-auto mb-1 text-[#8b2942]" />
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Provenance</p>
-              <p className="font-body text-sm font-medium text-[#3a2a1a]">{displayOrigin}, {pepper.region}</p>
+              <InlineEditableText
+                value={displayOrigin}
+                onSave={async (value) => {
+                  await saveOverride(pepper.id, { origin: value });
+                }}
+                isAdmin={isAdmin}
+                className="font-body text-sm font-medium text-[#3a2a1a]"
+              />
+              <p className="font-body text-xs text-[#5a4a3a]/60">{pepper.region}</p>
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <div className="w-5 h-5 mx-auto mb-1 flex items-center justify-center text-[#4a7c59] font-display text-xs">
                 SHU
               </div>
               <p className="font-heading text-[9px] uppercase tracking-wider text-[#5a4a3a]/60">Scoville</p>
-              <p className="font-body text-sm font-medium text-[#3a2a1a]">
-                {formatScoville(displayScovilleMin, displayScovilleMax)}
-              </p>
+              <InlineEditableScoville
+                min={displayScovilleMin}
+                max={displayScovilleMax}
+                onSave={async (minVal, maxVal) => {
+                  await saveOverride(pepper.id, { scoville_min: minVal, scoville_max: maxVal });
+                }}
+                isAdmin={isAdmin}
+                className="font-body text-sm font-medium text-[#3a2a1a]"
+              />
             </div>
           </div>
 
