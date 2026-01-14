@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies, PepperImage } from '@/data/peppers';
-import { Package, ChevronRight } from 'lucide-react';
+import { Package, ChevronRight, Camera, FileText } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
+import { useEnrichmentStatus } from '@/hooks/useEnrichmentStatus';
+import { useAuth } from '@/contexts/AuthContext';
+import { Badge } from '@/components/ui/badge';
 import logoDark from '@/assets/logo-dark.svg';
 
 // Helper to get primary image from gallery or legacy sources, respecting saved order
@@ -60,6 +63,8 @@ const formatScoville = (min: number, max: number) => {
 export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
   const [, forceRender] = useState(0);
   const { getOverride } = usePepperOverrides();
+  const { getStatus } = useEnrichmentStatus();
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const handler = () => forceRender((v) => v + 1);
@@ -111,6 +116,40 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
             <div className="absolute top-0 left-0 w-8 h-8 border-b border-r border-[#5a4a3a]/10" />
             <div className="absolute bottom-0 left-0 w-8 h-8 border-t border-r border-[#5a4a3a]/10" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-t border-l border-[#5a4a3a]/10" />
+
+            {/* Admin Status Badges - top left corner */}
+            {isAdmin && (() => {
+              const status = getStatus(pepper.id);
+              const hasBadges = status.enrichmentStatus !== 'none' || status.imageStatus !== 'none';
+              if (!hasBadges) return null;
+              return (
+                <div className="absolute top-2 left-2 flex flex-wrap gap-1 z-10 max-w-[calc(100%-6rem)]">
+                  {status.enrichmentStatus === 'pending' && (
+                    <Badge className="bg-amber-100 text-amber-700 border-amber-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
+                      <FileText className="w-2.5 h-2.5 mr-0.5" />
+                      Review
+                    </Badge>
+                  )}
+                  {status.enrichmentStatus === 'enriched' && (
+                    <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
+                      Enriched
+                    </Badge>
+                  )}
+                  {status.imageStatus === 'pending' && (
+                    <Badge className="bg-blue-100 text-blue-700 border-blue-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
+                      <Camera className="w-2.5 h-2.5 mr-0.5" />
+                      Pending
+                    </Badge>
+                  )}
+                  {status.imageStatus === 'has_images' && (
+                    <Badge className="bg-indigo-100 text-indigo-700 border-indigo-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
+                      <Camera className="w-2.5 h-2.5 mr-0.5" />
+                      Images
+                    </Badge>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Logo watermark in top right */}
             <div className="absolute top-2 right-2 z-0 opacity-20">
@@ -167,7 +206,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   Provenance
                 </span>
                 <span className="font-body text-sm text-[#3a2a1a]">
-                  {displayOrigin}, {pepper.region}
+                  {displayOrigin}
                 </span>
               </div>
 
