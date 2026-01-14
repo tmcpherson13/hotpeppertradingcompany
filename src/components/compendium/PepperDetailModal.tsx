@@ -787,7 +787,6 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
                 isAdmin={isAdmin}
                 className="font-body text-sm font-medium text-[#3a2a1a]"
               />
-              <p className="font-body text-xs text-[#5a4a3a]/60">{pepper.region}</p>
             </div>
             <div className="text-center p-3 bg-[#e8dcc4]/50 border border-[#5a4a3a]/10">
               <div className="w-5 h-5 mx-auto mb-1 flex items-center justify-center text-[#4a7c59] font-display text-xs">
