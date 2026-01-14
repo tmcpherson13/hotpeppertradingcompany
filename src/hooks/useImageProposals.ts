@@ -32,6 +32,8 @@ export interface UseImageProposalsResult {
   rejectAll: (proposals: ImageProposal[]) => Promise<void>;
   regenerateImages: (pepperId: string, pepperName: string, feedback?: string) => Promise<boolean>;
   regenerateSingleImage: (proposal: ImageProposal, pepperName: string, feedback?: string) => Promise<boolean>;
+  deleteProposal: (proposal: ImageProposal) => Promise<boolean>;
+  deleteAll: (proposals: ImageProposal[]) => Promise<{ success: number; failed: number }>;
 }
 
 export function useImageProposals(): UseImageProposalsResult {
@@ -320,6 +322,84 @@ export function useImageProposals(): UseImageProposalsResult {
     }
   }, [fetchProposals, toast]);
 
+  const deleteProposal = useCallback(async (proposal: ImageProposal): Promise<boolean> => {
+    setProcessingId(proposal.id);
+
+    try {
+      // Delete from storage first
+      if (proposal.storage_path) {
+        await supabase.storage
+          .from('pepper-images')
+          .remove([proposal.storage_path]);
+      }
+
+      // Permanently delete from database
+      const { error } = await supabase
+        .from('pepper_image_proposals')
+        .delete()
+        .eq('id', proposal.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Image Deleted',
+        description: 'Image proposal permanently removed',
+      });
+
+      // Remove from local state
+      setProposals(prev => prev.filter(p => p.id !== proposal.id));
+      return true;
+    } catch (err) {
+      console.error('Error deleting proposal:', err);
+      toast({
+        title: 'Delete Failed',
+        description: err instanceof Error ? err.message : 'Unknown error',
+        variant: 'destructive',
+      });
+      return false;
+    } finally {
+      setProcessingId(null);
+    }
+  }, [toast]);
+
+  const deleteAll = useCallback(async (proposalsToDelete: ImageProposal[]): Promise<{ success: number; failed: number }> => {
+    let success = 0;
+    let failed = 0;
+
+    for (const proposal of proposalsToDelete) {
+      try {
+        // Delete from storage
+        if (proposal.storage_path) {
+          await supabase.storage
+            .from('pepper-images')
+            .remove([proposal.storage_path]);
+        }
+
+        // Permanently delete from database
+        const { error } = await supabase
+          .from('pepper_image_proposals')
+          .delete()
+          .eq('id', proposal.id);
+
+        if (error) throw error;
+        success++;
+        
+        // Remove from local state
+        setProposals(prev => prev.filter(p => p.id !== proposal.id));
+      } catch (err) {
+        console.error('Error deleting proposal:', err);
+        failed++;
+      }
+    }
+
+    toast({
+      title: 'Bulk Delete Complete',
+      description: `${success} deleted${failed > 0 ? `, ${failed} failed` : ''}`,
+    });
+
+    return { success, failed };
+  }, [toast]);
+
   return {
     proposals,
     isLoading,
@@ -333,5 +413,7 @@ export function useImageProposals(): UseImageProposalsResult {
     rejectAll,
     regenerateImages,
     regenerateSingleImage,
+    deleteProposal,
+    deleteAll,
   };
 }

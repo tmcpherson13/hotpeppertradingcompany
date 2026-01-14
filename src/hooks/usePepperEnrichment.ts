@@ -33,6 +33,8 @@ export interface UsePepperEnrichmentResult {
   synthesize: (pepperId: string, pepperName: string, generateImages?: boolean, jobId?: string | null) => Promise<boolean>;
   approve: (queueId: string, edits?: Partial<EnrichmentQueueEntry>, reviewNotes?: string, excludedFields?: string[]) => Promise<boolean>;
   reject: (queueId: string, reviewNotes?: string) => Promise<boolean>;
+  deleteEntry: (queueId: string) => Promise<boolean>;
+  deleteSelected: (queueIds: string[]) => Promise<{ success: number; failed: number }>;
 }
 
 export function usePepperEnrichment(): UsePepperEnrichmentResult {
@@ -228,8 +230,63 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
       });
       return false;
     } finally {
-      setIsApplying(false);
+    setIsApplying(false);
     }
+  }, [toast, fetchQueue]);
+
+  const deleteEntry = useCallback(async (queueId: string): Promise<boolean> => {
+    try {
+      const { error } = await supabase
+        .from('pepper_enrichment_queue')
+        .delete()
+        .eq('id', queueId);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Entry Deleted',
+        description: 'Enrichment entry permanently removed',
+      });
+
+      await fetchQueue('pending');
+      return true;
+    } catch (err) {
+      console.error('Error deleting enrichment entry:', err);
+      toast({
+        title: 'Delete Failed',
+        description: err instanceof Error ? err.message : 'Unknown error',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  }, [toast, fetchQueue]);
+
+  const deleteSelected = useCallback(async (queueIds: string[]): Promise<{ success: number; failed: number }> => {
+    let success = 0;
+    let failed = 0;
+
+    for (const id of queueIds) {
+      try {
+        const { error } = await supabase
+          .from('pepper_enrichment_queue')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        success++;
+      } catch (err) {
+        console.error('Error deleting entry:', err);
+        failed++;
+      }
+    }
+
+    toast({
+      title: 'Bulk Delete Complete',
+      description: `${success} deleted${failed > 0 ? `, ${failed} failed` : ''}`,
+    });
+
+    await fetchQueue('pending');
+    return { success, failed };
   }, [toast, fetchQueue]);
 
   return {
@@ -242,5 +299,7 @@ export function usePepperEnrichment(): UsePepperEnrichmentResult {
     synthesize,
     approve,
     reject,
+    deleteEntry,
+    deleteSelected,
   };
 }

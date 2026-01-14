@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Eye, RefreshCw, Flame, Calendar, Sparkles, CheckCheck, XCircle, ArrowUpDown, Loader2, Filter, BookOpen, Utensils } from 'lucide-react';
+import { Eye, RefreshCw, Flame, Calendar, Sparkles, CheckCheck, XCircle, ArrowUpDown, Loader2, Filter, BookOpen, Utensils, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface PendingReviewQueueProps {
@@ -57,7 +57,7 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey, initialFilter
   const [sortBy, setSortBy] = useState<SortOption>('confidence-high');
   const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>('all');
   
-  const { approve, reject } = usePepperEnrichment();
+  const { approve, reject, deleteEntry, deleteSelected } = usePepperEnrichment();
   const { toast } = useToast();
 
   const fetchPendingEntries = useCallback(async () => {
@@ -216,6 +216,24 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey, initialFilter
     onReviewComplete();
   };
 
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    
+    setIsBulkProcessing(true);
+    await deleteSelected(Array.from(selectedIds));
+    setIsBulkProcessing(false);
+    fetchPendingEntries();
+    onReviewComplete();
+  };
+
+  const handleDelete = async (id: string) => {
+    const success = await deleteEntry(id);
+    if (success) {
+      fetchPendingEntries();
+      onReviewComplete();
+    }
+  };
+
   const getHeatBadgeColor = (scovilleMax: number) => {
     if (scovilleMax >= 100000) return 'bg-red-600 text-white';
     if (scovilleMax >= 30000) return 'bg-orange-500 text-white';
@@ -342,6 +360,20 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey, initialFilter
                     <XCircle className="w-3 h-3 mr-1" />
                   )}
                   Reject
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkDelete}
+                  disabled={isBulkProcessing}
+                  className="h-7 text-xs text-destructive border-destructive/30 hover:bg-destructive/10"
+                >
+                  {isBulkProcessing ? (
+                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-3 h-3 mr-1" />
+                  )}
+                  Delete
                 </Button>
               </>
             )}
@@ -473,15 +505,25 @@ export function PendingReviewQueue({ onReviewComplete, refreshKey, initialFilter
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleReview(entry)}
-                    className="h-7 text-xs"
-                  >
-                    <Eye className="w-3 h-3 mr-1" />
-                    Review
-                  </Button>
+                  <div className="flex gap-1 justify-end">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleReview(entry)}
+                      className="h-7 text-xs"
+                    >
+                      <Eye className="w-3 h-3 mr-1" />
+                      Review
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(entry.id)}
+                      className="h-7 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
