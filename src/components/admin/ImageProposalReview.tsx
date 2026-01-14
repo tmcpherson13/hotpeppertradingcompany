@@ -19,6 +19,7 @@ import {
   ExternalLink, Trash2, ZoomIn, RefreshCw
 } from 'lucide-react';
 import { peppers } from '@/data/peppers';
+import { ReferenceImageUpload } from './ReferenceImageUpload';
 
 interface ImageProposalReviewProps {
   pepperId?: string;
@@ -62,6 +63,7 @@ export function ImageProposalReview({ pepperId, onComplete }: ImageProposalRevie
   const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackTarget, setFeedbackTarget] = useState<FeedbackTarget | null>(null);
+  const [referenceImages, setReferenceImages] = useState<File[]>([]);
 
   useEffect(() => {
     fetchProposals(pepperId);
@@ -100,12 +102,14 @@ export function ImageProposalReview({ pepperId, onComplete }: ImageProposalRevie
   const handleRegenerateAll = (pepId: string, pepperName: string) => {
     setFeedbackTarget({ type: 'all', pepperId: pepId, pepperName });
     setFeedbackText('');
+    setReferenceImages([]);
     setFeedbackDialogOpen(true);
   };
 
   const handleRegenerateSingle = (proposal: ImageProposal, pepperName: string) => {
     setFeedbackTarget({ type: 'single', pepperId: proposal.pepper_id, pepperName, proposal });
     setFeedbackText('');
+    setReferenceImages([]);
     setFeedbackDialogOpen(true);
   };
 
@@ -115,13 +119,24 @@ export function ImageProposalReview({ pepperId, onComplete }: ImageProposalRevie
     setFeedbackDialogOpen(false);
     
     if (feedbackTarget.type === 'all') {
-      await regenerateImages(feedbackTarget.pepperId, feedbackTarget.pepperName, feedbackText || undefined);
+      await regenerateImages(
+        feedbackTarget.pepperId, 
+        feedbackTarget.pepperName, 
+        feedbackText || undefined,
+        referenceImages.length > 0 ? referenceImages : undefined
+      );
     } else if (feedbackTarget.proposal) {
-      await regenerateSingleImage(feedbackTarget.proposal, feedbackTarget.pepperName, feedbackText || undefined);
+      await regenerateSingleImage(
+        feedbackTarget.proposal, 
+        feedbackTarget.pepperName, 
+        feedbackText || undefined,
+        referenceImages.length > 0 ? referenceImages : undefined
+      );
     }
     
     setFeedbackTarget(null);
     setFeedbackText('');
+    setReferenceImages([]);
     onComplete?.();
   };
 
@@ -358,20 +373,40 @@ export function ImageProposalReview({ pepperId, onComplete }: ImageProposalRevie
       </Dialog>
 
       {/* Regeneration Feedback Dialog */}
-      <Dialog open={feedbackDialogOpen} onOpenChange={setFeedbackDialogOpen}>
-        <DialogContent>
+      <Dialog open={feedbackDialogOpen} onOpenChange={(open) => {
+        setFeedbackDialogOpen(open);
+        if (!open) {
+          setReferenceImages([]);
+        }
+      }}>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Regenerate Images</DialogTitle>
             <DialogDescription>
-              Provide optional feedback to guide the AI image generation for {feedbackTarget?.pepperName}.
+              Provide optional feedback and reference images to guide AI generation for {feedbackTarget?.pepperName}.
             </DialogDescription>
           </DialogHeader>
-          <Textarea
-            placeholder="e.g., 'Show more vibrant colors' or 'Include the whole pepper plant'"
-            value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
-            className="min-h-[100px]"
-          />
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">
+                Text Feedback (optional)
+              </label>
+              <Textarea
+                placeholder="e.g., 'Show more vibrant colors' or 'Include the whole pepper plant'"
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                className="min-h-[80px]"
+              />
+            </div>
+            
+            <Separator />
+            
+            <ReferenceImageUpload
+              images={referenceImages}
+              onImagesChange={setReferenceImages}
+              maxImages={3}
+            />
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setFeedbackDialogOpen(false)}>
               Cancel
