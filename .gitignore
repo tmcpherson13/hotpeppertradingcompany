@@ -18,7 +18,10 @@ dist-ssr
 .idea
 .DS_Store
 *.suo
-*.ntvs*
+*.ntvs*# Environment variables
+.env
+.env.local
+.env*.local
 *.njsproj
 *.sln
 *.sw?
