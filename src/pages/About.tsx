@@ -1,10 +1,11 @@
-import React from 'react'
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { LogoDivider } from '@/components/ui/LogoDivider';
+
+
 
 
 const fadeIn = {
@@ -15,11 +16,15 @@ const fadeIn = {
 };
 
 
+
+
 const Section = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <motion.div {...fadeIn} className={className}>
     {children}
   </motion.div>
 );
+
+
 
 
 export default function About() {
@@ -34,7 +39,3 @@ export default function About() {
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
               <LogoDivider variant="standard" size="sm" className="mb-8" />
               <h1 className="font-display text-4xl md:text-6xl text-foreground leading-tight mb-6">
-                The Man Behind<br />
-                <span className="font-heading italic text-primary normal-case">the Freezer Full of Peppers</span>
-              </h1>
-              <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed">
