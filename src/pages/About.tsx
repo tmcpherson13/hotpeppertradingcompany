@@ -1,3 +1,4 @@
+import React from 'react'
 import { motion } from 'framer-motion';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
