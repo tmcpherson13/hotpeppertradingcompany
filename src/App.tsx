@@ -20,21 +20,52 @@ import SeedStartingGuide from "./pages/guides/SeedStartingGuide";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 
-
 const queryClient = new QueryClient();
 
-
-// Component to handle hash link scrolling
 const ScrollToHash = () => {
   const location = useLocation();
-
-
   useEffect(() => {
     if (location.hash) {
-      // Small delay to ensure DOM is ready after navigation
       setTimeout(() => {
         const element = document.getElementById(location.hash.slice(1));
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location]);
+  return null;
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToHash />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/trading-post" element={<TradingPost />} />
+            <Route path="/product/:handle" element={<ProductDetail />} />
+            <Route path="/compendium" element={<Compendium />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/origins" element={<Origins />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+            <Route path="/history/pre-columbian-origins" element={<PreColumbianOrigins />} />
+            <Route path="/history/columbian-exchange" element={<ColumbianExchange />} />
+            <Route path="/history/global-integration" element={<GlobalIntegration />} />
+            <Route path="/guides/seed-starting" element={<SeedStartingGuide />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
+);
+
+export default App;
