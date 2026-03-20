@@ -116,21 +116,21 @@ const facts = [
   {
     icon: ScrollIcon,
     title: 'Pre-Columbian Origins',
-    dateRange: '6000 BP – 1492',
+    dateRange: '6000 BP â 1492',
     description: 'Archaeological evidence confirms capsicum cultivation in the Americas by 4000 BCE. The Aztecs and Maya developed sophisticated growing and preservation techniques.',
     link: '/history/pre-columbian-origins',
   },
   {
     icon: SailingShipIcon,
     title: 'The Columbian Exchange',
-    dateRange: '1492 – 1600',
+    dateRange: '1492 â 1600',
     description: 'Portuguese and Spanish traders introduced peppers to Africa, India, and Asia after 1492. By 1550, they had reached every major trading port.',
     link: '/history/columbian-exchange',
   },
   {
     icon: OldGlobeIcon,
     title: 'Global Integration',
-    dateRange: '1600 – Present',
+    dateRange: '1600 â Present',
     description: 'Today, hot peppers are cultivated on every inhabited continent. They define regional cuisines from Sichuan to Hungary to West Africa.',
     link: '/history/global-integration',
   },
@@ -181,7 +181,7 @@ export function PepperEducation() {
               <img 
                 src={logoDark} 
                 alt="" 
-                className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
+                className="h-20 w-auto transition-transform duration-300 hover:scale-110" 
                 aria-hidden="true" 
               />
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -195,7 +195,7 @@ export function PepperEducation() {
             <DropCap className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Hot Pepper Trading Company studies and preserves these routes, presenting 
               collections that honor the corridors by which capsicum traveled. No other 
-              cultivated plant achieved such rapid global adoption—within a century of 
+              cultivated plant achieved such rapid global adoptionâwithin a century of 
               first contact, peppers had become indispensable to cuisines across four continents.
             </DropCap>
           </div>
@@ -375,7 +375,7 @@ export function PepperEducation() {
               other foods appetizing."
             </p>
             <footer className="font-body text-muted-foreground">
-              — Bernardino de Sahagún, <cite>Florentine Codex</cite>, 1569
+              â Bernardino de SahagÃºn, <cite>Florentine Codex</cite>, 1569
             </footer>
           </motion.blockquote>
         </motion.div>
