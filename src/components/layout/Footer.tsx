@@ -42,11 +42,11 @@ export function Footer() {
             </div>
             <p className="font-body text-primary-foreground/80 leading-relaxed max-w-sm mb-6">
               Hot Pepper Trading Company curates capsicum collections assembled by route, 
-              region, and lineage. We are a trading house, not a commodity seller—presenting 
+              region, and lineage. We are a trading house, not a commodity sellerâpresenting 
               cultivars with intent, restraint, and respect for provenance.
             </p>
             <div className="flex items-center gap-2 text-primary-foreground/60">
-              <img src={logoWhite} alt="" className="h-4 w-auto mix-blend-screen" aria-hidden="true" />
+              <img src={logoWhite} alt="" className="h-10 w-auto mix-blend-screen" aria-hidden="true" />
               <span className="font-body text-sm italic">
                 Selection with intent. Trade with purpose.
               </span>
@@ -132,7 +132,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} <span className="font-blackpearl text-base">Hot Pepper Trading Company</span>. Est. 1493. All rights reserved.
+            Â© {new Date().getFullYear()} <span className="font-blackpearl text-base">Hot Pepper Trading Company</span>. Est. 1493. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="font-body text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors">
