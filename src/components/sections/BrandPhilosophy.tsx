@@ -14,9 +14,9 @@ export const BrandPhilosophy = () => {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["-5%", "15%"]);
 
   const paragraphs = [
-    "Hot Pepper Trading Company was founded on an older idea of trade — when flavor moved by sail, spice followed routes rather than trends, and provenance mattered as much as heat. Long before peppers were reduced to Scoville ratings and bulk bins, they were cargo: carefully sourced, deliberately transported, and exchanged with intention.",
-    "We operate as a modern trading company in the classic sense. Our work begins far from the shelf, tracing historic spice corridors, regional growing traditions, and the hands that cultivate them. Each collection we assemble reflects a route, a climate, and a story — not just an ingredient.",
-    "This is not mass production, and it is not anonymous heat. Hot Pepper Trading Company exists to curate, preserve, and present peppers as trade goods once again — selected with discipline, named with purpose, and offered as part of a broader tradition of exchange."
+    "Hot Pepper Trading Company was founded on an older idea of trade â when flavor moved by sail, spice followed routes rather than trends, and provenance mattered as much as heat. Long before peppers were reduced to Scoville ratings and bulk bins, they were cargo: carefully sourced, deliberately transported, and exchanged with intention.",
+    "We operate as a modern trading company in the classic sense. Our work begins far from the shelf, tracing historic spice corridors, regional growing traditions, and the hands that cultivate them. Each collection we assemble reflects a route, a climate, and a story â not just an ingredient.",
+    "This is not mass production, and it is not anonymous heat. Hot Pepper Trading Company exists to curate, preserve, and present peppers as trade goods once again â selected with discipline, named with purpose, and offered as part of a broader tradition of exchange."
   ];
 
   return (
@@ -117,7 +117,7 @@ export const BrandPhilosophy = () => {
                     <motion.img 
                       src={logoDark} 
                       alt="" 
-                      className="h-6 w-auto mx-4 opacity-25"
+                      className="h-16 w-auto mx-4 opacity-70"
                       aria-hidden="true"
                       animate={{ opacity: [0.25, 0.35, 0.25] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
