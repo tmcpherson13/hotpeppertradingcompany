@@ -5,9 +5,6 @@ import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { LogoDivider } from '@/components/ui/LogoDivider';
 
-
-
-
 const fadeIn = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -15,17 +12,11 @@ const fadeIn = {
   transition: { duration: 0.8 },
 };
 
-
-
-
 const Section = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <motion.div {...fadeIn} className={className}>
     {children}
   </motion.div>
 );
-
-
-
 
 export default function About() {
   return (
@@ -39,121 +30,73 @@ export default function About() {
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
               <LogoDivider variant="standard" size="sm" className="mb-8" />
               <h1 className="font-display text-4xl md:text-6xl text-foreground leading-tight mb-6">
-
-                The Man Behind<br />
-                <span className="font-heading italic text-primary normal-case">the Freezer Full of Peppers</span>
+                Origins of<br />
+                <span className="font-heading italic text-primary normal-case">This Venture</span>
               </h1>
               <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed">
-                A brief accounting of how a person ends up building a pepper compendium instead of doing something sensible with their evenings.
+                A brief (and truthful) account of how one person ends up founding a trading house for peppers instead of choosing more sensible ways to spend their evenings.
               </p>
               <LogoDivider variant="minimal" size="sm" className="mt-8" />
             </motion.div>
           </div>
         </section>
         <section className="py-16 md:py-24">
-          <div className="container max-w-2xl mx-auto px-6 space-y-16">
+          <div className="container max-w-2xl mx-auto px-6 space-y-10">
             <Section>
               <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed">
-                My wife has a theory about me. It is not a flattering theory, but it has the virtue of being accurate: when I find something interesting, I don't pursue a hobby. I build an infrastructure.
+                My wife has long held a theory about me: I don't have hobbies—I have obsessions. And I pursue every one like it's a competition. She's not wrong; in fact, I drive her crazy with it.
               </p>
             </Section>
             <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">The Pattern</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>It started with Poison Dart Frogs. Not just keeping them — I spent the better part of a decade learning to build museum-grade vivariums. Controlled humidity, microfauna colonies, live moss walls, the whole apparatus. My family was tolerant. Mostly.</p>
-                <p>Then came the basement. What began as a modest aquaponics system eventually consumed most of the lower floor. I became an amateur botanist by necessity, then by genuine fascination. A significant portion of that operation was dedicated to exotic hot peppers. This is where things started to get specific.</p>
-                <p>For over twenty years I have practiced bonsai. In recent years I have been training bonsai from hot pepper plants — a discipline that combines the patience of classical bonsai with the particular stubbornness of capsicum. It is, objectively, a niche within a niche. I consider this a feature.</p>
-              </div>
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                It began in Australia with a clearance-bin bonsai book and a half-dead tree from the local nursery. Within two years, I had 87 specimens, never quite accounting for the endless watering and care they demanded.
+              </p>
+            </Section>
+            <Section>
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                Back in the US, it was poison dart frogs. Not just keeping them—I spent nearly a decade mastering museum-grade vivariums: controlled humidity, microfauna colonies, live moss walls, the full apparatus. My family was tolerant. Mostly.
+              </p>
+            </Section>
+            <Section>
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                Fascination turned me into an amateur botanist, but Colorado's climate isn't kind to tropicals. So I added solar panels to the roof, LEDs in the basement, and eventually built a full basement greenhouse. What started as a modest aquaponics setup soon consumed most of the lower floor. The tipping point came with a 300-gallon stock tank stocked with 50 tilapia to power the nutrient cycle. I flooded the unfinished basement more than once—thankfully, it was unfinished. My wife had finally had enough, so I switched to traditional hydroponics.
+              </p>
             </Section>
             <Section>
               <div className="border-l-2 border-primary/40 pl-6 italic text-foreground/70 font-body text-lg md:text-xl leading-relaxed">
-                "The frogs needed a rainforest. The peppers needed a farm. The bonsai needed decades. None of this seemed unreasonable at the time."
+                "What I grow now is primarily exotic hot peppers—the ones you won't find in any store."
               </div>
             </Section>
             <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">The Academic Detour</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>I studied behavioral economics — Oxford dissertation, years of operational leadership after that. The central insight is that people are not machines. They make decisions based on framing, emotion, context, and a catalogue of predictable irrationalities.</p>
-                <p>This turns out to be excellent preparation for building something obsessive and niche. Understanding why people value what they value informs everything from how we present a pepper's origin story to why provenance matters more than Scoville units to serious buyers.</p>
-                <p>People don't buy hot sauce. They buy a story they want to be part of. The behavioral economics background helps me build that story honestly.</p>
-              </div>
-            </Section>
-            <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">Why Peppers</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>Hot peppers have everything I find interesting compressed into a single subject. Thousands of cultivars, each with a distinct flavor profile, heat signature, and regional character. The history is remarkable — capsicum originated in the Americas over six thousand years ago, and within decades of the Columbian Exchange had become essential to cuisines that had never known it.</p>
-                <p>Trade routes, colonial economics, agricultural adaptation, cultural transformation — it is all there in a single genus. And then at the end of the study, you get to eat something extraordinary.</p>
-                <p>The Compendium is the record of what I have learned. The Trading Post is what I have grown. The freezer is what happens when both projects proceed simultaneously without adequate planning.</p>
-              </div>
-            </Section>
-            <Section>
-              <div className="bg-card border border-border p-8 text-center space-y-3">
-                <p className="font-heading text-foreground uppercase tracking-widest text-sm small-caps">A Note on Scale</p>
-                <p className="font-body text-muted-foreground text-base leading-relaxed">This is a small operation run by one person with strong opinions about capsicum and a basement that has seen better days. Orders are fulfilled by hand. The Compendium is written from primary sources and personal cultivation. Nothing here is automated except the parts that have to be.</p>
-                <p className="font-body text-foreground/60 text-sm italic">— Timothy McPherson, founder</p>
-              </div>
-            </Section>
-            <Section className="flex justify-center">
-              <LogoDivider variant="ornate" size="md" />
-            </Section>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-}
-The Man Behind<br />
-                <span className="font-heading italic text-primary normal-case">the Freezer Full of Peppers</span>
-              </h1>
-              <p className="text-muted-foreground font-body text-lg md:text-xl leading-relaxed">
-                A brief accounting of how a person ends up building a pepper compendium instead of doing something sensible with their evenings.
-              </p>
-              <LogoDivider variant="minimal" size="sm" className="mt-8" />
-            </motion.div>
-          </div>
-        </section>
-        <section className="py-16 md:py-24">
-          <div className="container max-w-2xl mx-auto px-6 space-y-16">
-            <Section>
-              <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed">
-                My wife has a theory about me. It is not a flattering theory, but it has the virtue of being accurate: when I find something interesting, I don't pursue a hobby. I build an infrastructure.
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                Truth be told, I've been obsessed with capsicum longer than any other pursuit. I love the heat, the layered flavors, the astonishing varietals, the endorphin rush—and yes, the history. Hot peppers were unknown outside the Americas until Christopher Columbus's return voyage in 1493. Within a century, they had spread across the globe, becoming defining elements in cuisines from Sichuan to West Africa to Hungary. That rapid, transformative journey is what drew me in deepest.
               </p>
             </Section>
             <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">The Pattern</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>It started with Poison Dart Frogs. Not just keeping them — I spent the better part of a decade learning to build museum-grade vivariums. Controlled humidity, microfauna colonies, live moss walls, the whole apparatus. My family was tolerant. Mostly.</p>
-                <p>Then came the basement. What began as a modest aquaponics system eventually consumed most of the lower floor. I became an amateur botanist by necessity, then by genuine fascination. A significant portion of that operation was dedicated to exotic hot peppers. This is where things started to get specific.</p>
-                <p>For over twenty years I have practiced bonsai. In recent years I have been training bonsai from hot pepper plants — a discipline that combines the patience of classical bonsai with the particular stubbornness of capsicum. It is, objectively, a niche within a niche. I consider this a feature.</p>
-              </div>
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                I wanted to take this obsession and make something unique from it: a place to share the history, curate rare cultivars, and create niche, exclusive products that honor provenance over volume. My kids laugh at the website, saying no one will understand half the words and that I won't sell much. Fair point. But I don't mind. I'd rather build something truly different—even if it appeals only to a small circle of fellow pepper enthusiasts—than chase trends or broad appeal.
+              </p>
             </Section>
             <Section>
-              <div className="border-l-2 border-primary/40 pl-6 italic text-foreground/70 font-body text-lg md:text-xl leading-relaxed">
-                "The frogs needed a rainforest. The peppers needed a farm. The bonsai needed decades. None of this seemed unreasonable at the time."
-              </div>
+              <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+                My hope is that more people discover it as fascinating as I do: that they come here to explore the Compendium as a genuine resource, learn how varietals evolved across routes and centuries, and perhaps find a consortium or two that speaks to them.
+              </p>
             </Section>
             <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">The Academic Detour</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>I studied behavioral economics — Oxford dissertation, years of operational leadership after that. The central insight is that people are not machines. They make decisions based on framing, emotion, context, and a catalogue of predictable irrationalities.</p>
-                <p>This turns out to be excellent preparation for building something obsessive and niche. Understanding why people value what they value informs everything from how we present a pepper's origin story to why provenance matters more than Scoville units to serious buyers.</p>
-                <p>People don't buy hot sauce. They buy a story they want to be part of. The behavioral economics background helps me build that story honestly.</p>
-              </div>
-            </Section>
-            <Section>
-              <h2 className="font-heading text-2xl text-foreground uppercase tracking-widest mb-4 small-caps">Why Peppers</h2>
-              <div className="space-y-5 font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                <p>Hot peppers have everything I find interesting compressed into a single subject. Thousands of cultivars, each with a distinct flavor profile, heat signature, and regional character. The history is remarkable — capsicum originated in the Americas over six thousand years ago, and within decades of the Columbian Exchange had become essential to cuisines that had never known it.</p>
-                <p>Trade routes, colonial economics, agricultural adaptation, cultural transformation — it is all there in a single genus. And then at the end of the study, you get to eat something extraordinary.</p>
-                <p>The Compendium is the record of what I have learned. The Trading Post is what I have grown. The freezer is what happens when both projects proceed simultaneously without adequate planning.</p>
-              </div>
-            </Section>
-            <Section>
-              <div className="bg-card border border-border p-8 text-center space-y-3">
+              <div className="bg-card border border-border p-8 space-y-3">
                 <p className="font-heading text-foreground uppercase tracking-widest text-sm small-caps">A Note on Scale</p>
-                <p className="font-body text-muted-foreground text-base leading-relaxed">This is a small operation run by one person with strong opinions about capsicum and a basement that has seen better days. Orders are fulfilled by hand. The Compendium is written from primary sources and personal cultivation. Nothing here is automated except the parts that have to be.</p>
-                <p className="font-body text-foreground/60 text-sm italic">— Timothy McPherson, founder</p>
+                <p className="font-body text-muted-foreground text-base leading-relaxed">
+                  This is a small operation run by someone with strong opinions about capsicum and a basement that has definitely seen better days. Orders are packed by hand. The Compendium draws from primary sources and my own cultivation experience. Nothing here is automated except where it must be.
+                </p>
+              </div>
+            </Section>
+            <Section>
+              <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed italic">
+                If you share even a fraction of this passion for the fire, the flavor, the story...welcome. You're exactly who this trading house was built for.
+              </p>
+              <div className="mt-8 space-y-1">
+                <p className="font-heading text-foreground font-bold tracking-wide">Timothy McPherson</p>
+                <p className="font-body text-muted-foreground text-sm">Founder, The Hot Pepper Trading Company</p>
               </div>
             </Section>
             <Section className="flex justify-center">
