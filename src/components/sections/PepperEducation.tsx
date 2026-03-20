@@ -195,7 +195,7 @@ export function PepperEducation() {
             <DropCap className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Hot Pepper Trading Company studies and preserves these routes, presenting 
               collections that honor the corridors by which capsicum traveled. No other 
-              cultivated plant achieved such rapid global adoptionâwithin a century of 
+              cultivated plant achieved such rapid global adoption—within a century of 
               first contact, peppers had become indispensable to cuisines across four continents.
             </DropCap>
           </div>
@@ -375,7 +375,7 @@ export function PepperEducation() {
               other foods appetizing."
             </p>
             <footer className="font-body text-muted-foreground">
-              â Bernardino de SahagÃºn, <cite>Florentine Codex</cite>, 1569
+              — Bernardino de SahagÃºn, <cite>Florentine Codex</cite>, 1569
             </footer>
           </motion.blockquote>
         </motion.div>
