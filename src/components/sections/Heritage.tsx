@@ -81,7 +81,7 @@ export function Heritage() {
                 <img 
                   src={logoDark} 
                   alt="" 
-                  className="h-12 w-auto transition-transform duration-300 hover:scale-110" 
+                  className="h-20 w-auto transition-transform duration-300 hover:scale-110" 
                   aria-hidden="true" 
                 />
                 <span className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -103,13 +103,13 @@ export function Heritage() {
                 they had become essential to cuisines that had never known them.
               </DropCap>
               <p>
-                Hot Pepper Trading Company traces its work to these same routes—sourcing, 
+                Hot Pepper Trading Company traces its work to these same routesâsourcing, 
                 selecting, and presenting cultivars as cargo rather than commodity. We study 
                 the corridors by which capsicum traveled from the Levant to Southeast Asia, 
                 the Indian subcontinent, and back across the Atlantic.
               </p>
               <p>
-                Our role is not to sell peppers, but to curate them—assembling collections 
+                Our role is not to sell peppers, but to curate themâassembling collections 
                 that honor the lineages, the growers, and the centuries of cultivation that 
                 brought each variety to its present form.
               </p>
