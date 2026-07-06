@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Globe, Flame, MapPin, TrendingUp, FlaskConical, ChefHat } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
@@ -75,6 +76,13 @@ export default function GlobalIntegration() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Global Integration — Chili Peppers in World Cuisine"
+        description="How chili peppers became essential to cuisines from Sichuan to West Africa to Hungary—a story of capsaicin, Scoville heat, and our enduring love of the burn."
+        path="/history/global-integration"
+        type="article"
+        jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'Global Integration — Chili Peppers in World Cuisine', description: 'How chili peppers became essential to cuisines from Sichuan to West Africa to Hungary—a story of capsaicin, Scoville heat, and our enduring love of the burn.', author: { '@type': 'Organization', name: 'Hot Pepper Trading Company' }, publisher: { '@type': 'Organization', name: 'Hot Pepper Trading Company' } }}
+      />
       <Header />
       
       <main className="relative">

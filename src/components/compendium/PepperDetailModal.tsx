@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/peppers';
 import { Flame, MapPin, Package, Pencil, Check, X, ChevronDown } from 'lucide-react';
@@ -999,12 +1000,20 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
                 Recorded in the archives of Hot Pepper Trading Company — curated selections from routes ancient and modern.
               </span>
             </div>
-            <button
-              onClick={() => onOpenChange(false)}
-              className="px-4 py-1.5 text-xs font-heading uppercase tracking-wider border border-[#5a4a3a]/30 text-[#5a4a3a] hover:bg-[#5a4a3a]/10 transition-colors"
-            >
-              Close Registry
-            </button>
+            <div className="flex items-center gap-2">
+              <Link
+                to={`/peppers/${pepper.id}`}
+                className="px-4 py-1.5 text-xs font-heading uppercase tracking-wider border border-[#5a4a3a]/30 text-[#5a4a3a] hover:bg-[#5a4a3a]/10 transition-colors"
+              >
+                View Full Record
+              </Link>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="px-4 py-1.5 text-xs font-heading uppercase tracking-wider border border-[#5a4a3a]/30 text-[#5a4a3a] hover:bg-[#5a4a3a]/10 transition-colors"
+              >
+                Close Registry
+              </button>
+            </div>
           </div>
         </div>
     </>

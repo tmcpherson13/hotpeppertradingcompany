@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://hotpeppertradingcompany.com/sitemap.xml

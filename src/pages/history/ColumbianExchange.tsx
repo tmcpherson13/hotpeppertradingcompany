@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Ship, Globe, MapPin, Compass, Anchor } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
@@ -80,6 +81,13 @@ export default function ColumbianExchange() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="The Columbian Exchange and the Global Spread of Chili Peppers"
+        description="After 1492, chili peppers spread from the Americas along sail and caravan routes to Europe, Africa, and Asia—reshaping world cuisine within a single century."
+        path="/history/columbian-exchange"
+        type="article"
+        jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'The Columbian Exchange and the Global Spread of Chili Peppers', description: 'After 1492, chili peppers spread from the Americas along sail and caravan routes to Europe, Africa, and Asia—reshaping world cuisine within a single century.', author: { '@type': 'Organization', name: 'Hot Pepper Trading Company' }, publisher: { '@type': 'Organization', name: 'Hot Pepper Trading Company' } }}
+      />
       <Header />
       
       <main className="relative">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { LogoDivider } from '@/components/ui/LogoDivider';
@@ -21,6 +22,11 @@ const Section = ({ children, className = '' }: { children: React.ReactNode; clas
 export default function About() {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="About — Origins of This Venture"
+        description="The founder's story: how a lifelong obsession with capsicum, cultivation, and pepper history grew into a small trading house for rare hot peppers."
+        path="/about"
+      />
       <Header />
       <main>
         <section className="relative pt-32 pb-20 overflow-hidden">

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Globe, MapPin, Languages, Scroll, Calendar, Flame } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
@@ -85,6 +86,13 @@ export default function PreColumbianOrigins() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Pre-Columbian Origins of the Chili Pepper"
+        description="How chili peppers were domesticated in the Americas millennia ago—archaeological, genetic, and linguistic evidence tracing capsicum to ancient Mexico and Peru."
+        path="/history/pre-columbian-origins"
+        type="article"
+        jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'Pre-Columbian Origins of the Chili Pepper', description: 'How chili peppers were domesticated in the Americas millennia ago—archaeological, genetic, and linguistic evidence tracing capsicum to ancient Mexico and Peru.', author: { '@type': 'Organization', name: 'Hot Pepper Trading Company' }, publisher: { '@type': 'Organization', name: 'Hot Pepper Trading Company' } }}
+      />
       <Header />
       
       <main className="relative">

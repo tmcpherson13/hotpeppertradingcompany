@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
@@ -139,6 +140,11 @@ const Compendium = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="The Compendium — 190 Chili Pepper Cultivars"
+        description="A searchable reference of 190 pepper cultivars with Scoville heat, geographic origin, species, and flavor notes—the trade house's formal registry of chilies."
+        path="/compendium"
+      />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 

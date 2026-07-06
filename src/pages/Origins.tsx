@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -236,6 +237,11 @@ export default function Origins() {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Origins Map — Where Chili Peppers Come From"
+        description="Explore an interactive map charting pepper cultivars by geographic origin and historic trade route, from the Americas across Africa, Europe, and Asia."
+        path="/origins"
+      />
       {/* Global background pattern - matching Compendium style */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 

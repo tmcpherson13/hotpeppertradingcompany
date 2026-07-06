@@ -1,4 +1,5 @@
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/contexts/AuthContext';
@@ -58,6 +59,12 @@ export default function Wishlist() {
 
   return (
     <div className="min-h-screen bg-ink relative">
+      <SEO
+        title="Wishlist"
+        description="Your saved cultivars and consortiums, marked for future acquisition from the Hot Pepper Trading Company."
+        path="/wishlist"
+        noIndex
+      />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 

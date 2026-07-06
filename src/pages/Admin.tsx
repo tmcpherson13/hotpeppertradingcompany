@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -28,6 +29,12 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-parchment flex flex-col relative">
+      <SEO
+        title="Administration"
+        description="Administrative console for the Hot Pepper Trading Company: content enrichment, image moderation, user management, and site reports."
+        path="/admin"
+        noIndex
+      />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 
