@@ -229,6 +229,66 @@ export function EnrichmentReviewModal({
             <TabsContent value="compare" className="flex-1 overflow-hidden mt-0">
               <ScrollArea className="h-[50vh]">
                 <div className="space-y-4 p-4">
+                  {/* Verification Panel — results from the adversarial verification pass */}
+                  {(() => {
+                    const verificationPassed = (queueEntry as any).verification_passed as boolean | null | undefined;
+                    const unsupportedClaims = ((queueEntry as any).unsupported_claims as string[] | null | undefined) || [];
+                    const plagiarismFlags = ((queueEntry as any).plagiarism_flags as string[] | null | undefined) || [];
+                    const verificationNotes = (queueEntry as any).verification_notes as string | null | undefined;
+
+                    const chip = verificationPassed === true
+                      ? { text: 'Verification passed', className: 'bg-green-100 text-green-800 border-green-300' }
+                      : verificationPassed === false
+                        ? { text: 'Needs review — verification failed', className: 'bg-red-100 text-red-800 border-red-300' }
+                        : { text: 'Not verified', className: 'bg-ink/5 text-ink/60 border-ink/20' };
+
+                    return (
+                      <div className="border-2 border-ink/10 rounded-lg overflow-hidden bg-parchment-dark/10">
+                        <div className="bg-parchment-dark/20 px-3 py-2 flex items-center justify-between">
+                          <span className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                            Verification
+                          </span>
+                          <Badge className={`text-xs border ${chip.className}`}>
+                            {verificationPassed === true && <CheckCircle2 className="w-3 h-3 mr-1" />}
+                            {verificationPassed === false && <XCircle className="w-3 h-3 mr-1" />}
+                            {chip.text}
+                          </Badge>
+                        </div>
+                        {(unsupportedClaims.length > 0 || plagiarismFlags.length > 0 || verificationNotes) && (
+                          <div className="p-4 space-y-3">
+                            {unsupportedClaims.length > 0 && (
+                              <div className="rounded-md border border-red-300 bg-red-50/60 p-3">
+                                <p className="font-heading text-xs uppercase tracking-wider text-red-800 mb-1.5">
+                                  Unsupported claims
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-red-900/80">
+                                  {unsupportedClaims.map((claim, i) => (
+                                    <li key={i}>{claim}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {plagiarismFlags.length > 0 && (
+                              <div className="rounded-md border border-amber-300 bg-amber-50/60 p-3">
+                                <p className="font-heading text-xs uppercase tracking-wider text-amber-800 mb-1.5">
+                                  Possible copied passages
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-amber-900/80">
+                                  {plagiarismFlags.map((flag, i) => (
+                                    <li key={i}>{flag}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {verificationNotes && (
+                              <p className="text-xs italic text-ink/50">{verificationNotes}</p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
                   {/* Manual Overrides Section */}
                   <div className="border-2 border-amber-300 rounded-lg overflow-hidden bg-amber-50/30">
                     <div className="bg-amber-100/50 px-3 py-2 flex items-center justify-between">
@@ -326,7 +386,14 @@ export function EnrichmentReviewModal({
                   </div>
                   
                   <Separator className="my-2" />
-                  
+
+                  {/* Field-tier hint */}
+                  <p className="text-xs text-ink/50 italic">
+                    These are AI-drafted narrative fields — description, historical notes, flavor &amp; aroma,
+                    culinary uses, and trade route — the "Yellow tier" a human approves here. Hard facts such as
+                    Scoville values and scientific names are entered and verified separately in the Catalog tab.
+                  </p>
+
                   {/* AI-Generated Fields */}
                   {fields.map(({ key, label, current }) => {
                     const proposed = queueEntry[key as keyof EnrichmentQueueEntry] as string | null;
