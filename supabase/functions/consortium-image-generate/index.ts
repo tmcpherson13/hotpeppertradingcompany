@@ -94,12 +94,12 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
+    const geminiKey = Deno.env.get('GEMINI_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!lovableKey) {
+    if (!geminiKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'AI image generation not configured' }),
+        JSON.stringify({ success: false, error: 'AI image generation not configured (GEMINI_API_KEY missing)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -172,18 +172,19 @@ NO TEXT. NO WATERMARKS. NO PEOPLE. ONLY PEPPERS AND ARTISTIC ACCENTS.`;
 
       console.log(`Generating with: ${angle}, ${lighting.substring(0, 40)}...`);
 
-      const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${lovableKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash-image-preview',
-          messages: [{ role: 'user', content: prompt }],
-          modalities: ['image', 'text'],
-        }),
-      });
+      // Image generation via Google Gemini (migrated off Lovable AI gateway)
+      const imageResponse = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${geminiKey}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+          }),
+        }
+      );
 
       if (!imageResponse.ok) {
         const errorText = await imageResponse.text();
@@ -198,7 +199,12 @@ NO TEXT. NO WATERMARKS. NO PEOPLE. ONLY PEPPERS AND ARTISTIC ACCENTS.`;
       }
 
       const imageData = await imageResponse.json();
-      const generatedImage = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      const genParts = imageData.candidates?.[0]?.content?.parts || [];
+      const genImagePart = genParts.find((p: any) => p.inlineData || p.inline_data);
+      const genInline = genImagePart?.inlineData || genImagePart?.inline_data;
+      const generatedImage = genInline?.data
+        ? `data:${genInline.mimeType || genInline.mime_type || 'image/png'};base64,${genInline.data}`
+        : null;
 
       if (!generatedImage) {
         console.error(`No image returned for ${consortium.name}`);

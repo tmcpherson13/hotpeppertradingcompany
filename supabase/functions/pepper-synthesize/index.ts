@@ -83,12 +83,12 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
+    const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!lovableKey) {
+    if (!anthropicKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'AI synthesis not configured' }),
+        JSON.stringify({ success: false, error: 'AI synthesis not configured (ANTHROPIC_API_KEY missing)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -133,21 +133,23 @@ serve(async (req) => {
 
     const allUrls = researchData.flatMap(r => r.urls || []);
 
-    console.log('Calling Lovable AI for synthesis...');
+    console.log('Calling Anthropic Claude for synthesis...');
 
-    // Call Lovable AI for synthesis
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Text synthesis via Anthropic Claude (migrated off Lovable AI gateway)
+    const aiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
+        'x-api-key': anthropicKey!,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'claude-opus-4-8',
+        max_tokens: 2000,
+        system: SYNTHESIS_PROMPT,
         messages: [
-          { role: 'system', content: SYNTHESIS_PROMPT },
-          { 
-            role: 'user', 
+          {
+            role: 'user',
             content: `Pepper Name: ${pepperName}\n\nResearch Data:\n${researchContent}\n\nSource URLs for citation:\n${allUrls.join('\n')}`
           }
         ],
@@ -178,7 +180,7 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    const synthesizedContent = aiData.choices?.[0]?.message?.content;
+    const synthesizedContent = aiData.content?.[0]?.text;
 
     if (!synthesizedContent) {
       return new Response(
