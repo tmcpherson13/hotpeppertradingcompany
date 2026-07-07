@@ -5,6 +5,7 @@ import { Pepper, peppers, speciesDisplayNames, PepperImage } from '@/data/pepper
 import { Flame, MapPin, Package, Pencil, Check, X, ChevronDown } from 'lucide-react';
 import { PepperGallery } from './PepperGallery';
 import { getPepperImage } from '@/data/pepperImages';
+import { getConsortiumsForPepper, consortiumShopPath } from '@/data/blendContents';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
@@ -692,6 +693,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
 
   const relatedPeppers = findRelatedPeppers(pepper, peppers);
   const tradeRouteSummary = generateTradeRouteSummary(pepper.tradeRouteTags || [], displayTradeRoute);
+  const featuredConsortiums = getConsortiumsForPepper(pepper.id);
 
   // Card content JSX - reused for both desktop and mobile layouts
   const cardContent = (
@@ -991,6 +993,19 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
             </div>
           )}
         </div>
+
+        {/* Featured in Consortiums — compact cross-sell to the shop */}
+        {featuredConsortiums.length > 0 && (
+          <div className="bg-[#e8dcc4]/40 px-6 py-2.5 border-t border-[#5a4a3a]/15">
+            <Link
+              to={consortiumShopPath(featuredConsortiums[0])}
+              className="font-heading text-[11px] uppercase tracking-wider text-[#5a4a3a] hover:text-[#8b2942] transition-colors"
+            >
+              Featured in {featuredConsortiums.length} consortium blend
+              {featuredConsortiums.length > 1 ? 's' : ''} →
+            </Link>
+          </div>
+        )}
 
         {/* Footer */}
         <div className="bg-[#e8dcc4]/50 px-6 py-3 border-t border-[#5a4a3a]/15">

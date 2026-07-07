@@ -5,6 +5,7 @@ import { LogoDivider } from '@/components/ui/LogoDivider';
 import { SEO, SITE_URL } from '@/components/SEO';
 import { speciesDisplayNames } from '@/data/peppers';
 import { useAllPeppers } from '@/hooks/usePeppers';
+import { getConsortiumsForPepper, consortiumShopPath } from '@/data/blendContents';
 import type { Pepper } from '@/data/pepperTypes';
 
 function formatScoville(min: number, max: number): string {
@@ -73,6 +74,7 @@ export default function PepperDetail() {
 
   const img = primaryImage(pepper);
   const related = relatedPeppers(pepper, peppers);
+  const consortiums = getConsortiumsForPepper(pepper.id);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];
   const metaDescription =
     `${pepper.name} (${sciName}) — ${pepper.heatLevel}, ${formatScoville(pepper.scovilleMin, pepper.scovilleMax)}. ` +
@@ -256,6 +258,40 @@ export default function PepperDetail() {
             )}
           </div>
         </section>
+
+        {/* Featured in These Consortiums — the shop conversion hook */}
+        {consortiums.length > 0 && (
+          <section className="container max-w-4xl mx-auto px-6 py-12">
+            <h2 className="font-display text-2xl text-foreground mb-2 text-center">
+              Featured in These Consortiums
+            </h2>
+            <p className="font-body text-muted-foreground text-center mb-6">
+              Acquire this cultivar as part of a curated trade lot.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {consortiums.map((c) => (
+                <Link
+                  key={c.consortiumId}
+                  to={consortiumShopPath(c)}
+                  className="group block border border-border bg-card p-5 hover:border-primary transition-colors"
+                >
+                  <span className="font-heading text-muted-foreground uppercase tracking-widest text-[10px] small-caps block mb-1">
+                    {c.tradeLot} · {c.regionLabel}
+                  </span>
+                  <h3 className="font-display text-xl text-foreground leading-tight group-hover:text-primary transition-colors mb-3">
+                    {c.name}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="font-body text-foreground tabular-nums">{c.price}</span>
+                    <span className="font-heading uppercase tracking-widest text-xs text-primary">
+                      Acquire →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Related cultivars */}
         {related.length > 0 && (
