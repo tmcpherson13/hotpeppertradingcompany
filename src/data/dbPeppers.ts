@@ -129,6 +129,17 @@ export async function upsertPepper(row: Partial<DbPepperRow> & { id: string }): 
   if (error) throw error;
 }
 
+/**
+ * Admin: insert or update many peppers in one round-trip (keyed by id).
+ * Callers are responsible for setting status/data_source/verified on each row.
+ */
+export async function bulkUpsertPeppers(
+  rows: Array<Partial<DbPepperRow> & { id: string }>,
+): Promise<void> {
+  const { error } = await db.from(PEPPERS_TABLE).upsert(rows, { onConflict: 'id' });
+  if (error) throw error;
+}
+
 /** Admin: delete a pepper by id. */
 export async function deletePepper(id: string): Promise<void> {
   const { error } = await db.from(PEPPERS_TABLE).delete().eq('id', id);
