@@ -10,8 +10,12 @@ import type { HelmetServerState } from "react-helmet-async";
 import { AppProviders, AppRoutes } from "./App";
 import { peppers } from "./data/peppers";
 
-/** Slugs for every pepper, used by the prerender script to enumerate routes. */
+/** Static slugs (the frozen 190), used by the prerender script. */
 export const pepperSlugs: string[] = peppers.map((p) => p.id);
+
+// Re-export the DB fetch + injection store so the prerender script can pull
+// published database peppers at build time and generate their pages too.
+export { fetchPublishedPeppers, setInjectedDbPeppers } from "./data/dbPeppers";
 
 export function render(url: string): { html: string; head: string } {
   const helmetContext: { helmet?: HelmetServerState } = {};

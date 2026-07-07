@@ -29,7 +29,19 @@ globalThis.localStorage ??= {
   length: 0,
 };
 
-const { render, pepperSlugs } = await import(serverEntry);
+const { render, pepperSlugs, fetchPublishedPeppers, setInjectedDbPeppers } = await import(serverEntry);
+
+// Pull published database peppers (the growth beyond the static 190) and inject
+// them so their detail pages render during prerender. Fails soft: if the DB is
+// unconfigured/unreachable at build time, we simply prerender the static 190.
+let dbPeppers = [];
+try {
+  dbPeppers = await fetchPublishedPeppers();
+  setInjectedDbPeppers(dbPeppers);
+  console.log(`  ✓ loaded ${dbPeppers.length} published DB peppers`);
+} catch (err) {
+  console.warn(`  ! DB peppers unavailable at build (${err.message}); using static 190 only`);
+}
 
 // Static content routes worth prerendering.
 const staticRoutes = [
@@ -42,7 +54,10 @@ const staticRoutes = [
   '/guides/seed-starting',
 ];
 
-const pepperRoutes = pepperSlugs.map((slug) => `/peppers/${slug}`);
+// Union of static slugs and DB slugs, deduped (static wins).
+const staticSlugSet = new Set(pepperSlugs);
+const dbSlugs = dbPeppers.map((p) => p.id).filter((id) => !staticSlugSet.has(id));
+const pepperRoutes = [...pepperSlugs, ...dbSlugs].map((slug) => `/peppers/${slug}`);
 const prerenderRoutes = [...staticRoutes, ...pepperRoutes];
 
 // Client-rendered but still indexable routes — included in the sitemap only.

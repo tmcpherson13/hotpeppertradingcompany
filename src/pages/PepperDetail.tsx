@@ -3,7 +3,8 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { LogoDivider } from '@/components/ui/LogoDivider';
 import { SEO, SITE_URL } from '@/components/SEO';
-import { peppers, speciesDisplayNames } from '@/data/peppers';
+import { speciesDisplayNames } from '@/data/peppers';
+import { useAllPeppers } from '@/hooks/usePeppers';
 import type { Pepper } from '@/data/pepperTypes';
 
 function formatScoville(min: number, max: number): string {
@@ -27,8 +28,8 @@ function primaryImage(pepper: Pepper): string | undefined {
 }
 
 /** Related cultivars: prefer same species, then same region, then fill by region. */
-function relatedPeppers(pepper: Pepper): Pepper[] {
-  const others = peppers.filter((p) => p.id !== pepper.id);
+function relatedPeppers(pepper: Pepper, all: Pepper[]): Pepper[] {
+  const others = all.filter((p) => p.id !== pepper.id);
   const sameSpecies = others.filter((p) => p.species === pepper.species);
   const sameRegion = others.filter((p) => p.region === pepper.region && p.species !== pepper.species);
   return [...sameSpecies, ...sameRegion].slice(0, 4);
@@ -64,12 +65,14 @@ const NotFoundPepper = () => (
 
 export default function PepperDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const { peppers, isLoading } = useAllPeppers();
   const pepper = peppers.find((p) => p.id === slug);
 
-  if (!pepper) return <NotFoundPepper />;
+  // While DB peppers may still be loading on the client, don't 404 a real slug.
+  if (!pepper) return isLoading ? <div className="min-h-screen bg-background" /> : <NotFoundPepper />;
 
   const img = primaryImage(pepper);
-  const related = relatedPeppers(pepper);
+  const related = relatedPeppers(pepper, peppers);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];
   const metaDescription =
     `${pepper.name} (${sciName}) — ${pepper.heatLevel}, ${formatScoville(pepper.scovilleMin, pepper.scovilleMax)}. ` +
