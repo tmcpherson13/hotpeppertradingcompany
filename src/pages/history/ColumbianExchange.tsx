@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
 import { LogoDivider } from '@/components/ui/LogoDivider';
+import { getEssayConsortium, consortiumShopPath } from '@/data/blendContents';
 import logoDark from '@/assets/logo-dark.svg';
 import columbianExchangeArtwork from '@/assets/history/columbian-exchange-artwork.jpg';
 
@@ -67,6 +68,7 @@ const citations: Citation[] = [
 ];
 
 export default function ColumbianExchange() {
+  const featured = getEssayConsortium('columbian-exchange');
   const heroRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -590,6 +592,54 @@ export default function ColumbianExchange() {
                   </p>
                 </div>
               </motion.section>
+
+              {/* Taste This Era CTA */}
+              {featured && (
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-16"
+                >
+                  <div className="border border-primary/30 bg-background/50 p-8 md:p-10 text-center">
+                    <LogoDivider variant="standard" size="sm" className="mb-6" />
+                    <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.3em] mb-3 small-caps">
+                      Taste This Era
+                    </p>
+                    <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
+                      Sail the Atlantic Triangle
+                    </h2>
+                    <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
+                      The same crossings that scattered <em>Capsicum</em> across three continents
+                      are yours to taste. Gather the peppers of the Columbian exchange into a
+                      single lot and follow the trade winds by flavour.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                      <img
+                        src={featured.image}
+                        alt={featured.name}
+                        className="w-32 h-32 object-cover border border-border"
+                      />
+                      <div className="text-center sm:text-left">
+                        <p className="font-heading text-xs uppercase tracking-[0.2em] text-primary mb-1 small-caps">
+                          {featured.regionLabel}
+                        </p>
+                        <Link
+                          to={consortiumShopPath(featured)}
+                          onClick={() => window.scrollTo(0, 0)}
+                          className="inline-flex flex-col items-center sm:items-start gap-1 px-6 py-3 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm hover:bg-primary/90 transition-colors"
+                        >
+                          <span>{featured.name}</span>
+                          <span className="text-xs font-body normal-case tracking-normal opacity-90">
+                            {featured.tradeLot}
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </motion.section>
+              )}
 
               {/* Citations */}
               <motion.section
