@@ -193,7 +193,7 @@ const rawPeppers: Pepper[] = [
         type: 'illustration',
         isPrimary: true,
         source: 'ai-generated',
-        license: 'Lovable Generated',
+        license: 'AI-Generated',
       },
       {
         id: 'aji-amarillo-wikimedia',

@@ -172,8 +172,9 @@ serve(async (req) => {
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     if (resendApiKey) {
       try {
-        // Get the origin from request headers for correct app URL
-        const origin = req.headers.get("origin") || "https://lovable.dev";
+        // Get the origin from request headers for correct app URL.
+        // Fall back to the production site (SITE_URL secret, else the domain).
+        const origin = req.headers.get("origin") || Deno.env.get("SITE_URL") || "https://hotpeppertradingcompany.com";
         const loginUrl = `${origin}/admin`;
         
         console.log("Resending welcome email to:", email, "with login URL:", loginUrl);
