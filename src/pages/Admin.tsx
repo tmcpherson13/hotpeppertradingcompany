@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Header } from '@/components/layout/Header';
 import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
@@ -26,6 +27,34 @@ export default function Admin() {
   const [catalogView, setCatalogView] = useState<'manage' | 'import'>('manage');
   const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
 
+  // Live counts of work awaiting review, badged onto the hub + sub-tabs so
+  // pending items are visible without opening each section.
+  const [pendingEnrichments, setPendingEnrichments] = useState(0);
+  const [pendingImages, setPendingImages] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      const [enr, img] = await Promise.all([
+        supabase.from('pepper_enrichment_queue').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('pepper_image_proposals').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+      ]);
+      if (!active) return;
+      setPendingEnrichments(enr.count ?? 0);
+      setPendingImages(img.count ?? 0);
+    };
+    load();
+    const channel = supabase
+      .channel('admin-pending-counts')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pepper_enrichment_queue' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pepper_image_proposals' }, load)
+      .subscribe();
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   const handleDashboardNavigate = useCallback((target: 'pending' | 'auto-approved' | 'completed') => {
     if (target === 'pending' || target === 'auto-approved') {
       setEnrichmentInitialView(target === 'auto-approved' ? 'auto-approved' : 'pending');
@@ -38,7 +67,16 @@ export default function Admin() {
   // Secondary (sub-tab) trigger styling — deliberately lighter than the main
   // tyrian bar so it reads as a level-2 nav inside the Content Enrichment hub.
   const subTabClass =
-    'flex items-center justify-center gap-2 data-[state=active]:bg-tyrian data-[state=active]:text-parchment text-ink/70 hover:text-ink font-heading uppercase tracking-wider text-xs py-2.5 px-3 whitespace-nowrap transition-colors';
+    'group flex items-center justify-center gap-2 data-[state=active]:bg-tyrian data-[state=active]:text-parchment text-ink/70 hover:text-ink font-heading uppercase tracking-wider text-xs py-2.5 px-3 whitespace-nowrap transition-colors';
+
+  // Count badge for the sub-tab strip (tyrian pill on the light strip; inverts
+  // to parchment when its tab is active and the strip goes tyrian).
+  const SubBadge = ({ count }: { count: number }) =>
+    count > 0 ? (
+      <span className="inline-flex items-center justify-center min-w-[1.15rem] h-[1.15rem] px-1 rounded-full bg-tyrian text-parchment text-[10px] leading-none group-data-[state=active]:bg-parchment group-data-[state=active]:text-tyrian">
+        {count}
+      </span>
+    ) : null;
 
   return (
     <div className="min-h-screen bg-parchment flex flex-col relative">
@@ -78,10 +116,15 @@ export default function Admin() {
             <TabsList className="w-full bg-tyrian/90 border border-tyrian-dark p-1 mb-6 flex flex-wrap">
               <TabsTrigger
                 value="enrichment"
-                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
+                className="group flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
                 <BookOpen className="w-4 h-4 shrink-0" />
                 Content Enrichment
+                {pendingEnrichments + pendingImages > 0 && (
+                  <span className="inline-flex items-center justify-center min-w-[1.15rem] h-[1.15rem] px-1 rounded-full bg-parchment text-tyrian text-[10px] leading-none group-data-[state=active]:bg-tyrian group-data-[state=active]:text-parchment">
+                    {pendingEnrichments + pendingImages}
+                  </span>
+                )}
               </TabsTrigger>
               <TabsTrigger
                 value="images"
@@ -135,6 +178,7 @@ export default function Admin() {
                     <TabsTrigger value="enrich" className={`flex-1 ${subTabClass}`}>
                       <BookOpen className="w-4 h-4 shrink-0" />
                       Enrich
+                      <SubBadge count={pendingEnrichments} />
                     </TabsTrigger>
                     <TabsTrigger value="catalog" className={`flex-1 ${subTabClass}`}>
                       <Sprout className="w-4 h-4 shrink-0" />
@@ -143,6 +187,7 @@ export default function Admin() {
                     <TabsTrigger value="image-proposals" className={`flex-1 ${subTabClass}`}>
                       <ImagePlus className="w-4 h-4 shrink-0" />
                       Image Proposals
+                      <SubBadge count={pendingImages} />
                     </TabsTrigger>
                     <TabsTrigger value="progress" className={`flex-1 ${subTabClass}`}>
                       <Activity className="w-4 h-4 shrink-0" />
