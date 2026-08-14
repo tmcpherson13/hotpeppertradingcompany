@@ -9,6 +9,11 @@ const corsHeaders = {
 // Watermark configuration - using actual company logo
 // The logo is hosted in the public folder and accessible via the app URL
 
+// Gemini image model ("Nano Banana"). Overridable via secret so a future
+// Google model rename doesn't require a redeploy. The preview alias
+// `gemini-2.5-flash-image-preview` was retired when the model went GA.
+const GEMINI_IMAGE_MODEL = Deno.env.get('GEMINI_IMAGE_MODEL') || 'gemini-2.5-flash-image';
+
 // Image generation + vision via Google Gemini (migrated off Lovable AI gateway)
 // Function to apply watermark using image editing AI with the actual logo
 async function applyWatermark(
@@ -61,7 +66,7 @@ The second image is the Hot Pepper Trading Company logo to use as the watermark.
     }
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${geminiKey}`,
       {
         method: 'POST',
         headers: {
@@ -338,7 +343,7 @@ serve(async (req) => {
         console.log(`Generating ${type} image...`);
 
         const imageResponse = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${geminiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${geminiKey}`,
           {
             method: 'POST',
             headers: {
