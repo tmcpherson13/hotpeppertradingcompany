@@ -454,6 +454,51 @@ const getRouteLayerIds = (index: number) => [
   `route-line-${index}`,
 ];
 
+// Precomputed smoothed geometry for every route — shared by the static
+// rendering and the voyage animation so both trace the exact same curve.
+const routePaths: [number, number][][] = tradeRoutes.routes.map(
+  (r) => smoothPath([r.from, ...r.via, r.to]) as [number, number][]
+);
+
+// Bounding box of a path as [[minLng, minLat], [maxLng, maxLat]].
+function pathBounds(path: [number, number][]): [[number, number], [number, number]] {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const [x, y] of path) {
+    if (x < minX) minX = x; if (x > maxX) maxX = x;
+    if (y < minY) minY = y; if (y > maxY) maxY = y;
+  }
+  return [[minX, minY], [maxX, maxY]];
+}
+
+// Follow-cam zoom scaled to the voyage's geographic span (closer for short hops,
+// wider for ocean crossings) so the "ship" stays framed as the camera tracks it.
+function followZoomFor(path: [number, number][]): number {
+  const [[a, b], [c, d]] = pathBounds(path);
+  const span = Math.max(c - a, d - b);
+  if (span > 140) return 2.1;
+  if (span > 80) return 2.6;
+  if (span > 40) return 3.1;
+  if (span > 18) return 3.7;
+  if (span > 8) return 4.3;
+  return 5;
+}
+
+// The route to animate for a timeline event: one whose destination matches the
+// event location, preferring the latest established on or before the event year.
+function heroRouteForEvent(ev: TimelineEvent): number {
+  const key = ev.location.split(/[,(]/)[0].trim().toLowerCase();
+  let best = -1, bestYear = -Infinity;
+  tradeRoutes.routes.forEach((r, i) => {
+    const dn = r.destinationName.toLowerCase();
+    const dnKey = dn.split(/[,(]/)[0].trim();
+    if ((dn.includes(key) || key.includes(dnKey)) && r.establishedYear <= ev.year && r.establishedYear > bestYear) {
+      best = i;
+      bestYear = r.establishedYear;
+    }
+  });
+  return best;
+}
+
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -587,6 +632,81 @@ export function TradeRouteMap() {
     setSelectedTimelineIndex(index);
   }, []);
 
+  // --- Voyage animation: progressively draw a route while the camera tracks the
+  //     drawing tip (zoomed in), then pull back to frame the whole journey. ---
+  const voyageRafRef = useRef<number | null>(null);
+  const voyageTokenRef = useRef(0);
+  const animatingRouteRef = useRef<number | null>(null);
+
+  const animateVoyage = useCallback((routeIndex: number) => {
+    const m = map.current;
+    if (!m || !isMapLoaded) return;
+    const path = routePaths[routeIndex];
+    if (!path || path.length < 2) return;
+    const src = m.getSource(`route-${routeIndex}`) as maplibregl.GeoJSONSource | undefined;
+    if (!src) return;
+
+    // Supersede any voyage already in flight.
+    const token = ++voyageTokenRef.current;
+    if (voyageRafRef.current) { cancelAnimationFrame(voyageRafRef.current); voyageRafRef.current = null; }
+    animatingRouteRef.current = routeIndex;
+
+    const lineId = `route-line-${routeIndex}`;
+    const glowId = `route-glow-${routeIndex}`;
+    const setLine = (coords: [number, number][]) =>
+      src.setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } });
+
+    // Reveal the route's layers and reset it to the departure point.
+    try {
+      m.setPaintProperty(lineId, 'line-opacity', 0.85);
+      m.setPaintProperty(glowId, 'line-opacity', 0.16);
+    } catch { /* layer may not exist yet */ }
+    setLine([path[0], path[0]]);
+
+    const followZoom = followZoomFor(path);
+    const drawMs = Math.min(3600, Math.max(1600, path.length * 12));
+
+    // Phase 1 — sweep in to the port of departure.
+    m.easeTo({ center: path[0], zoom: followZoom, duration: 750, easing: (t) => t * (2 - t) });
+
+    // Phase 2 — draw the line while the camera follows its leading edge.
+    const startDraw = () => {
+      if (token !== voyageTokenRef.current) return;
+      let startTs: number | null = null;
+      const frame = (ts: number) => {
+        if (token !== voyageTokenRef.current) return;
+        if (startTs === null) startTs = ts;
+        const p = Math.min(1, (ts - startTs) / drawMs);
+        const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
+        const k = Math.max(1, Math.round(eased * (path.length - 1)));
+        setLine(path.slice(0, k + 1));
+        m.setCenter(path[k]);
+        if (p < 1) {
+          voyageRafRef.current = requestAnimationFrame(frame);
+        } else {
+          setLine(path);
+          // Phase 3 — pull back to reveal the full voyage.
+          m.fitBounds(pathBounds(path), {
+            padding: { top: 90, bottom: 140, left: 90, right: 90 },
+            duration: 1300,
+            maxZoom: 5.5,
+            easing: (t) => t * (2 - t),
+          });
+          voyageRafRef.current = null;
+          animatingRouteRef.current = null;
+        }
+      };
+      voyageRafRef.current = requestAnimationFrame(frame);
+    };
+    window.setTimeout(startDraw, 780);
+  }, [isMapLoaded]);
+
+  // Keep a stable ref so the (once-registered) map click handler always calls
+  // the latest animateVoyage without a stale closure.
+  const animateVoyageRef = useRef(animateVoyage);
+  useEffect(() => { animateVoyageRef.current = animateVoyage; }, [animateVoyage]);
+  useEffect(() => () => { if (voyageRafRef.current) cancelAnimationFrame(voyageRafRef.current); }, []);
+
   // Calculate visible routes for current year
   const visibleRoutes = useMemo(() => getVisibleRoutes(timelineYear), [timelineYear, getVisibleRoutes]);
 
@@ -600,6 +720,8 @@ export function TradeRouteMap() {
     const currentVisible = visibleRoutes;
 
     tradeRoutes.routes.forEach((route, index) => {
+      // The route currently being hand-animated controls its own source + opacity.
+      if (animatingRouteRef.current === index) return;
       const isVisible = currentVisible.has(index);
       const wasVisible = prevVisible.has(index);
       const isNewlyVisible = isVisible && !wasVisible;
@@ -719,14 +841,20 @@ export function TradeRouteMap() {
       el.style.setProperty('--event-glow', 'rgba(74, 124, 89, 0.6)');
     }
 
-    // Pan map to focus on event
-    m.easeTo({
-      center: currentEvent.coordinates,
-      duration: 1000,
-      easing: (t) => t * (2 - t), // ease-out-quad
-    });
+    // Animate the voyage for this event (progressive draw + follow-cam). Events
+    // with no associated route (e.g. Columbus's first landfall) just pan there.
+    const heroIdx = currentEvent.hasRoute ? heroRouteForEvent(currentEvent) : -1;
+    if (heroIdx >= 0) {
+      animateVoyage(heroIdx);
+    } else {
+      m.easeTo({
+        center: currentEvent.coordinates,
+        duration: 1000,
+        easing: (t) => t * (2 - t), // ease-out-quad
+      });
+    }
 
-  }, [currentEvent, isMapLoaded]);
+  }, [currentEvent, isMapLoaded, animateVoyage]);
 
   // Flowing dash animation - STABILIZED to prevent MapLibre crashes
   // Uses constant dasharray with opacity pulse instead of mutating dasharray values
@@ -927,8 +1055,8 @@ export function TradeRouteMap() {
 
         // Add trade route lines with antique styling
         tradeRoutes.routes.forEach((route, index) => {
-          // Round the hand-placed waypoints into a smooth rhumb-line curve.
-          const coordinates = smoothPath([route.from, ...route.via, route.to]);
+          // Shared smoothed geometry (also used by the voyage animation).
+          const coordinates = routePaths[index];
 
           m?.addSource(`route-${index}`, {
             type: 'geojson',
@@ -1015,6 +1143,9 @@ export function TradeRouteMap() {
                 if (destination) {
                   setSelectedLocation(destination);
                 }
+
+                // Animate the clicked voyage (draw + follow-cam).
+                animateVoyageRef.current(routeIndex);
                 
                 // USE REF to get current timeline year (not stale closure value)
                 const currentYear = timelineYearRef.current;
