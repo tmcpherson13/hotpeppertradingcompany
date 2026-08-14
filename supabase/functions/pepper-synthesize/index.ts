@@ -71,25 +71,33 @@ function calculateConfidenceScore(
 // support and (b) near-verbatim copying (plagiarism). This is the trust gate —
 // auto-approval is blocked unless this passes. Fails CLOSED: any error routes
 // the entry to human review rather than silently publishing.
-const VERIFICATION_PROMPT = `You are a rigorous fact-checker and plagiarism auditor for a reference publication. You will be given SOURCE RESEARCH and a SYNTHESIZED ENTRY derived from it. Your job is to catch two problems:
+const VERIFICATION_PROMPT = `You are a plagiarism auditor and fact-checker for a reference publication written in an evocative, historical "merchant-house" voice. You will be given SOURCE RESEARCH and a SYNTHESIZED ENTRY derived from it.
 
-1. UNSUPPORTED CLAIMS — specific factual assertions in the synthesized entry (dates, numbers, Scoville values, named people/places/events, historical claims) that are NOT supported by anything in the source research. Do not flag general common knowledge or tone; only flag concrete factual claims that the sources do not back up.
+This publication INTENTIONALLY uses creative, narrative framing, and that is welcome. Your job is not to strip the voice out — it is to catch the two things that would genuinely mislead a reader: copied wording, and fabricated hard facts. Sort everything you notice into three buckets.
 
-2. PLAGIARISM — passages in the synthesized entry that copy the source wording closely: roughly eight or more consecutive words matching a source, or a lightly-reworded sentence that tracks a source phrase-for-phrase.
+1. PLAGIARISM (BLOCKING) — passages that copy source wording closely: roughly eight or more consecutive words matching a source, or a lightly-reworded sentence that tracks a source phrase-for-phrase.
+
+2. UNSUPPORTED HARD FACTS (BLOCKING) — CHECKABLE, falsifiable assertions the sources do not support AND that a knowledgeable reader could not reasonably infer from well-established general history. These would be misinformation if wrong. Examples: specific dates or years, specific numbers and Scoville values, named individuals, named ships/institutions, a specific documented event pinned to a specific time or place, botanical/taxonomic classification (species, scientific name), and "first/oldest/only/largest" record claims.
+
+3. CREATIVE INFERENCES (NON-BLOCKING) — evocative or generalizing statements not directly stated in the sources but reasonable, plausible, and consistent with well-established general history. This covers atmospheric description, flavor/aroma language, and broad trade-route framing. For instance, "cayennes carried along Portuguese sea-lanes" is a CREATIVE INFERENCE, not an unsupported hard fact: it is common knowledge that Capsicum varieties spread along Portuguese maritime routes, even if this particular source never names cayenne. Do NOT place such statements in bucket 2.
+
+Guiding rule: if a claim is specific and falsifiable enough that being wrong would mislead the reader, it is a HARD FACT (bucket 2). If it is a reasonable narrative generalization an informed historian would accept as plausible, it is a CREATIVE INFERENCE (bucket 3). When genuinely unsure, default to bucket 3 UNLESS the statement contains a specific date, number, proper name, or record claim.
 
 Return ONLY a JSON object with exactly these fields:
 {
   "verification_passed": true or false,
-  "unsupported_claims": ["each unsupported factual claim, quoted"],
   "plagiarism_flags": ["each copied passage, quoted, with a short note of which source it matches"],
+  "unsupported_hard_facts": ["each unsupported checkable fact, quoted"],
+  "creative_inferences": ["each non-blocking narrative inference, quoted"],
   "notes": "one or two sentences summarizing your assessment"
 }
-Set "verification_passed" to false if there is ANY unsupported factual claim OR ANY plagiarism flag. Be strict: this is the last gate before publication.`;
+Set "verification_passed" to false if and ONLY if there is at least one PLAGIARISM flag OR at least one UNSUPPORTED HARD FACT. Creative inferences never affect verification_passed.`;
 
 interface VerificationResult {
   verification_passed: boolean;
   unsupported_claims: string[];
   plagiarism_flags: string[];
+  narrative_inferences: string[];
   notes: string;
 }
 
@@ -129,27 +137,31 @@ async function runVerification(
     if (!res.ok) {
       const errText = await res.text();
       console.error('Verification call failed:', res.status, errText);
-      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: `Verification unavailable (HTTP ${res.status}); routed to human review.` };
+      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], narrative_inferences: [], notes: `Verification unavailable (HTTP ${res.status}); routed to human review.` };
     }
 
     const data = await res.json();
     const text = data.content?.[0]?.text ?? '';
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) {
-      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: 'Verifier returned no parseable result; routed to human review.' };
+      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], narrative_inferences: [], notes: 'Verifier returned no parseable result; routed to human review.' };
     }
     const parsed = JSON.parse(match[0]);
+    // Only plagiarism and unsupported HARD facts block auto-approval. Creative
+    // narrative inferences are recorded for later human review but never gate.
+    const plagiarism: string[] = parsed.plagiarism_flags ?? [];
+    const hardFacts: string[] = parsed.unsupported_hard_facts ?? [];
+    const inferences: string[] = parsed.creative_inferences ?? [];
     return {
-      verification_passed: parsed.verification_passed === true
-        && (parsed.unsupported_claims?.length ?? 0) === 0
-        && (parsed.plagiarism_flags?.length ?? 0) === 0,
-      unsupported_claims: parsed.unsupported_claims ?? [],
-      plagiarism_flags: parsed.plagiarism_flags ?? [],
+      verification_passed: plagiarism.length === 0 && hardFacts.length === 0,
+      unsupported_claims: hardFacts,
+      plagiarism_flags: plagiarism,
+      narrative_inferences: inferences,
       notes: parsed.notes ?? '',
     };
   } catch (e) {
     console.error('Verification error:', e);
-    return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: `Verification error: ${(e as Error).message}; routed to human review.` };
+    return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], narrative_inferences: [], notes: `Verification error: ${(e as Error).message}; routed to human review.` };
   }
 }
 
@@ -346,6 +358,7 @@ serve(async (req) => {
         verification_passed: verification.verification_passed,
         unsupported_claims: verification.unsupported_claims,
         plagiarism_flags: verification.plagiarism_flags,
+        narrative_inferences: verification.narrative_inferences,
         verification_notes: verification.notes,
         created_by: userId,
         reviewed_by: shouldAutoApprove ? userId : null,

@@ -18,9 +18,10 @@ async function applyWatermark(
   supabaseUrl: string
 ): Promise<string> {
   try {
-    // Use the actual company logo from storage
-    // The logo URL is constructed from the Supabase project URL
-    const logoUrl = `${supabaseUrl.replace('.supabase.co', '.lovable.app')}/branding/watermark-logo.png`;
+    // Use the actual company logo served from the public site.
+    // SITE_URL can be overridden via secret; defaults to the production domain.
+    const siteUrl = (Deno.env.get('SITE_URL') || 'https://hotpeppertradingcompany.com').replace(/\/$/, '');
+    const logoUrl = `${siteUrl}/branding/watermark-logo.png`;
 
     const watermarkPrompt = `Overlay the second image (the circular Hot Pepper Trading Company logo) as a subtle watermark in the bottom-right corner of the first image (the pepper image).
 

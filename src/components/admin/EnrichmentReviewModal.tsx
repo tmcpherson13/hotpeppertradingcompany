@@ -234,6 +234,7 @@ export function EnrichmentReviewModal({
                     const verificationPassed = (queueEntry as any).verification_passed as boolean | null | undefined;
                     const unsupportedClaims = ((queueEntry as any).unsupported_claims as string[] | null | undefined) || [];
                     const plagiarismFlags = ((queueEntry as any).plagiarism_flags as string[] | null | undefined) || [];
+                    const narrativeInferences = ((queueEntry as any).narrative_inferences as string[] | null | undefined) || [];
                     const verificationNotes = (queueEntry as any).verification_notes as string | null | undefined;
 
                     const chip = verificationPassed === true
@@ -254,12 +255,27 @@ export function EnrichmentReviewModal({
                             {chip.text}
                           </Badge>
                         </div>
-                        {(unsupportedClaims.length > 0 || plagiarismFlags.length > 0 || verificationNotes) && (
+                        {(unsupportedClaims.length > 0 || plagiarismFlags.length > 0 || narrativeInferences.length > 0 || verificationNotes) && (
                           <div className="p-4 space-y-3">
+                            {plagiarismFlags.length > 0 && (
+                              <div className="rounded-md border border-red-300 bg-red-50/60 p-3">
+                                <p className="font-heading text-xs uppercase tracking-wider text-red-800 mb-1.5">
+                                  Possible copied passages · blocks approval
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-red-900/80">
+                                  {plagiarismFlags.map((flag, i) => (
+                                    <li key={i}>{flag}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                             {unsupportedClaims.length > 0 && (
                               <div className="rounded-md border border-red-300 bg-red-50/60 p-3">
                                 <p className="font-heading text-xs uppercase tracking-wider text-red-800 mb-1.5">
-                                  Unsupported claims
+                                  Unsupported hard facts · blocks approval
+                                </p>
+                                <p className="text-[11px] text-red-900/60 mb-1.5">
+                                  Checkable claims (dates, numbers, names, records) the sources don't back up.
                                 </p>
                                 <ul className="list-disc list-inside space-y-1 text-sm text-red-900/80">
                                   {unsupportedClaims.map((claim, i) => (
@@ -268,14 +284,17 @@ export function EnrichmentReviewModal({
                                 </ul>
                               </div>
                             )}
-                            {plagiarismFlags.length > 0 && (
-                              <div className="rounded-md border border-amber-300 bg-amber-50/60 p-3">
-                                <p className="font-heading text-xs uppercase tracking-wider text-amber-800 mb-1.5">
-                                  Possible copied passages
+                            {narrativeInferences.length > 0 && (
+                              <div className="rounded-md border border-ink/15 bg-parchment-dark/15 p-3">
+                                <p className="font-heading text-xs uppercase tracking-wider text-ink/60 mb-1.5">
+                                  Creative license · allowed
                                 </p>
-                                <ul className="list-disc list-inside space-y-1 text-sm text-amber-900/80">
-                                  {plagiarismFlags.map((flag, i) => (
-                                    <li key={i}>{flag}</li>
+                                <p className="text-[11px] text-ink/50 mb-1.5">
+                                  Evocative or inferential framing consistent with general history. Not a failure — noted for your review.
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-sm text-ink/70">
+                                  {narrativeInferences.map((inf, i) => (
+                                    <li key={i}>{inf}</li>
                                   ))}
                                 </ul>
                               </div>
