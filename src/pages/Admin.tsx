@@ -18,17 +18,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download, Star, Sprout } from 'lucide-react';
 import antiqueMap from '@/assets/antique-map.jpg';
 
+type EnrichmentSubTab = 'enrich' | 'catalog' | 'image-proposals' | 'progress';
+
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('enrichment');
+  const [enrichmentSubTab, setEnrichmentSubTab] = useState<EnrichmentSubTab>('enrich');
   const [catalogView, setCatalogView] = useState<'manage' | 'import'>('manage');
   const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
 
   const handleDashboardNavigate = useCallback((target: 'pending' | 'auto-approved' | 'completed') => {
     if (target === 'pending' || target === 'auto-approved') {
       setEnrichmentInitialView(target === 'auto-approved' ? 'auto-approved' : 'pending');
+      // Both live inside the Content Enrichment hub now — jump to the Enrich sub-tab.
       setActiveTab('enrichment');
+      setEnrichmentSubTab('enrich');
     }
   }, []);
+
+  // Secondary (sub-tab) trigger styling — deliberately lighter than the main
+  // tyrian bar so it reads as a level-2 nav inside the Content Enrichment hub.
+  const subTabClass =
+    'flex items-center justify-center gap-2 data-[state=active]:bg-tyrian data-[state=active]:text-parchment text-ink/70 hover:text-ink font-heading uppercase tracking-wider text-xs py-2.5 px-3 whitespace-nowrap transition-colors';
 
   return (
     <div className="min-h-screen bg-parchment flex flex-col relative">
@@ -40,16 +50,16 @@ export default function Admin() {
       />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <img 
-          src={antiqueMap} 
-          alt="" 
+        <img
+          src={antiqueMap}
+          alt=""
           className="w-full h-full object-cover opacity-8"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-parchment/95 via-parchment/97 to-parchment" />
       </div>
-      
+
       <Header />
-      
+
       <main className="flex-1 pt-24 pb-12 px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -74,32 +84,11 @@ export default function Admin() {
                 Content Enrichment
               </TabsTrigger>
               <TabsTrigger
-                value="catalog"
-                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
-              >
-                <Sprout className="w-4 h-4 shrink-0" />
-                Catalog
-              </TabsTrigger>
-              <TabsTrigger
-                value="progress"
-                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
-              >
-                <Activity className="w-4 h-4 shrink-0" />
-                Progress
-              </TabsTrigger>
-              <TabsTrigger
                 value="images"
                 className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
               >
                 <Image className="w-4 h-4 shrink-0" />
                 Images
-              </TabsTrigger>
-              <TabsTrigger
-                value="image-proposals"
-                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
-              >
-                <ImagePlus className="w-4 h-4 shrink-0" />
-                Image Proposals
               </TabsTrigger>
               <TabsTrigger
                 value="audit-log"
@@ -138,86 +127,95 @@ export default function Admin() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="users" className="mt-0">
+            {/* Content Enrichment hub — Enrich / Catalog / Image Proposals / Progress */}
+            <TabsContent value="enrichment" className="mt-0">
               <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  User Management
-                </h2>
-                <UserManagement />
+                <Tabs value={enrichmentSubTab} onValueChange={(v) => setEnrichmentSubTab(v as EnrichmentSubTab)} className="w-full">
+                  <TabsList className="w-full bg-parchment-dark/40 border border-ink/15 p-1 mb-5 flex flex-wrap">
+                    <TabsTrigger value="enrich" className={`flex-1 ${subTabClass}`}>
+                      <BookOpen className="w-4 h-4 shrink-0" />
+                      Enrich
+                    </TabsTrigger>
+                    <TabsTrigger value="catalog" className={`flex-1 ${subTabClass}`}>
+                      <Sprout className="w-4 h-4 shrink-0" />
+                      Catalog
+                    </TabsTrigger>
+                    <TabsTrigger value="image-proposals" className={`flex-1 ${subTabClass}`}>
+                      <ImagePlus className="w-4 h-4 shrink-0" />
+                      Image Proposals
+                    </TabsTrigger>
+                    <TabsTrigger value="progress" className={`flex-1 ${subTabClass}`}>
+                      <Activity className="w-4 h-4 shrink-0" />
+                      Progress
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="enrich" className="mt-0">
+                    <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                      Pepper Content Enrichment
+                    </h2>
+                    <PepperEnrichment
+                      initialView={enrichmentInitialView}
+                      onViewReset={() => setEnrichmentInitialView(undefined)}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="catalog" className="mt-0">
+                    <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-center sm:justify-between">
+                      <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                        Catalog — Add &amp; Manage Cultivars
+                      </h2>
+                      <div className="inline-flex border border-tyrian-dark self-start">
+                        <button
+                          type="button"
+                          onClick={() => setCatalogView('manage')}
+                          className={`font-heading uppercase tracking-wider text-xs px-4 py-2 transition-colors ${
+                            catalogView === 'manage'
+                              ? 'bg-tyrian text-parchment'
+                              : 'bg-parchment text-ink/70 hover:text-ink'
+                          }`}
+                        >
+                          Manage Cultivars
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCatalogView('import')}
+                          className={`font-heading uppercase tracking-wider text-xs px-4 py-2 border-l border-tyrian-dark transition-colors ${
+                            catalogView === 'import'
+                              ? 'bg-tyrian text-parchment'
+                              : 'bg-parchment text-ink/70 hover:text-ink'
+                          }`}
+                        >
+                          Bulk Import
+                        </button>
+                      </div>
+                    </div>
+                    {catalogView === 'manage' ? <PepperManager /> : <PepperImporter />}
+                  </TabsContent>
+
+                  <TabsContent value="image-proposals" className="mt-0">
+                    <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                      Pending Image Proposals
+                    </h2>
+                    <ImageProposalReview />
+                  </TabsContent>
+
+                  <TabsContent value="progress" className="mt-0">
+                    <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                      Enrichment Progress
+                    </h2>
+                    <EnrichmentDashboard onNavigate={handleDashboardNavigate} />
+                  </TabsContent>
+                </Tabs>
               </div>
             </TabsContent>
 
             <TabsContent value="images" className="mt-0">
               <div className="bg-parchment-dark/20 border border-ink/20 p-4">
                 <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Image Moderation
+                  Image Gallery
                 </h2>
                 <ImageModeration />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="enrichment" className="mt-0">
-              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Pepper Content Enrichment
-                </h2>
-                <PepperEnrichment 
-                  initialView={enrichmentInitialView} 
-                  onViewReset={() => setEnrichmentInitialView(undefined)} 
-                />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="catalog" className="mt-0">
-              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                  <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70">
-                    Catalog — Add &amp; Manage Cultivars
-                  </h2>
-                  <div className="inline-flex border border-tyrian-dark self-start">
-                    <button
-                      type="button"
-                      onClick={() => setCatalogView('manage')}
-                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 transition-colors ${
-                        catalogView === 'manage'
-                          ? 'bg-tyrian text-parchment'
-                          : 'bg-parchment text-ink/70 hover:text-ink'
-                      }`}
-                    >
-                      Manage Cultivars
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setCatalogView('import')}
-                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 border-l border-tyrian-dark transition-colors ${
-                        catalogView === 'import'
-                          ? 'bg-tyrian text-parchment'
-                          : 'bg-parchment text-ink/70 hover:text-ink'
-                      }`}
-                    >
-                      Bulk Import
-                    </button>
-                  </div>
-                </div>
-                {catalogView === 'manage' ? <PepperManager /> : <PepperImporter />}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="progress" className="mt-0">
-              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Enrichment Progress
-                </h2>
-                <EnrichmentDashboard onNavigate={handleDashboardNavigate} />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="image-proposals" className="mt-0">
-              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Pending Image Proposals
-                </h2>
-                <ImageProposalReview />
               </div>
             </TabsContent>
 
@@ -227,6 +225,15 @@ export default function Admin() {
                   Admin Audit Log
                 </h2>
                 <AdminAuditLog />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="users" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
+                  User Management
+                </h2>
+                <UserManagement />
               </div>
             </TabsContent>
 

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Trash2, ExternalLink, X } from 'lucide-react';
 import { format } from 'date-fns';
+import { peppers } from '@/data/peppers';
 
 interface UploadedImage {
   id: string;
@@ -150,31 +151,57 @@ export function ImageModeration() {
     );
   }
 
+  // Group images by pepper so the gallery is organized by cultivar rather than
+  // one flat, undifferentiated grid.
+  const getPepperName = (pepperId: string) =>
+    peppers.find((p) => p.id === pepperId)?.name || pepperId;
+
+  const groups = images.reduce((acc, image) => {
+    (acc[image.pepper_id] ||= []).push(image);
+    return acc;
+  }, {} as Record<string, UploadedImage[]>);
+
+  const orderedPepperIds = Object.keys(groups).sort((a, b) =>
+    getPepperName(a).localeCompare(getPepperName(b))
+  );
+
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className="group relative aspect-square bg-parchment-dark/30 border border-ink/20 overflow-hidden cursor-pointer"
-            onClick={() => setSelectedImage(image)}
-          >
-            <img
-              src={image.imageUrl}
-              alt={image.filename}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <ExternalLink className="w-6 h-6 text-parchment" />
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-ink/80 px-2 py-1">
-              <p className="text-parchment text-xs truncate font-body">
-                {image.pepper_id}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {orderedPepperIds.length > 0 && (
+        <div className="space-y-8">
+          {orderedPepperIds.map((pepperId) => (
+            <section key={pepperId}>
+              <div className="flex items-center gap-3 mb-3">
+                <h3 className="font-heading text-sm uppercase tracking-wider text-ink">
+                  {getPepperName(pepperId)}
+                </h3>
+                <span className="font-body text-xs text-ink/40">
+                  {groups[pepperId].length} image{groups[pepperId].length === 1 ? '' : 's'}
+                </span>
+                <span className="h-px flex-1 bg-ink/15" />
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {groups[pepperId].map((image) => (
+                  <div
+                    key={image.id}
+                    className="group relative aspect-square bg-parchment-dark/30 border border-ink/20 overflow-hidden cursor-pointer"
+                    onClick={() => setSelectedImage(image)}
+                  >
+                    <img
+                      src={image.imageUrl}
+                      alt={image.filename}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <ExternalLink className="w-6 h-6 text-parchment" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
 
       {images.length === 0 && (
         <div className="text-center py-12 text-ink/50 font-body">
