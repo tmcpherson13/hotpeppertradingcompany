@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Image } from "https://deno.land/x/imagescript@1.2.15/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,86 +15,68 @@ const corsHeaders = {
 // `gemini-2.5-flash-image-preview` was retired when the model went GA.
 const GEMINI_IMAGE_MODEL = Deno.env.get('GEMINI_IMAGE_MODEL') || 'gemini-2.5-flash-image';
 
-// Image generation + vision via Google Gemini (migrated off Lovable AI gateway)
-// Function to apply watermark using image editing AI with the actual logo
-async function applyWatermark(
-  geminiKey: string,
-  imageBase64: string,
-  pepperName: string,
-  supabaseUrl: string
-): Promise<string> {
+// Load and cache the official company logo, decoded once per invocation.
+let cachedLogo: Image | null = null;
+async function loadLogo(): Promise<Image | null> {
+  if (cachedLogo) return cachedLogo;
   try {
-    // Use the actual company logo served from the public site.
     // SITE_URL can be overridden via secret; defaults to the production domain.
     const siteUrl = (Deno.env.get('SITE_URL') || 'https://hotpeppertradingcompany.com').replace(/\/$/, '');
     const logoUrl = `${siteUrl}/branding/watermark-logo.png`;
-
-    const watermarkPrompt = `Overlay the second image (the circular Hot Pepper Trading Company logo) as a subtle watermark in the bottom-right corner of the first image (the pepper image).
-
-Requirements:
-- Position the logo in the bottom-right corner with a small margin from the edges
-- Make the logo semi-transparent at about 15-20% opacity
-- Resize the logo to be small (approximately 5-8% of the image width)
-- Tint the logo to a muted sepia, gold, or parchment tone that complements the main image
-- The logo should look like a subtle publisher's mark or trading company seal
-- Do NOT alter the main pepper image content at all - only add this watermark overlay
-
-The first image is the main pepper image to watermark.
-The second image is the Hot Pepper Trading Company logo to use as the watermark.`;
-
-    // Parse the main pepper image (data URL) into mime + base64
-    const mainMimeMatch = imageBase64.match(/^data:(image\/\w+);base64,/);
-    const mainMime = mainMimeMatch ? mainMimeMatch[1] : 'image/png';
-    const mainData = imageBase64.replace(/^data:image\/\w+;base64,/, '');
-
-    // Fetch the logo and convert to base64 for inline_data
-    const parts: any[] = [
-      { text: watermarkPrompt },
-      { inline_data: { mime_type: mainMime, data: mainData } },
-    ];
-    try {
-      const logoResp = await fetch(logoUrl);
-      if (logoResp.ok) {
-        const logoBuf = new Uint8Array(await logoResp.arrayBuffer());
-        let binary = '';
-        for (let i = 0; i < logoBuf.length; i++) binary += String.fromCharCode(logoBuf[i]);
-        const logoB64 = btoa(binary);
-        const logoMime = logoResp.headers.get('content-type') || 'image/png';
-        parts.push({ inline_data: { mime_type: logoMime, data: logoB64 } });
-      }
-    } catch (logoErr) {
-      console.error('Logo fetch error:', logoErr);
+    const resp = await fetch(logoUrl);
+    if (!resp.ok) {
+      console.error('Logo fetch failed:', resp.status, logoUrl);
+      return null;
     }
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${geminiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{ parts }],
-        }),
-      }
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-      const responseParts = data.candidates?.[0]?.content?.parts || [];
-      const imagePart = responseParts.find((p: any) => p.inlineData || p.inline_data);
-      const inline = imagePart?.inlineData || imagePart?.inline_data;
-      if (inline?.data) {
-        const mimeType = inline.mimeType || inline.mime_type || 'image/png';
-        return `data:${mimeType};base64,${inline.data}`;
-      }
-    }
-
-    console.log('Watermarking failed, using original image');
-    return imageBase64;
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+    cachedLogo = await Image.decode(bytes);
+    return cachedLogo;
   } catch (err) {
-    console.error('Watermark error:', err);
-    return imageBase64;
+    console.error('Logo load/decode error:', err);
+    return null;
+  }
+}
+
+// Composite the REAL company logo as a semi-transparent watermark in the
+// bottom-right corner. This is a deterministic pixel operation (ImageScript):
+// the genuine logo is placed exactly as-is, never redrawn or reinterpreted by
+// an AI model — so the brand mark is always authentic. It also removes a second
+// Gemini round-trip per image, easing the function's CPU/wall-clock budget
+// (the source of intermittent HTTP 546 worker-limit failures).
+async function applyWatermark(imageDataUrl: string): Promise<string> {
+  try {
+    const base64 = imageDataUrl.replace(/^data:image\/\w+;base64,/, '');
+    const baseBytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const base = await Image.decode(baseBytes);
+
+    const logoSrc = await loadLogo();
+    if (!logoSrc) return imageDataUrl; // Fall back to the un-watermarked image.
+
+    // Clone so the cached master logo isn't mutated between images.
+    const logo = logoSrc.clone();
+
+    // Scale the logo to ~12% of the image width, at ~35% opacity.
+    const targetWidth = Math.max(72, Math.round(base.width * 0.12));
+    logo.resize(targetWidth, Image.RESIZE_AUTO);
+    logo.opacity(0.35);
+
+    const margin = Math.round(base.width * 0.03);
+    const x = Math.max(0, base.width - logo.width - margin);
+    const y = Math.max(0, base.height - logo.height - margin);
+    base.composite(logo, x, y);
+
+    // Encode PNG and convert to a base64 data URL (chunked to avoid blowing
+    // the call stack on large pixel buffers).
+    const outBytes = await base.encode();
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < outBytes.length; i += chunk) {
+      binary += String.fromCharCode(...outBytes.subarray(i, i + chunk));
+    }
+    return `data:image/png;base64,${btoa(binary)}`;
+  } catch (err) {
+    console.error('Watermark composite error:', err);
+    return imageDataUrl;
   }
 }
 
@@ -379,8 +362,8 @@ serve(async (req) => {
         await updateJobProgress('watermarking');
         console.log(`Applying watermark to ${type} image...`);
 
-        // Apply watermark using image editing
-        const watermarkedImage = await applyWatermark(geminiKey, generatedImage, pepperName, supabaseUrl);
+        // Composite the official logo watermark (deterministic, non-AI).
+        const watermarkedImage = await applyWatermark(generatedImage);
         
         const timestamp = Date.now();
         const storagePath = `generated/${pepperId}/${type}-${timestamp}.png`;
