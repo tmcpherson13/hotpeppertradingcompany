@@ -499,6 +499,16 @@ function heroRouteForEvent(ev: TimelineEvent): number {
   return best;
 }
 
+// Every named port (origins + destinations), for resolving a route endpoint
+// coordinate back to a human-readable place name.
+const allPorts = [...tradeRoutes.origins, ...tradeRoutes.destinations];
+function portNameAt(coord: [number, number]): string {
+  const p = allPorts.find(
+    (pt) => Math.abs(pt.coordinates[0] - coord[0]) < 0.25 && Math.abs(pt.coordinates[1] - coord[1]) < 0.25
+  );
+  return p ? p.name : '';
+}
+
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -511,6 +521,7 @@ export function TradeRouteMap() {
   const [timelineYear, setTimelineYear] = useState<number>(-4000);
   const [currentEvent, setCurrentEvent] = useState<TimelineEvent | null>(null);
   const [isTimelinePlaying, setIsTimelinePlaying] = useState(false);
+  const [activeVoyage, setActiveVoyage] = useState<{ from: string; to: string } | null>(null);
   const [baseMapError, setBaseMapError] = useState<string | null>(null);
   const [focusedRegion, setFocusedRegion] = useState<string | null>(null);
   const [selectedTimelineIndex, setSelectedTimelineIndex] = useState<number | undefined>(undefined);
@@ -646,6 +657,10 @@ export function TradeRouteMap() {
     const src = m.getSource(`route-${routeIndex}`) as maplibregl.GeoJSONSource | undefined;
     if (!src) return;
 
+    // Label the journey by its departure and arrival ports.
+    const routeMeta = tradeRoutes.routes[routeIndex];
+    setActiveVoyage({ from: portNameAt(routeMeta.from) || 'Origin', to: routeMeta.destinationName });
+
     // Supersede any voyage already in flight.
     const token = ++voyageTokenRef.current;
     if (voyageRafRef.current) { cancelAnimationFrame(voyageRafRef.current); voyageRafRef.current = null; }
@@ -664,10 +679,10 @@ export function TradeRouteMap() {
     setLine([path[0], path[0]]);
 
     const followZoom = followZoomFor(path);
-    const drawMs = Math.min(3600, Math.max(1600, path.length * 12));
+    const drawMs = Math.min(5400, Math.max(2400, path.length * 18));
 
     // Phase 1 — sweep in to the port of departure.
-    m.easeTo({ center: path[0], zoom: followZoom, duration: 750, easing: (t) => t * (2 - t) });
+    m.easeTo({ center: path[0], zoom: followZoom, duration: 1150, easing: (t) => t * (2 - t) });
 
     // Phase 2 — draw the line while the camera follows its leading edge.
     const startDraw = () => {
@@ -688,7 +703,7 @@ export function TradeRouteMap() {
           // Phase 3 — pull back to reveal the full voyage.
           m.fitBounds(pathBounds(path), {
             padding: { top: 90, bottom: 140, left: 90, right: 90 },
-            duration: 1300,
+            duration: 1950,
             maxZoom: 5.5,
             easing: (t) => t * (2 - t),
           });
@@ -698,7 +713,7 @@ export function TradeRouteMap() {
       };
       voyageRafRef.current = requestAnimationFrame(frame);
     };
-    window.setTimeout(startDraw, 780);
+    window.setTimeout(startDraw, 1180);
   }, [isMapLoaded]);
 
   // Keep a stable ref so the (once-registered) map click handler always calls
@@ -1196,6 +1211,7 @@ export function TradeRouteMap() {
             "></div>
           </div>
         `;
+        el.title = origin.name;
         el.addEventListener('click', () => handleLocationClick(origin));
         markerElementsRef.current.set(origin.name, el);
 
@@ -1223,6 +1239,7 @@ export function TradeRouteMap() {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
           "></div>
         `;
+        el.title = dest.name;
         el.addEventListener('click', () => handleLocationClick(dest));
         markerElementsRef.current.set(dest.name, el);
 
@@ -1557,6 +1574,21 @@ export function TradeRouteMap() {
           </h3>
         </CartoucheBorder>
       </div>
+
+      {/* Active voyage banner — names the departing and arriving ports */}
+      {activeVoyage && (
+        <div className="absolute top-[3.75rem] left-1/2 -translate-x-1/2 z-20 hidden md:block pointer-events-none">
+          <div className="bg-[#f0e6d2]/95 border border-[#5a4a3a]/40 px-4 py-1.5 shadow-md flex items-center gap-2.5">
+            <span className="font-heading text-[11px] uppercase tracking-[0.12em] text-[#3a2a1a] whitespace-nowrap">
+              {activeVoyage.from}
+            </span>
+            <span className="text-[#8b2942] text-sm leading-none">→</span>
+            <span className="font-heading text-[11px] uppercase tracking-[0.12em] text-[#3a2a1a] whitespace-nowrap">
+              {activeVoyage.to}
+            </span>
+          </div>
+        </div>
+      )}
       
       {/* Selected Location Info Panel with Cartouche styling */}
       {selectedLocation && !isTimelinePlaying && (

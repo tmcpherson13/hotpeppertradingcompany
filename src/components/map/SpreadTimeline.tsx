@@ -216,7 +216,7 @@ export function SpreadTimeline({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [animationSpeed, setAnimationSpeed] = useState(6000); // Default 6s (middle of range)
+  const [animationSpeed, setAnimationSpeed] = useState(8500); // Default: leaves room for the voyage animation to finish
 
   const playing = externalPlaying !== undefined ? externalPlaying : isPlaying;
   const setPlaying = onPlayingChange || setIsPlaying;
