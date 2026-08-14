@@ -113,7 +113,7 @@ const tradeRoutes = {
     },
     {
       name: 'Lisbon, Portugal',
-      coordinates: [-9.1393, 38.7223] as [number, number],
+      coordinates: [-9.139, 38.742] as [number, number],
       description: 'Hub of the Portuguese maritime empire. Center of the Carreira da Índia spice trade.',
       cultivars: ['Piri Piri', 'Portuguese varieties'],
       year: '1499',
@@ -136,14 +136,14 @@ const tradeRoutes = {
     },
     {
       name: 'Goa, India',
-      coordinates: [73.8567, 15.2993] as [number, number],
+      coordinates: [73.897, 15.299] as [number, number],
       description: 'Portuguese capital of the Estado da Índia. Gateway to Asian spice trade.',
       cultivars: ['Kashmiri', 'Bhut Jolokia'],
       year: '1498',
     },
     {
       name: 'Cochin, India',
-      coordinates: [76.2673, 9.9312] as [number, number],
+      coordinates: [76.25, 9.921] as [number, number],
       description: 'Major spice trading port on the Malabar Coast. Portuguese fort established 1503.',
       cultivars: ['Kerala varieties'],
       year: '1503',
@@ -185,14 +185,14 @@ const tradeRoutes = {
     },
     {
       name: 'Caribbean Islands',
-      coordinates: [-66.1057, 18.4655] as [number, number],
+      coordinates: [-66.086, 18.465] as [number, number],
       description: 'African and European pepper cultivars arrived via Atlantic trade routes, blending with native species.',
       cultivars: ['Scotch Bonnet', 'Caribbean Red', 'Datil'],
       year: '1510',
     },
     {
       name: 'Philippines',
-      coordinates: [121.774, 12.8797] as [number, number],
+      coordinates: [121.474, 12.88] as [number, number],
       description: 'Manila-Acapulco galleon trade brought peppers across the Pacific from Mexico.',
       cultivars: ['Siling Labuyo', 'Siling Haba'],
       year: '1542',
@@ -206,35 +206,35 @@ const tradeRoutes = {
     },
     {
       name: 'Mozambique Island',
-      coordinates: [40.7347, -15.0344] as [number, number],
+      coordinates: [40.683, -15.004] as [number, number],
       description: 'Key Portuguese resupply station on the Cape Route to India.',
       cultivars: ['Piri Piri', 'African varieties'],
       year: '1507',
     },
     {
       name: 'Hormuz',
-      coordinates: [56.4547, 27.0769] as [number, number],
+      coordinates: [56.515, 27.181] as [number, number],
       description: 'Portuguese controlled this strategic strait, dominating Persian Gulf spice trade.',
       cultivars: ['Persian varieties'],
       year: '1515',
     },
     {
       name: 'Malacca',
-      coordinates: [102.2501, 2.1896] as [number, number],
+      coordinates: [102.27, 2.19] as [number, number],
       description: 'Portuguese captured this strategic port in 1511, gateway to the Spice Islands.',
       cultivars: ['Southeast Asian varieties'],
       year: '1511',
     },
     {
       name: 'Ternate (Moluccas)',
-      coordinates: [127.3866, 0.7893] as [number, number],
+      coordinates: [127.369, 0.799] as [number, number],
       description: 'The legendary Spice Islands. Portuguese reached here in 1522.',
       cultivars: ['Moluccan varieties'],
       year: '1522',
     },
     {
       name: 'Macao',
-      coordinates: [113.5439, 22.1987] as [number, number],
+      coordinates: [113.544, 22.239] as [number, number],
       description: 'Portuguese trading post established in 1557, gateway to China.',
       cultivars: ['Chinese varieties'],
       year: '1557',
@@ -242,7 +242,7 @@ const tradeRoutes = {
     // === BRAZILIAN PORTS ===
     {
       name: 'Salvador (Bahia)',
-      coordinates: [-38.5108, -12.9714] as [number, number],
+      coordinates: [-38.472, -12.961] as [number, number],
       description: 'First capital of colonial Brazil. Major sugar and later spice export hub.',
       cultivars: ['Malagueta', 'Dedo de Moça'],
       year: '1549',
@@ -256,7 +256,7 @@ const tradeRoutes = {
     },
     {
       name: 'Rio de Janeiro',
-      coordinates: [-43.1729, -22.9068] as [number, number],
+      coordinates: [-43.208, -22.887] as [number, number],
       description: 'Founded 1565, became major colonial port for gold and spices.',
       cultivars: ['Cumari', 'Biquinho'],
       year: '1565',
@@ -264,7 +264,7 @@ const tradeRoutes = {
     // === ADDITIONAL AFRICAN PORTS ===
     {
       name: 'Elmina (Gold Coast)',
-      coordinates: [-1.3509, 5.0840] as [number, number],
+      coordinates: [-1.334, 5.094] as [number, number],
       description: 'Portuguese fort established 1482. Key Gold Coast trading post.',
       cultivars: ['West African varieties'],
       year: '1482',
@@ -292,7 +292,7 @@ const tradeRoutes = {
     },
     {
       name: 'Sofala',
-      coordinates: [34.7459, -20.1503] as [number, number],
+      coordinates: [34.741, -20.131] as [number, number],
       description: 'Portuguese gold trading post on the Mozambique coast.',
       cultivars: ['East African varieties'],
       year: '1505',
@@ -309,19 +309,19 @@ const tradeRoutes = {
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
     { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-40, 34], [-8, 36], [2, 38], [11, 38], [20, 35], [28, 34], [34, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
     // Portuguese route to Goa - around Cape of Good Hope
-    { from: [-99.1332, 19.4326] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[-40, 8], [-18, -8], [2, -28], [16, -36], [28, -37], [40, -34], [50, -28], [56, -12], [64, 2], [70, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
+    { from: [-99.1332, 19.4326] as [number, number], to: [73.897, 15.299] as [number, number], via: [[-40, 8], [-18, -8], [2, -28], [16, -36], [28, -37], [40, -34], [50, -28], [56, -12], [64, 2], [70, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
     // Atlantic to Spain, overland to Hungary
     { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-40, 34], [-6, 36], [-1, 37], [6, 40], [9, 43]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
     // Peru to West Africa - across Atlantic
     { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-35, -15], [-20, -5]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
     // From Goa to Sichuan - coastal route
-    { from: [73.8567, 15.2993] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[72, 12], [78, 4], [90, 9], [98, 16], [103, 22]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
+    { from: [73.897, 15.299] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[72, 12], [78, 4], [90, 9], [98, 16], [103, 22]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
     // Silk Road route: From Persia/Ottoman to Samarkand (overland)
     { from: [37.1343, 36.2021] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[45, 37], [52, 36], [58, 38]] as [number, number][], establishedYear: 1550, destinationName: 'Samarkand (Silk Road)', isOverland: true },
     // Return route: West Africa to Caribbean - African cultivars cross back
-    { from: [-1.0232, 7.9465] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
+    { from: [-1.0232, 7.9465] as [number, number], to: [-66.086, 18.465] as [number, number], via: [[-20, 8], [-40, 12]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Return route: Spain/Portugal to Caribbean - European cultivation returns
-    { from: [-6.3508, 36.7783] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
+    { from: [-6.3508, 36.7783] as [number, number], to: [-66.086, 18.465] as [number, number], via: [[-20, 32], [-45, 25]] as [number, number][], establishedYear: 1510, destinationName: 'Caribbean Islands' },
     // Manila-Acapulco Galleon Route - Pacific crossing from Acapulco to Manila (westward)
     // Using continuous westward coordinates past -180 to prevent antimeridian rendering issues
     // Manila (121.774°E) expressed as -238.226° for continuous westward path
@@ -329,53 +329,53 @@ const tradeRoutes = {
     // Columbus return voyage: La Isabela, Hispaniola to Sanlúcar de Barrameda, Spain (1493)
     { from: [-71.08, 19.82] as [number, number], to: [-6.3508, 36.7783] as [number, number], via: [[-55, 25], [-35, 32], [-20, 35]] as [number, number][], establishedYear: 1493, destinationName: 'Sanlúcar de Barrameda, Spain' },
     // Philippines to Thailand - South China Sea route
-    { from: [121.774, 12.8797] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[114, 11], [107, 7], [102, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
+    { from: [121.474, 12.88] as [number, number], to: [100.5018, 13.7563] as [number, number], via: [[114, 11], [107, 7], [102, 8]] as [number, number][], establishedYear: 1550, destinationName: 'Thailand' },
     // Thailand to Cochin - across Bay of Bengal and around Sri Lanka
-    { from: [100.5018, 13.7563] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[95, 8], [84, 5], [78, 7]] as [number, number][], establishedYear: 1550, destinationName: 'Cochin, India' },
+    { from: [100.5018, 13.7563] as [number, number], to: [76.25, 9.921] as [number, number], via: [[95, 8], [83, 4], [75.5, 7]] as [number, number][], establishedYear: 1550, destinationName: 'Cochin, India' },
     
     // === PORTUGUESE TRADE NETWORK ===
     
     // Carreira da Índia (Cape Route): Lisbon to Mozambique
-    { from: [-9.1393, 38.7223] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[-11, 31], [-18, 25], [-21, 13], [-19, 2], [5, -16], [12, -30], [20, -37], [30, -37], [38, -34], [41, -25], [41, -18]] as [number, number][], establishedYear: 1507, destinationName: 'Mozambique Island' },
+    { from: [-9.139, 38.742] as [number, number], to: [40.683, -15.004] as [number, number], via: [[-12, 32], [-19, 30], [-23, 23], [-21, 13], [-19, 2], [5, -16], [12, -30], [20, -37], [30, -37], [38, -34], [41, -25], [41, -18]] as [number, number][], establishedYear: 1507, destinationName: 'Mozambique Island' },
     
     // Mozambique to Goa - continuation of Cape Route
-    { from: [40.7347, -15.0344] as [number, number], to: [73.8567, 15.2993] as [number, number], via: [[45, -10], [50, 0], [60, 10], [68, 14]] as [number, number][], establishedYear: 1507, destinationName: 'Goa, India' },
+    { from: [40.683, -15.004] as [number, number], to: [73.897, 15.299] as [number, number], via: [[45, -10], [50, 0], [60, 10], [68, 14]] as [number, number][], establishedYear: 1507, destinationName: 'Goa, India' },
     
     // Goa to Cochin - Malabar Coast trade
-    { from: [73.8567, 15.2993] as [number, number], to: [76.2673, 9.9312] as [number, number], via: [[74, 12]] as [number, number][], establishedYear: 1503, destinationName: 'Cochin, India' },
+    { from: [73.897, 15.299] as [number, number], to: [76.25, 9.921] as [number, number], via: [[74, 12]] as [number, number][], establishedYear: 1503, destinationName: 'Cochin, India' },
     
     // Cochin to Mozambique - spices returning to Africa (1500)
-    { from: [76.2673, 9.9312] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[68, 4], [56, -6], [45, -13], [42, -17]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
+    { from: [76.25, 9.921] as [number, number], to: [40.683, -15.004] as [number, number], via: [[68, 4], [56, -6], [45, -13], [42, -17]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
     
     // Goa to Mozambique - direct route (1500)
-    { from: [73.8567, 15.2993] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[64, 6], [54, -4], [45, -12], [42, -16]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
+    { from: [73.897, 15.299] as [number, number], to: [40.683, -15.004] as [number, number], via: [[64, 6], [54, -4], [45, -12], [42, -16]] as [number, number][], establishedYear: 1500, destinationName: 'Mozambique Island' },
     
     // Mozambique to Lisbon - Cape Route return voyage (1500)
-    { from: [40.7347, -15.0344] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[41, -20], [41, -27], [38, -34], [30, -37], [20, -37], [12, -30], [0, -14], [-19, 2], [-21, 13], [-18, 25], [-11, 31]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
+    { from: [40.683, -15.004] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[41, -20], [41, -27], [38, -34], [30, -37], [20, -37], [12, -30], [0, -14], [-19, 2], [-21, 13], [-23, 23], [-19, 30], [-12, 32]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
     
     // Mozambique to West Africa - along African coast (1500)
-    { from: [40.7347, -15.0344] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[41, -22], [40, -30], [30, -37], [18, -36], [5, -24], [-6, -6], [-4, 3]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
+    { from: [40.683, -15.004] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[41, -22], [40, -30], [30, -37], [18, -36], [5, -24], [-6, -6], [-4, 3]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
     
     // Mozambique to Caribbean - transatlantic via Cape (1500)
-    { from: [40.7347, -15.0344] as [number, number], to: [-66.1057, 18.4655] as [number, number], via: [[41, -22], [40, -30], [30, -37], [16, -35], [0, -22], [-18, -6], [-38, 6], [-55, 14]] as [number, number][], establishedYear: 1500, destinationName: 'Caribbean Islands' },
+    { from: [40.683, -15.004] as [number, number], to: [-66.086, 18.465] as [number, number], via: [[41, -22], [40, -30], [30, -37], [16, -35], [0, -22], [-18, -6], [-38, 6], [-55, 14]] as [number, number][], establishedYear: 1500, destinationName: 'Caribbean Islands' },
     
     // Goa to Hormuz - Persian Gulf connection
-    { from: [73.8567, 15.2993] as [number, number], to: [56.4547, 27.0769] as [number, number], via: [[68, 18], [62, 22]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
+    { from: [73.897, 15.299] as [number, number], to: [56.515, 27.181] as [number, number], via: [[68, 18], [62, 22]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
     
     // Goa to Malacca - Bay of Bengal crossing
-    { from: [73.8567, 15.2993] as [number, number], to: [102.2501, 2.1896] as [number, number], via: [[71, 12], [76, 5], [86, 4], [96, 7], [101, 3]] as [number, number][], establishedYear: 1511, destinationName: 'Malacca' },
+    { from: [73.897, 15.299] as [number, number], to: [102.27, 2.19] as [number, number], via: [[71, 12], [76, 5], [86, 4], [96, 7], [101, 3]] as [number, number][], establishedYear: 1511, destinationName: 'Malacca' },
     
     // Malacca to Ternate - through Indonesian archipelago
-    { from: [102.2501, 2.1896] as [number, number], to: [127.3866, 0.7893] as [number, number], via: [[106, -2], [112, -4], [118, -5], [124, -2]] as [number, number][], establishedYear: 1522, destinationName: 'Ternate (Moluccas)' },
+    { from: [102.27, 2.19] as [number, number], to: [127.369, 0.799] as [number, number], via: [[107.5, -4], [115, -6], [123, -7], [127, -2]] as [number, number][], establishedYear: 1522, destinationName: 'Ternate (Moluccas)' },
     
     // Malacca to Macao - South China Sea route
-    { from: [102.2501, 2.1896] as [number, number], to: [113.5439, 22.1987] as [number, number], via: [[106, 6], [111, 12], [113, 18]] as [number, number][], establishedYear: 1557, destinationName: 'Macao' },
+    { from: [102.27, 2.19] as [number, number], to: [113.544, 22.239] as [number, number], via: [[106, 6], [111, 12], [113, 18]] as [number, number][], establishedYear: 1557, destinationName: 'Macao' },
     
     // Goa to Lisbon - return voyage (full Carreira da Índia)
-    { from: [73.8567, 15.2993] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[64, 4], [56, -12], [50, -28], [38, -36], [28, -37], [18, -37], [8, -30], [0, -14], [-19, 2], [-21, 13], [-18, 25], [-11, 31]] as [number, number][], establishedYear: 1499, destinationName: 'Lisbon, Portugal' },
+    { from: [73.897, 15.299] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[64, 4], [56, -12], [50, -28], [38, -36], [28, -37], [18, -37], [8, -30], [0, -14], [-19, 2], [-21, 13], [-23, 23], [-19, 30], [-12, 32]] as [number, number][], establishedYear: 1499, destinationName: 'Lisbon, Portugal' },
     
     // South America (Peru/Bolivia) to Lisbon - direct Atlantic route via Brazil
-    { from: [-68.1193, -16.4897] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[-50, -20], [-35, -15], [-25, 0], [-18, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
+    { from: [-68.1193, -16.4897] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[-50, -20], [-35, -15], [-25, 0], [-18, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
     
     // === OVERLAND ASIAN ROUTES (1600) ===
     
@@ -383,16 +383,16 @@ const tradeRoutes = {
     { from: [66.9597, 39.6542] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[72, 40], [80, 38], [90, 35], [98, 32]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
     
     // Hormuz to Aleppo - Persian overland route
-    { from: [56.4547, 27.0769] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[52, 30], [48, 33], [44, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
+    { from: [56.515, 27.181] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[52, 30], [48, 33], [44, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
     
     // Hormuz to Samarkand - through Persia to Central Asia
-    { from: [56.4547, 27.0769] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[55, 32], [58, 35], [62, 38]] as [number, number][], establishedYear: 1600, destinationName: 'Samarkand (Silk Road)', isOverland: true },
+    { from: [56.515, 27.181] as [number, number], to: [66.9597, 39.6542] as [number, number], via: [[55, 32], [58, 35], [62, 38]] as [number, number][], establishedYear: 1600, destinationName: 'Samarkand (Silk Road)', isOverland: true },
     
     // Goa to Aleppo - overland via Persia
-    { from: [73.8567, 15.2993] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[68, 22], [60, 28], [52, 32], [45, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
+    { from: [73.897, 15.299] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[68, 22], [60, 28], [52, 32], [45, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
     
     // Macao to Sichuan - inland China route
-    { from: [113.5439, 22.1987] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[110, 25], [107, 28]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
+    { from: [113.544, 22.239] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[110, 25], [107, 28]] as [number, number][], establishedYear: 1600, destinationName: 'Sichuan, China', isOverland: true },
     
     // Aleppo to Hungary - Ottoman/European overland
     { from: [37.1343, 36.2021] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[32, 38], [28, 41], [24, 44]] as [number, number][], establishedYear: 1600, destinationName: 'Hungary', isOverland: true },
@@ -403,48 +403,48 @@ const tradeRoutes = {
     // === BRAZILIAN PORT ROUTES ===
     
     // Lisbon to Cape Verde - Atlantic island chain
-    { from: [-9.1393, 38.7223] as [number, number], to: [-23.6052, 15.1111] as [number, number], via: [[-15, 30], [-20, 22]] as [number, number][], establishedYear: 1462, destinationName: 'Cape Verde' },
+    { from: [-9.139, 38.742] as [number, number], to: [-23.6052, 15.1111] as [number, number], via: [[-15, 30], [-20, 22]] as [number, number][], establishedYear: 1462, destinationName: 'Cape Verde' },
     
     // Cape Verde to Elmina (Gold Coast)
-    { from: [-23.6052, 15.1111] as [number, number], to: [-1.3509, 5.0840] as [number, number], via: [[-18, 10], [-10, 6]] as [number, number][], establishedYear: 1482, destinationName: 'Elmina (Gold Coast)' },
+    { from: [-23.6052, 15.1111] as [number, number], to: [-1.334, 5.094] as [number, number], via: [[-18, 10], [-10, 6]] as [number, number][], establishedYear: 1482, destinationName: 'Elmina (Gold Coast)' },
     
     // Lisbon to Salvador (Bahia) - Brazil route
-    { from: [-9.1393, 38.7223] as [number, number], to: [-38.5108, -12.9714] as [number, number], via: [[-20, 25], [-28, 10], [-35, -5]] as [number, number][], establishedYear: 1549, destinationName: 'Salvador (Bahia)' },
+    { from: [-9.139, 38.742] as [number, number], to: [-38.472, -12.961] as [number, number], via: [[-20, 25], [-28, 10], [-35, -5]] as [number, number][], establishedYear: 1549, destinationName: 'Salvador (Bahia)' },
     
     // Lisbon to Recife
-    { from: [-9.1393, 38.7223] as [number, number], to: [-34.8811, -8.0476] as [number, number], via: [[-22, 22], [-30, 8], [-32, -2]] as [number, number][], establishedYear: 1537, destinationName: 'Recife' },
+    { from: [-9.139, 38.742] as [number, number], to: [-34.8811, -8.0476] as [number, number], via: [[-22, 22], [-30, 8], [-32, -2]] as [number, number][], establishedYear: 1537, destinationName: 'Recife' },
     
     // Salvador to Lisbon - return voyage
-    { from: [-38.5108, -12.9714] as [number, number], to: [-9.1393, 38.7223] as [number, number], via: [[-35, 0], [-25, 15], [-18, 30]] as [number, number][], establishedYear: 1549, destinationName: 'Lisbon, Portugal' },
+    { from: [-38.472, -12.961] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[-35, 0], [-25, 15], [-18, 30]] as [number, number][], establishedYear: 1549, destinationName: 'Lisbon, Portugal' },
     
     // Salvador to West Africa - triangular trade
-    { from: [-38.5108, -12.9714] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-25, -8], [-15, 0], [-8, 5]] as [number, number][], establishedYear: 1550, destinationName: 'West Africa' },
+    { from: [-38.472, -12.961] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-25, -8], [-15, 0], [-8, 5]] as [number, number][], establishedYear: 1550, destinationName: 'West Africa' },
     
     // Lisbon to Rio de Janeiro
-    { from: [-9.1393, 38.7223] as [number, number], to: [-43.1729, -22.9068] as [number, number], via: [[-20, 25], [-28, 6], [-31, -8], [-40, -20]] as [number, number][], establishedYear: 1565, destinationName: 'Rio de Janeiro' },
+    { from: [-9.139, 38.742] as [number, number], to: [-43.208, -22.887] as [number, number], via: [[-20, 25], [-28, 6], [-32, -10], [-42, -24]] as [number, number][], establishedYear: 1565, destinationName: 'Rio de Janeiro' },
     
     // === AFRICAN COASTAL ROUTES ===
     
     // Elmina to São Tomé
-    { from: [-1.3509, 5.0840] as [number, number], to: [6.7273, 0.3365] as [number, number], via: [[2, 3]] as [number, number][], establishedYear: 1493, destinationName: 'São Tomé' },
+    { from: [-1.334, 5.094] as [number, number], to: [6.7273, 0.3365] as [number, number], via: [[2, 3]] as [number, number][], establishedYear: 1493, destinationName: 'São Tomé' },
     
     // São Tomé to Luanda
     { from: [6.7273, 0.3365] as [number, number], to: [13.2343, -8.8390] as [number, number], via: [[10, -4]] as [number, number][], establishedYear: 1575, destinationName: 'Luanda' },
     
     // Luanda to Salvador - transatlantic goods and spice route
-    { from: [13.2343, -8.8390] as [number, number], to: [-38.5108, -12.9714] as [number, number], via: [[0, -10], [-20, -12]] as [number, number][], establishedYear: 1575, destinationName: 'Salvador (Bahia)' },
+    { from: [13.2343, -8.8390] as [number, number], to: [-38.472, -12.961] as [number, number], via: [[0, -10], [-20, -12]] as [number, number][], establishedYear: 1575, destinationName: 'Salvador (Bahia)' },
     
     // Sofala to Mozambique Island - East African coast
-    { from: [34.7459, -20.1503] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[40, -18]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
+    { from: [34.741, -20.131] as [number, number], to: [40.683, -15.004] as [number, number], via: [[40, -18]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
     
     // Mombasa to Mozambique Island
-    { from: [39.6682, -4.0435] as [number, number], to: [40.7347, -15.0344] as [number, number], via: [[41.5, -9]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
+    { from: [39.6682, -4.0435] as [number, number], to: [40.683, -15.004] as [number, number], via: [[41.5, -9]] as [number, number][], establishedYear: 1505, destinationName: 'Mozambique Island' },
     
     // Lisbon to Sofala via Cape
-    { from: [-9.1393, 38.7223] as [number, number], to: [34.7459, -20.1503] as [number, number], via: [[-11, 31], [-18, 25], [-21, 13], [-19, 2], [5, -16], [12, -30], [20, -37], [30, -37], [36, -30], [37, -25]] as [number, number][], establishedYear: 1505, destinationName: 'Sofala' },
+    { from: [-9.139, 38.742] as [number, number], to: [34.741, -20.131] as [number, number], via: [[-12, 32], [-19, 30], [-23, 23], [-21, 13], [-19, 2], [5, -16], [12, -30], [20, -37], [30, -37], [36, -30], [37, -25]] as [number, number][], establishedYear: 1505, destinationName: 'Sofala' },
     
     // Goa to Mombasa - Indian Ocean route
-    { from: [73.8567, 15.2993] as [number, number], to: [39.6682, -4.0435] as [number, number], via: [[62, 10], [50, 2], [45, -2]] as [number, number][], establishedYear: 1505, destinationName: 'Mombasa' },
+    { from: [73.897, 15.299] as [number, number], to: [39.6682, -4.0435] as [number, number], via: [[62, 10], [50, 2], [45, -2]] as [number, number][], establishedYear: 1505, destinationName: 'Mombasa' },
   ] as RouteData[],
 };
 
@@ -744,7 +744,7 @@ export function TradeRouteMap() {
     };
   }, [isMapLoaded, visibleRoutes]);
 
-  const STYLE_VERSION = 'ne110m-local-v3';
+  const STYLE_VERSION = 'ne50m-local-v1';
 
   // Generate graticule (lat/long grid lines) GeoJSON for nautical navigation feel
   const generateGraticule = (): GeoJSON.FeatureCollection => {
@@ -805,15 +805,15 @@ export function TradeRouteMap() {
     sources: {
       land: {
         type: 'geojson',
-        data: '/data/ne_110m_land.geojson',
+        data: '/data/ne_50m_land.geojson',
       },
       lakes: {
         type: 'geojson',
-        data: '/data/ne_110m_lakes.geojson',
+        data: '/data/ne_50m_lakes.geojson',
       },
       coastline: {
         type: 'geojson',
-        data: '/data/ne_110m_coastline.geojson',
+        data: '/data/ne_50m_coastline.geojson',
       },
       graticule: {
         type: 'geojson',
