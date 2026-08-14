@@ -202,10 +202,13 @@ serve(async (req) => {
     if (sources.includes('wikimedia')) {
       try {
         console.log('Searching Wikimedia Commons for reference images...');
+        // `filetype:bitmap` restricts CirrusSearch to raster photographs, which
+        // keeps out the PDFs / DJVU scans / SVG diagrams that a bare name search
+        // otherwise drags in (e.g. books that merely contain the word in a title).
         const wikiSearchTerms = [
-          `${pepperName} pepper`,
-          `${pepperName} chili`,
-          `Capsicum ${pepperName}`,
+          `${pepperName} pepper filetype:bitmap`,
+          `${pepperName} chili filetype:bitmap`,
+          `Capsicum ${pepperName} filetype:bitmap`,
         ];
 
         for (const searchTerm of wikiSearchTerms) {
@@ -220,8 +223,8 @@ serve(async (req) => {
           for (const result of searchResults) {
             const title = result.title;
             // Get image info
-            const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|extmetadata|user&format=json&origin=*`;
-            
+            const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|extmetadata|user|mime|mediatype&format=json&origin=*`;
+
             const infoResponse = await fetch(infoUrl);
             if (!infoResponse.ok) continue;
 
@@ -230,10 +233,18 @@ serve(async (req) => {
             const pageData = Object.values(pages)[0] as any;
             const imageInfo = pageData?.imageinfo?.[0];
 
-            if (imageInfo?.url) {
+            // Second guard behind filetype:bitmap: accept only real raster photos.
+            // BITMAP + an image/* mime (never svg) excludes PDFs, DJVU, TIFF docs.
+            const mediaType = (imageInfo?.mediatype || '').toUpperCase();
+            const mime = (imageInfo?.mime || '').toLowerCase();
+            const isPhoto = mediaType === 'BITMAP'
+              && mime.startsWith('image/')
+              && mime !== 'image/svg+xml';
+
+            if (imageInfo?.url && isPhoto) {
               const extmeta = imageInfo.extmetadata || {};
               const license = extmeta.LicenseShortName?.value || 'Unknown';
-              const author = extmeta.Artist?.value?.replace(/<[^>]+>/g, '') || imageInfo.user || 'Unknown';
+              const author = extmeta.Artist?.value?.replace(/<[^>]+>/g, '').trim() || imageInfo.user || 'Unknown';
 
               // Only include CC-licensed images
               if (license.toLowerCase().includes('cc') || license.toLowerCase().includes('public domain')) {
@@ -242,6 +253,7 @@ serve(async (req) => {
                   sourceUrl: `https://commons.wikimedia.org/wiki/${encodeURIComponent(title)}`,
                   license,
                   author,
+                  mime,
                   title: title.replace('File:', ''),
                 });
               }
@@ -275,6 +287,71 @@ serve(async (req) => {
           } else {
             researchResults.push(researchRecord);
           }
+        }
+
+        // Surface the real photos as reviewable image proposals. We download each
+        // into our own storage bucket (rather than hotlinking Commons) and carry
+        // the full attribution — source page, license, author — so approval works
+        // exactly like AI images and the site can display proper credit.
+        if (imageResults.length > 0) {
+          // Dedup against photos already proposed for this pepper.
+          const { data: existingProps } = await supabase
+            .from('pepper_image_proposals')
+            .select('source_url')
+            .eq('pepper_id', pepperId)
+            .eq('source_type', 'wikimedia');
+          const seen = new Set((existingProps || []).map((p: any) => p.source_url));
+
+          let createdCount = 0;
+          for (const img of imageResults) {
+            if (seen.has(img.sourceUrl)) continue;
+            try {
+              const dl = await fetch(img.url);
+              if (!dl.ok) {
+                console.error(`Failed to download Wikimedia image (${dl.status}): ${img.url}`);
+                continue;
+              }
+              const bytes = new Uint8Array(await dl.arrayBuffer());
+              const ext = (img.mime && img.mime.includes('/')) ? img.mime.split('/')[1].replace('jpeg', 'jpg') : 'jpg';
+              const storagePath = `wikimedia/${pepperId}/${Date.now()}-${createdCount}.${ext}`;
+
+              const { error: upErr } = await supabase.storage
+                .from('pepper-images')
+                .upload(storagePath, bytes, { contentType: img.mime || 'image/jpeg', upsert: true });
+              if (upErr) {
+                console.error('Wikimedia upload error:', upErr);
+                continue;
+              }
+
+              const { data: { publicUrl } } = supabase.storage
+                .from('pepper-images')
+                .getPublicUrl(storagePath);
+
+              const { error: propErr } = await supabase
+                .from('pepper_image_proposals')
+                .insert({
+                  pepper_id: pepperId,
+                  image_url: publicUrl,
+                  storage_path: storagePath,
+                  source_type: 'wikimedia',
+                  source_url: img.sourceUrl,
+                  license: img.license,
+                  author: img.author,
+                  prompt_used: img.title,
+                  confidence_score: 60,
+                  status: 'pending',
+                });
+              if (propErr) {
+                console.error('Wikimedia proposal insert error:', propErr);
+                continue;
+              }
+              seen.add(img.sourceUrl);
+              createdCount++;
+            } catch (imgErr) {
+              console.error('Error processing Wikimedia image:', imgErr);
+            }
+          }
+          console.log(`Created ${createdCount} Wikimedia photo proposal(s) for review.`);
         }
       } catch (err) {
         console.error('Wikimedia error:', err);

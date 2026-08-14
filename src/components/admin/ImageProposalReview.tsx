@@ -281,6 +281,29 @@ export function ImageProposalReview({ pepperId, onComplete }: ImageProposalRevie
                               </div>
                             )}
 
+                            {/* Attribution — shown for real web photos (Wikimedia, etc.) */}
+                            {(proposal.author || proposal.license || proposal.source_url) && (
+                              <div className="text-[10px] leading-snug text-ink/50 border-t border-ink/5 pt-1">
+                                {proposal.author && proposal.author !== 'Unknown' && (
+                                  <div className="truncate" title={proposal.author}>© {proposal.author}</div>
+                                )}
+                                <div className="flex items-center gap-1">
+                                  {proposal.license && <span className="truncate">{proposal.license}</span>}
+                                  {proposal.source_url && (
+                                    <a
+                                      href={proposal.source_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="inline-flex items-center gap-0.5 underline hover:text-ink/70"
+                                    >
+                                      source <ExternalLink className="w-2.5 h-2.5" />
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
                             {/* Actions */}
                             <div className="flex gap-1 pt-1">
                               <Button
