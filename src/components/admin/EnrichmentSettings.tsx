@@ -20,7 +20,6 @@ interface EnrichmentSettingsData {
   schedule_next_run: string | null;
   last_run_at: string | null;
   last_run_count: number;
-  image_generation_enabled?: boolean;
 }
 
 interface EnrichmentSettingsProps {
@@ -62,7 +61,13 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
     fetchSettings();
   }, [fetchSettings]);
 
-  const updateSettings = useCallback(async (updates: Partial<EnrichmentSettingsData>) => {
+  // Only these columns are user-editable here; schedule_next_run / last_run_at
+  // are written by the backend, and the image-generation toggle lives in
+  // localStorage (not the DB) — so none of them belong in this update payload.
+  const updateSettings = useCallback(async (
+    updates: Partial<Pick<EnrichmentSettingsData,
+      'auto_approve_enabled' | 'auto_approve_threshold' | 'schedule_enabled' | 'schedule_frequency'>>
+  ) => {
     if (!settings) return;
 
     setIsSaving(true);
