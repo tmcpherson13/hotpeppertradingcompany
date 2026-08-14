@@ -11,12 +11,11 @@ import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
 import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
 import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
-import { ReportsDownload } from '@/components/admin/ReportsDownload';
 import { FeaturedRotationControls } from '@/components/admin/FeaturedRotationControls';
 import { PepperManager } from '@/components/admin/PepperManager';
 import { PepperImporter } from '@/components/admin/PepperImporter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download, Star, Sprout } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Star, Sprout } from 'lucide-react';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 type EnrichmentSubTab = 'enrich' | 'catalog' | 'image-proposals' | 'progress';
@@ -82,7 +81,7 @@ export default function Admin() {
     <div className="min-h-screen bg-parchment flex flex-col relative">
       <SEO
         title="Administration"
-        description="Administrative console for the Hot Pepper Trading Company: content enrichment, image moderation, user management, and site reports."
+        description="Administrative console for the Hot Pepper Trading Company: content enrichment, image moderation, and user management."
         path="/admin"
         noIndex
       />
@@ -153,13 +152,6 @@ export default function Admin() {
               >
                 <User className="w-4 h-4 shrink-0" />
                 Profile
-              </TabsTrigger>
-              <TabsTrigger
-                value="reports"
-                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
-              >
-                <Download className="w-4 h-4 shrink-0" />
-                Reports
               </TabsTrigger>
               <TabsTrigger
                 value="featured"
@@ -288,15 +280,6 @@ export default function Admin() {
                   Your Profile
                 </h2>
                 <ProfileSettings />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="reports" className="mt-0">
-              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Downloadable Reports
-                </h2>
-                <ReportsDownload />
               </div>
             </TabsContent>
 
