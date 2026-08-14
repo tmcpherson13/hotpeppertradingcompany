@@ -1,10 +1,24 @@
-@import url('@fontsource/playfair-display/400.css');
-@import url('@fontsource/playfair-display/500.css');
-@import url('@fontsource/playfair-display/600.css');
-@import url('@fontsource/playfair-display/700.css');
-@import url('@fontsource/crimson-pro/400.css');
-@import url('@fontsource/crimson-pro/500.css');
-@import url('@fontsource/crimson-pro/600.css');
+/* Self-hosted historical typography — the fonts the design tokens actually use
+   (Cinzel = font-display, Cormorant Garamond = font-heading, EB Garamond =
+   font-body). Bundled via @fontsource so rendering is identical in every
+   browser, including privacy browsers like Brave that block the Google Fonts
+   CDN (fonts.gstatic.com). Weights mirror the former CDN request. */
+@import url('@fontsource/cinzel/400.css');
+@import url('@fontsource/cinzel/500.css');
+@import url('@fontsource/cinzel/600.css');
+@import url('@fontsource/cinzel/700.css');
+@import url('@fontsource/cormorant-garamond/400.css');
+@import url('@fontsource/cormorant-garamond/500.css');
+@import url('@fontsource/cormorant-garamond/600.css');
+@import url('@fontsource/cormorant-garamond/700.css');
+@import url('@fontsource/cormorant-garamond/400-italic.css');
+@import url('@fontsource/cormorant-garamond/500-italic.css');
+@import url('@fontsource/cormorant-garamond/600-italic.css');
+@import url('@fontsource/eb-garamond/400.css');
+@import url('@fontsource/eb-garamond/500.css');
+@import url('@fontsource/eb-garamond/600.css');
+@import url('@fontsource/eb-garamond/400-italic.css');
+@import url('@fontsource/eb-garamond/500-italic.css');
 
 @font-face {
   font-family: 'Blackpearl';
