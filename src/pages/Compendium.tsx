@@ -1,11 +1,13 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
 import { PepperDetailModal } from '@/components/compendium/PepperDetailModal';
-import { peppers, Pepper, ancestralSpeciesList, AncestralSpecies, HeatLevel } from '@/data/peppers';
+import { Pepper, ancestralSpeciesList, AncestralSpecies, HeatLevel } from '@/data/peppers';
+import { useAllPeppers } from '@/hooks/usePeppers';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { LogoDivider } from '@/components/ui/LogoDivider';
 import antiqueMap from '@/assets/antique-map.jpg';
@@ -25,6 +27,7 @@ const heatOrder: Record<HeatLevel, number> = {
 };
 
 const Compendium = () => {
+  const { peppers } = useAllPeppers();
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
@@ -49,7 +52,7 @@ const Compendium = () => {
         setCameFromOrigins(fromOrigins);
       }
     }
-  }, [searchParams]);
+  }, [searchParams, peppers]);
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -122,7 +125,7 @@ const Compendium = () => {
         
         return sortDirection === 'asc' ? comparison : -comparison;
       });
-  }, [searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly, sortField, sortDirection]);
+  }, [peppers, searchQuery, selectedRegion, selectedHeat, selectedSpecies, showInStockOnly, sortField, sortDirection]);
 
   const handleSelectPepper = (pepper: Pepper) => {
     setSelectedPepper(pepper);
@@ -139,6 +142,11 @@ const Compendium = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="The Compendium — 190 Chili Pepper Cultivars"
+        description="A searchable reference of 190 pepper cultivars with Scoville heat, geographic origin, species, and flavor notes—the trade house's formal registry of chilies."
+        path="/compendium"
+      />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 

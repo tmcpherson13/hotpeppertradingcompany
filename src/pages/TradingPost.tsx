@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Header } from "@/components/layout/Header";
+import { SEO } from '@/components/SEO';
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/trading-post/ProductCard";
 import { HeatFilter } from "@/components/trading-post/HeatFilter";
@@ -179,6 +180,11 @@ export default function TradingPost() {
 
   return (
     <div className="min-h-screen bg-parchment relative">
+      <SEO
+        title="The Trading Post — Curated Pepper Blends"
+        description="Shop curated hot-pepper flake blends: flagship 5-cultivar Consortium Journeys, 3-cultivar Regional selections, and single-origin cultivars for the palate."
+        path="/trading-post"
+      />
       {/* Global background - light map with purple grid */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-parchment" />

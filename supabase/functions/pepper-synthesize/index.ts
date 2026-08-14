@@ -66,6 +66,93 @@ function calculateConfidenceScore(
   return Math.min(score, 100);
 }
 
+// Adversarial verification: a second, independent Claude pass that checks the
+// synthesized prose against the raw research for (a) claims the sources don't
+// support and (b) near-verbatim copying (plagiarism). This is the trust gate —
+// auto-approval is blocked unless this passes. Fails CLOSED: any error routes
+// the entry to human review rather than silently publishing.
+const VERIFICATION_PROMPT = `You are a rigorous fact-checker and plagiarism auditor for a reference publication. You will be given SOURCE RESEARCH and a SYNTHESIZED ENTRY derived from it. Your job is to catch two problems:
+
+1. UNSUPPORTED CLAIMS — specific factual assertions in the synthesized entry (dates, numbers, Scoville values, named people/places/events, historical claims) that are NOT supported by anything in the source research. Do not flag general common knowledge or tone; only flag concrete factual claims that the sources do not back up.
+
+2. PLAGIARISM — passages in the synthesized entry that copy the source wording closely: roughly eight or more consecutive words matching a source, or a lightly-reworded sentence that tracks a source phrase-for-phrase.
+
+Return ONLY a JSON object with exactly these fields:
+{
+  "verification_passed": true or false,
+  "unsupported_claims": ["each unsupported factual claim, quoted"],
+  "plagiarism_flags": ["each copied passage, quoted, with a short note of which source it matches"],
+  "notes": "one or two sentences summarizing your assessment"
+}
+Set "verification_passed" to false if there is ANY unsupported factual claim OR ANY plagiarism flag. Be strict: this is the last gate before publication.`;
+
+interface VerificationResult {
+  verification_passed: boolean;
+  unsupported_claims: string[];
+  plagiarism_flags: string[];
+  notes: string;
+}
+
+async function runVerification(
+  anthropicKey: string,
+  synthesizedContent: any,
+  researchContent: string,
+): Promise<VerificationResult> {
+  const entryText = [
+    synthesizedContent.description,
+    synthesizedContent.historical_notes,
+    synthesizedContent.flavor_notes,
+    synthesizedContent.aroma_notes,
+    synthesizedContent.culinary_uses,
+    synthesizedContent.trade_route,
+  ].filter(Boolean).join('\n\n');
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': anthropicKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-opus-4-8',
+        max_tokens: 1500,
+        system: VERIFICATION_PROMPT,
+        messages: [{
+          role: 'user',
+          content: `SOURCE RESEARCH:\n${researchContent}\n\n---\n\nSYNTHESIZED ENTRY:\n${entryText}`,
+        }],
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('Verification call failed:', res.status, errText);
+      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: `Verification unavailable (HTTP ${res.status}); routed to human review.` };
+    }
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text ?? '';
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) {
+      return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: 'Verifier returned no parseable result; routed to human review.' };
+    }
+    const parsed = JSON.parse(match[0]);
+    return {
+      verification_passed: parsed.verification_passed === true
+        && (parsed.unsupported_claims?.length ?? 0) === 0
+        && (parsed.plagiarism_flags?.length ?? 0) === 0,
+      unsupported_claims: parsed.unsupported_claims ?? [],
+      plagiarism_flags: parsed.plagiarism_flags ?? [],
+      notes: parsed.notes ?? '',
+    };
+  } catch (e) {
+    console.error('Verification error:', e);
+    return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], notes: `Verification error: ${(e as Error).message}; routed to human review.` };
+  }
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -83,12 +170,12 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
+    const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!lovableKey) {
+    if (!anthropicKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'AI synthesis not configured' }),
+        JSON.stringify({ success: false, error: 'AI synthesis not configured (ANTHROPIC_API_KEY missing)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -133,21 +220,23 @@ serve(async (req) => {
 
     const allUrls = researchData.flatMap(r => r.urls || []);
 
-    console.log('Calling Lovable AI for synthesis...');
+    console.log('Calling Anthropic Claude for synthesis...');
 
-    // Call Lovable AI for synthesis
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Text synthesis via Anthropic Claude (migrated off Lovable AI gateway)
+    const aiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
+        'x-api-key': anthropicKey!,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'claude-opus-4-8',
+        max_tokens: 2000,
+        system: SYNTHESIS_PROMPT,
         messages: [
-          { role: 'system', content: SYNTHESIS_PROMPT },
-          { 
-            role: 'user', 
+          {
+            role: 'user',
             content: `Pepper Name: ${pepperName}\n\nResearch Data:\n${researchContent}\n\nSource URLs for citation:\n${allUrls.join('\n')}`
           }
         ],
@@ -178,7 +267,7 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    const synthesizedContent = aiData.choices?.[0]?.message?.content;
+    const synthesizedContent = aiData.content?.[0]?.text;
 
     if (!synthesizedContent) {
       return new Response(
@@ -208,9 +297,16 @@ serve(async (req) => {
       );
     }
 
-    // Calculate confidence score
+    // Calculate confidence score (measures volume/completeness, NOT veracity)
     const confidenceScore = calculateConfidenceScore(researchData, parsedContent);
     console.log(`Confidence score: ${confidenceScore}`);
+
+    // Adversarial verification pass — the trust gate. Confidence alone only
+    // measures how much was written and how many links exist; it says nothing
+    // about whether the facts are true or the prose is original. This checks both.
+    console.log('Running adversarial verification pass...');
+    const verification = await runVerification(anthropicKey!, parsedContent, researchContent);
+    console.log(`Verification passed: ${verification.verification_passed}; unsupported: ${verification.unsupported_claims.length}; plagiarism: ${verification.plagiarism_flags.length}`);
 
     // Check auto-approval settings
     const { data: settings } = await supabase
@@ -221,9 +317,14 @@ serve(async (req) => {
 
     const autoApproveEnabled = settings?.auto_approve_enabled || false;
     const autoApproveThreshold = settings?.auto_approve_threshold || 85;
-    const shouldAutoApprove = autoApproveEnabled && confidenceScore >= autoApproveThreshold;
+    // Auto-approve requires BOTH a high confidence score AND a clean verification
+    // pass. A high-confidence entry that has unsupported claims or copied phrasing
+    // is never auto-published — it always routes to a human.
+    const shouldAutoApprove = autoApproveEnabled
+      && confidenceScore >= autoApproveThreshold
+      && verification.verification_passed;
 
-    console.log(`Auto-approve: ${autoApproveEnabled}, threshold: ${autoApproveThreshold}, will auto-approve: ${shouldAutoApprove}`);
+    console.log(`Auto-approve: enabled=${autoApproveEnabled}, threshold=${autoApproveThreshold}, verified=${verification.verification_passed}, will auto-approve: ${shouldAutoApprove}`);
 
     // Store in enrichment queue
     const researchIds = researchData.map(r => r.id);
@@ -242,6 +343,10 @@ serve(async (req) => {
         status: shouldAutoApprove ? 'approved' : 'pending',
         confidence_score: confidenceScore,
         auto_approved: shouldAutoApprove,
+        verification_passed: verification.verification_passed,
+        unsupported_claims: verification.unsupported_claims,
+        plagiarism_flags: verification.plagiarism_flags,
+        verification_notes: verification.notes,
         created_by: userId,
         reviewed_by: shouldAutoApprove ? userId : null,
         reviewed_at: shouldAutoApprove ? new Date().toISOString() : null,

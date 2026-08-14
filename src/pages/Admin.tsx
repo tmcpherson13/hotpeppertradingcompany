@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 
 import { UserManagement } from '@/components/admin/UserManagement';
@@ -11,12 +12,15 @@ import { ImageProposalReview } from '@/components/admin/ImageProposalReview';
 import { AdminAuditLog } from '@/components/admin/AdminAuditLog';
 import { ReportsDownload } from '@/components/admin/ReportsDownload';
 import { FeaturedRotationControls } from '@/components/admin/FeaturedRotationControls';
+import { PepperManager } from '@/components/admin/PepperManager';
+import { PepperImporter } from '@/components/admin/PepperImporter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download, Star } from 'lucide-react';
+import { Users, Image, User, BookOpen, Activity, ImagePlus, FileText, Download, Star, Sprout } from 'lucide-react';
 import antiqueMap from '@/assets/antique-map.jpg';
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('enrichment');
+  const [catalogView, setCatalogView] = useState<'manage' | 'import'>('manage');
   const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
 
   const handleDashboardNavigate = useCallback((target: 'pending' | 'auto-approved' | 'completed') => {
@@ -28,6 +32,12 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-parchment flex flex-col relative">
+      <SEO
+        title="Administration"
+        description="Administrative console for the Hot Pepper Trading Company: content enrichment, image moderation, user management, and site reports."
+        path="/admin"
+        noIndex
+      />
       {/* Global background pattern */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <img 
@@ -62,6 +72,13 @@ export default function Admin() {
               >
                 <BookOpen className="w-4 h-4 shrink-0" />
                 Content Enrichment
+              </TabsTrigger>
+              <TabsTrigger
+                value="catalog"
+                className="flex-1 flex items-center justify-center gap-2 data-[state=active]:bg-parchment data-[state=active]:text-ink text-parchment/90 font-heading uppercase tracking-wider text-xs py-3 px-2 whitespace-nowrap"
+              >
+                <Sprout className="w-4 h-4 shrink-0" />
+                Catalog
               </TabsTrigger>
               <TabsTrigger
                 value="progress"
@@ -148,6 +165,41 @@ export default function Admin() {
                   initialView={enrichmentInitialView} 
                   onViewReset={() => setEnrichmentInitialView(undefined)} 
                 />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="catalog" className="mt-0">
+              <div className="bg-parchment-dark/20 border border-ink/20 p-4">
+                <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-center sm:justify-between">
+                  <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                    Catalog — Add &amp; Manage Cultivars
+                  </h2>
+                  <div className="inline-flex border border-tyrian-dark self-start">
+                    <button
+                      type="button"
+                      onClick={() => setCatalogView('manage')}
+                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 transition-colors ${
+                        catalogView === 'manage'
+                          ? 'bg-tyrian text-parchment'
+                          : 'bg-parchment text-ink/70 hover:text-ink'
+                      }`}
+                    >
+                      Manage Cultivars
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCatalogView('import')}
+                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 border-l border-tyrian-dark transition-colors ${
+                        catalogView === 'import'
+                          ? 'bg-tyrian text-parchment'
+                          : 'bg-parchment text-ink/70 hover:text-ink'
+                      }`}
+                    >
+                      Bulk Import
+                    </button>
+                  </div>
+                </div>
+                {catalogView === 'manage' ? <PepperManager /> : <PepperImporter />}
               </div>
             </TabsContent>
 

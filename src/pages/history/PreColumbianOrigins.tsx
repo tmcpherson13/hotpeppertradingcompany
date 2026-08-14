@@ -3,11 +3,13 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, Globe, MapPin, Languages, Scroll, Calendar, Flame } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { CitationLink, Citation } from '@/components/history/CitationLink';
 import { domesticationEvents, DomesticationDetails, DomesticationEvent } from '@/components/history/DomesticationTimeline';
 import { LogoDivider } from '@/components/ui/LogoDivider';
+import { getEssayConsortium, consortiumShopPath } from '@/data/blendContents';
 import logoDark from '@/assets/logo-dark.svg';
 import preColumbianArtwork from '@/assets/history/pre-columbian-artwork.jpg';
 
@@ -71,6 +73,7 @@ const citations: Citation[] = [
 
 export default function PreColumbianOrigins() {
   const [selectedEvent, setSelectedEvent] = useState<DomesticationEvent | null>(null);
+  const featured = getEssayConsortium('pre-columbian-origins');
   const heroRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -85,6 +88,13 @@ export default function PreColumbianOrigins() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Pre-Columbian Origins of the Chili Pepper"
+        description="How chili peppers were domesticated in the Americas millennia ago—archaeological, genetic, and linguistic evidence tracing capsicum to ancient Mexico and Peru."
+        path="/history/pre-columbian-origins"
+        type="article"
+        jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'Pre-Columbian Origins of the Chili Pepper', description: 'How chili peppers were domesticated in the Americas millennia ago—archaeological, genetic, and linguistic evidence tracing capsicum to ancient Mexico and Peru.', author: { '@type': 'Organization', name: 'Hot Pepper Trading Company' }, publisher: { '@type': 'Organization', name: 'Hot Pepper Trading Company' } }}
+      />
       <Header />
       
       <main className="relative">
@@ -667,6 +677,54 @@ export default function PreColumbianOrigins() {
                   </p>
                 </div>
               </motion.section>
+
+              {/* Taste This Era CTA */}
+              {featured && (
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-16"
+                >
+                  <div className="border border-primary/30 bg-background/50 p-8 md:p-10 text-center">
+                    <LogoDivider variant="standard" size="sm" className="mb-6" />
+                    <p className="text-muted-foreground font-heading text-sm uppercase tracking-[0.3em] mb-3 small-caps">
+                      Taste This Era
+                    </p>
+                    <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
+                      Six Thousand Years, in a Single Pinch
+                    </h2>
+                    <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
+                      The chiltepin and its Mesoamerican descendants are not merely history —
+                      they are still fierce, still fragrant, still worth the harvest. Let your
+                      palate retrace the peppers the Aztec and Maya prized.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                      <img
+                        src={featured.image}
+                        alt={featured.name}
+                        className="w-32 h-32 object-cover border border-border"
+                      />
+                      <div className="text-center sm:text-left">
+                        <p className="font-heading text-xs uppercase tracking-[0.2em] text-primary mb-1 small-caps">
+                          {featured.regionLabel}
+                        </p>
+                        <Link
+                          to={consortiumShopPath(featured)}
+                          onClick={() => window.scrollTo(0, 0)}
+                          className="inline-flex flex-col items-center sm:items-start gap-1 px-6 py-3 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm hover:bg-primary/90 transition-colors"
+                        >
+                          <span>{featured.name}</span>
+                          <span className="text-xs font-body normal-case tracking-normal opacity-90">
+                            {featured.tradeLot}
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </motion.section>
+              )}
 
               {/* Citations */}
               <motion.section

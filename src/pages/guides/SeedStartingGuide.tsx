@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sprout, Thermometer, Droplets, Sun, Calendar, Leaf, CheckCircle } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { LogoDivider } from '@/components/ui/LogoDivider';
@@ -23,6 +24,12 @@ export default function SeedStartingGuide() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Starting Pepper Seeds — A Cultivator's Guide"
+        description="A practical guide to germinating hot pepper seeds: the soil temperature, humidity, light, and timing that raise healthy seedlings from even stubborn superhots."
+        path="/guides/seed-starting"
+        type="article"
+      />
       <Header />
       
       <main className="relative">

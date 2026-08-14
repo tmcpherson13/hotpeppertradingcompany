@@ -1,0 +1,63 @@
+[
+  {
+    "__template_note": "TEMPLATE — verify every fact (especially Scoville) before publishing. Remove this field before importing; the importer ignores unknown fields but keep records clean.",
+    "name": "Dorset Naga",
+    "species": "chinense",
+    "scientific_name": "Capsicum chinense",
+    "origin": "Dorset, England (selection of Bangladeshi Naga Morich)",
+    "region": "Europe",
+    "heat_level": "Superhot",
+    "scoville_min": 900000,
+    "scoville_max": 1000000,
+    "scoville_source": "Widely reported ~900,000–1,000,000+ SHU; ranges vary by test — confirm against a primary lab source before verifying.",
+    "alternate_names": ["Dorset Naga Morich"],
+    "flavor_notes": ["fruity", "floral", "intense"],
+    "description": "A stabilized selection of Naga Morich bred in Dorset, England, and one of the earliest widely-grown superhots.",
+    "source_citations": ["https://en.wikipedia.org/wiki/List_of_Capsicum_cultivars"]
+  },
+  {
+    "name": "Corno di Toro",
+    "species": "annuum",
+    "scientific_name": "Capsicum annuum",
+    "origin": "Italy",
+    "region": "Europe",
+    "heat_level": "No Heat",
+    "scoville_min": 0,
+    "scoville_max": 0,
+    "scoville_source": "Sweet Italian frying pepper — essentially no measurable heat.",
+    "alternate_names": ["Bull's Horn"],
+    "flavor_notes": ["sweet", "rich"],
+    "description": "A long, tapering sweet Italian pepper named for its resemblance to a bull's horn; prized for frying and roasting.",
+    "source_citations": ["https://en.wikipedia.org/wiki/List_of_Capsicum_cultivars"]
+  },
+  {
+    "name": "Piquillo",
+    "species": "annuum",
+    "scientific_name": "Capsicum annuum",
+    "origin": "Navarre, Spain",
+    "region": "Europe",
+    "heat_level": "Very Mild",
+    "scoville_min": 500,
+    "scoville_max": 1000,
+    "scoville_source": "Commonly cited as ~500–1,000 SHU; confirm before verifying.",
+    "alternate_names": ["Piquillo de Lodosa"],
+    "flavor_notes": ["sweet", "smoky"],
+    "description": "A small red Spanish pepper from Navarre, traditionally fire-roasted and jarred; sweet with a gentle warmth.",
+    "source_citations": ["https://en.wikipedia.org/wiki/List_of_Capsicum_cultivars"]
+  },
+  {
+    "name": "Jaloro",
+    "species": "annuum",
+    "scientific_name": "Capsicum annuum",
+    "origin": "Texas, USA (Texas A&M / USDA release)",
+    "region": "Americas",
+    "heat_level": "Medium",
+    "scoville_min": 20000,
+    "scoville_max": 40000,
+    "scoville_source": "Yellow jalapeño-type; commonly cited ~20,000–40,000 SHU. Confirm against the Texas A&M / USDA release documentation before verifying.",
+    "alternate_names": ["Yellow Jalapeño"],
+    "flavor_notes": ["bright", "grassy"],
+    "description": "A yellow jalapeño-type pepper released by Texas A&M in the early 1990s, bred for disease resistance.",
+    "source_citations": ["https://en.wikipedia.org/wiki/List_of_Capsicum_cultivars"]
+  }
+]

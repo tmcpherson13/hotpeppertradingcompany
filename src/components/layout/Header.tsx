@@ -13,6 +13,7 @@ const navLinks = [
   { name: 'Our Heritage', href: '/#heritage', isRoute: false },
   { name: 'Trade Routes', href: '#routes', isRoute: false },
   { name: 'Origins Map', href: '/origins', isRoute: true },
+  { name: 'Guides', href: '/guides/seed-starting', isRoute: true },
   { name: 'About', href: '/about', isRoute: true },
 ];
 

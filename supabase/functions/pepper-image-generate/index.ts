@@ -9,9 +9,10 @@ const corsHeaders = {
 // Watermark configuration - using actual company logo
 // The logo is hosted in the public folder and accessible via the app URL
 
+// Image generation + vision via Google Gemini (migrated off Lovable AI gateway)
 // Function to apply watermark using image editing AI with the actual logo
 async function applyWatermark(
-  lovableKey: string,
+  geminiKey: string,
   imageBase64: string,
   pepperName: string,
   supabaseUrl: string
@@ -20,7 +21,7 @@ async function applyWatermark(
     // Use the actual company logo from storage
     // The logo URL is constructed from the Supabase project URL
     const logoUrl = `${supabaseUrl.replace('.supabase.co', '.lovable.app')}/branding/watermark-logo.png`;
-    
+
     const watermarkPrompt = `Overlay the second image (the circular Hot Pepper Trading Company logo) as a subtle watermark in the bottom-right corner of the first image (the pepper image).
 
 Requirements:
@@ -34,34 +35,54 @@ Requirements:
 The first image is the main pepper image to watermark.
 The second image is the Hot Pepper Trading Company logo to use as the watermark.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-image-preview',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: watermarkPrompt },
-            { type: 'image_url', image_url: { url: imageBase64 } },
-            { type: 'image_url', image_url: { url: logoUrl } }
-          ]
-        }],
-        modalities: ['image', 'text'],
-      }),
-    });
+    // Parse the main pepper image (data URL) into mime + base64
+    const mainMimeMatch = imageBase64.match(/^data:(image\/\w+);base64,/);
+    const mainMime = mainMimeMatch ? mainMimeMatch[1] : 'image/png';
+    const mainData = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+
+    // Fetch the logo and convert to base64 for inline_data
+    const parts: any[] = [
+      { text: watermarkPrompt },
+      { inline_data: { mime_type: mainMime, data: mainData } },
+    ];
+    try {
+      const logoResp = await fetch(logoUrl);
+      if (logoResp.ok) {
+        const logoBuf = new Uint8Array(await logoResp.arrayBuffer());
+        let binary = '';
+        for (let i = 0; i < logoBuf.length; i++) binary += String.fromCharCode(logoBuf[i]);
+        const logoB64 = btoa(binary);
+        const logoMime = logoResp.headers.get('content-type') || 'image/png';
+        parts.push({ inline_data: { mime_type: logoMime, data: logoB64 } });
+      }
+    } catch (logoErr) {
+      console.error('Logo fetch error:', logoErr);
+    }
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{ parts }],
+        }),
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
-      const watermarkedImage = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-      if (watermarkedImage) {
-        return watermarkedImage;
+      const responseParts = data.candidates?.[0]?.content?.parts || [];
+      const imagePart = responseParts.find((p: any) => p.inlineData || p.inline_data);
+      const inline = imagePart?.inlineData || imagePart?.inline_data;
+      if (inline?.data) {
+        const mimeType = inline.mimeType || inline.mime_type || 'image/png';
+        return `data:${mimeType};base64,${inline.data}`;
       }
     }
-    
+
     console.log('Watermarking failed, using original image');
     return imageBase64;
   } catch (err) {
@@ -160,12 +181,12 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
+    const geminiKey = Deno.env.get('GEMINI_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!lovableKey) {
+    if (!geminiKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'AI image generation not configured' }),
+        JSON.stringify({ success: false, error: 'AI image generation not configured (GEMINI_API_KEY missing)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -226,35 +247,44 @@ serve(async (req) => {
       console.log('Analyzing reference images with vision AI...');
 
       try {
-        const imageContent = referenceImageUrls.slice(0, 3).map((url: string) => ({
-          type: 'image_url',
-          image_url: { url }
-        }));
+        // Fetch reference images and convert to base64 inline_data parts for Gemini vision
+        const imageParts: any[] = [];
+        for (const url of referenceImageUrls.slice(0, 3) as string[]) {
+          try {
+            const refResp = await fetch(url);
+            if (!refResp.ok) continue;
+            const refBuf = new Uint8Array(await refResp.arrayBuffer());
+            let binary = '';
+            for (let i = 0; i < refBuf.length; i++) binary += String.fromCharCode(refBuf[i]);
+            const refB64 = btoa(binary);
+            const refMime = refResp.headers.get('content-type') || 'image/jpeg';
+            imageParts.push({ inline_data: { mime_type: refMime, data: refB64 } });
+          } catch (fetchErr) {
+            console.error('Reference image fetch error:', fetchErr);
+          }
+        }
 
-        const analysisResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-pro',
-            messages: [
-              { role: 'system', content: VISION_ANALYSIS_PROMPT },
-              {
-                role: 'user',
-                content: [
-                  { type: 'text', text: `Analyze these reference images of the ${pepperName} pepper variety:` },
-                  ...imageContent
-                ]
-              }
-            ],
-          }),
-        });
+        const analysisResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${geminiKey}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: `${VISION_ANALYSIS_PROMPT}\n\nAnalyze these reference images of the ${pepperName} pepper variety:` },
+                  ...imageParts,
+                ],
+              }],
+            }),
+          }
+        );
 
         if (analysisResponse.ok) {
           const analysisData = await analysisResponse.json();
-          const analysisContent = analysisData.choices?.[0]?.message?.content || '';
+          const analysisContent = analysisData.candidates?.[0]?.content?.parts?.[0]?.text || '';
           
           // Extract JSON from response
           const jsonMatch = analysisContent.match(/\{[\s\S]*\}/);
@@ -306,18 +336,18 @@ serve(async (req) => {
 
         console.log(`Generating ${type} image...`);
 
-        const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash-image-preview',
-            messages: [{ role: 'user', content: prompt }],
-            modalities: ['image', 'text'],
-          }),
-        });
+        const imageResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${geminiKey}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+            }),
+          }
+        );
 
         if (!imageResponse.ok) {
           const errorText = await imageResponse.text();
@@ -327,7 +357,12 @@ serve(async (req) => {
         }
 
         const imageData = await imageResponse.json();
-        const generatedImage = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        const genParts = imageData.candidates?.[0]?.content?.parts || [];
+        const genImagePart = genParts.find((p: any) => p.inlineData || p.inline_data);
+        const genInline = genImagePart?.inlineData || genImagePart?.inline_data;
+        const generatedImage = genInline?.data
+          ? `data:${genInline.mimeType || genInline.mime_type || 'image/png'};base64,${genInline.data}`
+          : null;
 
         if (!generatedImage) {
           console.error(`No image returned for ${type}`);
@@ -339,7 +374,7 @@ serve(async (req) => {
         console.log(`Applying watermark to ${type} image...`);
 
         // Apply watermark using image editing
-        const watermarkedImage = await applyWatermark(lovableKey, generatedImage, pepperName, supabaseUrl);
+        const watermarkedImage = await applyWatermark(geminiKey, generatedImage, pepperName, supabaseUrl);
         
         const timestamp = Date.now();
         const storagePath = `generated/${pepperId}/${type}-${timestamp}.png`;

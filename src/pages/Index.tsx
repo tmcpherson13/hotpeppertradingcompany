@@ -1,4 +1,5 @@
 import { Header } from '@/components/layout/Header';
+import { SEO } from '@/components/SEO';
 import { Hero } from '@/components/sections/Hero';
 import { TradingCompany } from '@/components/sections/TradingCompany';
 import { BrandPhilosophy } from '@/components/sections/BrandPhilosophy';
@@ -11,6 +12,12 @@ import { Footer } from '@/components/layout/Footer';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Hot Pepper Trading Company"
+        description="A hot-pepper resource and curated blends themed as an old trading house: history, a 190-cultivar compendium, an origins map, and consortium flake blends."
+        path="/"
+        type="website"
+      />
       <Header />
       <main>
         <Hero />
