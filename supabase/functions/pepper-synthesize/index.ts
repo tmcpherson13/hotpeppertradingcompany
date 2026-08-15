@@ -156,7 +156,7 @@ async function runRewrite(
     }
 
     const data = await res.json();
-    const text = data.content?.[0]?.text ?? '';
+    const text = data.content?.find((b: any) => b.type === 'text')?.text ?? '';
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) {
       console.error('Rewrite returned no parseable JSON');
@@ -212,7 +212,7 @@ async function runVerification(
     }
 
     const data = await res.json();
-    const text = data.content?.[0]?.text ?? '';
+    const text = data.content?.find((b: any) => b.type === 'text')?.text ?? '';
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) {
       return { verification_passed: false, unsupported_claims: [], plagiarism_flags: [], narrative_inferences: [], notes: 'Verifier returned no parseable result; routed to human review.' };
@@ -372,11 +372,17 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    const synthesizedContent = aiData.content?.[0]?.text;
+    // Read the first TEXT block, not content[0]: some models return a leading
+    // non-text block (e.g. reasoning) for certain inputs, which would otherwise
+    // read as empty and fail deterministically with "No content generated".
+    const synthesizedContent = aiData.content?.find((b: any) => b.type === 'text')?.text;
 
     if (!synthesizedContent) {
+      // Surface why, so a future empty-response regression is diagnosable.
+      console.error('No content generated. stop_reason:', aiData.stop_reason,
+        'block_types:', JSON.stringify((aiData.content || []).map((b: any) => b.type)));
       return new Response(
-        JSON.stringify({ success: false, error: 'No content generated' }),
+        JSON.stringify({ success: false, error: 'No content generated', stop_reason: aiData.stop_reason ?? null }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
