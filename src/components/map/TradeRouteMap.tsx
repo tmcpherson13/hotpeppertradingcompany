@@ -494,6 +494,43 @@ const routePaths: [number, number][][] = tradeRoutes.routes.map(
   (r) => smoothPath([r.from, ...r.via, r.to]) as [number, number][]
 );
 
+// Cumulative along-path length (planar degrees — fine for smooth interpolation)
+// for every route. Lets the voyage animate by *distance travelled* rather than
+// by vertex index, so the camera glides at a steady speed instead of lurching
+// point-to-point over the unevenly-spaced smoothed vertices.
+function cumulativeLengths(path: [number, number][]): number[] {
+  const cum = [0];
+  for (let i = 1; i < path.length; i++) {
+    const dx = path[i][0] - path[i - 1][0];
+    const dy = path[i][1] - path[i - 1][1];
+    cum.push(cum[i - 1] + Math.hypot(dx, dy));
+  }
+  return cum;
+}
+const routeCumLengths: number[][] = routePaths.map(cumulativeLengths);
+
+// Position at fraction f (0..1) of the way along a path, by arc length. Returns
+// the interpolated point plus the index of the last vertex at or before it, so
+// the drawn line can be sliced up to that vertex and capped with the exact point.
+function pointAtFraction(
+  path: [number, number][],
+  cum: number[],
+  f: number
+): { point: [number, number]; idx: number } {
+  const total = cum[cum.length - 1];
+  if (total <= 0 || f <= 0) return { point: path[0], idx: 0 };
+  if (f >= 1) return { point: path[path.length - 1], idx: path.length - 1 };
+  const target = f * total;
+  let i = 1;
+  while (i < cum.length && cum[i] < target) i++;
+  const segStart = cum[i - 1];
+  const segEnd = cum[i];
+  const t = segEnd > segStart ? (target - segStart) / (segEnd - segStart) : 0;
+  const a = path[i - 1];
+  const b = path[i];
+  return { point: [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t], idx: i - 1 };
+}
+
 // Bounding box of a path as [[minLng, minLat], [maxLng, maxLat]].
 function pathBounds(path: [number, number][]): [[number, number], [number, number]] {
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -699,6 +736,10 @@ export function TradeRouteMap() {
   const voyageRafRef = useRef<number | null>(null);
   const voyageTokenRef = useRef(0);
   const animatingRouteRef = useRef<number | null>(null);
+  // Every leg of the journey currently on screen (departure connector + sea
+  // voyage + arrival connector). The visibility effect leaves these alone so a
+  // chained journey's finished legs aren't wiped while a later leg is drawing.
+  const activeChainRef = useRef<Set<number>>(new Set());
   const voyageLabelsRef = useRef<maplibregl.Marker[]>([]);
 
   const animateVoyage = useCallback((routeIndex: number) => {
@@ -706,6 +747,10 @@ export function TradeRouteMap() {
     if (!m || !isMapLoaded) return;
     const chain = voyageChain(routeIndex);
     if (!chain.length || !routePaths[chain[0]]) return;
+
+    // This whole chain is now the on-screen journey; the visibility effect will
+    // leave its legs alone so finished legs aren't wiped mid-animation.
+    activeChainRef.current = new Set(chain);
 
     // Label the journey by its true origin and ultimate destination.
     const mainMeta = tradeRoutes.routes[routeIndex];
@@ -762,9 +807,15 @@ export function TradeRouteMap() {
         setLine([legPath[0], legPath[0]]);
 
         const isConnector = tradeRoutes.routes[legIndex].connector === true;
+        const cum = routeCumLengths[legIndex];
+        const legLen = cum[cum.length - 1]; // geographic length in degrees
         const followZoom = followZoomFor(legPath);
-        // Deliberate, methodical pacing — a long, steady trace.
-        const drawMs = Math.min(9000, Math.max(isConnector ? 1600 : 4200, legPath.length * 30));
+        // Deliberate, methodical pacing scaled to real distance — long ocean
+        // crossings take proportionally longer, short hops stay brisk.
+        const drawMs = Math.min(
+          11000,
+          Math.max(isConnector ? 1500 : 3200, legLen * (isConnector ? 120 : 95))
+        );
         // Sweep in slowly for the first leg; between legs the camera is already
         // at the shared port, so a shorter ease just adjusts the zoom.
         const easeDur = first ? 2400 : 950;
@@ -778,9 +829,13 @@ export function TradeRouteMap() {
             if (startTs === null) startTs = ts;
             const p = Math.min(1, (ts - startTs) / drawMs);
             const eased = 0.5 - 0.5 * Math.cos(Math.PI * p); // easeInOutSine — a steady, methodical trace
-            const k = Math.max(1, Math.round(eased * (legPath.length - 1)));
-            setLine(legPath.slice(0, k + 1));
-            m.setCenter(legPath[k]);
+            // Advance by arc length, not vertex index, so the camera glides at a
+            // constant speed and the drawn tip sits exactly under it.
+            const { point, idx } = pointAtFraction(legPath, cum, eased);
+            const drawn = legPath.slice(0, idx + 1);
+            drawn.push(point);
+            setLine(drawn);
+            m.setCenter(point);
             if (p < 1) {
               voyageRafRef.current = requestAnimationFrame(frame);
             } else {
@@ -837,7 +892,9 @@ export function TradeRouteMap() {
     if (!map.current || !isMapLoaded) return;
     const m = map.current;
     tradeRoutes.routes.forEach((route, index) => {
-      if (animatingRouteRef.current === index) return;
+      // Never touch a leg that belongs to the journey currently on screen —
+      // otherwise a finished leg gets wiped while a later leg is still drawing.
+      if (activeChainRef.current.has(index)) return;
       getRouteLayerIds(index).forEach((layerId) => {
         try { m.setPaintProperty(layerId, 'line-opacity', 0); } catch { /* layer may not exist */ }
       });
@@ -912,9 +969,17 @@ export function TradeRouteMap() {
     if (heroIdx >= 0) {
       animateVoyage(heroIdx);
     } else {
-      // No voyage for this event — clear any lingering journey labels and pan.
+      // No voyage for this event — clear the previous journey (labels + lines)
+      // and simply pan to the location.
       voyageLabelsRef.current.forEach((lbl) => lbl.remove());
       voyageLabelsRef.current = [];
+      activeChainRef.current = new Set();
+      tradeRoutes.routes.forEach((_, i) => {
+        try {
+          m.setPaintProperty(`route-line-${i}`, 'line-opacity', 0);
+          m.setPaintProperty(`route-glow-${i}`, 'line-opacity', 0);
+        } catch { /* layer may not exist */ }
+      });
       m.easeTo({
         center: currentEvent.coordinates,
         duration: 1000,
