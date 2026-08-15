@@ -83,6 +83,7 @@ interface RouteData {
   establishedYear: number;
   destinationName: string;
   isOverland?: boolean;
+  connector?: boolean; // short overland leg linking an inland city to its coastal gateway port
 }
 
 // Convert timeline year (negative for BCE) to comparable year
@@ -140,6 +141,13 @@ const tradeRoutes = {
       description: 'Adriatic spice entrepôt — cargoes continued overland from here into Central Europe.',
       cultivars: ['Mediterranean peppers'],
       year: '1569',
+    },
+    {
+      name: 'Callao',
+      coordinates: [-77.15, -12.05] as [number, number],
+      description: 'Pacific port of Lima — Andean peppers descended from the highlands to ship from here around Cape Horn.',
+      cultivars: ['Andean peppers'],
+      year: '1535',
     },
     {
       name: 'Aleppo, Syria',
@@ -334,11 +342,12 @@ const tradeRoutes = {
     // Atlantic to Spain, overland to Hungary
     { from: [-96.14, 19.19] as [number, number], to: [12.26, 45.45] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-9, 36], [-3, 36], [5, 38], [9, 38], [11.6, 37.4], [15, 36], [18, 37.5], [19.2, 39.8], [19.3, 41], [16, 42.5], [13.2, 44.5]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
     // Overland connectors: inland cities linked to their coastal gateway ports.
-    { from: [-99.1332, 19.4326] as [number, number], to: [-96.14, 19.19] as [number, number], via: [[-97.6, 19.3]] as [number, number][], establishedYear: 1493, destinationName: 'Veracruz', isOverland: true },
-    { from: [36.17, 36.59] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[36.7, 36.4]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
-    { from: [12.26, 45.45] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[15.7, 46.4]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary', isOverland: true },
+    { from: [-99.1332, 19.4326] as [number, number], to: [-96.14, 19.19] as [number, number], via: [[-97.6, 19.3]] as [number, number][], establishedYear: 1493, destinationName: 'Veracruz', isOverland: true, connector: true },
+    { from: [36.17, 36.59] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[36.7, 36.4]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true, connector: true },
+    { from: [12.26, 45.45] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[15.7, 46.4]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary', isOverland: true, connector: true },
+    { from: [-68.1193, -16.4897] as [number, number], to: [-77.15, -12.05] as [number, number], via: [[-72, -14]] as [number, number][], establishedYear: 1500, destinationName: 'Callao', isOverland: true, connector: true },
     // Peru to West Africa - across Atlantic
-    { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-35, -15], [-20, -5]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
+    { from: [-77.15, -12.05] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-79, -20], [-78, -35], [-77, -46], [-76, -54], [-69, -57], [-60, -55], [-50, -45], [-40, -30], [-30, -12], [-20, 0], [-12, 6]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
     // From Goa to Sichuan - coastal route
     { from: [73.897, 15.299] as [number, number], to: [104.0665, 30.5728] as [number, number], via: [[72, 12], [78, 4], [90, 9], [98, 16], [103, 22]] as [number, number][], establishedYear: 1570, destinationName: 'Sichuan, China' },
     // Silk Road route: From Persia/Ottoman to Samarkand (overland)
@@ -400,7 +409,7 @@ const tradeRoutes = {
     { from: [73.897, 15.299] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[64, 4], [56, -12], [50, -28], [38, -36], [28, -37], [18, -37], [8, -30], [0, -14], [-19, 2], [-21, 13], [-23, 23], [-19, 30], [-12, 32]] as [number, number][], establishedYear: 1499, destinationName: 'Lisbon, Portugal' },
     
     // South America (Peru/Bolivia) to Lisbon - direct Atlantic route via Brazil
-    { from: [-68.1193, -16.4897] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[-50, -20], [-35, -15], [-25, 0], [-18, 20], [-12, 35]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
+    { from: [-77.15, -12.05] as [number, number], to: [-9.139, 38.742] as [number, number], via: [[-79, -20], [-78, -35], [-77, -46], [-76, -54], [-69, -57], [-60, -55], [-50, -45], [-42, -30], [-33, -12], [-25, 5], [-20, 20], [-19, 31]] as [number, number][], establishedYear: 1500, destinationName: 'Lisbon, Portugal' },
     
     // === OVERLAND ASIAN ROUTES (1600) ===
     
