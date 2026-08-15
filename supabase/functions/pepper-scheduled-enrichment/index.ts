@@ -28,6 +28,16 @@ const IN_STOCK_PEPPERS = [
 const LOCK_STALE_MS = 15 * 60 * 1000; // a lock older than this is treated as dead
 const BATCH_WALL_MS = 100_000;        // stop starting new items past ~100s
 
+// Record a failed attempt against a pepper. Once fail_count reaches MAX_FAILS the
+// work-list filter stops selecting it, so no single pepper can loop forever.
+async function bumpFailure(supabase: any, p: any, error: string) {
+  await supabase.from('pepper_catalog').update({
+    fail_count: (p.fail_count || 0) + 1,
+    last_error: error,
+    last_attempt_at: new Date().toISOString(),
+  }).eq('id', p.id);
+}
+
 async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: string) {
   const { data: settings } = await supabase
     .from('enrichment_settings').select('*').limit(1).single();
@@ -52,7 +62,7 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
   try {
     // Build the remaining work-list from the canonical catalogue.
     const [{ data: catalog }, { data: enriched }, { data: pendingQ }, { data: research }] = await Promise.all([
-      supabase.from('pepper_catalog').select('id,name,in_stock'),
+      supabase.from('pepper_catalog').select('id,name,in_stock,fail_count'),
       supabase.from('pepper_overrides').select('pepper_id').gt('enrichment_version', 0),
       supabase.from('pepper_enrichment_queue').select('pepper_id').eq('status', 'pending'),
       supabase.from('pepper_research').select('pepper_id'),
@@ -62,8 +72,12 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
     const pendingIds = new Set((pendingQ || []).map((r: any) => r.pepper_id));
     const researchedIds = new Set((research || []).map((r: any) => r.pepper_id));
 
+    // Dead-letter guard: a pepper that has failed this many times is skipped so a
+    // single broken entry can never be retried on every 2-minute tick forever.
+    const MAX_FAILS = 3;
+
     const remaining = (catalog || [])
-      .filter((p: any) => !enrichedIds.has(p.id) && !pendingIds.has(p.id))
+      .filter((p: any) => !enrichedIds.has(p.id) && !pendingIds.has(p.id) && (p.fail_count || 0) < MAX_FAILS)
       .sort((a: any, b: any) => (b.in_stock ? 1 : 0) - (a.in_stock ? 1 : 0)); // in-stock first
 
     if (remaining.length === 0) {
@@ -94,7 +108,11 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${supabaseKey}` },
             body: JSON.stringify({ pepperName: p.name, pepperId: p.id, sources: ['firecrawl', 'perplexity', 'wikimedia'] }),
           });
-          if (!rr.ok) { console.error(`autorun: research failed for ${p.id} (${rr.status})`); continue; }
+          if (!rr.ok) {
+            console.error(`autorun: research failed for ${p.id} (${rr.status})`);
+            await bumpFailure(supabase, p, `research ${rr.status}`);
+            continue;
+          }
         }
         // autoRewrite + autoPublish are forced on here so the autonomous run
         // actually populates live content rather than just filling the queue.
@@ -103,10 +121,23 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${supabaseKey}` },
           body: JSON.stringify({ pepperId: p.id, pepperName: p.name, autoRewrite: true, autoPublish: true }),
         });
-        if (sr.ok) { done++; console.log(`autorun: enriched ${p.id}`); }
-        else {
-          if (sr.status === 402) creditBlocked = true; // out of Anthropic credits
+        if (sr.ok) {
+          done++;
+          console.log(`autorun: enriched ${p.id}`);
+          // Clear any prior failure tally on success.
+          await supabase.from('pepper_catalog')
+            .update({ fail_count: 0, last_error: null, last_attempt_at: new Date().toISOString() })
+            .eq('id', p.id);
+        } else if (sr.status === 402) {
+          // Out of Anthropic credits — transient, do NOT penalize the pepper.
+          creditBlocked = true;
+          console.error(`autorun: synthesize blocked on credits for ${p.id}`);
+        } else {
+          const errBody = await sr.text().catch(() => '');
           console.error(`autorun: synthesize failed for ${p.id} (${sr.status})`);
+          // A real failure counts toward the dead-letter ceiling so a broken
+          // pepper is retried at most MAX_FAILS times, not indefinitely.
+          await bumpFailure(supabase, p, `synthesize ${sr.status}: ${errBody.slice(0, 300)}`);
         }
         await new Promise((r) => setTimeout(r, 1500));
       } catch (e) {
