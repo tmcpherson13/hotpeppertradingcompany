@@ -83,6 +83,7 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
     const batch = remaining.slice(0, batchSize);
     const startTs = Date.now();
     let done = 0;
+    let creditBlocked = false;
 
     for (const p of batch) {
       if (Date.now() - startTs > BATCH_WALL_MS) break; // don't start a new item near the wall
@@ -103,21 +104,26 @@ async function runAutorun(supabase: any, supabaseUrl: string, supabaseKey: strin
           body: JSON.stringify({ pepperId: p.id, pepperName: p.name, autoRewrite: true, autoPublish: true }),
         });
         if (sr.ok) { done++; console.log(`autorun: enriched ${p.id}`); }
-        else console.error(`autorun: synthesize failed for ${p.id} (${sr.status})`);
+        else {
+          if (sr.status === 402) creditBlocked = true; // out of Anthropic credits
+          console.error(`autorun: synthesize failed for ${p.id} (${sr.status})`);
+        }
         await new Promise((r) => setTimeout(r, 1500));
       } catch (e) {
         console.error(`autorun: error on ${p.id}:`, e);
       }
     }
 
+    // Surface an out-of-credits stall as a distinct status so the UI can show
+    // it clearly; the loop stays enabled and auto-resumes once credits return.
     await supabase.from('enrichment_settings').update({
       autorun_locked_at: null,
-      autorun_status: 'running',
+      autorun_status: (creditBlocked && done === 0) ? 'blocked_credits' : 'running',
       autorun_last_tick: new Date().toISOString(),
       last_run_at: new Date().toISOString(),
       last_run_count: done,
     }).eq('id', settings.id);
-    console.log(`autorun: processed ${done}/${batch.length}, ~${remaining.length - batch.length} remaining`);
+    console.log(`autorun: processed ${done}/${batch.length}, ~${remaining.length - batch.length} remaining${creditBlocked ? ' (credits exhausted)' : ''}`);
   } catch (e) {
     console.error('autorun: batch error, releasing lock:', e);
     await supabase.from('enrichment_settings').update({ autorun_locked_at: null }).eq('id', settings.id);

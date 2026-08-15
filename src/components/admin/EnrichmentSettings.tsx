@@ -371,6 +371,14 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
             />
           </div>
 
+          {settings.autorun_status === 'blocked_credits' && (
+            <div className="p-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+              ⚠ Anthropic API credits exhausted — the run is paused. Add credits at
+              console.anthropic.com (same org as the site's API key). It resumes
+              automatically within ~2 minutes once credits are available.
+            </div>
+          )}
+
           {progress && (
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
@@ -392,7 +400,9 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
             <div>
               <p className="text-ink/50">Status</p>
               <p className="font-medium text-ink mt-0.5 capitalize">
-                {settings.autorun_status}
+                {settings.autorun_status === 'blocked_credits'
+                  ? 'Paused · out of credits'
+                  : settings.autorun_status}
                 {settings.autorun_enabled && settings.autorun_status === 'running' && ' · working…'}
               </p>
             </div>

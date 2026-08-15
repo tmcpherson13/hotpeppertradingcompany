@@ -344,9 +344,13 @@ serve(async (req) => {
           { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-      if (aiResponse.status === 402) {
+      // Anthropic reports an exhausted balance as a 400 invalid_request_error
+      // ("credit balance is too low"), not a 402 — match the message too and
+      // normalize it to 402 so callers can surface a clear "out of credits".
+      const lowCredit = /credit balance is too low|Plans & Billing|purchase credits/i.test(errorText);
+      if (aiResponse.status === 402 || lowCredit) {
         return new Response(
-          JSON.stringify({ success: false, error: 'AI credits exhausted. Please add credits to continue.' }),
+          JSON.stringify({ success: false, error: 'AI credits exhausted. Please add credits to continue.', creditsExhausted: true }),
           { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
