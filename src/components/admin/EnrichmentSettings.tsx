@@ -9,12 +9,14 @@ import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Loader2, Zap, Calendar, Play, Image } from 'lucide-react';
+import { Loader2, Zap, Calendar, Play, Image, Wand2 } from 'lucide-react';
 
 interface EnrichmentSettingsData {
   id: string;
   auto_approve_enabled: boolean;
   auto_approve_threshold: number;
+  auto_rewrite_enabled: boolean;
+  auto_publish_enabled: boolean;
   schedule_enabled: boolean;
   schedule_frequency: string;
   schedule_next_run: string | null;
@@ -66,7 +68,7 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
   // localStorage (not the DB) — so none of them belong in this update payload.
   const updateSettings = useCallback(async (
     updates: Partial<Pick<EnrichmentSettingsData,
-      'auto_approve_enabled' | 'auto_approve_threshold' | 'schedule_enabled' | 'schedule_frequency'>>
+      'auto_approve_enabled' | 'auto_approve_threshold' | 'auto_rewrite_enabled' | 'auto_publish_enabled' | 'schedule_enabled' | 'schedule_frequency'>>
   ) => {
     if (!settings) return;
 
@@ -222,6 +224,67 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
                 </p>
               </div>
             </>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Fast-Populate (auto-rewrite + auto-publish) */}
+      <Card className="bg-parchment border-ink/10">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-heading">
+            <Wand2 className="w-4 h-4 text-purple-600" />
+            Fast Populate
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="auto-rewrite" className="text-sm font-medium">
+                Auto-Rewrite Copied Passages
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                When the verifier flags wording that copies a source, rewrite it
+                automatically (facts preserved) instead of waiting for a manual edit.
+              </p>
+            </div>
+            <Switch
+              id="auto-rewrite"
+              checked={settings.auto_rewrite_enabled}
+              onCheckedChange={(checked) =>
+                updateSettings({ auto_rewrite_enabled: checked })
+              }
+              disabled={isSaving}
+            />
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="auto-publish" className="text-sm font-medium">
+                Auto-Publish (Fast Populate)
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                Once copying is cleared, publish straight to live content — bypassing
+                the confidence threshold. Unsupported facts are logged for a later
+                deep-analysis pass rather than blocking.
+              </p>
+            </div>
+            <Switch
+              id="auto-publish"
+              checked={settings.auto_publish_enabled}
+              onCheckedChange={(checked) =>
+                updateSettings({ auto_publish_enabled: checked })
+              }
+              disabled={isSaving}
+            />
+          </div>
+
+          {settings.auto_publish_enabled && (
+            <div className="p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-700">
+              Fast-populate is ON. Enriched entries publish automatically after
+              copying is rewritten away. Review facts later in the deep-analysis pass.
+            </div>
           )}
         </CardContent>
       </Card>

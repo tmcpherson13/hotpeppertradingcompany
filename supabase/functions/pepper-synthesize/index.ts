@@ -101,6 +101,70 @@ interface VerificationResult {
   notes: string;
 }
 
+// Auto-rewrite pass: when the verifier flags passages that copy the sources too
+// closely, a third Claude call rewrites the entry into fully original prose. It
+// is constrained to change ONLY wording — never facts — so the rewrite can be
+// published without human intervention while the deferred deep-analysis pass
+// still owns fact-checking.
+const REWRITE_PROMPT = `You are an editor for the Hot Pepper Trading Company, a merchant-house reference publication written in an evocative, historical voice. A draft entry has been flagged for passages that copy source wording too closely. Rewrite the entry so every passage is original prose, while changing nothing about its meaning.
+
+Absolute rules:
+- PRESERVE EVERY FACT EXACTLY. Dates, years, numbers, Scoville values, place names, people, ships, institutions, botanical/species names, and any "first/oldest/largest/only" claims must appear unchanged. Do not add, remove, soften, or alter a single fact.
+- Change ONLY wording, phrasing, sentence structure, and rhythm, so that no passage shares roughly eight or more consecutive words with any source and no sentence tracks a source phrase-for-phrase.
+- Do NOT introduce any new fact, claim, date, number, or name that is not already present in the draft.
+- Keep the archival, scholarly, merchant-house voice, and keep the same set of fields with comparable length.
+
+You will receive the SOURCE RESEARCH (so you know what wording to avoid), the FLAGGED PASSAGES, and the DRAFT ENTRY as JSON.
+
+Return ONLY a JSON object with exactly these fields, rewritten: description, historical_notes, flavor_notes, aroma_notes, culinary_uses, trade_route, source_citations.`;
+
+async function runRewrite(
+  anthropicKey: string,
+  content: any,
+  plagiarismFlags: string[],
+  researchContent: string,
+): Promise<any | null> {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': anthropicKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-opus-4-8',
+        max_tokens: 2000,
+        system: REWRITE_PROMPT,
+        messages: [{
+          role: 'user',
+          content: `SOURCE RESEARCH:\n${researchContent}\n\n---\n\nFLAGGED PASSAGES (copied too closely — these must be reworded):\n${plagiarismFlags.map((f, i) => `${i + 1}. ${f}`).join('\n')}\n\n---\n\nDRAFT ENTRY (JSON):\n${JSON.stringify(content, null, 2)}`,
+        }],
+      }),
+    });
+
+    if (!res.ok) {
+      console.error('Rewrite call failed:', res.status, await res.text());
+      return null;
+    }
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text ?? '';
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) {
+      console.error('Rewrite returned no parseable JSON');
+      return null;
+    }
+    const parsed = JSON.parse(match[0]);
+    // Never let the rewrite drop citations — carry the originals forward if it did.
+    if (!parsed.source_citations) parsed.source_citations = content.source_citations;
+    return parsed;
+  } catch (e) {
+    console.error('Rewrite error:', e);
+    return null;
+  }
+}
+
 async function runVerification(
   anthropicKey: string,
   synthesizedContent: any,
@@ -171,7 +235,15 @@ serve(async (req) => {
   }
 
   try {
-    const { pepperId, pepperName, generateImages = false, jobId = null } = await req.json();
+    const {
+      pepperId,
+      pepperName,
+      generateImages = false,
+      jobId = null,
+      // Optional per-request overrides; when omitted, fall back to enrichment_settings.
+      autoRewrite: autoRewriteOverride = null,
+      autoPublish: autoPublishOverride = null,
+    } = await req.json();
 
     if (!pepperId || !pepperName) {
       return new Response(
@@ -309,18 +381,7 @@ serve(async (req) => {
       );
     }
 
-    // Calculate confidence score (measures volume/completeness, NOT veracity)
-    const confidenceScore = calculateConfidenceScore(researchData, parsedContent);
-    console.log(`Confidence score: ${confidenceScore}`);
-
-    // Adversarial verification pass — the trust gate. Confidence alone only
-    // measures how much was written and how many links exist; it says nothing
-    // about whether the facts are true or the prose is original. This checks both.
-    console.log('Running adversarial verification pass...');
-    const verification = await runVerification(anthropicKey!, parsedContent, researchContent);
-    console.log(`Verification passed: ${verification.verification_passed}; unsupported: ${verification.unsupported_claims.length}; plagiarism: ${verification.plagiarism_flags.length}`);
-
-    // Check auto-approval settings
+    // Load enrichment settings (drives auto-rewrite, auto-publish, auto-approve).
     const { data: settings } = await supabase
       .from('enrichment_settings')
       .select('*')
@@ -329,14 +390,72 @@ serve(async (req) => {
 
     const autoApproveEnabled = settings?.auto_approve_enabled || false;
     const autoApproveThreshold = settings?.auto_approve_threshold || 85;
-    // Auto-approve requires BOTH a high confidence score AND a clean verification
-    // pass. A high-confidence entry that has unsupported claims or copied phrasing
-    // is never auto-published — it always routes to a human.
-    const shouldAutoApprove = autoApproveEnabled
-      && confidenceScore >= autoApproveThreshold
-      && verification.verification_passed;
+    // Per-request overrides win; otherwise fall back to settings. Rewriting is
+    // safe (it only rephrases), so it defaults ON. Fast-populate publishing is
+    // opt-in and defaults OFF.
+    const autoRewrite = autoRewriteOverride ?? settings?.auto_rewrite_enabled ?? true;
+    const autoPublish = autoPublishOverride ?? settings?.auto_publish_enabled ?? false;
 
-    console.log(`Auto-approve: enabled=${autoApproveEnabled}, threshold=${autoApproveThreshold}, verified=${verification.verification_passed}, will auto-approve: ${shouldAutoApprove}`);
+    // Adversarial verification pass — the trust gate. Confidence alone only
+    // measures how much was written and how many links exist; it says nothing
+    // about whether the facts are true or the prose is original. This checks both.
+    console.log('Running adversarial verification pass...');
+    let verification = await runVerification(anthropicKey!, parsedContent, researchContent);
+    console.log(`Verification passed: ${verification.verification_passed}; unsupported: ${verification.unsupported_claims.length}; plagiarism: ${verification.plagiarism_flags.length}`);
+
+    // Auto-rewrite: if the verifier caught copied wording, rewrite those passages
+    // in an original voice (facts preserved) and re-verify, up to a couple of
+    // attempts — instead of parking the entry for a human to rewrite by hand.
+    let autoRewritten = false;
+    let preRewriteContent: any = null;
+    const MAX_REWRITE_ATTEMPTS = 2;
+    if (autoRewrite && verification.plagiarism_flags.length > 0) {
+      preRewriteContent = { ...parsedContent };
+      for (
+        let attempt = 1;
+        attempt <= MAX_REWRITE_ATTEMPTS && verification.plagiarism_flags.length > 0;
+        attempt++
+      ) {
+        console.log(`Auto-rewrite attempt ${attempt}: ${verification.plagiarism_flags.length} flagged passage(s)`);
+        const rewritten = await runRewrite(anthropicKey!, parsedContent, verification.plagiarism_flags, researchContent);
+        if (!rewritten || !rewritten.description) {
+          console.error('Auto-rewrite failed; keeping previous draft');
+          break;
+        }
+        parsedContent = rewritten;
+        autoRewritten = true;
+        verification = await runVerification(anthropicKey!, parsedContent, researchContent);
+        console.log(`After rewrite: plagiarism=${verification.plagiarism_flags.length}, unsupported=${verification.unsupported_claims.length}`);
+      }
+    }
+
+    // Calculate confidence score on the FINAL (possibly rewritten) content —
+    // measures volume/completeness, NOT veracity.
+    const confidenceScore = calculateConfidenceScore(researchData, parsedContent);
+    console.log(`Confidence score: ${confidenceScore}`);
+
+    const copyingCleared = verification.plagiarism_flags.length === 0;
+    // Minimal floor so fast-populate never publishes near-empty junk.
+    const MIN_PUBLISH_CONFIDENCE = 40;
+
+    let shouldAutoApprove: boolean;
+    if (autoPublish) {
+      // Fast-populate: once copying is cleared and there is real content, publish
+      // straight to live — regardless of the confidence threshold and regardless
+      // of unsupported facts (those are logged on the row for the later deep pass,
+      // not gated). If copying could NOT be cleared, fall back to human review.
+      shouldAutoApprove = copyingCleared
+        && !!parsedContent.description
+        && confidenceScore >= MIN_PUBLISH_CONFIDENCE;
+    } else {
+      // Standard mode: auto-approve requires high confidence AND a clean
+      // verification (no plagiarism, no unsupported hard facts).
+      shouldAutoApprove = autoApproveEnabled
+        && confidenceScore >= autoApproveThreshold
+        && verification.verification_passed;
+    }
+
+    console.log(`Gate: autoPublish=${autoPublish}, autoRewritten=${autoRewritten}, copyingCleared=${copyingCleared}, confidence=${confidenceScore}, verified=${verification.verification_passed} -> autoApprove=${shouldAutoApprove}`);
 
     // Store in enrichment queue
     const researchIds = researchData.map(r => r.id);
@@ -360,6 +479,8 @@ serve(async (req) => {
         plagiarism_flags: verification.plagiarism_flags,
         narrative_inferences: verification.narrative_inferences,
         verification_notes: verification.notes,
+        auto_rewritten: autoRewritten,
+        pre_rewrite_content: preRewriteContent,
         created_by: userId,
         reviewed_by: shouldAutoApprove ? userId : null,
         reviewed_at: shouldAutoApprove ? new Date().toISOString() : null,
@@ -485,10 +606,13 @@ serve(async (req) => {
         data: queueEntry,
         confidenceScore,
         autoApproved: shouldAutoApprove,
+        autoRewritten,
         imageGenTriggered,
-        message: shouldAutoApprove 
-          ? `Content auto-approved with ${confidenceScore}% confidence` 
-          : 'Content synthesized and queued for review',
+        message: shouldAutoApprove
+          ? `Published${autoRewritten ? ' (copied passages auto-rewritten)' : ''} at ${confidenceScore}% confidence`
+          : autoRewritten
+            ? 'Synthesized and rewritten; queued for review (copying could not be fully cleared)'
+            : 'Content synthesized and queued for review',
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

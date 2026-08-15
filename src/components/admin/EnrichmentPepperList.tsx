@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square, Package, Camera, CameraOff } from 'lucide-react';
+import { Search, Circle, CheckCircle, Clock, AlertCircle, CheckSquare, Square, Package, Camera, CameraOff, Wand2 } from 'lucide-react';
 
 interface EnrichmentPepperListProps {
   onSelectPepper: (pepper: Pepper) => void;
@@ -218,6 +218,26 @@ export function EnrichmentPepperList({
     });
   }, [filteredPeppers, pepperStatuses, imageStatuses, onSelectionChange]);
 
+  // Fast-populate helper: select the next batch of up to 25 peppers that still
+  // need enriching (not yet enriched, not already pending review), honoring the
+  // current search filter. Lets an admin populate the DB 25 at a time.
+  const handleSelectNext25 = useCallback(() => {
+    const needsEnrichment = filteredPeppers.filter(p => {
+      const status = pepperStatuses.get(p.id) || 'none';
+      return status !== 'enriched' && status !== 'pending' && !selectedIds.has(p.id);
+    });
+    const nextBatch = needsEnrichment.slice(0, 25);
+    if (nextBatch.length === 0) return;
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      nextBatch.forEach(p => next.add(p.id));
+      if (onSelectionChange) {
+        onSelectionChange(peppers.filter(p => next.has(p.id)));
+      }
+      return next;
+    });
+  }, [filteredPeppers, pepperStatuses, selectedIds, onSelectionChange]);
+
   const handleClearSelection = useCallback(() => {
     setSelectedIds(new Set());
     if (onSelectionChange) {
@@ -327,6 +347,15 @@ export function EnrichmentPepperList({
               className="text-xs h-7"
             >
               Unenriched
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSelectNext25}
+              className="text-xs h-7 text-purple-600 hover:text-purple-700 border-purple-200"
+            >
+              <Wand2 className="w-3 h-3 mr-1" />
+              Next 25
             </Button>
             <Button
               variant="ghost"

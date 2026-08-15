@@ -126,6 +126,8 @@ export type Database = {
         Row: {
           auto_approve_enabled: boolean
           auto_approve_threshold: number
+          auto_publish_enabled: boolean
+          auto_rewrite_enabled: boolean
           id: string
           last_run_at: string | null
           last_run_count: number | null
@@ -138,6 +140,8 @@ export type Database = {
         Insert: {
           auto_approve_enabled?: boolean
           auto_approve_threshold?: number
+          auto_publish_enabled?: boolean
+          auto_rewrite_enabled?: boolean
           id?: string
           last_run_at?: string | null
           last_run_count?: number | null
@@ -150,6 +154,8 @@ export type Database = {
         Update: {
           auto_approve_enabled?: boolean
           auto_approve_threshold?: number
+          auto_publish_enabled?: boolean
+          auto_rewrite_enabled?: boolean
           id?: string
           last_run_at?: string | null
           last_run_count?: number | null
@@ -230,11 +236,13 @@ export type Database = {
       pepper_enrichment_queue: {
         Row: {
           auto_approved: boolean | null
+          auto_rewritten: boolean | null
           confidence_score: number | null
           created_at: string
           created_by: string | null
           id: string
           pepper_id: string
+          pre_rewrite_content: Json | null
           proposed_aroma_notes: string | null
           proposed_culinary_uses: string | null
           proposed_description: string | null
@@ -250,11 +258,13 @@ export type Database = {
         }
         Insert: {
           auto_approved?: boolean | null
+          auto_rewritten?: boolean | null
           confidence_score?: number | null
           created_at?: string
           created_by?: string | null
           id?: string
           pepper_id: string
+          pre_rewrite_content?: Json | null
           proposed_aroma_notes?: string | null
           proposed_culinary_uses?: string | null
           proposed_description?: string | null
@@ -270,11 +280,13 @@ export type Database = {
         }
         Update: {
           auto_approved?: boolean | null
+          auto_rewritten?: boolean | null
           confidence_score?: number | null
           created_at?: string
           created_by?: string | null
           id?: string
           pepper_id?: string
+          pre_rewrite_content?: Json | null
           proposed_aroma_notes?: string | null
           proposed_culinary_uses?: string | null
           proposed_description?: string | null
