@@ -31,12 +31,11 @@ Updated: 2026-01-02
 | View compendium entry | "View Trade Record" |
 
 ## Content Policies
-- Tell the real history. Where a cultivar's or region's story runs through
-  coercion, forced labour, or the Atlantic slave trade, state it plainly and
-  proportionately — normally one factual sentence in the historical context,
-  in the same register as any other trade fact. Do not omit it. Do not
-  editorialize, moralize, or dwell on it. Do not make it the subject of an
-  entry that is about a pepper.
+- Keep cultivar entries focused on the pepper. Do not raise the Atlantic slave
+  trade or forced labour in an entry unless it is genuinely essential to that
+  pepper's story, and even then keep it to at most a brief, neutral factual
+  clause in the same register as any other trade fact — never its own sentence,
+  never editorializing, moralizing, or dwelling. When in doubt, leave it out.
 - The brand statement on the About page carries the weight. Entries stay brief
   because that statement exists.
 - Never name a product, consortium, or collection after a period of suffering.
