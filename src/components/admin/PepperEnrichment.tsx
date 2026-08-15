@@ -9,12 +9,13 @@ import { BatchEnrichmentPanel } from './BatchEnrichmentPanel';
 import { EnrichmentReviewModal } from './EnrichmentReviewModal';
 import { EnrichmentStats } from './EnrichmentStats';
 import { PendingReviewQueue } from './PendingReviewQueue';
+import { DeepAnalysisPanel } from './DeepAnalysisPanel';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Eye, Layers, Circle, Settings, ChevronDown, ClipboardCheck } from 'lucide-react';
+import { Eye, Layers, Circle, Settings, ChevronDown, ClipboardCheck, ShieldAlert } from 'lucide-react';
 
 interface PepperEnrichmentProps {
   initialView?: 'pending' | 'auto-approved';
@@ -27,7 +28,7 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [currentQueueEntry, setCurrentQueueEntry] = useState<EnrichmentQueueEntry | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [activeTab, setActiveTab] = useState<'single' | 'batch' | 'pending'>('single');
+  const [activeTab, setActiveTab] = useState<'single' | 'batch' | 'pending' | 'analysis'>('single');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
   const [pendingFilter, setPendingFilter] = useState<'all' | 'auto-approved'>('all');
@@ -125,7 +126,7 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
       <Separator />
 
       {/* Mode Tabs */}
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'single' | 'batch' | 'pending')}>
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'single' | 'batch' | 'pending' | 'analysis')}>
         <TabsList className="bg-parchment-dark/30 border border-ink/20">
           <TabsTrigger value="single" className="flex items-center gap-2 text-xs">
             <Circle className="w-4 h-4" />
@@ -148,6 +149,10 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
                 {pendingCount}
               </Badge>
             )}
+          </TabsTrigger>
+          <TabsTrigger value="analysis" className="flex items-center gap-2 text-xs">
+            <ShieldAlert className="w-4 h-4" />
+            Deep Analysis
           </TabsTrigger>
         </TabsList>
 
@@ -257,6 +262,15 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
                 refreshKey={refreshKey}
                 onReviewComplete={() => setRefreshKey(k => k + 1)}
               />
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Deep Analysis Mode */}
+        <TabsContent value="analysis" className="mt-4">
+          <div className="border border-ink/10 rounded-lg overflow-hidden bg-parchment min-h-[500px]">
+            <div className="h-[540px]">
+              <DeepAnalysisPanel key={`analysis-${refreshKey}`} />
             </div>
           </div>
         </TabsContent>
