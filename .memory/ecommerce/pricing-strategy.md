@@ -43,7 +43,7 @@ Pricing is based on heat intensity using a 4-tier system:
 |------|-------|------------|-------------|
 | 1 | $17.00 | Mild-Moderate | Phoenician Legacy, Silk & Jade Passages |
 | 2 | $19.00 | Moderate-Hot | Southern Crucible, Andean Diaspora, Manila Galleon |
-| 3 | $21.00 | Hot | Cradle of Fire, Atlantic Provenance, Old Natchez Trace, Embers of Africa |
+| 3 | $21.00 | Hot | Cradle of Fire, Atlantic Provenance, Old Natchez Trace, The Windward Passage |
 | 4 | $23.00 | Extreme | Letter of Marque (30K-2M SHU) |
 
 ## Pricing Philosophy

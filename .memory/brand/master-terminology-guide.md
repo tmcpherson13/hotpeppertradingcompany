@@ -2,7 +2,7 @@
 Updated: 2026-01-02
 
 ## Core Identity
-- Founded: 1493 (year peppers documented in Europe)
+- Founded: 1493 — the first year peppers existed outside the Americas
 - Tagline: "Celebrating Pepper History, Culture & Cuisine Since 1493"
 - Aesthetic: Old-world maritime trade, antique nautical maps, Phoenician/Mediterranean commerce
 - NOT: Modern-tech, startup, playful, cartoonish, minimalist
@@ -31,7 +31,18 @@ Updated: 2026-01-02
 | View compendium entry | "View Trade Record" |
 
 ## Content Policies
-- No references to slave trade in historical narratives
+- Tell the real history. Where a cultivar's or region's story runs through
+  coercion, forced labour, or the Atlantic slave trade, state it plainly and
+  proportionately — normally one factual sentence in the historical context,
+  in the same register as any other trade fact. Do not omit it. Do not
+  editorialize, moralize, or dwell on it. Do not make it the subject of an
+  entry that is about a pepper.
+- The brand statement on the About page carries the weight. Entries stay brief
+  because that statement exists.
+- Never name a product, consortium, or collection after a period of suffering.
+  Name for place, people, cultivar, or route.
+- Never apply cargo, consignment, manifest, or lading language to human beings,
+  in any context, including quotation.
 - Use full name "Hot Pepper Trading Company" in narrative prose
 - Voice: Authoritative, educational, knowledgeable
 - Avoid: Marketing hype, buzzwords, casual language
