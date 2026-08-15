@@ -12,7 +12,7 @@ const CONSORTIUM_NAMES = [
   'Cradle of Fire',
   'Southern Crucible',
   'Andean Diaspora',
-  'Embers of Africa',
+  'The Windward Passage',
   'Phoenician Legacy',
   'Silk & Jade Passages',
   'Atlantic Provenance',

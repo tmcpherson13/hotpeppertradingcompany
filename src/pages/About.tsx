@@ -110,6 +110,27 @@ export default function About() {
             </Section>
           </div>
         </section>
+        {/* Founding statement + the record we keep — plain type, deliberately undecorated */}
+        <section className="py-16 md:py-24 border-t border-border/40">
+          <div className="container max-w-2xl mx-auto px-6 space-y-6">
+            <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed">
+              The Company dates itself to 1493. Not because it existed then, but because that is the year the trade began — the first year peppers were carried beyond the hemisphere that made them. Everything in the Compendium descends from that crossing. We keep the record from its opening entry.
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl text-foreground pt-6">On the Record We Keep</h2>
+            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+              The Hot Pepper Trading Company borrows the language of a merchant house — manifests, consignments, bills of lading — because that is how the movement of peppers was actually recorded. The routes on our chart are the routes that existed.
+            </p>
+            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+              Those same routes carried people. The Atlantic trade that moved capsicum between the Americas, Africa, and the Caribbean was inseparable from the trade in enslaved human beings. Elmina and São Tomé appear on our chart as pepper ports. They were also slaving ports.
+            </p>
+            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+              We use the aesthetic of that era. We make no claim that the era was romantic. Where a pepper's history runs through coercion, we say so in the entry rather than around it, and we do not name a product after a period of suffering.
+            </p>
+            <p className="font-body text-foreground/90 text-base md:text-lg leading-relaxed">
+              The ledger is only worth keeping if it is accurate.
+            </p>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

@@ -19,7 +19,7 @@ import tradeRoutesBg from "@/assets/trade-routes-bg.jpg";
 import { CradleOfFireContent } from "@/components/sections/CradleOfFireContent";
 import { SouthernCrucibleContent } from "@/components/sections/SouthernCrucibleContent";
 import { AndeanDiasporaContent } from "@/components/sections/AndeanDiasporaContent";
-import { EmbersOfAfricaContent } from "@/components/sections/EmbersOfAfricaContent";
+import { WindwardPassageContent } from "@/components/sections/WindwardPassageContent";
 import { PhoenicianLegacyContent } from "@/components/sections/PhoenicianLegacyContent";
 import { SilkJadePassagesContent } from "@/components/sections/SilkJadePassagesContent";
 import { AtlanticProvenanceContent } from "@/components/sections/AtlanticProvenanceContent";
@@ -167,7 +167,7 @@ export default function TradingPost() {
       case 'cradle-of-fire': return <CradleOfFireContent />;
       case 'southern-crucible': return <SouthernCrucibleContent />;
       case 'andean-diaspora': return <AndeanDiasporaContent />;
-      case 'embers-of-africa': return <EmbersOfAfricaContent />;
+      case 'windward-passage': return <WindwardPassageContent />;
       case 'phoenician-legacy': return <PhoenicianLegacyContent />;
       case 'silk-jade-passages': return <SilkJadePassagesContent />;
       case 'atlantic-provenance': return <AtlanticProvenanceContent />;

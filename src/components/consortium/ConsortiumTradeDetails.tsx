@@ -15,9 +15,22 @@ export function ConsortiumTradeDetails({ consortiumId, heatRange }: ConsortiumTr
   // Fallback values if consortium not found (shouldn't happen)
   const weight = consortium?.weight ?? "2 oz (56.70g)";
   const price = consortium?.price ?? "$21.00";
+  const factorsNote = consortium?.factorsNote;
 
   return (
-    <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
+    <>
+      {/* Factor's Note — declares which cultivars are on-route and which were
+          carried outside it for flavor. Rendered for every consortium that
+          carries a note in the data. */}
+      {factorsNote && (
+        <div className="py-4 border-t border-dashed border-ink/20">
+          <h4 className="font-display text-sm uppercase tracking-wider text-primary mb-2">Factor's Note</h4>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed italic border-l-2 border-primary/40 pl-4">
+            {factorsNote}
+          </p>
+        </div>
+      )}
+      <div className="flex items-center justify-center gap-8 py-4 border-t border-dashed border-ink/20">
       <div className="text-center">
         <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Weight</span>
         <span className="font-display text-ink">{weight}</span>
@@ -30,6 +43,7 @@ export function ConsortiumTradeDetails({ consortiumId, heatRange }: ConsortiumTr
         <span className="block text-xs uppercase tracking-wider text-muted-foreground font-heading">Heat Range</span>
         <span className="font-display text-ink">{heatRange}</span>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

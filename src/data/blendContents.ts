@@ -17,7 +17,7 @@ export const CONSORTIUM_PEPPER_IDS: Record<string, string[]> = {
   'cradle-of-fire':      ['chiltepin', 'ancho', 'chipotle-morita', 'serrano', 'habanero'],
   'southern-crucible':   ['aji-limon', 'aji-amarillo', 'wiri-wiri', 'aji-panca', 'rocoto'],
   'andean-diaspora':     ['aji-limon', 'aji-amarillo', 'aleppo-pepper', 'gochugaru'],
-  'embers-of-africa':    ['peri-peri', 'urfa-biber', 'scotch-bonnet', 'wiri-wiri', 'trinidad-scorpion'],
+  'windward-passage':    ['peri-peri', 'urfa-biber', 'scotch-bonnet', 'wiri-wiri', 'trinidad-scorpion'],
   'phoenician-legacy':   ['aleppo-pepper', 'calabrian', 'urfa-biber', 'peri-peri', 'cayenne'],
   'silk-jade-passages':  ['gochugaru', 'urfa-biber', 'aleppo-pepper', 'thai', 'ghost'],
   'atlantic-provenance': ['ancho', 'de-arbol', 'datil', 'wiri-wiri', 'scotch-bonnet'],

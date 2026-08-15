@@ -4,7 +4,7 @@ import { Consortium } from '@/components/trading-post/JourneyCard';
 import cradleOfFireImage from '@/assets/consortium/cradle-of-fire.jpg';
 import southernCrucibleImage from '@/assets/consortium/southern-crucible.jpg';
 import andeanDiasporaImage from '@/assets/consortium/andean-diaspora.jpg';
-import embersOfAfricaImage from '@/assets/consortium/embers-of-africa.jpg';
+import windwardPassageImage from '@/assets/consortium/windward-passage.jpg';
 import phoenicianLegacyImage from '@/assets/consortium/phoenician-legacy.jpg';
 import silkJadePassagesImage from '@/assets/consortium/silk-jade-passages.jpg';
 import atlanticProvenanceImage from '@/assets/consortium/atlantic-provenance.jpg';
@@ -36,7 +36,8 @@ export const CONSORTIUMS: Consortium[] = [
     consortiumId: "cradle-of-fire",
     regionLabel: "MEXICO & CENTRAL AMERICA",
     shopifyHandle: "cradle-of-fire-consortium",
-    heatTier: 4
+    heatTier: 4,
+    factorsNote: "Every cultivar here is native to the Mesoamerican homeland the consortium names — chiltepín, ancho, chipotle, serrano, and habanero all belong to it. Nothing is carried from outside the route; this is the one blend where route and lineup are the same thing."
   },
   // № 002 - Southern Crucible
   {
@@ -66,19 +67,21 @@ export const CONSORTIUMS: Consortium[] = [
     shopifyHandle: "andean-diaspora-consortium",
     heatTier: 3
   },
-  // № 004 - Embers of Africa
+  // № 004 - The Windward Passage (replaces Embers of Africa; see
+  // .memory/features/consortium/windward-passage.md)
   {
-    name: "Embers of Africa",
-    region: "Pan-African Routes",
+    name: "The Windward Passage",
+    region: "The Caribbean — Greater & Lesser Antilles",
     tradeLot: "№ 004",
     weight: "2 oz (56.70g)",
-    description: "Portuguese carrack routes brought New World fire to ancient kingdoms.",
+    description: "Four cultivars of the Antilles and one of the Atlantic circuit that fed them.",
     price: "$21.00",
-    image: embersOfAfricaImage,
-    consortiumId: "embers-of-africa",
-    regionLabel: "WEST AFRICAN COAST",
-    shopifyHandle: "embers-of-africa-consortium",
-    heatTier: 4
+    image: windwardPassageImage,
+    consortiumId: "windward-passage",
+    regionLabel: "THE ANTILLES",
+    shopifyHandle: "windward-passage-consortium",
+    heatTier: 4,
+    factorsNote: "Four of five cultivars are drawn from the Passage and the Atlantic circuit that fed it. Urfa Biber, of Anatolia, is carried outside the route — added for the smoke and raisin depth the blend wanted and the region does not supply. A trading house sources what the cargo requires, and records what it sourced."
   },
   // № 005 - Phoenician Legacy
   {
@@ -92,7 +95,8 @@ export const CONSORTIUMS: Consortium[] = [
     consortiumId: "phoenician-legacy",
     regionLabel: "MEDITERRANEAN",
     shopifyHandle: "phoenician-legacy-consortium",
-    heatTier: 2
+    heatTier: 2,
+    factorsNote: "Aleppo, Calabrian, and Urfa biber belong to the Mediterranean and Levant this consortium traces. Peri peri and cayenne are carried from beyond it — the African and American ends of the same sea trade — for heat and brightness the basin's own peppers do not supply."
   },
   // № 006 - Silk & Jade Passages
   {
@@ -107,7 +111,8 @@ export const CONSORTIUMS: Consortium[] = [
     regionLabel: "SILK ROAD & ASIAN SEAS",
     shopifyHandle: "silk-jade-passages-consortium",
     flipImage: true,
-    heatTier: 3
+    heatTier: 3,
+    factorsNote: "Every cultivar rode some length of the overland roads and Asian seas this consortium traces — from the Levantine end (Aleppo, Urfa biber) to the eastern (gochugaru, Thai, ghost). None is carried from outside the route."
   },
   // № 007 - Atlantic Provenance
   {
@@ -150,7 +155,8 @@ export const CONSORTIUMS: Consortium[] = [
     consortiumId: "manila-galleon",
     regionLabel: "MARITIME SOUTHEAST ASIA",
     shopifyHandle: "manila-galleon-consortium",
-    heatTier: 3
+    heatTier: 3,
+    factorsNote: "The galleon carried American fire west across the Pacific: ancho and ají amarillo are the cargo's New World end, Thai, gochugaru, and ghost the Asian shores it reached. All sit on the route the consortium is named for."
   },
   // № 010 - Old Natchez Trace
   {
@@ -164,7 +170,8 @@ export const CONSORTIUMS: Consortium[] = [
     consortiumId: "old-natchez-trace",
     regionLabel: "AMERICAN SOUTH",
     shopifyHandle: "old-natchez-trace-consortium",
-    heatTier: 4
+    heatTier: 4,
+    factorsNote: "Tabasco, pequín, Hatch, and red jalapeño are peppers of the American South and its Mexican border the Trace connected. Datil, of Minorcan St. Augustine, is the one carried in from outside that overland world — kept for its sweet, sharp heat."
   }
 ];
 

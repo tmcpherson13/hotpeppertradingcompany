@@ -14,6 +14,13 @@ export interface Consortium {
   shopifyHandle: string;
   flipImage?: boolean;
   heatTier?: 1 | 2 | 3 | 4 | 5;
+  /**
+   * Declares which cultivars are on-route and which were carried outside the
+   * route for flavor. Editorially required on every consortium (see
+   * .memory/features/consortium/windward-passage.md); typed optional so the
+   * data file compiles while notes are backfilled.
+   */
+  factorsNote?: string;
 }
 
 interface JourneyCardProps {

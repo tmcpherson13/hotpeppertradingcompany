@@ -16,6 +16,8 @@ Write in a refined, historical tone that:
 - Avoids marketing-speak or modern commercial language
 - Use "cuisine" instead of "gastronomy" (e.g., "Peruvian cuisine" not "Peruvian gastronomy")
 
+Historical honesty (required): where a cultivar's or region's story genuinely runs through coercion, forced labour, or the Atlantic slave trade, state it plainly and proportionately — normally a single factual sentence within historical_notes, in the same register as any other trade fact. Do not omit it, and do not editorialize, moralize, or dwell on it. Never let it become the subject of the entry; the entry is about a pepper. Never apply cargo, consignment, manifest, or lading language to human beings.
+
 Based on the research provided, synthesize comprehensive content for this pepper variety. Return a JSON object with exactly these fields:
 
 {

@@ -7,7 +7,7 @@ import { ConsortiumManifestOverlay } from '@/components/ui/ConsortiumManifestOve
 import { TradeRoutePattern } from '@/components/ui/TradeRoutePattern';
 import { HeatBadge, HeatTier } from '@/components/trading-post/HeatBadge';
 import { useFeaturedConsortium, formatRotationCountdown, getNextRotationDate } from '@/hooks/useFeaturedConsortium';
-import { EmbersOfAfricaContent } from '@/components/sections/EmbersOfAfricaContent';
+import { WindwardPassageContent } from '@/components/sections/WindwardPassageContent';
 import { SilkJadePassagesContent } from '@/components/sections/SilkJadePassagesContent';
 import { AndeanDiasporaContent } from '@/components/sections/AndeanDiasporaContent';
 import { PhoenicianLegacyContent } from '@/components/sections/PhoenicianLegacyContent';
@@ -17,7 +17,7 @@ import { ManilaGalleonContent } from '@/components/sections/ManilaGalleonContent
 import { OldNatchezTraceContent } from '@/components/sections/OldNatchezTraceContent';
 import { CradleOfFireContent } from '@/components/sections/CradleOfFireContent';
 import { SouthernCrucibleContent } from '@/components/sections/SouthernCrucibleContent';
-import embersOfAfricaImg from '@/assets/consortium/embers-of-africa.jpg';
+import windwardPassageImg from '@/assets/consortium/windward-passage.jpg';
 import silkJadePassagesImg from '@/assets/consortium/silk-jade-passages.jpg';
 import andeanDiasporaImg from '@/assets/consortium/andean-diaspora.jpg';
 import letterOfMarqueImg from '@/assets/consortium/letter-of-marque.jpg';
@@ -91,17 +91,17 @@ const spices: Spice[] = [
     heatTier: 3,
   },
   {
-    name: 'Embers of Africa',
-    origin: 'Multi-Origin',
-    region: 'Pan-African Routes',
+    name: 'The Windward Passage',
+    origin: 'The Antilles',
+    region: 'The Caribbean — Greater & Lesser Antilles',
     tradeLot: '№ 004',
     weight: '2 oz (56.70g)',
-    description: 'Portuguese carrack routes brought New World fire to ancient kingdoms.',
+    description: 'Four cultivars of the Antilles and one of the Atlantic circuit that fed them.',
     price: '$21.00',
-    image: embersOfAfricaImg,
+    image: windwardPassageImg,
     isConsortium: true,
-    consortiumId: 'africa',
-    regionLabel: 'WEST AFRICAN COAST',
+    consortiumId: 'windward',
+    regionLabel: 'THE ANTILLES',
     heatTier: 4,
   },
   {
@@ -459,7 +459,7 @@ export function FeaturedSpices() {
         {manifest.open && manifest.consortiumId === 'mesoamerica' && <CradleOfFireContent />}
         {manifest.open && manifest.consortiumId === 'southamerica' && <SouthernCrucibleContent />}
         {manifest.open && manifest.consortiumId === 'andes' && <AndeanDiasporaContent />}
-        {manifest.open && manifest.consortiumId === 'africa' && <EmbersOfAfricaContent />}
+        {manifest.open && manifest.consortiumId === 'windward' && <WindwardPassageContent />}
         {manifest.open && manifest.consortiumId === 'mediterranean' && <PhoenicianLegacyContent />}
         {manifest.open && manifest.consortiumId === 'asia' && <SilkJadePassagesContent />}
         {manifest.open && manifest.consortiumId === 'atlantic' && <AtlanticProvenanceContent />}
