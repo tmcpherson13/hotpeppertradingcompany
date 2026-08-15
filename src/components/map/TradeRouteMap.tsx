@@ -699,6 +699,7 @@ export function TradeRouteMap() {
   const voyageRafRef = useRef<number | null>(null);
   const voyageTokenRef = useRef(0);
   const animatingRouteRef = useRef<number | null>(null);
+  const voyageLabelsRef = useRef<maplibregl.Marker[]>([]);
 
   const animateVoyage = useCallback((routeIndex: number) => {
     const m = map.current;
@@ -717,6 +718,29 @@ export function TradeRouteMap() {
     // Supersede any voyage already in flight.
     const token = ++voyageTokenRef.current;
     if (voyageRafRef.current) { cancelAnimationFrame(voyageRafRef.current); voyageRafRef.current = null; }
+
+    // Cinematic focus — hide every line so only this journey draws. Its own
+    // legs are revealed one at a time as they animate.
+    tradeRoutes.routes.forEach((_, i) => {
+      try {
+        m.setPaintProperty(`route-line-${i}`, 'line-opacity', 0);
+        m.setPaintProperty(`route-glow-${i}`, 'line-opacity', 0);
+      } catch { /* layer may not exist */ }
+    });
+
+    // Name the embarking port and the destination directly on the map.
+    voyageLabelsRef.current.forEach((lbl) => lbl.remove());
+    const ultimateTo = tradeRoutes.routes[chain[chain.length - 1]].to;
+    const makeLabel = (text: string, coord: [number, number]) => {
+      const el = document.createElement('div');
+      el.className = 'voyage-label';
+      el.textContent = text;
+      return new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, -14] }).setLngLat(coord).addTo(m);
+    };
+    voyageLabelsRef.current = [
+      makeLabel(portNameAt(originFrom) || 'Origin', originFrom),
+      makeLabel(mainMeta.destinationName, ultimateTo),
+    ];
 
     // Draw a single leg (overland connector or sea voyage) while the camera
     // tracks its leading edge; resolve when the leg finishes.
@@ -739,10 +763,11 @@ export function TradeRouteMap() {
 
         const isConnector = tradeRoutes.routes[legIndex].connector === true;
         const followZoom = followZoomFor(legPath);
-        const drawMs = Math.min(5400, Math.max(isConnector ? 900 : 2400, legPath.length * 18));
-        // Sweep in for the first leg; between legs the camera is already at the
-        // shared port, so a short ease just adjusts the zoom.
-        const easeDur = first ? 1150 : 450;
+        // Deliberate, methodical pacing — a long, steady trace.
+        const drawMs = Math.min(9000, Math.max(isConnector ? 1600 : 4200, legPath.length * 30));
+        // Sweep in slowly for the first leg; between legs the camera is already
+        // at the shared port, so a shorter ease just adjusts the zoom.
+        const easeDur = first ? 2400 : 950;
         m.easeTo({ center: legPath[0], zoom: followZoom, duration: easeDur, easing: (t) => t * (2 - t) });
 
         const startDraw = () => {
@@ -752,7 +777,7 @@ export function TradeRouteMap() {
             if (token !== voyageTokenRef.current) { resolve(); return; }
             if (startTs === null) startTs = ts;
             const p = Math.min(1, (ts - startTs) / drawMs);
-            const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
+            const eased = 0.5 - 0.5 * Math.cos(Math.PI * p); // easeInOutSine — a steady, methodical trace
             const k = Math.max(1, Math.round(eased * (legPath.length - 1)));
             setLine(legPath.slice(0, k + 1));
             m.setCenter(legPath[k]);
@@ -761,13 +786,17 @@ export function TradeRouteMap() {
             } else {
               setLine(legPath);
               if (last) {
-                // Pull back to frame the whole journey.
-                m.fitBounds(allBounds, {
-                  padding: { top: 90, bottom: 140, left: 90, right: 90 },
-                  duration: 1950,
-                  maxZoom: 5.5,
-                  easing: (t) => t * (2 - t),
-                });
+                // Hold on the arrival for a beat, then pull back slowly to
+                // frame the whole journey.
+                setTimeout(() => {
+                  if (token !== voyageTokenRef.current) return;
+                  m.fitBounds(allBounds, {
+                    padding: { top: 100, bottom: 150, left: 100, right: 100 },
+                    duration: 2800,
+                    maxZoom: 5.5,
+                    easing: (t) => t * (2 - t),
+                  });
+                }, 700);
               }
               voyageRafRef.current = null;
               resolve();
@@ -775,7 +804,8 @@ export function TradeRouteMap() {
           };
           voyageRafRef.current = requestAnimationFrame(frame);
         };
-        window.setTimeout(startDraw, easeDur + 40);
+        // A deliberate beat after the camera settles before the trace begins.
+        window.setTimeout(startDraw, easeDur + 500);
       });
 
     // Draw the legs in sequence: overland to the port, then the sea voyage,
@@ -799,79 +829,26 @@ export function TradeRouteMap() {
   const visibleRoutes = useMemo(() => getVisibleRoutes(timelineYear), [timelineYear, getVisibleRoutes]);
 
 
-  // Update route visibility and trigger shimmer effects
+  // Cinematic model: journey lines stay hidden by default. Each journey draws
+  // only its own line(s) via animateVoyage, so the viewer focuses on one route
+  // at a time. This effect keeps every non-animating route hidden and the ports
+  // legible. Runs on timeline change so a new event clears the previous journey.
   useEffect(() => {
     if (!map.current || !isMapLoaded) return;
-
     const m = map.current;
-    const prevVisible = previousVisibleRoutesRef.current;
-    const currentVisible = visibleRoutes;
-
     tradeRoutes.routes.forEach((route, index) => {
-      // The route currently being hand-animated controls its own source + opacity.
       if (animatingRouteRef.current === index) return;
-      const isVisible = currentVisible.has(index);
-      const wasVisible = prevVisible.has(index);
-      const isNewlyVisible = isVisible && !wasVisible;
-
-      const layerIds = getRouteLayerIds(index);
-
-      // Base opacities for each layer type
-      const baseOpacities: Record<string, number> = {
-        'aura': 0.08,
-        'glow-outer': 0.12,
-        'glow-inner': 0.25,
-        'line': 0.8,
-        'highlight': 0.4,
-      };
-
-      // Ghost opacity - hide routes until their timeline year is reached
-      const ghostOpacity = 0;
-
-      layerIds.forEach((layerId) => {
-        try {
-          const layerType = layerId.includes('aura') ? 'aura' :
-                           layerId.includes('glow') ? 'glow-outer' :
-                           layerId.includes('highlight') ? 'highlight' : 'line';
-
-          const targetOpacity = isVisible ? baseOpacities[layerType] : ghostOpacity;
-
-          if (isNewlyVisible) {
-            // Shimmer effect: flash brighter then settle
-            const shimmerOpacity = Math.min(1, baseOpacities[layerType] * 3);
-            m.setPaintProperty(layerId, 'line-opacity', shimmerOpacity);
-
-            // Settle to normal opacity after shimmer
-            setTimeout(() => {
-              if (m.getLayer(layerId)) {
-                m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
-              }
-            }, 800);
-          } else {
-            m.setPaintProperty(layerId, 'line-opacity', targetOpacity);
-          }
-        } catch (e) {
-          // Layer may not exist yet
-        }
+      getRouteLayerIds(index).forEach((layerId) => {
+        try { m.setPaintProperty(layerId, 'line-opacity', 0); } catch { /* layer may not exist */ }
       });
-
-      // Sync marker animations - target inner div to avoid conflicting with MapLibre's positioning transform
       const destMarkerEl = markerElementsRef.current.get(route.destinationName);
       if (destMarkerEl) {
-        const innerEl = destMarkerEl.querySelector('.marker-inner') as HTMLElement;
-        if (isNewlyVisible) {
-          destMarkerEl.classList.add('marker-pulse');
-          setTimeout(() => destMarkerEl.classList.remove('marker-pulse'), 1500);
-        }
-        destMarkerEl.style.opacity = isVisible ? '1' : '0.3';
-        // Apply scale to inner element only, not the outer marker wrapper
-        if (innerEl) {
-          innerEl.style.transform = isVisible ? 'scale(1)' : 'scale(0.7)';
-        }
+        destMarkerEl.style.opacity = '0.85';
+        const innerEl = destMarkerEl.querySelector('.marker-inner') as HTMLElement | null;
+        if (innerEl) innerEl.style.transform = 'scale(1)';
       }
     });
-
-    previousVisibleRoutesRef.current = new Set(currentVisible);
+    previousVisibleRoutesRef.current = new Set(visibleRoutes);
   }, [visibleRoutes, isMapLoaded]);
 
   // Event marker animation - highlights the current timeline event location
@@ -935,6 +912,9 @@ export function TradeRouteMap() {
     if (heroIdx >= 0) {
       animateVoyage(heroIdx);
     } else {
+      // No voyage for this event — clear any lingering journey labels and pan.
+      voyageLabelsRef.current.forEach((lbl) => lbl.remove());
+      voyageLabelsRef.current = [];
       m.easeTo({
         center: currentEvent.coordinates,
         duration: 1000,
@@ -1340,6 +1320,8 @@ export function TradeRouteMap() {
         eventMarkerRef.current = null;
       }
       eventMarkerElementRef.current = null;
+      voyageLabelsRef.current.forEach((lbl) => lbl.remove());
+      voyageLabelsRef.current = [];
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
       markerElementsRef.current.clear();
@@ -1370,7 +1352,30 @@ export function TradeRouteMap() {
         .marker-pulse .marker-inner {
           animation: markerPulse 1.5s ease-out;
         }
-        
+
+        /* Embark / destination name labels shown during a voyage animation */
+        .voyage-label {
+          background: rgba(240, 230, 210, 0.94);
+          border: 1px solid rgba(90, 74, 58, 0.5);
+          padding: 3px 9px;
+          font-family: 'Cinzel', Georgia, serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #3a2a1a;
+          white-space: nowrap;
+          box-shadow: 0 2px 5px rgba(58, 42, 26, 0.28);
+          pointer-events: none;
+          /* Fade only — never animate transform here; MapLibre uses the
+             element's transform to position the marker. */
+          animation: voyageLabelIn 0.6s ease-out both;
+        }
+        @keyframes voyageLabelIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
         .origin-marker:hover .marker-inner,
         .destination-marker:hover .marker-inner {
           transform: scale(1.15);
