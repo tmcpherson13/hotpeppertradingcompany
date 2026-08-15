@@ -128,6 +128,20 @@ const tradeRoutes = {
       year: '1519',
     },
     {
+      name: 'İskenderun',
+      coordinates: [36.17, 36.59] as [number, number],
+      description: 'Mediterranean port of Alexandretta — sea gateway to the caravan road inland to Aleppo.',
+      cultivars: ['Levantine peppers'],
+      year: '1600',
+    },
+    {
+      name: 'Venice',
+      coordinates: [12.26, 45.45] as [number, number],
+      description: 'Adriatic spice entrepôt — cargoes continued overland from here into Central Europe.',
+      cultivars: ['Mediterranean peppers'],
+      year: '1569',
+    },
+    {
       name: 'Aleppo, Syria',
       coordinates: [37.1343, 36.2021] as [number, number],
       description: 'Primary source for Aleppo pepper since 1600.',
@@ -314,13 +328,15 @@ const tradeRoutes = {
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
-    { from: [-96.14, 19.19] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-8, 36], [2, 38], [11, 38], [20, 35], [28, 34], [34, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
+    { from: [-96.14, 19.19] as [number, number], to: [36.17, 36.59] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-9, 36], [-3, 36], [5, 38], [9, 38], [11.6, 37.4], [14, 36], [19, 35], [26, 34], [32, 34], [35.2, 35.5]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
     // Portuguese route to Goa - around Cape of Good Hope
     { from: [-96.14, 19.19] as [number, number], to: [73.897, 15.299] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-74, 26], [-55, 18], [-40, 8], [-18, -8], [2, -28], [16, -36], [28, -37], [40, -34], [50, -28], [56, -12], [64, 2], [70, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
     // Atlantic to Spain, overland to Hungary
-    { from: [-96.14, 19.19] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-6, 36], [-1, 37], [6, 40], [9, 43]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
-    // Overland connector: Mexican highlands (origin) down to the Gulf port of Veracruz.
+    { from: [-96.14, 19.19] as [number, number], to: [12.26, 45.45] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-9, 36], [-3, 36], [5, 38], [9, 38], [11.6, 37.4], [15, 36], [18, 37.5], [19.2, 39.8], [19.3, 41], [16, 42.5], [13.2, 44.5]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
+    // Overland connectors: inland cities linked to their coastal gateway ports.
     { from: [-99.1332, 19.4326] as [number, number], to: [-96.14, 19.19] as [number, number], via: [[-97.6, 19.3]] as [number, number][], establishedYear: 1493, destinationName: 'Veracruz', isOverland: true },
+    { from: [36.17, 36.59] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[36.7, 36.4]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria', isOverland: true },
+    { from: [12.26, 45.45] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[15.7, 46.4]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary', isOverland: true },
     // Peru to West Africa - across Atlantic
     { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-35, -15], [-20, -5]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
     // From Goa to Sichuan - coastal route
