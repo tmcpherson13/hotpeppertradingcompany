@@ -543,6 +543,23 @@ function portNameAt(coord: [number, number]): string {
   return p ? p.name : '';
 }
 
+// Overland connector legs (inland city <-> coastal gateway port) and the lookup
+// that assembles a full journey: an optional overland leg to the port of
+// departure, the sea voyage, and an optional overland leg on to the inland
+// destination — so the animation can draw them as one continuous motion.
+const coordClose = (a: [number, number], b: [number, number]) =>
+  Math.abs(a[0] - b[0]) < 0.35 && Math.abs(a[1] - b[1]) < 0.35;
+const connectorRoutes = tradeRoutes.routes
+  .map((r, i) => ({ r, i }))
+  .filter(({ r }) => r.connector === true);
+function voyageChain(routeIndex: number): number[] {
+  const r = tradeRoutes.routes[routeIndex];
+  if (r.connector || r.isOverland) return [routeIndex]; // don't chain overland legs themselves
+  const dep = connectorRoutes.find((c) => coordClose(c.r.to, r.from));
+  const arr = connectorRoutes.find((c) => coordClose(c.r.from, r.to));
+  return [dep ? dep.i : -1, routeIndex, arr ? arr.i : -1].filter((i) => i >= 0);
+}
+
 export function TradeRouteMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -686,68 +703,90 @@ export function TradeRouteMap() {
   const animateVoyage = useCallback((routeIndex: number) => {
     const m = map.current;
     if (!m || !isMapLoaded) return;
-    const path = routePaths[routeIndex];
-    if (!path || path.length < 2) return;
-    const src = m.getSource(`route-${routeIndex}`) as maplibregl.GeoJSONSource | undefined;
-    if (!src) return;
+    const chain = voyageChain(routeIndex);
+    if (!chain.length || !routePaths[chain[0]]) return;
 
-    // Label the journey by its departure and arrival ports.
-    const routeMeta = tradeRoutes.routes[routeIndex];
-    setActiveVoyage({ from: portNameAt(routeMeta.from) || 'Origin', to: routeMeta.destinationName });
+    // Label the journey by its true origin and ultimate destination.
+    const mainMeta = tradeRoutes.routes[routeIndex];
+    const originFrom = tradeRoutes.routes[chain[0]].from;
+    setActiveVoyage({ from: portNameAt(originFrom) || 'Origin', to: mainMeta.destinationName });
+
+    // Bounds covering the whole chained journey, for the final pull-back.
+    const allBounds = pathBounds(chain.flatMap((i) => routePaths[i]));
 
     // Supersede any voyage already in flight.
     const token = ++voyageTokenRef.current;
     if (voyageRafRef.current) { cancelAnimationFrame(voyageRafRef.current); voyageRafRef.current = null; }
-    animatingRouteRef.current = routeIndex;
 
-    const lineId = `route-line-${routeIndex}`;
-    const glowId = `route-glow-${routeIndex}`;
-    const setLine = (coords: [number, number][]) =>
-      src.setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } });
+    // Draw a single leg (overland connector or sea voyage) while the camera
+    // tracks its leading edge; resolve when the leg finishes.
+    const runLeg = (legIndex: number, first: boolean, last: boolean) =>
+      new Promise<void>((resolve) => {
+        if (token !== voyageTokenRef.current) { resolve(); return; }
+        const legPath = routePaths[legIndex];
+        const src = m.getSource(`route-${legIndex}`) as maplibregl.GeoJSONSource | undefined;
+        if (!legPath || legPath.length < 2 || !src) { resolve(); return; }
+        animatingRouteRef.current = legIndex;
+        const lineId = `route-line-${legIndex}`;
+        const glowId = `route-glow-${legIndex}`;
+        const setLine = (coords: [number, number][]) =>
+          src.setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } });
+        try {
+          m.setPaintProperty(lineId, 'line-opacity', 0.85);
+          m.setPaintProperty(glowId, 'line-opacity', 0.16);
+        } catch { /* layer may not exist yet */ }
+        setLine([legPath[0], legPath[0]]);
 
-    // Reveal the route's layers and reset it to the departure point.
-    try {
-      m.setPaintProperty(lineId, 'line-opacity', 0.85);
-      m.setPaintProperty(glowId, 'line-opacity', 0.16);
-    } catch { /* layer may not exist yet */ }
-    setLine([path[0], path[0]]);
+        const isConnector = tradeRoutes.routes[legIndex].connector === true;
+        const followZoom = followZoomFor(legPath);
+        const drawMs = Math.min(5400, Math.max(isConnector ? 900 : 2400, legPath.length * 18));
+        // Sweep in for the first leg; between legs the camera is already at the
+        // shared port, so a short ease just adjusts the zoom.
+        const easeDur = first ? 1150 : 450;
+        m.easeTo({ center: legPath[0], zoom: followZoom, duration: easeDur, easing: (t) => t * (2 - t) });
 
-    const followZoom = followZoomFor(path);
-    const drawMs = Math.min(5400, Math.max(2400, path.length * 18));
-
-    // Phase 1 — sweep in to the port of departure.
-    m.easeTo({ center: path[0], zoom: followZoom, duration: 1150, easing: (t) => t * (2 - t) });
-
-    // Phase 2 — draw the line while the camera follows its leading edge.
-    const startDraw = () => {
-      if (token !== voyageTokenRef.current) return;
-      let startTs: number | null = null;
-      const frame = (ts: number) => {
-        if (token !== voyageTokenRef.current) return;
-        if (startTs === null) startTs = ts;
-        const p = Math.min(1, (ts - startTs) / drawMs);
-        const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
-        const k = Math.max(1, Math.round(eased * (path.length - 1)));
-        setLine(path.slice(0, k + 1));
-        m.setCenter(path[k]);
-        if (p < 1) {
+        const startDraw = () => {
+          if (token !== voyageTokenRef.current) { resolve(); return; }
+          let startTs: number | null = null;
+          const frame = (ts: number) => {
+            if (token !== voyageTokenRef.current) { resolve(); return; }
+            if (startTs === null) startTs = ts;
+            const p = Math.min(1, (ts - startTs) / drawMs);
+            const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
+            const k = Math.max(1, Math.round(eased * (legPath.length - 1)));
+            setLine(legPath.slice(0, k + 1));
+            m.setCenter(legPath[k]);
+            if (p < 1) {
+              voyageRafRef.current = requestAnimationFrame(frame);
+            } else {
+              setLine(legPath);
+              if (last) {
+                // Pull back to frame the whole journey.
+                m.fitBounds(allBounds, {
+                  padding: { top: 90, bottom: 140, left: 90, right: 90 },
+                  duration: 1950,
+                  maxZoom: 5.5,
+                  easing: (t) => t * (2 - t),
+                });
+              }
+              voyageRafRef.current = null;
+              resolve();
+            }
+          };
           voyageRafRef.current = requestAnimationFrame(frame);
-        } else {
-          setLine(path);
-          // Phase 3 — pull back to reveal the full voyage.
-          m.fitBounds(pathBounds(path), {
-            padding: { top: 90, bottom: 140, left: 90, right: 90 },
-            duration: 1950,
-            maxZoom: 5.5,
-            easing: (t) => t * (2 - t),
-          });
-          voyageRafRef.current = null;
-          animatingRouteRef.current = null;
-        }
-      };
-      voyageRafRef.current = requestAnimationFrame(frame);
-    };
-    window.setTimeout(startDraw, 1180);
+        };
+        window.setTimeout(startDraw, easeDur + 40);
+      });
+
+    // Draw the legs in sequence: overland to the port, then the sea voyage,
+    // then overland to the inland destination.
+    (async () => {
+      for (let idx = 0; idx < chain.length; idx++) {
+        if (token !== voyageTokenRef.current) return;
+        await runLeg(chain[idx], idx === 0, idx === chain.length - 1);
+      }
+      if (token === voyageTokenRef.current) animatingRouteRef.current = null;
+    })();
   }, [isMapLoaded]);
 
   // Keep a stable ref so the (once-registered) map click handler always calls
