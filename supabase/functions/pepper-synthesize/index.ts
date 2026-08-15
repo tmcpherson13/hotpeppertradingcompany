@@ -304,10 +304,20 @@ serve(async (req) => {
       );
     }
 
-    // Compile research content
-    const researchContent = researchData.map(r => 
-      `=== Source: ${r.source_type.toUpperCase()} ===\n${r.raw_content}`
+    // Compile research content.
+    // COST GUARD: raw scrapes average ~126K chars/pepper (one hit 659K). That
+    // whole dossier is re-sent to the model 2-4 times per pepper (synthesis →
+    // verify → rewrite → re-verify), so an uncapped dossier on Opus cost ~$1/
+    // pepper. Cap each source and the combined dossier so input stays ~6K
+    // tokens; the tail of a raw scrape is almost entirely boilerplate/nav noise.
+    const PER_SOURCE_CHARS = 9000;    // cap each individual source blob
+    const MAX_DOSSIER_CHARS = 24000;  // hard cap on the combined dossier
+    let researchContent = researchData.map(r =>
+      `=== Source: ${r.source_type.toUpperCase()} ===\n${(r.raw_content || '').slice(0, PER_SOURCE_CHARS)}`
     ).join('\n\n---\n\n');
+    if (researchContent.length > MAX_DOSSIER_CHARS) {
+      researchContent = researchContent.slice(0, MAX_DOSSIER_CHARS);
+    }
 
     const allUrls = researchData.flatMap(r => r.urls || []);
 
