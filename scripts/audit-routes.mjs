@@ -120,6 +120,21 @@ function onLand(lon, lat, rings) {
   return false;
 }
 
+// Uniformly densify a polyline (~stepDeg spacing) so narrow crossings between
+// sparse waypoints (isthmuses, small peninsulas) are actually sampled — this
+// matches what MapLibre renders (straight segments between the path points).
+function densify(path, stepDeg = 0.25) {
+  const out = [];
+  for (let i = 0; i < path.length - 1; i++) {
+    const [x1, y1] = path[i], [x2, y2] = path[i + 1];
+    const dist = Math.hypot(x2 - x1, y2 - y1);
+    const n = Math.max(1, Math.ceil(dist / stepDeg));
+    for (let s = 0; s < n; s++) out.push([x1 + ((x2 - x1) * s) / n, y1 + ((y2 - y1) * s) / n]);
+  }
+  out.push(path[path.length - 1]);
+  return out;
+}
+
 // A real "sea route over land" is a run of on-land samples bounded by water on
 // both sides. Runs touching an endpoint are just an inland port and are fine.
 function interiorLandCrossings(path, rings) {
@@ -148,7 +163,7 @@ console.log('== Maritime routes slicing through land ==');
 let offenders = 0;
 for (const r of routes) {
   if (r.isOverland) continue;
-  const crossings = interiorLandCrossings(smoothPath(r.coords), rings);
+  const crossings = interiorLandCrossings(densify(smoothPath(r.coords)), rings);
   if (crossings.length > 0) {
     offenders++;
     const spots = crossings.map((c) => `[${c.at[0].toFixed(1)}, ${c.at[1].toFixed(1)}]x${c.len}`).join('  ');

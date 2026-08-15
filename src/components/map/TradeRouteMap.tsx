@@ -121,6 +121,13 @@ const tradeRoutes = {
   ],
   destinations: [
     {
+      name: 'Veracruz',
+      coordinates: [-96.14, 19.19] as [number, number],
+      description: 'Gulf port of departure — chilies travelled overland from the Mexican highlands before shipping across the Atlantic.',
+      cultivars: ['New World peppers'],
+      year: '1519',
+    },
+    {
       name: 'Aleppo, Syria',
       coordinates: [37.1343, 36.2021] as [number, number],
       description: 'Primary source for Aleppo pepper since 1600.',
@@ -307,11 +314,13 @@ const tradeRoutes = {
   ],
   routes: [
     // Atlantic crossing to Spain, then to Aleppo via Mediterranean
-    { from: [-99.1332, 19.4326] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-40, 34], [-8, 36], [2, 38], [11, 38], [20, 35], [28, 34], [34, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
+    { from: [-96.14, 19.19] as [number, number], to: [37.1343, 36.2021] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-8, 36], [2, 38], [11, 38], [20, 35], [28, 34], [34, 35]] as [number, number][], establishedYear: 1600, destinationName: 'Aleppo, Syria' },
     // Portuguese route to Goa - around Cape of Good Hope
-    { from: [-99.1332, 19.4326] as [number, number], to: [73.897, 15.299] as [number, number], via: [[-40, 8], [-18, -8], [2, -28], [16, -36], [28, -37], [40, -34], [50, -28], [56, -12], [64, 2], [70, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
+    { from: [-96.14, 19.19] as [number, number], to: [73.897, 15.299] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-74, 26], [-55, 18], [-40, 8], [-18, -8], [2, -28], [16, -36], [28, -37], [40, -34], [50, -28], [56, -12], [64, 2], [70, 10]] as [number, number][], establishedYear: 1498, destinationName: 'Goa, India' },
     // Atlantic to Spain, overland to Hungary
-    { from: [-99.1332, 19.4326] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-40, 34], [-6, 36], [-1, 37], [6, 40], [9, 43]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
+    { from: [-96.14, 19.19] as [number, number], to: [19.0402, 47.4979] as [number, number], via: [[-95, 21], [-88, 22], [-83, 23.5], [-72, 28], [-45, 34], [-6, 36], [-1, 37], [6, 40], [9, 43]] as [number, number][], establishedYear: 1569, destinationName: 'Hungary' },
+    // Overland connector: Mexican highlands (origin) down to the Gulf port of Veracruz.
+    { from: [-99.1332, 19.4326] as [number, number], to: [-96.14, 19.19] as [number, number], via: [[-97.6, 19.3]] as [number, number][], establishedYear: 1493, destinationName: 'Veracruz', isOverland: true },
     // Peru to West Africa - across Atlantic
     { from: [-68.1193, -16.4897] as [number, number], to: [-1.0232, 7.9465] as [number, number], via: [[-35, -15], [-20, -5]] as [number, number][], establishedYear: 1500, destinationName: 'West Africa' },
     // From Goa to Sichuan - coastal route
@@ -360,7 +369,7 @@ const tradeRoutes = {
     { from: [40.683, -15.004] as [number, number], to: [-66.086, 18.465] as [number, number], via: [[41, -22], [40, -30], [30, -37], [16, -35], [0, -22], [-18, -6], [-38, 6], [-55, 14]] as [number, number][], establishedYear: 1500, destinationName: 'Caribbean Islands' },
     
     // Goa to Hormuz - Persian Gulf connection
-    { from: [73.897, 15.299] as [number, number], to: [56.515, 27.181] as [number, number], via: [[68, 18], [62, 22]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
+    { from: [73.897, 15.299] as [number, number], to: [56.515, 27.181] as [number, number], via: [[67, 19], [61, 23], [58, 25]] as [number, number][], establishedYear: 1515, destinationName: 'Hormuz' },
     
     // Goa to Malacca - Bay of Bengal crossing
     { from: [73.897, 15.299] as [number, number], to: [102.27, 2.19] as [number, number], via: [[71, 12], [76, 5], [86, 4], [96, 7], [101, 3]] as [number, number][], establishedYear: 1511, destinationName: 'Malacca' },
