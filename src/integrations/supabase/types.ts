@@ -128,6 +128,11 @@ export type Database = {
           auto_approve_threshold: number
           auto_publish_enabled: boolean
           auto_rewrite_enabled: boolean
+          autorun_batch_size: number
+          autorun_enabled: boolean
+          autorun_last_tick: string | null
+          autorun_locked_at: string | null
+          autorun_status: string
           id: string
           last_run_at: string | null
           last_run_count: number | null
@@ -142,6 +147,11 @@ export type Database = {
           auto_approve_threshold?: number
           auto_publish_enabled?: boolean
           auto_rewrite_enabled?: boolean
+          autorun_batch_size?: number
+          autorun_enabled?: boolean
+          autorun_last_tick?: string | null
+          autorun_locked_at?: string | null
+          autorun_status?: string
           id?: string
           last_run_at?: string | null
           last_run_count?: number | null
@@ -156,6 +166,11 @@ export type Database = {
           auto_approve_threshold?: number
           auto_publish_enabled?: boolean
           auto_rewrite_enabled?: boolean
+          autorun_batch_size?: number
+          autorun_enabled?: boolean
+          autorun_last_tick?: string | null
+          autorun_locked_at?: string | null
+          autorun_status?: string
           id?: string
           last_run_at?: string | null
           last_run_count?: number | null

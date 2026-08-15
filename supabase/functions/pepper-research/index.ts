@@ -25,7 +25,10 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Require authentication
+    // Require authentication. Trusted internal callers (the scheduled /
+    // autonomous enrichment runner) present the service-role key as a Bearer
+    // token — accept those directly and skip the interactive admin check, since
+    // that key is a server-only secret. Everyone else must be a signed-in admin.
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return new Response(
@@ -35,31 +38,36 @@ serve(async (req) => {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    
-    if (authError || !user) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Invalid authentication' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    const isServiceRole = token === supabaseKey;
+    let userId: string | null = null;
+
+    if (!isServiceRole) {
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+      if (authError || !user) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Invalid authentication' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Verify admin role
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (roleError || !roleData) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Admin access required' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      userId = user.id;
     }
-
-    // Verify admin role
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .maybeSingle();
-
-    if (roleError || !roleData) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Admin access required' }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const userId = user.id;
 
     console.log(`Starting research for pepper: ${pepperName} (${pepperId})`);
 

@@ -9,7 +9,8 @@ import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Loader2, Zap, Calendar, Play, Image, Wand2 } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Loader2, Zap, Calendar, Play, Image, Wand2, Bot } from 'lucide-react';
 
 interface EnrichmentSettingsData {
   id: string;
@@ -17,6 +18,10 @@ interface EnrichmentSettingsData {
   auto_approve_threshold: number;
   auto_rewrite_enabled: boolean;
   auto_publish_enabled: boolean;
+  autorun_enabled: boolean;
+  autorun_status: string;
+  autorun_batch_size: number;
+  autorun_last_tick: string | null;
   schedule_enabled: boolean;
   schedule_frequency: string;
   schedule_next_run: string | null;
@@ -34,7 +39,21 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
   const [isSaving, setIsSaving] = useState(false);
   const [isRunningNow, setIsRunningNow] = useState(false);
   const [localImageGen, setLocalImageGen] = useState(false);
+  const [progress, setProgress] = useState<{ enriched: number; total: number } | null>(null);
   const { toast } = useToast();
+
+  // Autonomous-run progress: how much of the catalogue is populated.
+  const fetchProgress = useCallback(async () => {
+    try {
+      const [{ count: total }, { count: enriched }] = await Promise.all([
+        supabase.from('pepper_catalog').select('*', { count: 'exact', head: true }),
+        supabase.from('pepper_overrides').select('*', { count: 'exact', head: true }).gt('enrichment_version', 0),
+      ]);
+      if (total !== null) setProgress({ enriched: enriched ?? 0, total });
+    } catch (err) {
+      console.error('Error fetching autorun progress:', err);
+    }
+  }, []);
 
   const fetchSettings = useCallback(async () => {
     try {
@@ -61,7 +80,42 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
 
   useEffect(() => {
     fetchSettings();
-  }, [fetchSettings]);
+    fetchProgress();
+    // Poll progress while a run is active so the bar advances live.
+    const t = setInterval(() => { fetchSettings(); fetchProgress(); }, 20000);
+    return () => clearInterval(t);
+  }, [fetchSettings, fetchProgress]);
+
+  // Toggle the autonomous run. Enabling clears any stale lock and flips status
+  // to running; the cron picks it up on its next tick.
+  const toggleAutorun = useCallback(async (enabled: boolean) => {
+    if (!settings) return;
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('enrichment_settings')
+        .update({
+          autorun_enabled: enabled,
+          autorun_status: enabled ? 'running' : 'idle',
+          autorun_locked_at: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', settings.id);
+      if (error) throw error;
+      setSettings((prev) => prev ? { ...prev, autorun_enabled: enabled, autorun_status: enabled ? 'running' : 'idle' } : null);
+      toast({
+        title: enabled ? 'Autonomous run started' : 'Autonomous run paused',
+        description: enabled
+          ? 'The catalogue will populate on its own, a little at a time.'
+          : 'The run will stop after the current pepper finishes.',
+      });
+    } catch (err) {
+      console.error('Error toggling autorun:', err);
+      toast({ title: 'Error', description: 'Failed to update autonomous run', variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [settings, toast]);
 
   // Only these columns are user-editable here; schedule_next_run / last_run_at
   // are written by the backend, and the image-generation toggle lives in
@@ -286,6 +340,72 @@ export function EnrichmentSettings({ onSettingsChange }: EnrichmentSettingsProps
               copying is rewritten away. Review facts later in the deep-analysis pass.
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Autonomous Run */}
+      <Card className="bg-parchment border-ink/10">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-heading">
+            <Bot className="w-4 h-4 text-indigo-600" />
+            Autonomous Run
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Label htmlFor="autorun" className="text-sm font-medium">
+                Populate the whole catalogue
+              </Label>
+              <p className="text-xs text-ink/60 mt-0.5">
+                Researches and enriches peppers one at a time, on a schedule, until the
+                entire Compendium is filled — no manual triggering. Publishes live with
+                auto-rewrite on; review facts later in the deep-analysis pass.
+              </p>
+            </div>
+            <Switch
+              id="autorun"
+              checked={settings.autorun_enabled}
+              onCheckedChange={toggleAutorun}
+              disabled={isSaving}
+            />
+          </div>
+
+          {progress && (
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-ink/60">Enriched</span>
+                <span className="font-medium text-ink">
+                  {progress.enriched} / {progress.total}
+                  {progress.total > 0 && (
+                    <span className="text-ink/50 ml-1">
+                      ({Math.round((progress.enriched / progress.total) * 100)}%)
+                    </span>
+                  )}
+                </span>
+              </div>
+              <Progress value={progress.total ? (progress.enriched / progress.total) * 100 : 0} className="h-2" />
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-4 text-xs">
+            <div>
+              <p className="text-ink/50">Status</p>
+              <p className="font-medium text-ink mt-0.5 capitalize">
+                {settings.autorun_status}
+                {settings.autorun_enabled && settings.autorun_status === 'running' && ' · working…'}
+              </p>
+            </div>
+            <div>
+              <p className="text-ink/50">Last activity</p>
+              <p className="font-medium text-ink mt-0.5">{formatDate(settings.autorun_last_tick)}</p>
+            </div>
+          </div>
+
+          <p className="text-xs text-ink/50">
+            Runs about one pepper every couple of minutes; the full catalogue takes a
+            few hours. Safe to close this tab — it runs on the server. Toggle off to pause.
+          </p>
         </CardContent>
       </Card>
 
