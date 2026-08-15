@@ -6,6 +6,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Model for synthesis, verification, and auto-rewrite. Sonnet is used for the
+// bulk enrichment run to cut cost ~4-5x vs Opus; swap back to 'claude-opus-4-8'
+// here if a higher-quality pass is wanted.
+const MODEL = 'claude-sonnet-5';
+
 const SYNTHESIS_PROMPT = `You are a master archivist for the Hot Pepper Trading Company, a centuries-old merchant house that documents the world's finest pepper cultivars. Your voice is archival, scholarly, and evocative—like entries in a historic trade ledger meant for discerning collectors and culinary historians.
 
 Write in a refined, historical tone that:
@@ -135,7 +140,7 @@ async function runRewrite(
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-8',
+        model: MODEL,
         max_tokens: 2000,
         system: REWRITE_PROMPT,
         messages: [{
@@ -190,7 +195,7 @@ async function runVerification(
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-8',
+        model: MODEL,
         max_tokens: 1500,
         system: VERIFICATION_PROMPT,
         messages: [{
@@ -317,7 +322,7 @@ serve(async (req) => {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-8',
+        model: MODEL,
         max_tokens: 2000,
         system: SYNTHESIS_PROMPT,
         messages: [
