@@ -964,7 +964,7 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
                   <button
                     key={result.pepper.id}
                     onClick={() => onSelectPepper(result.pepper)}
-                    className="text-left p-3 bg-[#e8dcc4]/40 border border-[#5a4a3a]/15 
+                    className="flex flex-col text-left p-3 bg-[#e8dcc4]/40 border border-[#5a4a3a]/15
                       hover:border-[#5a4a3a]/30 hover:bg-[#e8dcc4]/60 transition-colors group"
                   >
                     <p className="font-display text-sm uppercase tracking-wide text-[#3a2a1a] 

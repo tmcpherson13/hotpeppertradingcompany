@@ -120,7 +120,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
             {/* Admin Status Badges - top left corner */}
             {isAdmin && (() => {
               const status = getStatus(pepper.id);
-              const hasBadges = status.enrichmentStatus !== 'none' || status.imageStatus !== 'none';
+              const hasBadges = status.enrichmentStatus === 'pending' || status.imageStatus !== 'none';
               if (!hasBadges) return null;
               return (
                 <div className="absolute top-2 left-2 flex flex-wrap gap-1 z-10 max-w-[calc(100%-6rem)]">
@@ -128,11 +128,6 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                     <Badge className="bg-amber-100 text-amber-700 border-amber-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
                       <FileText className="w-2.5 h-2.5 mr-0.5" />
                       Review
-                    </Badge>
-                  )}
-                  {status.enrichmentStatus === 'enriched' && (
-                    <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300 text-[9px] px-1.5 py-0.5 h-auto font-heading uppercase tracking-wide">
-                      Enriched
                     </Badge>
                   )}
                   {status.imageStatus === 'pending' && (
