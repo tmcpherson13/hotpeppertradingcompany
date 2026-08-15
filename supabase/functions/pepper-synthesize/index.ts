@@ -141,7 +141,7 @@ async function runRewrite(
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 2000,
+        max_tokens: 4000,
         system: REWRITE_PROMPT,
         messages: [{
           role: 'user',
@@ -196,7 +196,7 @@ async function runVerification(
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 1500,
+        max_tokens: 2500,
         system: VERIFICATION_PROMPT,
         messages: [{
           role: 'user',
@@ -333,7 +333,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 2000,
+        max_tokens: 4000,
         system: SYNTHESIS_PROMPT,
         messages: [
           {
