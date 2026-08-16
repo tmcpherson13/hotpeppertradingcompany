@@ -7,6 +7,7 @@ import { speciesDisplayNames } from '@/data/peppers';
 import { useAllPeppers } from '@/hooks/usePeppers';
 import { getConsortiumsForPepper, consortiumShopPath } from '@/data/blendContents';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
+import { Flame, MapPin } from 'lucide-react';
 import type { Pepper } from '@/data/pepperTypes';
 
 function formatScoville(min: number, max: number): string {
@@ -172,24 +173,22 @@ export default function PepperDetail() {
                   Also known as: {pepper.alternateNames.join(', ')}
                 </p>
               )}
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <div>
-                  <Label>Heat</Label>
-                  <p className="font-body text-foreground">{heatLevel}</p>
+              {/* Fact tiles — same shape and labels as the compendium modal */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+                <div className="text-center p-3 bg-card border border-border">
+                  <Flame className="w-5 h-5 mx-auto mb-1 text-primary" />
+                  <p className="font-heading text-[9px] uppercase tracking-wider text-muted-foreground">Pungency</p>
+                  <p className="font-body text-sm font-medium text-foreground">{heatLevel}</p>
                 </div>
-                <div>
-                  <Label>Scoville</Label>
-                  <p className="font-body text-foreground tabular-nums">
-                    {formatScoville(scovilleMin, scovilleMax)}
-                  </p>
+                <div className="text-center p-3 bg-card border border-border">
+                  <MapPin className="w-5 h-5 mx-auto mb-1 text-primary" />
+                  <p className="font-heading text-[9px] uppercase tracking-wider text-muted-foreground">Provenance</p>
+                  <p className="font-body text-sm font-medium text-foreground">{origin}</p>
                 </div>
-                <div>
-                  <Label>Origin</Label>
-                  <p className="font-body text-foreground">{origin}</p>
-                </div>
-                <div>
-                  <Label>Species</Label>
-                  <p className="font-body text-foreground italic">{speciesDisplayNames[pepper.species]}</p>
+                <div className="text-center p-3 bg-card border border-border">
+                  <div className="w-5 h-5 mx-auto mb-1 flex items-center justify-center text-primary font-display text-xs">SHU</div>
+                  <p className="font-heading text-[9px] uppercase tracking-wider text-muted-foreground">Scoville</p>
+                  <p className="font-body text-sm font-medium text-foreground tabular-nums">{formatScoville(scovilleMin, scovilleMax)}</p>
                 </div>
               </div>
             </div>
