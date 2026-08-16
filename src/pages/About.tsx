@@ -46,6 +46,21 @@ export default function About() {
             </motion.div>
           </div>
         </section>
+        {/* The record we keep — plain type, deliberately undecorated */}
+        <section className="py-16 md:py-24 border-b border-border/40">
+          <div className="container max-w-2xl mx-auto px-6 space-y-6">
+            <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed">
+              The Company dates itself to 1493. Not because it existed then, but because that is the year the trade began — the first year peppers were carried beyond the hemisphere that made them. Everything in the Compendium descends from that crossing. We keep the record from its opening entry.
+            </p>
+            <h2 className="font-heading text-2xl md:text-3xl text-foreground pt-6">A Note on the Historical Record</h2>
+            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+              The Company adopts the vocabulary of an early-modern merchant house — manifests, consignments, bills of lading — because that is how the movement of peppers was documented. The routes on our chart are the routes that existed.
+            </p>
+            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
+              The Compendium records historical context where it bears directly on a cultivar's story, and reserves this merchant vocabulary for goods alone.
+            </p>
+          </div>
+        </section>
         <section className="py-16 md:py-24">
           <div className="container max-w-2xl mx-auto px-6 space-y-10">
             <Section>
@@ -108,21 +123,6 @@ export default function About() {
             <Section className="flex justify-center">
               <LogoDivider variant="ornate" size="md" />
             </Section>
-          </div>
-        </section>
-        {/* Founding statement + the record we keep — plain type, deliberately undecorated */}
-        <section className="py-16 md:py-24 border-t border-border/40">
-          <div className="container max-w-2xl mx-auto px-6 space-y-6">
-            <p className="font-body text-foreground/90 text-lg md:text-xl leading-relaxed">
-              The Company dates itself to 1493. Not because it existed then, but because that is the year the trade began — the first year peppers were carried beyond the hemisphere that made them. Everything in the Compendium descends from that crossing. We keep the record from its opening entry.
-            </p>
-            <h2 className="font-heading text-2xl md:text-3xl text-foreground pt-6">A Note on the Historical Record</h2>
-            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-              The Company adopts the vocabulary of an early-modern merchant house — manifests, consignments, bills of lading — because that is how the movement of peppers was documented. The routes on our chart are the routes that existed.
-            </p>
-            <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-              Those maritime networks belonged to the same early-modern commercial system as the transatlantic slave trade; entrepôts such as Elmina and São Tomé figured in both. The Compendium records such connections where they bear directly on a cultivar's history, and reserves this merchant vocabulary for goods alone.
-            </p>
           </div>
         </section>
       </main>
