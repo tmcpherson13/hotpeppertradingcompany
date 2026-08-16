@@ -85,7 +85,7 @@ export default function PepperDetail() {
   const scovilleMin = override?.scoville_min ?? pepper.scovilleMin;
   const scovilleMax = override?.scoville_max ?? pepper.scovilleMax;
 
-  const img = primaryImage(pepper);
+  const img = override?.image_url ?? primaryImage(pepper);
   const related = relatedPeppers(pepper, peppers);
   const consortiums = getConsortiumsForPepper(pepper.id);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];

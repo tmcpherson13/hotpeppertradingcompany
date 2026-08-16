@@ -757,7 +757,23 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
         <div className="px-6 py-5 space-y-6">
           {/* Pepper Gallery */}
           {(() => {
-            const gallery = getGalleryFromPepper(pepper);
+            const baseGallery = getGalleryFromPepper(pepper);
+            // A curated primary-image override leads the gallery (Wikimedia photo).
+            const gallery: PepperImage[] = override?.image_url
+              ? [
+                  {
+                    id: `${pepper.id}-override`,
+                    url: override.image_url,
+                    type: 'photo',
+                    isPrimary: true,
+                    source: 'wikimedia',
+                    license: override.image_license ?? undefined,
+                    author: override.image_author ?? undefined,
+                    sourceUrl: override.image_source_url ?? undefined,
+                  },
+                  ...baseGallery.filter((g) => g.url !== override.image_url),
+                ]
+              : baseGallery;
             return gallery.length > 0 ? (
               <PepperGallery gallery={gallery} pepperName={pepper.name} pepperId={pepper.id} />
             ) : null;

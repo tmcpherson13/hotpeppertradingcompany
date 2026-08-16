@@ -95,10 +95,10 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
       {/* Archival Catalog Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {peppers.map((pepper) => {
-          const pepperImage = getPrimaryImage(pepper);
-          const showThumbnail = !!pepperImage;
           const override = getOverride(pepper.id);
-          
+          const pepperImage = override?.image_url ?? getPrimaryImage(pepper);
+          const showThumbnail = !!pepperImage;
+
           // Use override values if available
           const displayOrigin = override?.origin ?? pepper.origin;
           const displayHeatLevel = override?.heat_level ?? pepper.heatLevel;
