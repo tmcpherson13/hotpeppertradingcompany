@@ -6,6 +6,7 @@ import { SEO, SITE_URL } from '@/components/SEO';
 import { speciesDisplayNames } from '@/data/peppers';
 import { useAllPeppers } from '@/hooks/usePeppers';
 import { getConsortiumsForPepper, consortiumShopPath } from '@/data/blendContents';
+import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import type { Pepper } from '@/data/pepperTypes';
 
 function formatScoville(min: number, max: number): string {
@@ -67,18 +68,30 @@ const NotFoundPepper = () => (
 export default function PepperDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { peppers, isLoading } = useAllPeppers();
+  const { getOverride } = usePepperOverrides();
   const pepper = peppers.find((p) => p.id === slug);
 
   // While DB peppers may still be loading on the client, don't 404 a real slug.
   if (!pepper) return isLoading ? <div className="min-h-screen bg-background" /> : <NotFoundPepper />;
+
+  // Apply the published enrichment override (same fields as the compendium modal)
+  // so the full record shows the enriched prose, not the sparse static seed data.
+  const override = getOverride(pepper.id);
+  const description = override?.description ?? pepper.description;
+  const historicalNotes = override?.historical_notes ?? pepper.historicalNotes;
+  const tradeRoute = override?.trade_route ?? pepper.tradeRoute;
+  const origin = override?.origin ?? pepper.origin;
+  const heatLevel = override?.heat_level ?? pepper.heatLevel;
+  const scovilleMin = override?.scoville_min ?? pepper.scovilleMin;
+  const scovilleMax = override?.scoville_max ?? pepper.scovilleMax;
 
   const img = primaryImage(pepper);
   const related = relatedPeppers(pepper, peppers);
   const consortiums = getConsortiumsForPepper(pepper.id);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];
   const metaDescription =
-    `${pepper.name} (${sciName}) — ${pepper.heatLevel}, ${formatScoville(pepper.scovilleMin, pepper.scovilleMax)}. ` +
-    `Origin: ${pepper.origin}. ${pepper.description}`.slice(0, 300);
+    `${pepper.name} (${sciName}) — ${heatLevel}, ${formatScoville(scovilleMin, scovilleMax)}. ` +
+    `Origin: ${origin}. ${description}`.slice(0, 300);
 
   const jsonLd = [
     {
@@ -95,7 +108,7 @@ export default function PepperDetail() {
       // A cultivar is most accurately a taxon; Article keeps the rich, cited prose indexable.
       '@type': 'Article',
       headline: `${pepper.name} — ${sciName}`,
-      description: pepper.description,
+      description,
       about: sciName,
       ...(img ? { image: img.startsWith('http') ? img : `${SITE_URL}${img}` } : {}),
       isPartOf: { '@type': 'WebSite', name: 'Hot Pepper Trading Company', url: SITE_URL },
@@ -162,17 +175,17 @@ export default function PepperDetail() {
               <div className="grid grid-cols-2 gap-4 mt-6">
                 <div>
                   <Label>Heat</Label>
-                  <p className="font-body text-foreground">{pepper.heatLevel}</p>
+                  <p className="font-body text-foreground">{heatLevel}</p>
                 </div>
                 <div>
                   <Label>Scoville</Label>
                   <p className="font-body text-foreground tabular-nums">
-                    {formatScoville(pepper.scovilleMin, pepper.scovilleMax)}
+                    {formatScoville(scovilleMin, scovilleMax)}
                   </p>
                 </div>
                 <div>
                   <Label>Origin</Label>
-                  <p className="font-body text-foreground">{pepper.origin}</p>
+                  <p className="font-body text-foreground">{origin}</p>
                 </div>
                 <div>
                   <Label>Species</Label>
@@ -189,13 +202,13 @@ export default function PepperDetail() {
         <section className="container max-w-2xl mx-auto px-6 py-10 space-y-10">
           <div>
             <h2 className="font-display text-2xl text-foreground mb-3">Character</h2>
-            <p className="font-body text-foreground/85 text-lg leading-relaxed">{pepper.description}</p>
+            <p className="font-body text-foreground/85 text-lg leading-relaxed">{description}</p>
           </div>
 
-          {pepper.historicalNotes && (
+          {historicalNotes && (
             <div>
               <h2 className="font-display text-2xl text-foreground mb-3">History &amp; Provenance</h2>
-              <p className="font-body text-foreground/85 text-lg leading-relaxed">{pepper.historicalNotes}</p>
+              <p className="font-body text-foreground/85 text-lg leading-relaxed">{historicalNotes}</p>
             </div>
           )}
 
@@ -226,7 +239,7 @@ export default function PepperDetail() {
             )}
             <div>
               <Label>Trade Route</Label>
-              <p className="font-body text-foreground/85">{pepper.tradeRoute}</p>
+              <p className="font-body text-foreground/85">{tradeRoute}</p>
             </div>
             <div>
               <Label>Recorded Introduction</Label>
@@ -237,10 +250,10 @@ export default function PepperDetail() {
           {/* Cross-links: keep the Compendium/Origins loop, and point toward the shop */}
           <div className="flex flex-wrap gap-4 pt-4 border-t border-border">
             <Link
-              to={`/origins?highlight=${encodeURIComponent(pepper.origin)}`}
+              to={`/origins?highlight=${encodeURIComponent(origin)}`}
               className="font-heading uppercase tracking-widest text-sm text-primary hover:text-primary/80"
             >
-              See {pepper.origin} on the Origins map →
+              See {origin} on the Origins map →
             </Link>
             <Link
               to="/compendium"
