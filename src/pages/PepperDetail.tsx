@@ -21,12 +21,16 @@ function formatYear(year: number): string {
   return `${year} CE`;
 }
 
-/** Resolve a primary image URL without touching localStorage (SSR-safe). */
-function primaryImage(pepper: Pepper): string | undefined {
-  if (pepper.gallery && pepper.gallery.length > 0) {
-    const primary = pepper.gallery.find((g) => g.isPrimary) ?? pepper.gallery[0];
-    return primary.url;
-  }
+/**
+ * Resolve the hero image URL without touching localStorage (SSR-safe).
+ * Precedence: an explicitly flagged primary image wins, then the curated
+ * primary-image override, then the gallery's default first image / legacy url.
+ */
+function primaryImage(pepper: Pepper, overrideImageUrl?: string): string | undefined {
+  const explicit = pepper.gallery?.find((g) => g.isPrimary)?.url;
+  if (explicit) return explicit;
+  if (overrideImageUrl) return overrideImageUrl;
+  if (pepper.gallery && pepper.gallery.length > 0) return pepper.gallery[0].url;
   return pepper.imageUrl;
 }
 
@@ -86,7 +90,7 @@ export default function PepperDetail() {
   const scovilleMin = override?.scoville_min ?? pepper.scovilleMin;
   const scovilleMax = override?.scoville_max ?? pepper.scovilleMax;
 
-  const img = override?.image_url ?? primaryImage(pepper);
+  const img = primaryImage(pepper, override?.image_url);
   const related = relatedPeppers(pepper, peppers);
   const consortiums = getConsortiumsForPepper(pepper.id);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];

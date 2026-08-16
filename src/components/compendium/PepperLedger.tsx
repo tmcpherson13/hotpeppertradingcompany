@@ -9,25 +9,29 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import logoDark from '@/assets/logo-dark.svg';
 
-// Helper to get primary image from gallery or legacy sources, respecting saved order
-const getPrimaryImage = (pepper: Pepper): string | undefined => {
-  // Prefer the user's current primary image (includes uploads) if available
+// Resolve the thumbnail for a card, respecting the "image on the left is the
+// display" rule. Precedence:
+//   1. The leftmost gallery image, kept in sync by the gallery editor
+//      (PepperGallery writes it to localStorage). A manual arrangement always
+//      wins so it sticks on the card.
+//   2. The curated primary-image override (Wikimedia photo / AI studio shot) as
+//      the default until the user arranges a leftmost image.
+//   3. The gallery's default order, then legacy sources.
+const getPrimaryImage = (pepper: Pepper, overrideImageUrl?: string): string | undefined => {
   try {
-    const override = localStorage.getItem(`pepper-primary-image-${pepper.id}`);
-    if (override) return override;
+    const chosen = localStorage.getItem(`pepper-primary-image-${pepper.id}`);
+    if (chosen) return chosen;
   } catch {
-    // ignore
+    // ignore storage errors
   }
 
-  // First check gallery
+  if (overrideImageUrl) return overrideImageUrl;
+
   if (pepper.gallery && pepper.gallery.length > 0) {
-    // Apply saved order and get first image
     const orderedGallery = applyGalleryOrder(pepper.id, pepper.gallery);
     return orderedGallery[0]?.url;
   }
-  // Fallback to legacy imageUrl
   if (pepper.imageUrl) return pepper.imageUrl;
-  // Finally try pepperImages map
   return getPepperImage(pepper.id);
 };
 
@@ -96,7 +100,7 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {peppers.map((pepper) => {
           const override = getOverride(pepper.id);
-          const pepperImage = override?.image_url ?? getPrimaryImage(pepper);
+          const pepperImage = getPrimaryImage(pepper, override?.image_url);
           const showThumbnail = !!pepperImage;
 
           // Use override values if available
