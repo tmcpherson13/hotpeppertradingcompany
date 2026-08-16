@@ -14,7 +14,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <SEO
         title="Hot Pepper Trading Company"
-        description="A hot-pepper resource and curated blends themed as an old trading house: history, a 190-cultivar compendium, an origins map, and consortium flake blends."
+        description="A hot-pepper resource and curated blends themed as an old trading house: history, an extensive pepper compendium, an origins map, and consortium flake blends."
         path="/"
         type="website"
       />
