@@ -6,7 +6,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const VISION_MODEL = Deno.env.get('GEMINI_VISION_MODEL') || 'gemini-2.5-pro';
+// gemini-flash-latest resolves to the current fast vision model; the dated
+// 2.5 ids returned 404 on this key by mid-2026.
+const VISION_MODEL = Deno.env.get('GEMINI_VISION_MODEL') || 'gemini-flash-latest';
 
 const CLASSIFY_PROMPT =
   `You are verifying stock photos for a chili-pepper encyclopedia. Look at the image and decide whether it PRIMARILY depicts chili / capsicum peppers — fresh pods, the growing plant, or dried chili peppers (the fruit or the ground spice made from it).\n\n` +
