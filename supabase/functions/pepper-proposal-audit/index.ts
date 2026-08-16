@@ -113,6 +113,23 @@ serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
 
+    if (body.debug === 'imgtest') {
+      const im = body.imgModel || 'gemini-2.5-flash-image';
+      const rr = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${im}:generateContent?key=${geminiKey}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: 'A studio photograph of a single red chili pepper on a white background.' }] }] }) },
+      );
+      const txt = await rr.text();
+      let hasImage = false;
+      try {
+        const j = JSON.parse(txt);
+        hasImage = !!(j.candidates?.[0]?.content?.parts || []).find((p: any) => p.inlineData || p.inline_data);
+      } catch { /* ignore */ }
+      return new Response(JSON.stringify({ imgModel: im, status: rr.status, hasImage, body: hasImage ? undefined : txt.slice(0, 400) }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
     if (body.debug === 'models') {
       const rr = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${geminiKey}`);
       const txt = await rr.text();
