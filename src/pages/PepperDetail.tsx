@@ -212,31 +212,8 @@ export default function PepperDetail() {
             </div>
           )}
 
+          {/* Provenance facts — kept with the narrative, before the sensory notes */}
           <div className="grid sm:grid-cols-2 gap-6">
-            {pepper.flavorNotes?.length > 0 && (
-              <div>
-                <Label>Flavor Notes</Label>
-                <p className="font-body text-foreground/85">{pepper.flavorNotes.join(', ')}</p>
-              </div>
-            )}
-            {pepper.aromaNotes && pepper.aromaNotes.length > 0 && (
-              <div>
-                <Label>Aroma</Label>
-                <p className="font-body text-foreground/85">{pepper.aromaNotes.join(', ')}</p>
-              </div>
-            )}
-            {pepper.culinaryUses?.length > 0 && (
-              <div>
-                <Label>Culinary Uses</Label>
-                <p className="font-body text-foreground/85">{pepper.culinaryUses.join(', ')}</p>
-              </div>
-            )}
-            {pepper.pairings && pepper.pairings.length > 0 && (
-              <div>
-                <Label>Pairs With</Label>
-                <p className="font-body text-foreground/85">{pepper.pairings.join(', ')}</p>
-              </div>
-            )}
             <div>
               <Label>Trade Route</Label>
               <p className="font-body text-foreground/85">{tradeRoute}</p>
@@ -246,6 +223,39 @@ export default function PepperDetail() {
               <p className="font-body text-foreground/85">{formatYear(pepper.yearIntroduced)}</p>
             </div>
           </div>
+
+          {/* Sensory & culinary — deliberately last */}
+          {(pepper.flavorNotes?.length > 0
+            || (pepper.aromaNotes && pepper.aromaNotes.length > 0)
+            || pepper.culinaryUses?.length > 0
+            || (pepper.pairings && pepper.pairings.length > 0)) && (
+            <div className="grid sm:grid-cols-2 gap-6 pt-2 border-t border-border">
+              {pepper.flavorNotes?.length > 0 && (
+                <div>
+                  <Label>Flavor Notes</Label>
+                  <p className="font-body text-foreground/85">{pepper.flavorNotes.join(', ')}</p>
+                </div>
+              )}
+              {pepper.aromaNotes && pepper.aromaNotes.length > 0 && (
+                <div>
+                  <Label>Aroma</Label>
+                  <p className="font-body text-foreground/85">{pepper.aromaNotes.join(', ')}</p>
+                </div>
+              )}
+              {pepper.culinaryUses?.length > 0 && (
+                <div>
+                  <Label>Culinary Uses</Label>
+                  <p className="font-body text-foreground/85">{pepper.culinaryUses.join(', ')}</p>
+                </div>
+              )}
+              {pepper.pairings && pepper.pairings.length > 0 && (
+                <div>
+                  <Label>Pairs With</Label>
+                  <p className="font-body text-foreground/85">{pepper.pairings.join(', ')}</p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Cross-links: keep the Compendium/Origins loop, and point toward the shop */}
           <div className="flex flex-wrap gap-4 pt-4 border-t border-border">

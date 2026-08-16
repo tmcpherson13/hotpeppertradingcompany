@@ -755,6 +755,15 @@ export function PepperDetailModal({ pepper, open, onOpenChange, onSelectPepper, 
 
         {/* Content */}
         <div className="px-6 py-5 space-y-6">
+          {/* Prominent CTA — the full record is the richer, canonical page */}
+          <Link
+            to={`/peppers/${pepper.id}`}
+            onClick={() => onOpenChange(false)}
+            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-[#6F2027] text-[#f5efe6]
+              font-heading text-sm uppercase tracking-wider hover:bg-[#5a1a20] transition-colors"
+          >
+            View Full Record →
+          </Link>
           {/* Pepper Gallery */}
           {(() => {
             const baseGallery = getGalleryFromPepper(pepper);
