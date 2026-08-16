@@ -22,6 +22,7 @@ const strip = (s: string | null | undefined) =>
 
 interface Candidate {
   imageUrl: string;      // direct image bytes
+  fallbackUrl?: string;  // reliable secondary (e.g. Openverse-hosted thumbnail)
   sourceUrl: string;     // human-facing source page (attribution link)
   license: string;
   author: string;
@@ -52,6 +53,9 @@ async function fromOpenverse(pepperName: string): Promise<Candidate[]> {
       if (!r.url) continue;
       out.push({
         imageUrl: r.url,
+        // Openverse-hosted thumbnail is always downloadable even when the
+        // provider host blocks server-side hotlinking of r.url.
+        fallbackUrl: r.thumbnail || undefined,
         sourceUrl: r.foreign_landing_url || r.url,
         license,
         author: strip(r.creator) || 'Unknown',
@@ -123,9 +127,16 @@ serve(async (req) => {
     for (const c of candidates) {
       if (seen.has(c.sourceUrl)) continue;
       try {
-        const dl = await fetch(c.imageUrl, { headers: { 'User-Agent': 'HotPepperTradingCompany/1.0 (curation)' } });
+        // Try the full image; if the provider blocks it or serves non-image
+        // (HTML error page), fall back to the reliable Openverse thumbnail.
+        const ua = { 'User-Agent': 'HotPepperTradingCompany/1.0 (curation)' };
+        let dl = await fetch(c.imageUrl, { headers: ua });
+        let mime = dl.headers.get('content-type') || '';
+        if ((!dl.ok || !mime.startsWith('image/')) && c.fallbackUrl) {
+          dl = await fetch(c.fallbackUrl, { headers: ua });
+          mime = dl.headers.get('content-type') || '';
+        }
         if (!dl.ok) { console.error(`download ${dl.status}: ${c.imageUrl}`); continue; }
-        const mime = dl.headers.get('content-type') || 'image/jpeg';
         if (!mime.startsWith('image/')) { console.error('non-image mime', mime, c.imageUrl); continue; }
         const bytes = new Uint8Array(await dl.arrayBuffer());
         const ext = mime.includes('/') ? mime.split('/')[1].split(';')[0].replace('jpeg', 'jpg') : 'jpg';
