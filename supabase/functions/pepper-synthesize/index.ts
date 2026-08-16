@@ -28,9 +28,9 @@ Based on the research provided, synthesize comprehensive content for this pepper
 {
   "description": "A 2-3 sentence archival description of the pepper, emphasizing its character, provenance, and significance in the spice trade.",
   "historical_notes": "2-4 sentences on the pepper's history, trade routes, and cultural journey through time.",
-  "flavor_notes": "Specific tasting notes describing the pepper's flavor profile—heat characteristics, underlying flavors, aromatic qualities.",
-  "aroma_notes": "A brief description of the pepper's aromatic profile when fresh, dried, or cooked.",
-  "culinary_uses": "Traditional and contemporary culinary applications, specific regional dishes, and preparation methods.",
+  "flavor_notes": "3 to 5 SHORT flavor descriptor tags, 1-2 words each, comma-separated (e.g. 'Earthy, Sweet, Dried fruit'). Tags only — NOT sentences.",
+  "aroma_notes": "2 to 4 SHORT aroma descriptor tags, 1-2 words each, comma-separated (e.g. 'Smoky, Sweet, Grassy'). Tags only — NOT sentences.",
+  "culinary_uses": "2 to 5 SHORT culinary-use tags, 1-3 words each, comma-separated (e.g. 'Mole, Roasting, Stuffing'). Tags only — NOT sentences.",
   "trade_route": "The historical or contemporary trade route most associated with this pepper (if applicable).",
   "source_citations": ["Array of source URLs or references used"]
 }
