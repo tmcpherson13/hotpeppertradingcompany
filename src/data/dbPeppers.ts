@@ -146,6 +146,44 @@ export async function deletePepper(id: string): Promise<void> {
   if (error) throw error;
 }
 
+/**
+ * Admin: make an image the pepper's canonical display image for ALL visitors.
+ *
+ * The compendium card and full record read a pepper's default image from a
+ * single field — `peppers.image_url` for DB-backed peppers and
+ * `pepper_overrides.image_url` for the original static 190. Writing both keeps
+ * the "image on the left" choice global instead of living only in the curating
+ * browser's localStorage. Both writes are RLS-guarded (admin-only); the DB-row
+ * update is a no-op for static peppers that have no `peppers` row.
+ */
+export async function setPepperPrimaryImage(
+  pepperId: string,
+  image: { url: string; sourceUrl?: string | null; license?: string | null; author?: string | null },
+): Promise<void> {
+  const now = new Date().toISOString();
+
+  const { error: pepperError } = await db
+    .from(PEPPERS_TABLE)
+    .update({ image_url: image.url, updated_at: now })
+    .eq('id', pepperId);
+  if (pepperError) throw pepperError;
+
+  const { error: overrideError } = await db
+    .from('pepper_overrides')
+    .upsert(
+      {
+        pepper_id: pepperId,
+        image_url: image.url,
+        image_source_url: image.sourceUrl ?? null,
+        image_license: image.license ?? null,
+        image_author: image.author ?? null,
+        updated_at: now,
+      },
+      { onConflict: 'pepper_id' },
+    );
+  if (overrideError) throw overrideError;
+}
+
 // ---- SSR / prerender injection store ----
 // During build-time prerendering there is no React Query; the prerender script
 // fetches DB peppers once and injects them here so components render them.

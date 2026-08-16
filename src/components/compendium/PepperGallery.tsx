@@ -7,6 +7,8 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { useAuth } from '@/contexts/AuthContext';
 import { useHiddenImages } from '@/hooks/useHiddenImages';
 import { ImageUploadZone, DeleteImageButton } from './ImageUploadZone';
+import { setPepperPrimaryImage } from '@/data/dbPeppers';
+import { toast } from 'sonner';
 
 interface PepperGalleryProps {
   gallery: PepperImage[];
@@ -28,6 +30,25 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
   const { uploadedImages, savedOrder, isLoading, refreshUploads, saveOrder } = useGallerySync(pepperId);
   const { deleteImage } = useImageUpload(pepperId);
   const { hiddenIds, hideImage, isLoading: hiddenLoading } = useHiddenImages(pepperId);
+
+  // When an admin arranges the gallery, promote the new leftmost image to the
+  // pepper's canonical display image so every visitor sees it — not just this
+  // browser. Non-admins only affect their own localStorage-backed view.
+  const persistPrimaryGlobally = useCallback(async (leftmost?: PepperImageWithMeta) => {
+    if (!isAdmin || !leftmost?.url) return;
+    try {
+      await setPepperPrimaryImage(pepperId, {
+        url: leftmost.url,
+        sourceUrl: leftmost.sourceUrl ?? null,
+        license: leftmost.license ?? null,
+        author: leftmost.author ?? null,
+      });
+      toast.success('Set as the primary image for everyone');
+    } catch (err) {
+      console.error('Failed to persist primary image globally:', err);
+      toast.error('Saved your order, but could not update the shared primary image');
+    }
+  }, [isAdmin, pepperId]);
   
   // Merge static gallery with uploaded images, filter hidden, and apply saved order
   useEffect(() => {
@@ -90,10 +111,12 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     // Save the new order
     const newOrder = orderedGallery.map(img => img.id);
     saveOrder(newOrder);
-    
+    // Admins: make the new leftmost the shared primary image for all visitors.
+    persistPrimaryGlobally(orderedGallery[0]);
+
     setKeyboardDragIndex(null);
     setPreKeyboardDragOrder(null);
-  }, [keyboardDragIndex, orderedGallery, saveOrder]);
+  }, [keyboardDragIndex, orderedGallery, saveOrder, persistPrimaryGlobally]);
 
   const cancelKeyboardDrag = useCallback(() => {
     if (preKeyboardDragOrder) {
@@ -259,7 +282,9 @@ export function PepperGallery({ gallery, pepperName, pepperId }: PepperGalleryPr
     // Save order to Supabase (or localStorage for guests)
     const newOrder = newGallery.map(img => img.id);
     saveOrder(newOrder);
-    
+    // Admins: make the new leftmost the shared primary image for all visitors.
+    persistPrimaryGlobally(newGallery[0]);
+
     // Adjust current index if needed
     if (currentIndex === draggedIndex) {
       setCurrentIndex(dropIndex);
