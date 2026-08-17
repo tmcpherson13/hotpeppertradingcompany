@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 
 import { UserManagement } from '@/components/admin/UserManagement';
 import { ImageModeration } from '@/components/admin/ImageModeration';
+import { AdminPepperImages } from '@/components/admin/AdminPepperImages';
 import { ProfileSettings } from '@/components/admin/ProfileSettings';
 import { PepperEnrichment } from '@/components/admin/PepperEnrichment';
 import { EnrichmentDashboard } from '@/components/admin/EnrichmentDashboard';
@@ -24,6 +25,7 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('enrichment');
   const [enrichmentSubTab, setEnrichmentSubTab] = useState<EnrichmentSubTab>('enrich');
   const [catalogView, setCatalogView] = useState<'manage' | 'import'>('manage');
+  const [imagesView, setImagesView] = useState<'by-pepper' | 'all-uploads'>('by-pepper');
   const [enrichmentInitialView, setEnrichmentInitialView] = useState<'pending' | 'auto-approved' | undefined>(undefined);
 
   // Live counts of work awaiting review, badged onto the hub + sub-tabs so
@@ -249,10 +251,36 @@ export default function Admin() {
 
             <TabsContent value="images" className="mt-0">
               <div className="bg-parchment-dark/20 border border-ink/20 p-4">
-                <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70 mb-4">
-                  Image Gallery
-                </h2>
-                <ImageModeration />
+                <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:items-center sm:justify-between">
+                  <h2 className="font-heading text-sm uppercase tracking-wider text-ink/70">
+                    Image Gallery
+                  </h2>
+                  <div className="inline-flex border border-tyrian-dark self-start">
+                    <button
+                      type="button"
+                      onClick={() => setImagesView('by-pepper')}
+                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 transition-colors ${
+                        imagesView === 'by-pepper'
+                          ? 'bg-tyrian text-parchment'
+                          : 'bg-parchment text-ink/70 hover:text-ink'
+                      }`}
+                    >
+                      By Pepper
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImagesView('all-uploads')}
+                      className={`font-heading uppercase tracking-wider text-xs px-4 py-2 border-l border-tyrian-dark transition-colors ${
+                        imagesView === 'all-uploads'
+                          ? 'bg-tyrian text-parchment'
+                          : 'bg-parchment text-ink/70 hover:text-ink'
+                      }`}
+                    >
+                      All Uploads
+                    </button>
+                  </div>
+                </div>
+                {imagesView === 'by-pepper' ? <AdminPepperImages /> : <ImageModeration />}
               </div>
             </TabsContent>
 
