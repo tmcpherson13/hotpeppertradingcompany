@@ -8,7 +8,8 @@ import { useAllPeppers } from '@/hooks/usePeppers';
 import { getConsortiumsForPepper, consortiumShopPath } from '@/data/blendContents';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
 import { Flame, MapPin } from 'lucide-react';
-import type { Pepper } from '@/data/pepperTypes';
+import type { Pepper, PepperType } from '@/data/pepperTypes';
+import { PepperTypeBadge } from '@/components/compendium/PepperTypeBadge';
 
 function formatScoville(min: number, max: number): string {
   if (min === 0 && max === 0) return 'No measurable heat';
@@ -98,6 +99,10 @@ export default function PepperDetail() {
   const culinaryUses = splitTags(override?.culinary_uses) ?? pepper.culinaryUses ?? [];
 
   const img = primaryImage(pepper, override?.image_url);
+  const displayType = ((override?.pepper_type ?? pepper.pepperType) || undefined) as PepperType | undefined;
+  const variantOf = override?.variant_of ?? pepper.variantOf;
+  const variantLabel = override?.variant_label ?? pepper.variantLabel;
+  const variantParent = variantOf ? peppers.find((p) => p.id === variantOf) : undefined;
   const related = relatedPeppers(pepper, peppers);
   const consortiums = getConsortiumsForPepper(pepper.id);
   const sciName = pepper.scientificName || speciesDisplayNames[pepper.species];
@@ -178,7 +183,20 @@ export default function PepperDetail() {
               <h1 className="font-display text-4xl md:text-5xl text-foreground leading-tight mb-1">
                 {pepper.name}
               </h1>
-              <p className="font-heading italic text-primary text-lg mb-4">{sciName}</p>
+              <p className="font-heading italic text-primary text-lg mb-2">{sciName}</p>
+              {(displayType || (variantOf && variantParent)) && (
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-4">
+                  {displayType && <PepperTypeBadge type={displayType} />}
+                  {variantOf && variantParent && (
+                    <span className="font-body text-xs text-muted-foreground">
+                      {variantLabel ? `${variantLabel} variant of ` : 'Variant of '}
+                      <Link to={`/peppers/${variantParent.id}`} className="text-primary hover:underline">
+                        {variantParent.name}
+                      </Link>
+                    </span>
+                  )}
+                </div>
+              )}
               {pepper.alternateNames && pepper.alternateNames.length > 0 && (
                 <p className="font-body text-muted-foreground text-sm mb-4">
                   Also known as: {pepper.alternateNames.join(', ')}

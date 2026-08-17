@@ -16,6 +16,9 @@ export interface PepperOverride {
   heat_level: string | null;
   scoville_min: number | null;
   scoville_max: number | null;
+  pepper_type: string | null;
+  variant_of: string | null;
+  variant_label: string | null;
   image_url: string | null;
   image_source_url: string | null;
   image_license: string | null;

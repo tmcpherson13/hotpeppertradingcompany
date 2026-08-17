@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Pepper, speciesDisplayNames, ancestralSpeciesList, AncestralSpecies, PepperImage } from '@/data/peppers';
+import { PepperType } from '@/data/pepperTypes';
+import { PepperTypeBadge } from './PepperTypeBadge';
 import { Package, ChevronRight, Camera, FileText } from 'lucide-react';
 import { getPepperImage } from '@/data/pepperImages';
 import { applyGalleryOrder } from '@/utils/galleryOrder';
@@ -108,7 +110,8 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
           const displayHeatLevel = override?.heat_level ?? pepper.heatLevel;
           const displayScovilleMin = override?.scoville_min ?? pepper.scovilleMin;
           const displayScovilleMax = override?.scoville_max ?? pepper.scovilleMax;
-          
+          const displayType = ((override?.pepper_type ?? pepper.pepperType) || undefined) as PepperType | undefined;
+
           return (
           <button
             key={pepper.id}
@@ -194,6 +197,11 @@ export function PepperLedger({ peppers, onSelectPepper }: PepperLedgerProps) {
                   )}
                   {speciesDisplayNames[pepper.species] || pepper.scientificName}
                 </p>
+                {displayType && (
+                  <div className="mt-1.5">
+                    <PepperTypeBadge type={displayType} />
+                  </div>
+                )}
               </div>
             </div>
 

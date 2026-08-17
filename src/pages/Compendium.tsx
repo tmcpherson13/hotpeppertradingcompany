@@ -5,6 +5,7 @@ import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import { CompendiumFilters } from '@/components/compendium/CompendiumFilters';
 import { PepperLedger } from '@/components/compendium/PepperLedger';
+import { PepperTypeLegend } from '@/components/compendium/PepperTypeBadge';
 import { PepperDetailModal } from '@/components/compendium/PepperDetailModal';
 import { Pepper, ancestralSpeciesList, AncestralSpecies, HeatLevel } from '@/data/peppers';
 import { useAllPeppers } from '@/hooks/usePeppers';
@@ -296,11 +297,21 @@ const Compendium = () => {
                 </h2>
                 <span className="h-px flex-1 bg-border" />
               </div>
-              <p className="mb-4 text-center font-heading text-xs uppercase tracking-[0.15em] text-muted-foreground">
+              <p className="mb-3 text-center font-heading text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 {isFiltered
                   ? `Showing ${shownCount.toLocaleString()} of ${totalCount.toLocaleString()} cultivars`
                   : `${totalCount.toLocaleString()} cultivars catalogued`}
               </p>
+
+              {/* Classification legend — explains the type badges on each card */}
+              <details className="mb-5 max-w-3xl mx-auto rounded border border-[#5a4a3a]/15 bg-[#f5efe6]/60">
+                <summary className="cursor-pointer select-none px-4 py-2 font-heading text-[11px] uppercase tracking-[0.15em] text-[#5a4a3a]/70">
+                  What do the type labels mean?
+                </summary>
+                <div className="px-4 pb-4 pt-1">
+                  <PepperTypeLegend />
+                </div>
+              </details>
 
               <PepperLedger
                 peppers={filteredPeppers}

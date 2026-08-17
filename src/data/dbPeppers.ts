@@ -37,6 +37,9 @@ export interface DbPepperRow {
   culinary_uses: string[] | null;
   pairings: string[] | null;
   in_stock: boolean;
+  pepper_type: string | null;
+  variant_of: string | null;
+  variant_label: string | null;
   image_url: string | null;
   gallery: PepperImage[] | null;
   source_citations: unknown;
@@ -80,6 +83,9 @@ export function mapDbRowToPepper(row: DbPepperRow): Pepper {
     culinaryUses: row.culinary_uses ?? [],
     pairings: row.pairings ?? undefined,
     inStock: row.in_stock,
+    pepperType: (row.pepper_type as Pepper['pepperType']) ?? undefined,
+    variantOf: row.variant_of ?? undefined,
+    variantLabel: row.variant_label ?? undefined,
     gallery: gallery.length > 0 ? gallery : undefined,
     imageUrl: row.image_url ?? undefined,
   };

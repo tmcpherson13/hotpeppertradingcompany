@@ -9,6 +9,34 @@ export type Species = DomesticatedSpecies | AncestralSpecies;
 
 export type HeatLevel = 'No Heat' | 'Very Mild' | 'Mild' | 'Medium' | 'Hot' | 'Very Hot' | 'Extreme' | 'Superhot';
 
+// How a cultivar came to be — surfaced as a badge with a plain-English glossary.
+export type PepperType =
+  | 'wild-species'
+  | 'landrace'
+  | 'heirloom'
+  | 'f1-hybrid'
+  | 'modern-cultivar'
+  | 'ornamental';
+
+export const pepperTypeLabels: Record<PepperType, string> = {
+  'wild-species': 'Wild species',
+  'landrace': 'Landrace',
+  'heirloom': 'Heirloom',
+  'f1-hybrid': 'Hybrid (F1)',
+  'modern-cultivar': 'Modern cultivar',
+  'ornamental': 'Ornamental',
+};
+
+// One-sentence, reader-friendly definitions for the Compendium legend/tooltips.
+export const pepperTypeGlossary: Record<PepperType, string> = {
+  'wild-species': 'An ancestral chile that grows in the wild, not created by growers.',
+  'landrace': 'A traditional local variety shaped over generations by a region’s growers and climate — a chile of place, never formally bred.',
+  'heirloom': 'An open-pollinated variety with a documented history; save its seed and it grows back true to type.',
+  'f1-hybrid': 'A deliberate first-generation cross of two parents — vigorous and uniform, but its saved seed won’t grow true.',
+  'modern-cultivar': 'Bred from a cross, then grown out for years until it breeds true — most superhots, like the Carolina Reaper.',
+  'ornamental': 'Bred mainly for looks — colorful foliage or upright pods — though still edible.',
+};
+
 export type ImageSource = 'ai-generated' | 'wikimedia' | 'user-contributed' | 'stock';
 export type ImageType = 'illustration' | 'photo' | 'dried' | 'plant' | 'user-upload';
 
@@ -44,6 +72,10 @@ export interface Pepper {
   culinaryUses: string[];
   pairings?: string[];
   inStock: boolean;
+  // Classification + color/strain lineage
+  pepperType?: PepperType;
+  variantOf?: string;      // parent pepper id, when this is a color/strain variant
+  variantLabel?: string;   // short descriptor, e.g. "Chocolate", "Yellow"
   gallery?: PepperImage[];
   // Legacy fields - kept for backward compatibility during migration
   imageUrl?: string;
