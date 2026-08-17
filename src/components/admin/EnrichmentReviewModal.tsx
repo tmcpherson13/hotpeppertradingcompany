@@ -265,7 +265,7 @@ export function EnrichmentReviewModal({
             </DialogDescription>
           </DialogHeader>
 
-          <Tabs defaultValue="compare" className="flex-1 flex flex-col overflow-hidden">
+          <Tabs defaultValue="compare" className="flex-1 flex flex-col overflow-hidden min-h-0">
             <TabsList className="bg-parchment-dark/30">
               <TabsTrigger value="compare">Side-by-Side</TabsTrigger>
               <TabsTrigger value="images" className="flex items-center gap-1.5">
@@ -279,8 +279,8 @@ export function EnrichmentReviewModal({
               <TabsTrigger value="citations">Citations ({queueEntry.source_citations?.length || 0})</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="compare" className="flex-1 overflow-hidden mt-0">
-              <ScrollArea className="h-[50vh]">
+            <TabsContent value="compare" className="flex-1 flex flex-col overflow-hidden min-h-0 mt-0">
+              <ScrollArea className="flex-1 min-h-0">
                 <div className="space-y-4 p-4">
                   {/* Verification Panel — results from the adversarial verification pass */}
                   {(() => {
@@ -580,7 +580,7 @@ export function EnrichmentReviewModal({
               </ScrollArea>
 
               {/* Approve All Text button at bottom of Side-by-Side tab */}
-              <div className="border-t border-ink/10 p-4 bg-parchment-dark/10">
+              <div className="shrink-0 border-t border-ink/10 p-4 bg-parchment-dark/10">
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-ink/60">
                     {Object.values(fieldApprovals).filter(s => s === 'approved').length} approved, {' '}
@@ -602,8 +602,8 @@ export function EnrichmentReviewModal({
               </div>
             </TabsContent>
 
-            <TabsContent value="images" className="flex-1 overflow-hidden mt-0">
-              <ScrollArea className="h-[50vh]">
+            <TabsContent value="images" className="flex-1 flex flex-col overflow-hidden min-h-0 mt-0">
+              <ScrollArea className="flex-1 min-h-0">
                 <div className="p-4">
                   {imagesLoading ? (
                     <div className="flex items-center justify-center p-8">
@@ -781,8 +781,8 @@ export function EnrichmentReviewModal({
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="citations" className="flex-1 overflow-hidden mt-0">
-              <ScrollArea className="h-[50vh]">
+            <TabsContent value="citations" className="flex-1 flex flex-col overflow-hidden min-h-0 mt-0">
+              <ScrollArea className="flex-1 min-h-0">
                 <div className="p-4 space-y-2">
                   {queueEntry.source_citations && queueEntry.source_citations.length > 0 ? (
                     queueEntry.source_citations.map((url, i) => (
@@ -807,7 +807,7 @@ export function EnrichmentReviewModal({
 
           <Separator />
 
-          <div className="space-y-3 pt-2">
+          <div className="shrink-0 space-y-3 pt-2">
             {/* Review Notes for text approval */}
             <div>
               <Label htmlFor="review-notes" className="text-sm">Review Notes (optional)</Label>
