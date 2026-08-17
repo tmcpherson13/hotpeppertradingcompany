@@ -1240,8 +1240,8 @@ const rawPeppers: Pepper[] = [
   },
   {
     id: 'charapita',
-    name: 'Charapita',
-    alternateNames: ['Aji Charapita', 'Ají Charapita', 'Aji Charapita Yellow', 'Ají Charapita Yellow', 'Mother of the Amazon'],
+    name: 'Aji Charapita',
+    alternateNames: ['Charapita', 'Ají Charapita', 'Aji Charapita Yellow', 'Ají Charapita Yellow', 'Mother of the Amazon'],
     scientificName: 'Capsicum chinense',
     species: 'chinense',
     origin: 'Peru (Amazon)',
