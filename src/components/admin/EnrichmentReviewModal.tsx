@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { Pepper, heatLevels } from '@/data/pepperTypes';
 import { usePepperEnrichment, EnrichmentQueueEntry } from '@/hooks/usePepperEnrichment';
 import { usePepperOverrides } from '@/hooks/usePepperOverrides';
@@ -142,8 +142,12 @@ export function EnrichmentReviewModal({
       .filter(([_, status]) => status === 'rejected')
       .map(([key]) => key);
 
-    // Use edited content if editing, otherwise use queue entry
-    const edits = isEditing ? editedContent : undefined;
+    // Always send the working copy: editedContent is seeded from the proposed
+    // values and updated in place, so any manual edits are applied on approve
+    // whether or not the field is currently in edit mode. (Previously edits were
+    // sent only while isEditing was true, so clicking "Done" first silently
+    // discarded them.)
+    const edits = editedContent;
     const success = await approve(queueEntry.id, edits, reviewNotes, excludedFields);
     if (success) {
       onComplete();
@@ -185,6 +189,55 @@ export function EnrichmentReviewModal({
     { key: 'proposed_culinary_uses', label: 'Culinary Uses', current: null },
     { key: 'proposed_trade_route', label: 'Trade Route', current: currentOverride?.trade_route },
   ];
+
+  // Each plagiarism flag starts with the flagged phrase in quotes, e.g.
+  //   "dusts grilled corn, rims the glass of a michelada" — tracks Know The Pepper: '...'
+  // Pull that leading phrase so we can label its section and highlight it in-field.
+  const parseFlaggedPhrase = (flag: string): string | null => {
+    // Match the leading quoted phrase — straight (") or curly (“”) quotes.
+    const m = flag.match(/["“”]([^"“”]+)["“”]/);
+    return m ? m[1] : null;
+  };
+
+  // Which narrative field (originally) contains a flagged phrase — a stable
+  // "in <section>" label so the reviewer knows where to look even after editing.
+  const sectionForPhrase = (phrase: string): string | null => {
+    const f = fields.find(({ key }) => {
+      const text = (queueEntry[key as keyof EnrichmentQueueEntry] as string | null) || '';
+      return text.includes(phrase);
+    });
+    return f ? f.label : null;
+  };
+
+  const plagiarismFlagsRaw = ((queueEntry as any).plagiarism_flags as string[] | null | undefined) || [];
+  const flaggedPhrases = plagiarismFlagsRaw.map(parseFlaggedPhrase).filter(Boolean) as string[];
+
+  // Render text with any still-present flagged phrases highlighted; the mark
+  // disappears once the reviewer edits the phrase away.
+  const renderWithFlags = (text: string): ReactNode => {
+    const present = flaggedPhrases.filter((p) => text.includes(p));
+    if (!present.length) return text;
+    let nodes: ReactNode[] = [text];
+    present.forEach((phrase, pi) => {
+      nodes = nodes.flatMap((node, ni) => {
+        if (typeof node !== 'string') return [node];
+        const parts = node.split(phrase);
+        const out: ReactNode[] = [];
+        parts.forEach((part, idx) => {
+          if (idx > 0) {
+            out.push(
+              <mark key={`flag-${pi}-${ni}-${idx}`} className="bg-red-200 text-red-900 rounded px-0.5">
+                {phrase}
+              </mark>
+            );
+          }
+          if (part) out.push(part);
+        });
+        return out;
+      });
+    });
+    return nodes;
+  };
 
   const pendingImageCount = imageProposals.length;
 
@@ -262,10 +315,25 @@ export function EnrichmentReviewModal({
                                 <p className="font-heading text-xs uppercase tracking-wider text-red-800 mb-1.5">
                                   Possible copied passages · blocks approval
                                 </p>
-                                <ul className="list-disc list-inside space-y-1 text-sm text-red-900/80">
-                                  {plagiarismFlags.map((flag, i) => (
-                                    <li key={i}>{flag}</li>
-                                  ))}
+                                <p className="text-[11px] text-red-900/60 mb-1.5">
+                                  Each flag names its section; the phrase is highlighted in that field below.
+                                  Edit the phrase to clear the flag.
+                                </p>
+                                <ul className="space-y-1.5 text-sm text-red-900/80">
+                                  {plagiarismFlags.map((flag, i) => {
+                                    const phrase = parseFlaggedPhrase(flag);
+                                    const section = phrase ? sectionForPhrase(phrase) : null;
+                                    return (
+                                      <li key={i} className="flex gap-2">
+                                        {section && (
+                                          <span className="shrink-0 mt-0.5 px-1.5 py-0.5 rounded bg-red-200 text-red-900 text-[10px] uppercase tracking-wide font-heading h-fit">
+                                            {section}
+                                          </span>
+                                        )}
+                                        <span>{flag}</span>
+                                      </li>
+                                    );
+                                  })}
                                 </ul>
                               </div>
                             )}
@@ -489,7 +557,7 @@ export function EnrichmentReviewModal({
                             </Badge>
                             {isEditing && fieldStatus !== 'rejected' ? (
                               <Textarea
-                                value={edited || ''}
+                                value={edited ?? ''}
                                 onChange={(e) => setEditedContent({
                                   ...editedContent,
                                   [key]: e.target.value,
@@ -498,7 +566,9 @@ export function EnrichmentReviewModal({
                               />
                             ) : (
                               <p className={`text-sm text-ink/70 ${fieldStatus === 'rejected' ? 'line-through' : ''}`}>
-                                {proposed || <span className="italic text-ink/40">Not generated</span>}
+                                {(edited ?? proposed)
+                                  ? renderWithFlags((edited ?? proposed) as string)
+                                  : <span className="italic text-ink/40">Not generated</span>}
                               </p>
                             )}
                           </div>
