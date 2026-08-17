@@ -2,7 +2,12 @@
 export type DomesticatedSpecies = 'annuum' | 'chinense' | 'frutescens' | 'baccatum' | 'pubescens';
 
 // Ancestral/wild species
-export type AncestralSpecies = 'chacoense' | 'galapagoense' | 'praetermissum' | 'eximium' | 'tovarii' | 'cardenasii' | 'glabriusculum' | 'rhomboideum';
+export type AncestralSpecies =
+  | 'chacoense' | 'galapagoense' | 'praetermissum' | 'eximium' | 'tovarii' | 'cardenasii' | 'glabriusculum' | 'rhomboideum'
+  // Additional recognized wild Capsicum species (PhytoKeys monograph)
+  | 'caballeroi' | 'neei' | 'coccineum' | 'flexuosum' | 'recurvatum' | 'cornutum' | 'friburgense' | 'hookerianum'
+  | 'lanceolatum' | 'minutiflorum' | 'mirabile' | 'parvifolium' | 'schottianum' | 'villosum' | 'ceratocalyx'
+  | 'geminifolium' | 'campylopodium' | 'rabenii' | 'regale' | 'dimorphum';
 
 // All species
 export type Species = DomesticatedSpecies | AncestralSpecies;
@@ -90,7 +95,10 @@ export const heatLevels = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Ver
 // Domesticated species list
 export const domesticatedSpeciesList = ['annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;
 // Ancestral species list
-export const ancestralSpeciesList = ['glabriusculum', 'chacoense', 'galapagoense', 'praetermissum', 'eximium', 'tovarii', 'cardenasii', 'rhomboideum'] as const;
+export const ancestralSpeciesList = ['glabriusculum', 'chacoense', 'galapagoense', 'praetermissum', 'eximium', 'tovarii', 'cardenasii', 'rhomboideum',
+  'caballeroi', 'neei', 'coccineum', 'flexuosum', 'recurvatum', 'cornutum', 'friburgense', 'hookerianum',
+  'lanceolatum', 'minutiflorum', 'mirabile', 'parvifolium', 'schottianum', 'villosum', 'ceratocalyx',
+  'geminifolium', 'campylopodium', 'rabenii', 'regale', 'dimorphum'] as const;
 // Combined list for backward compatibility
 export const speciesList = [...domesticatedSpeciesList, ...ancestralSpeciesList] as const;
 
@@ -110,4 +118,24 @@ export const speciesDisplayNames: Record<Species, string> = {
   tovarii: 'Capsicum tovarii',
   cardenasii: 'Capsicum cardenasii',
   rhomboideum: 'Capsicum rhomboideum',
+  caballeroi: 'Capsicum caballeroi',
+  neei: 'Capsicum neei',
+  coccineum: 'Capsicum coccineum',
+  flexuosum: 'Capsicum flexuosum',
+  recurvatum: 'Capsicum recurvatum',
+  cornutum: 'Capsicum cornutum',
+  friburgense: 'Capsicum friburgense',
+  hookerianum: 'Capsicum hookerianum',
+  lanceolatum: 'Capsicum lanceolatum',
+  minutiflorum: 'Capsicum minutiflorum',
+  mirabile: 'Capsicum mirabile',
+  parvifolium: 'Capsicum parvifolium',
+  schottianum: 'Capsicum schottianum',
+  villosum: 'Capsicum villosum',
+  ceratocalyx: 'Capsicum ceratocalyx',
+  geminifolium: 'Capsicum geminifolium',
+  campylopodium: 'Capsicum campylopodium',
+  rabenii: 'Capsicum rabenii',
+  regale: 'Capsicum regale',
+  dimorphum: 'Capsicum dimorphum',
 };

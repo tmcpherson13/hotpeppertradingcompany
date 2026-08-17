@@ -2021,7 +2021,7 @@ const rawPeppers: Pepper[] = [
   {
     id: 'bishops-crown',
     name: "Bishop's Crown",
-    alternateNames: ['Bishops Crown', 'Christmas Bell', "Joker's Hat", "Friar's Hat"],
+    alternateNames: ['Bishops Crown', 'Christmas Bell', "Joker's Hat", "Friar's Hat", 'Pimenta Cambuci', 'Cambuci', 'Chapéu de Frade', 'Ubatuba Cambuci', 'Orchid Pepper'],
     scientificName: 'Capsicum baccatum',
     species: 'baccatum',
     origin: 'Barbados',
