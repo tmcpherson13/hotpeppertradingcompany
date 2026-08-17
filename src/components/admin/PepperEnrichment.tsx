@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { EnrichmentPepperList } from './EnrichmentPepperList';
 import { EnrichmentSettings } from './EnrichmentSettings';
 import { ResearchPanel } from './ResearchPanel';
+import { EditableRecordPanel } from './EditableRecordPanel';
 import { BatchEnrichmentPanel } from './BatchEnrichmentPanel';
 import { EnrichmentReviewModal } from './EnrichmentReviewModal';
 import { EnrichmentStats } from './EnrichmentStats';
@@ -176,11 +177,11 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
               </div>
             </div>
 
-            {/* Research Panel */}
-            <div className="lg:col-span-2 border border-ink/10 rounded-lg overflow-hidden bg-parchment">
-              <div className="p-3 border-b border-ink/10 bg-parchment-dark/20 flex items-center justify-between">
+            {/* Record editor + research/enrichment */}
+            <div className="lg:col-span-2 border border-ink/10 rounded-lg overflow-hidden bg-parchment flex flex-col">
+              <div className="p-3 border-b border-ink/10 bg-parchment-dark/20 flex items-center justify-between shrink-0">
                 <h3 className="font-heading text-sm uppercase tracking-wider text-ink/70">
-                  Research & Synthesis
+                  Edit Record &amp; Enrich
                 </h3>
                 {selectedPepper && currentQueueEntry && (
                   <Button
@@ -195,18 +196,32 @@ export function PepperEnrichment({ initialView, onViewReset }: PepperEnrichmentP
                   </Button>
                 )}
               </div>
-              <div className="h-[450px]">
-                {selectedPepper ? (
-                  <ResearchPanel
-                    pepper={selectedPepper}
-                    onSynthesisComplete={handleSynthesisComplete}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full text-ink/40">
-                    <p className="text-sm">Select a pepper from the catalog to begin</p>
+              {selectedPepper ? (
+                <div className="flex-1 overflow-y-auto max-h-[70vh]">
+                  {/* Editable record — available immediately, no API call needed */}
+                  <div className="p-4">
+                    <EditableRecordPanel key={`edit-${selectedPepper.id}`} pepper={selectedPepper} />
                   </div>
-                )}
-              </div>
+                  {/* Full enrichment (research + AI synthesis) */}
+                  <div className="border-t border-ink/10 bg-parchment-dark/10">
+                    <div className="px-4 pt-3">
+                      <h4 className="font-heading text-[11px] uppercase tracking-wider text-ink/50">
+                        Full Enrichment — research &amp; AI synthesis
+                      </h4>
+                    </div>
+                    <div className="h-[460px]">
+                      <ResearchPanel
+                        pepper={selectedPepper}
+                        onSynthesisComplete={handleSynthesisComplete}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-[450px] flex items-center justify-center text-ink/40">
+                  <p className="text-sm">Select a pepper from the catalog to begin</p>
+                </div>
+              )}
             </div>
           </div>
         </TabsContent>

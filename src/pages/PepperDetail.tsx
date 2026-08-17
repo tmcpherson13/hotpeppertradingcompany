@@ -89,6 +89,13 @@ export default function PepperDetail() {
   const heatLevel = override?.heat_level ?? pepper.heatLevel;
   const scovilleMin = override?.scoville_min ?? pepper.scovilleMin;
   const scovilleMax = override?.scoville_max ?? pepper.scovilleMax;
+  // Overrides store the sensory tags as comma-separated text; split back to
+  // arrays, falling back to the static record when no override is set.
+  const splitTags = (s: string | null | undefined) =>
+    s ? s.split(',').map((t) => t.trim()).filter(Boolean) : undefined;
+  const flavorNotes = splitTags(override?.flavor_notes) ?? pepper.flavorNotes ?? [];
+  const aromaNotes = splitTags(override?.aroma_notes) ?? pepper.aromaNotes ?? [];
+  const culinaryUses = splitTags(override?.culinary_uses) ?? pepper.culinaryUses ?? [];
 
   const img = primaryImage(pepper, override?.image_url);
   const related = relatedPeppers(pepper, peppers);
@@ -228,27 +235,27 @@ export default function PepperDetail() {
           </div>
 
           {/* Sensory & culinary — deliberately last */}
-          {(pepper.flavorNotes?.length > 0
-            || (pepper.aromaNotes && pepper.aromaNotes.length > 0)
-            || pepper.culinaryUses?.length > 0
+          {(flavorNotes.length > 0
+            || aromaNotes.length > 0
+            || culinaryUses.length > 0
             || (pepper.pairings && pepper.pairings.length > 0)) && (
             <div className="grid sm:grid-cols-2 gap-6 pt-2 border-t border-border">
-              {pepper.flavorNotes?.length > 0 && (
+              {flavorNotes.length > 0 && (
                 <div>
                   <Label>Flavor Notes</Label>
-                  <p className="font-body text-foreground/85">{pepper.flavorNotes.join(', ')}</p>
+                  <p className="font-body text-foreground/85">{flavorNotes.join(', ')}</p>
                 </div>
               )}
-              {pepper.aromaNotes && pepper.aromaNotes.length > 0 && (
+              {aromaNotes.length > 0 && (
                 <div>
                   <Label>Aroma</Label>
-                  <p className="font-body text-foreground/85">{pepper.aromaNotes.join(', ')}</p>
+                  <p className="font-body text-foreground/85">{aromaNotes.join(', ')}</p>
                 </div>
               )}
-              {pepper.culinaryUses?.length > 0 && (
+              {culinaryUses.length > 0 && (
                 <div>
                   <Label>Culinary Uses</Label>
-                  <p className="font-body text-foreground/85">{pepper.culinaryUses.join(', ')}</p>
+                  <p className="font-body text-foreground/85">{culinaryUses.join(', ')}</p>
                 </div>
               )}
               {pepper.pairings && pepper.pairings.length > 0 && (
