@@ -11,12 +11,20 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { peppers as staticPeppers } from '@/data/peppers';
 import type { Pepper } from '@/data/pepperTypes';
+import { canonicalHeatLevel } from '@/data/pepperTypes';
 import { fetchPublishedPeppers, getInjectedDbPeppers, setInjectedDbPeppers } from '@/data/dbPeppers';
+
+// Derive each pepper's heat level from its Scoville max so the whole catalogue
+// uses one consistent scale (hand-entered labels had drifted out of agreement).
+function withCanonicalHeat(p: Pepper): Pepper {
+  const heat = canonicalHeatLevel(p.scovilleMax);
+  return heat && heat !== p.heatLevel ? { ...p, heatLevel: heat } : p;
+}
 
 function mergePeppers(dbPeppers: Pepper[]): Pepper[] {
   const seen = new Set(staticPeppers.map((p) => p.id));
   const extras = dbPeppers.filter((p) => !seen.has(p.id));
-  return [...staticPeppers, ...extras];
+  return [...staticPeppers, ...extras].map(withCanonicalHeat);
 }
 
 export function useAllPeppers() {

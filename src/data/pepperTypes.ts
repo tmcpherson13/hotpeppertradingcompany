@@ -63,7 +63,7 @@ export interface Pepper {
   scientificName: string;
   species: Species;
   origin: string;
-  region: 'Americas' | 'Asia' | 'Africa' | 'Europe' | 'Middle East';
+  region: 'Americas' | 'Asia' | 'Africa' | 'Europe' | 'Middle East' | 'Oceania';
   scovilleMin: number;
   scovilleMax: number;
   heatLevel: HeatLevel;
@@ -89,8 +89,24 @@ export interface Pepper {
 }
 
 // Filter data constants
-export const regions = ['Americas', 'Asia', 'Africa', 'Europe', 'Middle East'] as const;
+export const regions = ['Americas', 'Asia', 'Africa', 'Europe', 'Middle East', 'Oceania'] as const;
 export const heatLevels = ['No Heat', 'Very Mild', 'Mild', 'Medium', 'Hot', 'Very Hot', 'Extreme', 'Superhot'] as const;
+
+// Canonical heat-level scale derived from a pepper's maximum Scoville rating, so
+// every cultivar (static + database) is labeled by one consistent rule instead of
+// hand-entered strings that drifted out of agreement. Superhot follows the
+// accepted 1,000,000+ SHU convention; habanero-range peppers (≤350k) are Very Hot.
+export function canonicalHeatLevel(scovilleMax: number | null | undefined): HeatLevel | undefined {
+  if (scovilleMax == null) return undefined;
+  if (scovilleMax <= 0) return 'No Heat';
+  if (scovilleMax <= 999) return 'Very Mild';
+  if (scovilleMax <= 4999) return 'Mild';
+  if (scovilleMax <= 24999) return 'Medium';
+  if (scovilleMax <= 99999) return 'Hot';
+  if (scovilleMax <= 350000) return 'Very Hot';
+  if (scovilleMax <= 999999) return 'Extreme';
+  return 'Superhot';
+}
 
 // Domesticated species list
 export const domesticatedSpeciesList = ['annuum', 'chinense', 'frutescens', 'baccatum', 'pubescens'] as const;

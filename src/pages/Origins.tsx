@@ -141,6 +141,7 @@ const REGION_FALLBACK: Record<string, [number, number]> = {
   'Asia': [95, 30],
   'Africa': [20, 3],
   'Middle East': [45, 32],
+  'Oceania': [134, -25],
 };
 
 // Resolve a cultivar's free-text origin to a cluster { key, coordinates }.
