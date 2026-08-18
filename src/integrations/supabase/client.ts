@@ -2,10 +2,13 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// Fall back to placeholder values when env vars are absent (e.g. during
-// build-time prerendering) so client creation never throws outside the browser.
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'placeholder-publishable-key';
+// Supabase project URL + publishable (anon) key. These are PUBLIC by design —
+// they ship in every browser bundle and data access is guarded by row-level
+// security, not key secrecy — so the real values are hard-coded as the fallback.
+// This keeps the site working even when the Vercel build has no VITE_SUPABASE_*
+// env vars (or has them under a different name); env vars still win when present.
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://naxtutjkdmxyvwctpsub.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_KDW0Ph6RLYCyqq3mvGc_aA_fgWmPicf';
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
