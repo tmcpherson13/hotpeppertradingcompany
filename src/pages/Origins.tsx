@@ -4,7 +4,8 @@ import { SEO } from '@/components/SEO';
 import { Footer } from '@/components/layout/Footer';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { peppers } from '@/data/peppers';
+import { useAllPeppers } from '@/hooks/usePeppers';
+import type { Pepper } from '@/data/pepperTypes';
 import { MapPin, Flame, ExternalLink, X } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -18,45 +19,68 @@ import { AgedPaperOverlay, ShipSilhouette, SeaCreature, WindHead, NarrativeAnnot
 interface OriginCluster {
   name: string;
   coordinates: [number, number];
-  peppers: typeof peppers;
+  peppers: Pepper[];
   region: string;
 }
 
-// Fine-tuned coordinates calibrated to the trade-routes-bg.jpg artwork
-// MapLibre center: [12, 15], zoom: 1.35
-const originCoordinates: Record<string, [number, number]> = {
-  // Americas (+10° longitude shift to align with artwork)
+// Coordinates for every place/country a cultivar can resolve to. Longitudes are
+// nudged ~+10° east of true position to align markers with the trade-routes-bg.jpg
+// artwork (MapLibre center [12,15], zoom 1.35). Cultivars are clustered to a
+// country (or a broad region) so free-text origins like "Oaxaca, Mexico" or
+// "Andes of Ecuador" all land on a single, sensible marker.
+const placeCoords: Record<string, [number, number]> = {
+  // Americas
   'Mexico': [-92, 23],
+  'United States': [-88, 38],
   'Peru': [-66, -9],
   'Bolivia': [-55, -16],
   'Brazil': [-40, -10],
   'Ecuador': [-68, -1],
-  'USA': [-88, 38],
-  'New Mexico': [-96, 35],
-  'St Augustine, FL': [-72, 30],
-  
-  // Caribbean (+10° longitude shift to align with artwork)
+  'Colombia': [-63, 4],
+  'Venezuela': [-56, 7],
+  'Guatemala': [-80, 15],
+  'Honduras': [-76, 15],
+  'Argentina': [-54, -35],
+  'Paraguay': [-48, -23],
   'Trinidad': [-51, 10],
   'Jamaica': [-67, 18],
-  'Guyana': [-48, 6],
+  'Puerto Rico': [-56, 18],
   'Caribbean': [-58, 17],
-  
+  'Guyana': [-48, 6],
+  'Andes': [-60, -13],
+  'South America': [-50, -12],
+  'North America': [-90, 42],
   // Europe
   'Italy': [12, 43],
   'Spain': [-4, 40],
-  'Hungary': [19, 47],
-  'France': [2, 46],
   'Portugal': [-8, 39],
-  
+  'France': [2, 46],
+  'Hungary': [19, 47],
+  'Bulgaria': [25, 43],
+  'Serbia': [21, 44],
+  'Romania': [25, 46],
+  'Poland': [19, 52],
+  'Czech Republic': [15, 50],
+  'Netherlands': [5, 52],
+  'North Macedonia': [22, 41.6],
+  'Balkans': [20, 44],
+  'United Kingdom': [-2, 54],
+  'Central Europe': [16, 49],
+  'Europe': [10, 50],
   // Middle East / Mediterranean
   'Turkey': [33, 39],
   'Syria': [38, 35],
-  
+  'Georgia': [43, 42],
   // Africa
   'South Africa': [24, -29],
   'Mozambique': [35, -18],
   'Ghana': [0, 8],
-  
+  'Nigeria': [8, 9],
+  'Cameroon': [12, 6],
+  'Angola': [18, -12],
+  'Ethiopia': [40, 9],
+  'Zimbabwe': [30, -19],
+  'Africa': [20, 3],
   // Asia
   'India': [78, 22],
   'Bangladesh': [90, 24],
@@ -66,7 +90,71 @@ const originCoordinates: Record<string, [number, number]> = {
   'Japan': [138, 36],
   'Philippines': [121, 12],
   'Malaysia': [101, 4],
+  'Indonesia': [113, -2],
+  'Asia': [95, 30],
+  // Oceania
+  'Australia': [134, -25],
 };
+
+// Ordered keyword rules mapping a free-text origin to a cluster key. First match
+// wins, so more specific keywords (e.g. "new mexico") must precede generic ones
+// ("mexico"). A cultivar whose origin matches nothing here falls back to its
+// region centroid, so every pepper in the catalogue is represented.
+const ORIGIN_RULES: [string, string][] = [
+  ['new mexico', 'United States'], ['united states', 'United States'], ['usa', 'United States'],
+  ['augustine', 'United States'], ['american', 'United States'],
+  ['puerto rico', 'Puerto Rico'],
+  ['mexic', 'Mexico'],
+  ['trinidad', 'Trinidad'], ['jamaica', 'Jamaica'],
+  ['antilles', 'Caribbean'], ['margarita island', 'Caribbean'], ['caribbean', 'Caribbean'],
+  ['peru', 'Peru'], ['bolivia', 'Bolivia'], ['brazil', 'Brazil'], ['ecuador', 'Ecuador'],
+  ['colombia', 'Colombia'], ['venezuela', 'Venezuela'], ['guatemala', 'Guatemala'],
+  ['honduras', 'Honduras'], ['guyana', 'Guyana'], ['argentin', 'Argentina'], ['paraguay', 'Paraguay'],
+  ['andes', 'Andes'], ['south america', 'South America'], ['north america', 'North America'],
+  ['italy', 'Italy'], ['italian', 'Italy'],
+  ['spain', 'Spain'], ['basque', 'Spain'], ['navarra', 'Spain'],
+  ['portugal', 'Portugal'], ['france', 'France'],
+  ['hungar', 'Hungary'], ['bulgaria', 'Bulgaria'], ['serbia', 'Serbia'], ['romania', 'Romania'],
+  ['poland', 'Poland'], ['czech', 'Czech Republic'], ['netherlands', 'Netherlands'],
+  ['macedonia', 'North Macedonia'], ['balkans', 'Balkans'],
+  ['united kingdom', 'United Kingdom'], ['england', 'United Kingdom'], ['wales', 'United Kingdom'],
+  ['dorset', 'United Kingdom'], [' uk', 'United Kingdom'],
+  ['central europe', 'Central Europe'],
+  ['turkey', 'Turkey'], ['syria', 'Syria'], ['georgia', 'Georgia'],
+  ['india', 'India'], ['bangladesh', 'Bangladesh'], ['thailand', 'Thailand'],
+  ['china', 'China'], ['guizhou', 'China'], ['sichuan', 'China'],
+  ['japan', 'Japan'], ['kyoto', 'Japan'], ['niigata', 'Japan'],
+  ['korea', 'Korea'], ['philippines', 'Philippines'], ['malaysia', 'Malaysia'],
+  ['indonesia', 'Indonesia'], ['java', 'Indonesia'],
+  ['south africa', 'South Africa'], ['mozambique', 'Mozambique'], ['ghana', 'Ghana'],
+  ['nigeria', 'Nigeria'], ['cameroon', 'Cameroon'], ['angola', 'Angola'],
+  ['ethiopia', 'Ethiopia'], ['zimbabwe', 'Zimbabwe'],
+  ['australia', 'Australia'],
+  ['europe', 'Europe'], ['asia', 'Asia'], ['africa', 'Africa'],
+];
+
+// Region centroids — the fallback cluster for origins with no recognizable place
+// (e.g. "ornamental", "bred hybrid"), so those cultivars still appear on the map.
+const REGION_FALLBACK: Record<string, [number, number]> = {
+  'Americas': [-72, 6],
+  'Europe': [10, 50],
+  'Asia': [95, 30],
+  'Africa': [20, 3],
+  'Middle East': [45, 32],
+};
+
+// Resolve a cultivar's free-text origin to a cluster { key, coordinates }.
+function resolveOrigin(origin: string, region: string): { key: string; coords: [number, number] } | null {
+  const o = (origin || '').toLowerCase();
+  for (const [needle, place] of ORIGIN_RULES) {
+    if (o.includes(needle) && placeCoords[place]) {
+      return { key: place, coords: placeCoords[place] };
+    }
+  }
+  const fb = REGION_FALLBACK[region];
+  if (fb) return { key: region, coords: fb };
+  return null;
+}
 
 export default function Origins() {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -76,29 +164,32 @@ export default function Origins() {
   const [highlightedOrigin, setHighlightedOrigin] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Group peppers by origin
+  // Full catalogue: static 190 merged with the published database peppers.
+  const { peppers } = useAllPeppers();
+
+  // Group every cultivar by its resolved origin cluster (country or region).
   const originClusters = useMemo(() => {
     const clusters: Record<string, OriginCluster> = {};
 
     peppers.forEach(pepper => {
-      const origin = pepper.origin;
-      const coords = originCoordinates[origin];
-      
-      if (coords) {
-        if (!clusters[origin]) {
-          clusters[origin] = {
-            name: origin,
-            coordinates: coords,
-            peppers: [],
-            region: pepper.region
-          };
-        }
-        clusters[origin].peppers.push(pepper);
+      const resolved = resolveOrigin(pepper.origin, pepper.region);
+      if (!resolved) return;
+
+      if (!clusters[resolved.key]) {
+        clusters[resolved.key] = {
+          name: resolved.key,
+          coordinates: resolved.coords,
+          peppers: [],
+          region: pepper.region,
+        };
       }
+      clusters[resolved.key].peppers.push(pepper);
     });
 
-    return Object.values(clusters).filter(c => c.peppers.length > 0);
-  }, []);
+    return Object.values(clusters)
+      .filter(c => c.peppers.length > 0)
+      .sort((a, b) => b.peppers.length - a.peppers.length);
+  }, [peppers]);
 
   // Check for highlight parameter from Compendium return
   useEffect(() => {
