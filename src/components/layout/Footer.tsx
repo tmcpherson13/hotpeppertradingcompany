@@ -3,7 +3,7 @@ import logoWhite from '@/assets/logo-white.svg';
 
 const footerLinks = {
   cargo: [
-    { name: 'All Cultivars', href: '/compendium', isRoute: true },
+    { name: 'All Peppers', href: '/compendium', isRoute: true },
     { name: 'By Route', href: '/origins', isRoute: true },
     { name: 'Trading Post', href: '/trading-post', isRoute: true },
     { name: 'Wishlist', href: '/wishlist', isRoute: true },

@@ -331,7 +331,7 @@ export default function Origins() {
     <div className="min-h-screen bg-background relative">
       <SEO
         title="Origins Map — Where Chili Peppers Come From"
-        description="Explore an interactive map charting pepper cultivars by geographic origin and historic trade route, from the Americas across Africa, Europe, and Asia."
+        description="Explore an interactive map charting peppers by geographic origin and historic trade route, from the Americas across Africa, Europe, and Asia."
         path="/origins"
       />
       {/* Global background pattern - matching Compendium style */}
@@ -367,7 +367,7 @@ export default function Origins() {
               Origins of Fire
             </h1>
             <p className="text-ink/60 font-heading">
-              Explore the geographic origins of pepper cultivars across the globe
+              Explore the geographic origins of peppers across the globe
             </p>
           </div>
         </div>
@@ -552,7 +552,7 @@ export default function Origins() {
             </div>
             <div>
               <div className="font-blackpearl text-3xl text-tyrian mb-1">{peppers.length}</div>
-              <div className="text-ink/60 font-heading text-sm uppercase tracking-wider">Cultivars</div>
+              <div className="text-ink/60 font-heading text-sm uppercase tracking-wider">Peppers</div>
             </div>
             <div>
               <div className="font-blackpearl text-3xl text-tyrian mb-1">5</div>

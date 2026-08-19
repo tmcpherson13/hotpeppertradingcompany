@@ -151,8 +151,8 @@ const Compendium = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <SEO
-        title={`The Compendium — ${totalCount} Chili Pepper Cultivars`}
-        description={`A searchable reference of ${totalCount} pepper cultivars with Scoville heat, geographic origin, species, and flavor notes—the trade house's formal registry of chilies.`}
+        title={`The Compendium — ${totalCount} Chili Peppers`}
+        description={`A searchable reference of ${totalCount} peppers with Scoville heat, geographic origin, species, and flavor notes—the trade house's formal registry of chilies.`}
         path="/compendium"
       />
       {/* Global background pattern */}
@@ -230,7 +230,7 @@ const Compendium = () => {
 
             {/* Live cultivar count — the registry's headline figure */}
             <p className="mb-6 font-heading text-sm md:text-base uppercase tracking-[0.25em] text-[#6F2027]">
-              {totalCount.toLocaleString()} Cultivars Catalogued
+              {totalCount.toLocaleString()} Peppers Catalogued
             </p>
 
             <div className="font-body text-lg md:text-xl text-[#5a4a3a] leading-relaxed max-w-2xl mx-auto space-y-4">
@@ -293,14 +293,14 @@ const Compendium = () => {
               <div className="flex items-center gap-4 mb-2">
                 <span className="h-px flex-1 bg-border" />
                 <h2 className="font-heading text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Registry of Cultivars
+                  Registry of Peppers
                 </h2>
                 <span className="h-px flex-1 bg-border" />
               </div>
               <p className="mb-3 text-center font-heading text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 {isFiltered
-                  ? `Showing ${shownCount.toLocaleString()} of ${totalCount.toLocaleString()} cultivars`
-                  : `${totalCount.toLocaleString()} cultivars catalogued`}
+                  ? `Showing ${shownCount.toLocaleString()} of ${totalCount.toLocaleString()} peppers`
+                  : `${totalCount.toLocaleString()} peppers catalogued`}
               </p>
 
               {/* Classification legend — explains the type badges on each card */}

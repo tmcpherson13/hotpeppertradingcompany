@@ -378,7 +378,7 @@ export function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-parchment/90 font-body text-base md:text-lg max-w-3xl mx-auto mb-6 leading-relaxed"
           >
-            The Hot Pepper Trading Company is an online trading house devoted to peppers—prepared and offered as curated Cargo, and recorded in the Compendium from which they are drawn. Each cultivar is selected for its flavor profile, pungency, and regional provenance, then assembled into small Pepper Consortiums as availability allows. Alongside the Cargo, the Compendium preserves the history of peppers and the routes by which they traveled, offering context for what is traded as well as what is studied.
+            The Hot Pepper Trading Company is an online trading house devoted to peppers—prepared and offered as curated Cargo, and recorded in the Compendium from which they are drawn. Each pepper is selected for its flavor profile, pungency, and regional provenance, then assembled into small Pepper Consortiums as availability allows. Alongside the Cargo, the Compendium preserves the history of peppers and the routes by which they traveled, offering context for what is traded as well as what is studied.
           </motion.p>
 
           <motion.p

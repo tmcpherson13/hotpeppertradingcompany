@@ -347,7 +347,7 @@ export default function PepperDetail() {
         {/* Related cultivars */}
         {related.length > 0 && (
           <section className="container max-w-4xl mx-auto px-6 py-12">
-            <h2 className="font-display text-2xl text-foreground mb-6 text-center">Kindred Cultivars</h2>
+            <h2 className="font-display text-2xl text-foreground mb-6 text-center">Kindred Peppers</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {related.map((r) => {
                 const rImg = primaryImage(r);
