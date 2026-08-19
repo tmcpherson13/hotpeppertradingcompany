@@ -36,8 +36,20 @@ export function useAllPeppers() {
       setInjectedDbPeppers(rows);
       return rows;
     },
-    // Seed from the injection store so prerendered pages include DB peppers.
-    initialData: getInjectedDbPeppers,
+    // Seed from the injection store ONLY when it's populated — i.e. during
+    // prerender, where the build script fills it so SSR bakes the DB peppers.
+    // In the browser the store is empty, so we return undefined and let the
+    // query fetch. (Seeding an empty array here made React Query treat it as
+    // fresh under staleTime and never fetch, leaving the client on the static
+    // catalogue only — the "185 cultivars" regression.)
+    initialData: () => {
+      const seed = getInjectedDbPeppers();
+      return seed.length > 0 ? seed : undefined;
+    },
+    // Treat the injected seed as already stale so the client always refetches
+    // live data on mount instead of trusting the build-time snapshot forever.
+    initialDataUpdatedAt: 0,
+    refetchOnMount: 'always',
     staleTime: 5 * 60 * 1000,
   });
 
