@@ -90,7 +90,7 @@ export default function About() {
             </Section>
             <Section>
               <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                Truth be told, I've been obsessed with capsicum longer than any other pursuit. I love the heat, the layered flavors, the astonishing varietals, the endorphin rush—and yes, the history. Hot peppers were unknown outside the Americas until Christopher Columbus's return voyage in 1493. Within a century, they had spread across the globe, becoming defining elements in cuisines from Sichuan to West Africa to Hungary. That rapid, transformative journey is what drew me in deepest.
+                Truth be told, I've been obsessed with capsicum longer than any other pursuit. I love the heat, the layered flavors, the astonishing cultivars, the endorphin rush—and yes, the history. Hot peppers were unknown outside the Americas until Christopher Columbus's return voyage in 1493. Within a century, they had spread across the globe, becoming defining elements in cuisines from Sichuan to West Africa to Hungary. That rapid, transformative journey is what drew me in deepest.
               </p>
             </Section>
             <Section>
@@ -100,7 +100,7 @@ export default function About() {
             </Section>
             <Section>
               <p className="font-body text-foreground/80 text-base md:text-lg leading-relaxed">
-                My hope is that more people discover it as fascinating as I do: that they come here to explore the Compendium as a genuine resource, learn how varietals evolved across routes and centuries, and perhaps find a consortium or two that speaks to them.
+                My hope is that more people discover it as fascinating as I do: that they come here to explore the Compendium as a genuine resource, learn how varieties evolved across routes and centuries, and perhaps find a consortium or two that speaks to them.
               </p>
             </Section>
             <Section>
